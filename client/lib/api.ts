@@ -22,6 +22,19 @@ export async function loginUser(email: string, password: string) {
   }
 }
 
+export async function registerUser(fullName:string, email:string, password:string) {
+  try {
+    const response = await api.post('/auth/register', { fullName, email, password });
+    return response.data; // axios automatically parses JSON
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message || 'Registration failed');
+    } else {
+      throw new Error(error.message || 'Registration failed');
+    }
+}
+}
+
 // Request interceptor for adding auth token
 api.interceptors.request.use((config) => {
   try {

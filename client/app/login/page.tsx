@@ -4,6 +4,7 @@ import { loginUser } from '../../lib/api';
 import { useRouter } from 'next/navigation';
 import ErrorMessage from '../../components/shared/ErrorMessage';
 import { Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
@@ -103,7 +104,7 @@ export default function LoginPage(): JSX.Element {
         {/* Sign Up */}
         <p className="text-center text-gray-700 text-sm mt-2">
           Don’t have an account?{' '}
-          <span className="text-blue-600 font-medium cursor-pointer hover:underline">Sign Up</span>
+          <Link href='signUp' className="text-blue-600 font-medium cursor-pointer hover:underline">Sign Up</Link>
         </p>
 
         <p className="text-center text-gray-500 text-sm my-2">Or With</p>
