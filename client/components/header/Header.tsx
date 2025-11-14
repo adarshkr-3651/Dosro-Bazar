@@ -1,15 +1,12 @@
-'use client';
-
+"use client";
 import Link from 'next/link';
 import { Heart, Search } from 'lucide-react';
 import { ThemeButton } from '../themeButton/themeButton';
+import React, { JSX } from 'react';
 
-
-
-export function Header() {
+export function Header(): JSX.Element {
   return (
     <header className="flex justify-between items-center p-4 shadow-md bg-white dark:bg-gray-800 sticky top-0 z-10">
-      
       {/* 1. Logo */}
       <div className="logo shrink-0">
         <Link href="/" className="text-2xl font-bold text-orange-600 dark:text-orange-400">
@@ -31,8 +28,6 @@ export function Header() {
 
       {/* 3. User Actions (Favourite, Theme, Sign In) */}
       <nav className="user-actions flex items-center gap-4 shrink-0">
-        
-        {/* My Favourite Button */}
         <Link 
           href="/favourite" 
           className="group flex items-center gap-1.5 p-2 px-3 text-sm rounded-md border border-gray-300 text-gray-700 hover:bg-orange-500 hover:text-white dark:border-gray-600 dark:text-gray-200 dark:hover:bg-orange-500 transition-colors"
@@ -52,5 +47,3 @@ export function Header() {
     </header>
   );
 }
-
-// components/BodyContent.jsx (Example for the rest of your page)

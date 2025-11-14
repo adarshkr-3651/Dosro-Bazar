@@ -1,7 +1,8 @@
 "use client";
-import Link from "next/link";
+import Link from 'next/link';
+import React, { JSX } from 'react';
 
-export function Footer() {
+export function Footer(): JSX.Element {
   return (
     <footer className="bg-gray-800 text-white">
       <div className="container mx-auto px-4 py-8">

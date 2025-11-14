@@ -1,29 +1,29 @@
 "use client";
-import React, { useState } from "react";
-import { loginUser } from "@/lib/api";
-import { useRouter } from "next/navigation";
-import ErrorMessage from "@/components/shared/ErrorMessage";
-import { Eye, EyeOff } from "lucide-react"; // 👁️ icons
+import React, { JSX, useState } from 'react';
+import { loginUser } from '../../lib/api';
+import { useRouter } from 'next/navigation';
+import ErrorMessage from '../../components/shared/ErrorMessage';
+import { Eye, EyeOff } from 'lucide-react';
 
-export default function LoginPage() {
+export default function LoginPage(): JSX.Element {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
       const data = await loginUser(email, password);
-      if (data?.token) localStorage.setItem("token", data.token);
-      console.log("Login successful:", data);
-      router.push("/");
-    } catch (err) {
-      setError(err?.message || "Invalid credentials");
+      if (data?.token) localStorage.setItem('token', data.token);
+      console.log('Login successful:', data);
+      router.push('/');
+    } catch (err: any) {
+      setError(err?.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
@@ -63,7 +63,7 @@ export default function LoginPage() {
             <input
               id="password"
               name="password"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               autoComplete="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -86,9 +86,7 @@ export default function LoginPage() {
             <input type="checkbox" className="accent-blue-500" />
             <span className="text-gray-700">Remember me</span>
           </label>
-          <span className="text-blue-600 cursor-pointer hover:underline">
-            Forgot password?
-          </span>
+          <span className="text-blue-600 cursor-pointer hover:underline">Forgot password?</span>
         </div>
 
         {error && <ErrorMessage error={error} />}
@@ -99,15 +97,13 @@ export default function LoginPage() {
           type="submit"
           className="w-full mt-4 bg-gray-900 text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition disabled:opacity-60"
         >
-          {loading ? "Signing in..." : "Sign In"}
+          {loading ? 'Signing in...' : 'Sign In'}
         </button>
 
         {/* Sign Up */}
         <p className="text-center text-gray-700 text-sm mt-2">
-          Don’t have an account?{" "}
-          <span className="text-blue-600 font-medium cursor-pointer hover:underline">
-            Sign Up
-          </span>
+          Don’t have an account?{' '}
+          <span className="text-blue-600 font-medium cursor-pointer hover:underline">Sign Up</span>
         </p>
 
         <p className="text-center text-gray-500 text-sm my-2">Or With</p>

@@ -1,6 +1,7 @@
 import Image from 'next/image'; // For Next.js Image optimization
+import React, { JSX } from 'react';
 
-export function BodyContent() {
+export function BodyContent(): JSX.Element {
   return (
     <main className="p-5 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row gap-5">

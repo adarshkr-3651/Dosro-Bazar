@@ -1,8 +1,14 @@
-'use client'
+"use client";
 import React, { useEffect } from 'react';
 
-// Minimal toast wrapper to avoid adding dependencies. For a full solution, replace with react-hot-toast.
-export default function ToastNotification({ message, visible = false, duration = 3000, onClose }) {
+interface ToastProps {
+  message?: string;
+  visible?: boolean;
+  duration?: number;
+  onClose?: () => void;
+}
+
+export default function ToastNotification({ message, visible = false, duration = 3000, onClose }: ToastProps) {
   useEffect(() => {
     if (!visible) return;
     const t = setTimeout(() => onClose && onClose(), duration);
