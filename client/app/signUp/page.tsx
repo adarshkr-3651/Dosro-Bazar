@@ -3,7 +3,8 @@ import React, { JSX, useState } from "react";
 import { useRouter } from "next/navigation";
 import ErrorMessage from "../../components/shared/ErrorMessage";
 import { Eye, EyeOff } from "lucide-react";
-import { registerUser } from "../../lib/api"; // <-- create this API similar to loginUser
+import { signUpUser } from "../../lib/api"; // <-- create this API similar to loginUser
+import { loginUser } from "../../lib/api";
 
 export default function SignUpPage(): JSX.Element {
   const router = useRouter();
@@ -27,9 +28,10 @@ export default function SignUpPage(): JSX.Element {
 
     setLoading(true);
     try {
-      const data = await registerUser(name, email, password);
+      const data = await signUpUser(name, email, password);
       console.log("Signup successful:", data);
-      router.push("/login");
+      await loginUser(email, password);
+      router.push("/");
     } catch (err: any) {
       setError(err?.message || "Registration failed");
     } finally {

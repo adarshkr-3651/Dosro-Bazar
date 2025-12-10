@@ -1,104 +1,83 @@
 "use client";
-import Link from 'next/link';
-import React, { JSX } from 'react';
 
-export function Footer(): JSX.Element {
+import Image from "next/image";
+import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import { Button } from "../../components/ui/button";
+import logo from "../../public/logo.png";
+
+interface FooterLinks {
+  [category: string]: string[];
+}
+
+const footerLinks: FooterLinks = {
+  About: ["About Us", "Careers", "Press", "Blog"],
+  Support: ["Help Center", "Safety Tips", "Contact Us", "FAQs"],
+  Legal: ["Terms of Service", "Privacy Policy", "Cookie Policy"],
+};
+
+const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-800 text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About Section */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">About Dosro Bazar</h3>
-            <p className="text-gray-300">
-              Your trusted marketplace for quality second-hand items. Buy and
-              sell with confidence in our community.
+    <footer className="border-t bg-card mt-12">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          
+          {/* Brand */}
+          <div className="lg:col-span-2">
+            <Image
+              src={logo}
+              alt="Dosro Bazar Logo"
+              className="h-12 w-auto mb-4"
+            />
+
+            <p className="text-sm text-muted-foreground mb-4">
+              Your trusted marketplace for buying, selling, and bidding on
+              quality items.
             </p>
-          </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-gray-300 hover:text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="text-gray-300 hover:text-white">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-300 hover:text-white">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/help" className="text-gray-300 hover:text-white">
-                  Help Center
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Help & Support */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Help & Support</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/faq" className="text-gray-300 hover:text-white">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-gray-300 hover:text-white"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/safety" className="text-gray-300 hover:text-white">
-                  Safety Guidelines
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-gray-300 hover:text-white">
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Stay Connected</h3>
-            <p className="text-gray-300 mb-4">
-              Subscribe to our newsletter for updates and special offers.
-            </p>
             <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="border-2 px-4 py-2 rounded-l text-gray-300 w-full"
-              />
-              <button className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 text-white">
-                Subscribe
-              </button>
+              <Button size="icon" variant="outline">
+                <Facebook className="h-4 w-4" />
+              </Button>
+              <Button size="icon" variant="outline">
+                <Twitter className="h-4 w-4" />
+              </Button>
+              <Button size="icon" variant="outline">
+                <Instagram className="h-4 w-4" />
+              </Button>
+              <Button size="icon" variant="outline">
+                <Mail className="h-4 w-4" />
+              </Button>
             </div>
           </div>
+
+          {/* Dynamic Footer Links */}
+          {Object.entries(footerLinks).map(([section, links]) => (
+            <div key={section}>
+              <h3 className="font-semibold mb-4">{section}</h3>
+
+              <ul className="space-y-2">
+                {links.map((link) => (
+                  <li key={link}>
+                    <a
+                      href="#"
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-300">
-            © {new Date().getFullYear()} Dosro Bazar. All rights reserved.
-          </p>
+        {/* Bottom Section */}
+        <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
+          <p>&copy; {new Date().getFullYear()} Dosro Bazar. All rights reserved.</p>
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

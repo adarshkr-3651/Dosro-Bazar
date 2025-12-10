@@ -22,9 +22,9 @@ export async function loginUser(email: string, password: string) {
   }
 }
 
-export async function registerUser(fullName:string, email:string, password:string) {
+export async function signUpUser(username:string, email:string, password:string) {
   try {
-    const response = await api.post('/auth/register', { fullName, email, password });
+    const response = await api.post('/auth/register', { username, email, password });
     return response.data; // axios automatically parses JSON
   } catch (error: any) {
     if (error.response) {
@@ -34,6 +34,15 @@ export async function registerUser(fullName:string, email:string, password:strin
     }
 }
 }
+
+export async function logoutUser() {
+  try {
+  localStorage.removeItem("token");
+  window.location.reload();
+} catch (error: any) {
+  throw new Error('Logout failed');
+}}
+
 
 // Request interceptor for adding auth token
 api.interceptors.request.use((config) => {
