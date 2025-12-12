@@ -1,0 +1,3 @@
+module.exports=[71498,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(46326);a.n(d("[project]/Desktop/remarket-hub-main/remarket-hub-main/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},37226,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(46326);a.n(d("[project]/Desktop/remarket-hub-main/remarket-hub-main/node_modules/next/dist/client/components/builtin/global-error.js"))},84890,a=>{"use strict";a.i(71498);var b=a.i(37226);a.n(b)}];
+
+//# sourceMappingURL=121b9_next_dist_client_components_builtin_global-error_425cf0ee.js.map
