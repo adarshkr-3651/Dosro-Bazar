@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
       return { success: false, error: error.message };
     }
   };
-
+  //Register function
   const register = async (username, phone, password, email) => {
     try {
       await signUpUser(username, phone, password, email);
@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Google OAuth login function
   const loginWithGoogle = async (tokenOrCode, isCode = false) => {
     try {
       const response = await googleLogin(tokenOrCode, isCode);

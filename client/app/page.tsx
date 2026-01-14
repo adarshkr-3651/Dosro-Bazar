@@ -12,6 +12,7 @@ export default function Home() {
   const [isBuyerMode, setIsBuyerMode] = useState(true);
 
   // Mock data for products (listings)
+  
   const recentListings = [
     {
       id: 1,
