@@ -27,6 +27,7 @@ const getPrivateData = asyncErrorWrapper((req, res, next) => {
     })
 })
 
+// User Registration
 const register = asyncErrorWrapper(async (req, res, next) => {
     console.log("register function of Controllers auth.js")
 

@@ -4,6 +4,7 @@ const Story = require("../Models/story");
 const CustomError = require("../Helpers/error/CustomError");
 const { comparePassword, validateUserInput } = require("../Helpers/input/inputHelpers");
 
+// Get User Profile
 const profile = asyncErrorWrapper(async (req, res, next) => {
 
     console.log("profile function of Controllers user.js")
@@ -14,7 +15,7 @@ const profile = asyncErrorWrapper(async (req, res, next) => {
 
 })
 
-
+// Edit Profile
 const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
     console.log("editProfile function of Controllers user.js")
