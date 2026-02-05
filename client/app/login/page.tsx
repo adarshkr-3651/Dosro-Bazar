@@ -81,6 +81,16 @@ export default function LoginPage(): JSX.Element {
     try {
       const result = await login(identifier, password);
       if (result.success) {
+        // Check if verification is required
+        if (result.verificationRequired) {
+          setSuccessMessage(result.message || 'Verification required. Redirecting...');
+          setTimeout(() => {
+            const emailParam = result.email ? `?email=${encodeURIComponent(result.email)}` : '';
+            router.push(`/verify-email${emailParam}`);
+          }, 1500);
+          return; // Stop execution here
+        }
+
         // Handle remember me - only save identifier (email/phone), NOT password
         if (rememberMe) {
           localStorage.setItem('rememberedIdentifier', identifier);
@@ -96,8 +106,26 @@ export default function LoginPage(): JSX.Element {
           router.push('/');
         }, 1000);
       } else {
+        // Check for verification required in error case too (just in case backend changes structure)
+        if (result.verificationRequired) {
+          setSuccessMessage(result.message || 'Verification required. Redirecting...');
+          setTimeout(() => {
+            const emailParam = result.email ? `?email=${encodeURIComponent(result.email)}` : '';
+            router.push(`/verify-email${emailParam}`);
+          }, 1500);
+          return;
+        }
+
         // Display the specific error from backend
         setError(result.error || 'Login failed. Please try again.');
+        // If error mentions verification, maybe suggest it?
+        if (result.error?.toLowerCase().includes('verify')) {
+          setSuccessMessage(result.error + " Redirecting to verification...");
+          setTimeout(() => {
+            // We might not have email here if it failed, but try
+            router.push(`/verify-email?email=${encodeURIComponent(identifier)}`);
+          }, 2000);
+        }
       }
     } catch (err: any) {
       // Display the specific error message

@@ -13,13 +13,23 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 
 interface HeaderProps {
-  isBuyerMode: boolean;
-  onModeToggle: (checked: boolean) => void;
+  isBuyerMode?: boolean;
+  onModeToggle?: (checked: boolean) => void;
 }
 
-const Header = ({ isBuyerMode, onModeToggle }: HeaderProps) => {
-  const { user, logout } = useAuth();
+const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle }: HeaderProps) => {
+  const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = useAuth();
   const router = useRouter();
+
+  // Use context if available, otherwise use props
+  const currentIsBuyerMode = contextIsBuyerMode !== undefined ? contextIsBuyerMode : propsIsBuyerMode!;
+  const handleToggle = (checked: boolean) => {
+    if (setIsBuyerMode) {
+      setIsBuyerMode(checked);
+    } else if (propsOnModeToggle) {
+      propsOnModeToggle(checked);
+    }
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -38,20 +48,42 @@ const Header = ({ isBuyerMode, onModeToggle }: HeaderProps) => {
       return;
     }
 
-    // Check if user has a phone number when switching to seller mode
-    if (checked && user && (!user.phone || user.phone === '')) {
-      toast.error("Phone Number Required", {
-        description: "Please add your phone number to become a seller",
-        action: {
-          label: "Add Phone",
-          onClick: () => router.push('/profile?highlight=phone')
+    if (checked && user) {
+      // If user is already a seller or admin, allow
+      if (user.role === 'seller' || user.role === 'admin') {
+        handleToggle(!checked);
+        // Redirect to home if not already there
+        if (window.location.pathname !== '/') {
+          router.push('/');
         }
-      });
-      return;
+        return;
+      }
+
+      // If not, identify what is missing to guide the user
+      const missingFields = [];
+      if (!user.phone || user.phone === '') missingFields.push("Phone Number");
+      if (!user.address || user.address === '') missingFields.push("Address");
+      if (!user.photo || user.photo === 'user.png') missingFields.push("Profile Picture");
+      if (!user.idProof || user.idProof === '') missingFields.push("ID Proof");
+
+      if (missingFields.length > 0) {
+        toast.error("Profile Incomplete", {
+          description: `To become a seller, please add: ${missingFields.join(', ')}`,
+          action: {
+            label: "Update Profile",
+            onClick: () => router.push('/profile')
+          }
+        });
+        return;
+      }
     }
 
     // Call the original toggle handler
-    onModeToggle(!checked);
+    handleToggle(!checked);
+    // Redirect to home if not already there
+    if (window.location.pathname !== '/') {
+      router.push('/');
+    }
   };
 
   const userProfile = () => {
@@ -79,25 +111,27 @@ const Header = ({ isBuyerMode, onModeToggle }: HeaderProps) => {
               />
             </div>
           </div>
-          {/* Upload Button - Seller Mode Only */}
-          {!isBuyerMode && (
-            <Button size="sm" className="hidden md:flex gap-2 ml-auto" asChild>
+
+          {/* Upload Button - Seller Mode Only - Outside actions container to prevent shifting */}
+          {!currentIsBuyerMode && (
+            <Button size="sm" className="hidden lg:flex gap-2" asChild>
               <Link href="/upload">
                 <Upload className="h-4 w-4" />
                 <span>Upload Item</span>
               </Link>
             </Button>
           )}
-          {/* Right Side Actions */}
-          <div className={`flex items-center gap-2 md:gap-4 ${isBuyerMode ? 'ml-auto' : ''}`}>
+
+          {/* Right Side Actions - Always ml-auto to stay on the right */}
+          <div className="flex items-center gap-2 md:gap-4 ml-auto">
             {/* Mode Toggle */}
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50">
-              <Label htmlFor="mode-toggle" className="text-xs md:text-sm font-medium cursor-pointer">
-                {isBuyerMode ? "Buy" : "Sell"}
+              <Label htmlFor="mode-toggle" className="text-xs md:text-sm font-medium cursor-pointer min-w-[40px] text-center">
+                {currentIsBuyerMode ? "Buy" : "Sell"}
               </Label>
               <Switch
                 id="mode-toggle"
-                checked={!isBuyerMode}
+                checked={!currentIsBuyerMode}
                 onCheckedChange={handleModeChange}
               />
             </div>
@@ -112,8 +146,10 @@ const Header = ({ isBuyerMode, onModeToggle }: HeaderProps) => {
               </span>
             </Button>
 
-            <Button variant="ghost" size="icon">
-              <Heart className="h-5 w-5" />
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/favorites">
+                <Heart className="h-5 w-5" />
+              </Link>
             </Button>
 
             {user ? (

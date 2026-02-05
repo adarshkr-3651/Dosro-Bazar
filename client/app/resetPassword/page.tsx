@@ -1,12 +1,12 @@
 "use client";
-import React, { JSX, useState, useEffect } from 'react';
+import React, { JSX, useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetPassword } from '../lib/api';
 import ErrorMessage from '../components/shared/ErrorMessage';
 import Link from 'next/link';
 import { Eye, EyeOff, Lock, CheckCircle } from 'lucide-react';
 
-export default function ResetPasswordPage(): JSX.Element {
+function ResetPasswordContent(): JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [token, setToken] = useState<string | null>(null);
@@ -124,8 +124,8 @@ export default function ResetPasswordPage(): JSX.Element {
                                     New Password
                                 </label>
                                 <div className={`flex items-center border rounded-lg h-12 px-3 transition ${passwordWarning
-                                        ? 'border-amber-400 focus-within:border-amber-500'
-                                        : 'border-gray-200 focus-within:border-purple-500'
+                                    ? 'border-amber-400 focus-within:border-amber-500'
+                                    : 'border-gray-200 focus-within:border-purple-500'
                                     }`}>
                                     <input
                                         id="newPassword"
@@ -155,8 +155,8 @@ export default function ResetPasswordPage(): JSX.Element {
                                                 <div
                                                     key={level}
                                                     className={`h-1 flex-1 rounded ${level <= passwordStrength.strength
-                                                            ? passwordStrength.color
-                                                            : 'bg-gray-200'
+                                                        ? passwordStrength.color
+                                                        : 'bg-gray-200'
                                                         }`}
                                                 />
                                             ))}
@@ -254,5 +254,17 @@ export default function ResetPasswordPage(): JSX.Element {
                 </form>
             </div>
         </div>
+    );
+}
+
+export default function ResetPasswordPage(): JSX.Element {
+    return (
+        <Suspense fallback={
+            <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-50 to-pink-100">
+                <div className="text-purple-600 font-medium">Loading password reset...</div>
+            </div>
+        }>
+            <ResetPasswordContent />
+        </Suspense>
     );
 }

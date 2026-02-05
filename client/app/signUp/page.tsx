@@ -111,10 +111,17 @@ export default function SignUpPage(): JSX.Element {
       );
 
       if (result.success) {
-        setSuccessMessage('Account created successfully! Redirecting...');
-        setTimeout(() => {
-          router.push('/');
-        }, 1000);
+        if (formData.email) {
+          setSuccessMessage('Account created! Please verify your email.');
+          setTimeout(() => {
+            router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+          }, 1000);
+        } else {
+          setSuccessMessage('Account created! Redirecting to login...');
+          setTimeout(() => {
+            router.push('/login');
+          }, 1000);
+        }
       } else {
         setError(result.error || 'Registration failed');
       }

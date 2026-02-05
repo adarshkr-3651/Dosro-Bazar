@@ -38,6 +38,32 @@ export async function signUpUser(username: string, phone: string, password: stri
   }
 }
 
+export async function verifyEmail(email: string, code: string) {
+  try {
+    const response = await api.post('/auth/verify-email', { email, code });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Verification failed');
+    } else {
+      throw new Error(error.message || 'Verification failed');
+    }
+  }
+}
+
+export async function resendVerificationCode(email: string) {
+  try {
+    const response = await api.post('/auth/resend-verification', { email });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to resend code');
+    } else {
+      throw new Error(error.message || 'Failed to resend code');
+    }
+  }
+}
+
 export async function getProfile() {
   try {
     const response = await api.get('/user/profile');
@@ -79,6 +105,45 @@ export async function changePassword(oldPassword: string, newPassword: string) {
       throw new Error(error.response.data.error || error.response.data.message || 'Failed to change password');
     } else {
       throw new Error(error.message || 'Failed to change password');
+    }
+  }
+}
+
+export async function getFavorites() {
+  try {
+    const response = await api.get('/user/favorites');
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch favorites');
+    } else {
+      throw new Error(error.message || 'Failed to fetch favorites');
+    }
+  }
+}
+
+export async function toggleFavorite(slug: string) {
+  try {
+    const response = await api.post(`/user/${slug}/favorite`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to update favorite');
+    } else {
+      throw new Error(error.message || 'Failed to update favorite');
+    }
+  }
+}
+
+export async function getProductBySlug(slug: string) {
+  try {
+    const response = await api.get(`/item/${slug}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch product');
+    } else {
+      throw new Error(error.message || 'Failed to fetch product');
     }
   }
 }
@@ -194,20 +259,127 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Variables to handle multiple simultaneous 401s
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
+  });
+  failedQueue = [];
+};
+
 // Response interceptor for handling errors
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
-      if (typeof window !== 'undefined') {
-        // We do NOT redirect to login automatically anymore.
-        // This allows the app to handle "not logged in" state gracefully (e.g. guest mode)
-        // without kicking the user out of public pages.
+    const originalRequest = error.config;
+
+    // Handle 401 Unauthorized errors
+    if (error.response?.status === 401 && !originalRequest._retry) {
+
+      if (isRefreshing) {
+        // If already refreshing, wait for it to complete
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => {
+            return api(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
+      // Avoid infinite loops
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        // Attempt to refresh token
+        // We use a new axios instance or specific call to avoid interceptor loop if refresh fails
+        await axios.post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+
+        // If refresh successful, process the queue and retry original request
+        processQueue(null);
+        return api(originalRequest);
+      } catch (refreshError) {
+        // If refresh fails, it means session is truly expired
+        console.error('Token refresh failed:', refreshError);
+        processQueue(refreshError);
+
+        // Reject with original error so components know it failed
+        return Promise.reject(error);
+      } finally {
+        isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
   }
 );
+
+
+export async function getAllItems() {
+  try {
+    const response = await api.get('/item/getAllItems');
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch items');
+    } else {
+      throw new Error(error.message || 'Failed to fetch items');
+    }
+  }
+}
+
+export async function getMyListings() {
+  try {
+    const response = await api.get('/item/getmyItems/all');
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch your listings');
+    } else {
+      throw new Error(error.message || 'Failed to fetch your listings');
+    }
+  }
+}
+
+export async function getEditItemData(slug: string) {
+  try {
+    const response = await api.get(`/item/editItem/${slug}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch item details');
+    } else {
+      throw new Error(error.message || 'Failed to fetch item details');
+    }
+  }
+}
+
+export async function updateItem(slug: string, data: FormData) {
+  try {
+    const response = await api.put(`/item/${slug}/edit`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to update item');
+    } else {
+      throw new Error(error.message || 'Failed to update item');
+    }
+  }
+}
 
 export const endpoints = {
   auth: {

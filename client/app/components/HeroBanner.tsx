@@ -1,33 +1,63 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/app/components/ui/button";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const HeroBanner = () => {
+  const images = [
+    "/advertisement/1.jpg",
+    "/advertisement/2.jpg",
+    "/advertisement/3.png",
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(timer);
+  }, [images.length]);
+
   return (
-    <div className="relative overflow-hidden bg-gradient-to-r from-primary via-primary/90 to-secondary rounded-2xl">
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Buy, Sell, or Bid on Amazing Deals
-          </h1>
-          <p className="text-lg text-white/90 mb-6">
-            Join thousands of happy buyers and sellers. Find great deals or sell your items quickly and easily.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Button size="lg" variant="secondary" className="gap-2">
-              Start Selling
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button size="lg" variant="outline" className="bg-white hover:bg-white/90">
-              Browse Items
-            </Button>
+    <div className="w-full py-6 md:py-0 flex justify-center items-center">
+      <div className="relative w-full h-[220px] md:h-[350px] rounded-3xl overflow-hidden shadow-2xl group">
+
+        {/* Images */}
+        {images.map((src, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+          >
+            <Image
+              src={src}
+              alt={`Banner ${index + 1}`}
+              fill
+              className="object-cover"
+              priority={index === 0}
+            />
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
           </div>
+        ))}
+
+        {/* Navigation Dots */}
+        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${index === currentIndex
+                ? "bg-white w-8"
+                : "bg-white/50 hover:bg-white/80"
+                }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
-        
-        {/* Decorative Elements */}
-        <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-secondary/20 rounded-full blur-2xl" />
       </div>
     </div>
   );

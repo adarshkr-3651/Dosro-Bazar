@@ -11,6 +11,13 @@ export const validatePassword = (password?: string): boolean => {
   return re.test(password);
 };
 
+export const validateVerificationCode = (code: string): boolean => {
+  if (!code) return false;
+  // Exactly 6 digits
+  const re = /^\d{6}$/;
+  return re.test(code);
+};
+
 export const validateProductData = (data: any) => {
   const errors: Record<string, string> = {};
 
