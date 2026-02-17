@@ -20,6 +20,7 @@ interface AuthContextType {
     logout: () => Promise<void>;
     register: (username: string, phone: string, password: string, email?: string) => Promise<{ success: boolean; error?: string }>;
     checkAuthStatus: () => Promise<void>;
+    setUser: (user: User | null) => void;
     loginWithGoogle: (tokenOrCode: string, isCode?: boolean) => Promise<{ success: boolean; requiresPhone?: boolean; tempUserId?: string; userData?: any; error?: string }>;
     loginWithFacebook: (accessToken: string, userID: string) => Promise<{ success: boolean; error?: string }>;
     completeOAuthWithPhone: (tempUserId: string, phone: string) => Promise<{ success: boolean }>;
@@ -205,7 +206,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return (
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
-            <AuthContext.Provider value={{ user, loading, login, logout, register, checkAuthStatus, loginWithGoogle, loginWithFacebook, completeOAuthWithPhone, verify, resendCode, isBuyerMode, setIsBuyerMode }}>
+            <AuthContext.Provider value={{ user, loading, login, logout, register, checkAuthStatus, setUser, loginWithGoogle, loginWithFacebook, completeOAuthWithPhone, verify, resendCode, isBuyerMode, setIsBuyerMode }}>
                 {children}
             </AuthContext.Provider>
         </GoogleOAuthProvider>

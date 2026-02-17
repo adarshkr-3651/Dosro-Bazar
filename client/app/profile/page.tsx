@@ -41,7 +41,7 @@ const resolvePhotoUrl = (photoPath?: string | null) => {
 };
 
 export default function ProfilePage() {
-    const { user, checkAuthStatus } = useAuth();
+    const { user, checkAuthStatus, setUser } = useAuth();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [passwordLoading, setPasswordLoading] = useState(false);
@@ -134,9 +134,23 @@ export default function ProfilePage() {
                 data.append("idProof", idProof);
             }
 
-            await updateProfile(data);
-            await checkAuthStatus(); // Refresh user data
-            setMessage({ type: 'success', text: 'Profile updated successfully!' });
+            const response = await updateProfile(data);
+            console.log("[ProfilePage] Received response:", response);
+
+            // Use immediate user update from response if available
+            if (response.data) {
+                setUser(response.data);
+                console.log("[ProfilePage] Local user state updated from response data");
+            } else {
+                await checkAuthStatus(); // Fallback to refresh user data
+                console.log("[ProfilePage] Auth status refreshed via fallback");
+            }
+
+            setMessage({
+                type: response.data?.verificationStatus === 'rejected' ? 'error' : 'success',
+                text: response.message || 'Profile updated successfully!'
+            });
+            console.log("[ProfilePage] Message set to:", response.message);
         } catch (error: any) {
             setMessage({ type: 'error', text: error.message || 'Failed to update profile' });
         } finally {
