@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { toggleFavorite } from "../lib/api";
 import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
 
 interface ProductCardProps {
   id?: string | number;
@@ -37,6 +38,7 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const [isFav, setIsFav] = useState(initialFavorite);
   const [loading, setLoading] = useState(false);
+  const { isBuyerMode } = useAuth();
 
   // Sync internal state with prop changes (for when parent updates list)
   useEffect(() => {
@@ -45,7 +47,10 @@ const ProductCard = ({
 
   // Construct the detail page URL. Use slug if available, otherwise fall back to id.
   // Ideally, backend items always have slugs.
-  const productUrl = slug ? `/products/${slug}` : `/products/${id}`;
+  // If showEdit is true (Seller Mode), we go straight to edit page on click
+  const productUrl = showEdit
+    ? (slug ? `/products/${slug}/edit` : `/products/${id}/edit`)
+    : (slug ? `/products/${slug}` : `/products/${id}`);
 
   const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigating to product detail
@@ -78,27 +83,31 @@ const ProductCard = ({
             src={image || "/placeholder.jpg"}
             alt={title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out p-1"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </Link>
-        <Button
-          size="icon"
-          variant="secondary"
-          className={`absolute top-2 right-2 z-10 h-7 w-7 rounded-full shadow-sm transition-all duration-300 ${isFav
+        {isBuyerMode && !showEdit && (
+          <Button
+            size="icon"
+            variant="secondary"
+            className={`absolute top-2 right-2 z-10 h-7 w-7 rounded-full shadow-sm transition-all duration-300 ${isFav
               ? "bg-white text-red-500 hover:bg-white hover:text-red-600 hover:scale-110"
               : "bg-white/80 text-gray-400 hover:bg-white hover:text-red-400 hover:scale-110"
-            }`}
-          onClick={handleFavoriteClick}
-          disabled={loading}
-        >
-          <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
-        </Button>
-        {isBiddable && (
+              }`}
+            onClick={handleFavoriteClick}
+            disabled={loading}
+          >
+            <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
+          </Button>
+        )}
+        {isBiddable && isBuyerMode && !showEdit && (
           <Badge className="absolute top-2 left-2 bg-black/70 hover:bg-black/80 text-white backdrop-blur-sm px-2 py-0.5 text-[10px] h-5 font-normal tracking-wide z-10 rounded-full border-none">
             Bid
           </Badge>
         )}
+
+
       </div>
       <CardContent className="p-3">
         <Link href={productUrl} className="block mb-1.5">
@@ -106,11 +115,13 @@ const ProductCard = ({
         </Link>
         <div className="flex items-center justify-between mb-2">
           <span className="text-base font-bold text-primary tracking-tight">Rs. {price.toLocaleString()}</span>
-          {isBiddable && (
+          {isBiddable && isBuyerMode && !showEdit && (
             <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 rounded-full pointer-events-none bg-transparent hover:bg-transparent">
               Bid Now
             </Button>
           )}
+
+
           {showEdit && (
             <Button size="sm" variant="ghost" className="h-7 text-xs px-2 hover:bg-muted" asChild onClick={(e) => e.stopPropagation()}>
               <Link href={`/products/${slug}/edit`}>

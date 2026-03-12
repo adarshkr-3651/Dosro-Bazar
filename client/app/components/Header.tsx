@@ -102,14 +102,22 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
 
           {/* Search Bar - Hidden on mobile */}
           <div className="hidden flex-1 max-w-xl md:block">
-            <div className="relative">
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const query = formData.get("search") as string;
+              if (query.trim()) {
+                router.push(`/search?q=${encodeURIComponent(query)}`);
+              }
+            }} className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
+                name="search"
                 type="search"
                 placeholder="Search for products..."
                 className="pl-10 bg-muted/50"
               />
-            </div>
+            </form>
           </div>
 
           {/* Upload Button - Seller Mode Only - Outside actions container to prevent shifting */}
@@ -146,11 +154,14 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
               </span>
             </Button>
 
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/favorites">
-                <Heart className="h-5 w-5" />
-              </Link>
-            </Button>
+            {currentIsBuyerMode && (
+              <Button variant="ghost" size="icon" asChild>
+                <Link href="/favorites">
+                  <Heart className="h-5 w-5" />
+                </Link>
+              </Button>
+            )}
+
 
             {user ? (
               <>
@@ -179,14 +190,22 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
 
         {/* Mobile Search */}
         <div className="pb-3 md:hidden">
-          <div className="relative">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const query = formData.get("search") as string;
+            if (query.trim()) {
+              router.push(`/search?q=${encodeURIComponent(query)}`);
+            }
+          }} className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              name="search"
               type="search"
               placeholder="Search..."
               className="pl-10 bg-muted/50"
             />
-          </div>
+          </form>
         </div>
       </div>
     </header>

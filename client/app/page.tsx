@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/context/AuthContext";
-import { getAllItems, getMyListings, getFavorites } from "@/app/lib/api";
+import { getAllItems, getMyListings, getFavorites, getRecommendations } from "@/app/lib/api";
 import Header from "@/app/components/Header";
 import CategoryNav from "@/app/components/CategoryNav";
 import HeroBanner from "@/app/components/HeroBanner";
@@ -14,6 +14,7 @@ import { Button } from "@/app/components/ui/button";
 export default function Home() {
   const [recentListings, setRecentListings] = useState<any[]>([]);
   const [sellerListings, setSellerListings] = useState<any[]>([]);
+  const [recommendedItems, setRecommendedItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { user, isBuyerMode, setIsBuyerMode } = useAuth(); // Using AuthContext to check login status
   const [mounted, setMounted] = useState(false);
@@ -40,6 +41,22 @@ export default function Home() {
     };
 
     fetchItems();
+  }, []);
+
+  // Fetch recommendations
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const data = await getRecommendations();
+        if (data.success) {
+          setRecommendedItems(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch recommendations:", error);
+      }
+    };
+
+    fetchRecommendations();
   }, []);
 
   // Fetch user's items for Seller Mode
@@ -90,9 +107,6 @@ export default function Home() {
     });
   };
 
-  const recommendedItems = [
-
-  ];
 
   if (!mounted) {
     return null; // or a loading spinner to prevent hydration mismatch

@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { getProductBySlug, toggleFavorite } from "../../lib/api";
+import { getProductBySlug, toggleFavorite, getSimilarItems } from "../../lib/api";
 import { Loader2, MapPin, Heart, Share2, MessageCircle, ShoppingCart, Clock, Tag, AlertCircle } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
@@ -14,6 +14,7 @@ import { Separator } from "@/app/components/ui/separator";
 import { toast } from "sonner";
 import { useAuth } from "@/app/context/AuthContext";
 import { getFavorites } from "../../lib/api";
+import ProductCard from "../../components/ProductCard";
 
 interface Product {
     _id: string;
@@ -36,13 +37,15 @@ interface Product {
 export default function ProductDetailPage() {
     const params = useParams();
     const slug = params.slug as string;
-    const { user } = useAuth(); // Get user from context
+    const { user, isBuyerMode } = useAuth(); // Get user and mode from context
 
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [isFavorite, setIsFavorite] = useState(false);
     const [favLoading, setFavLoading] = useState(false);
+    const [similarItems, setSimilarItems] = useState<any[]>([]);
+    const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -74,6 +77,7 @@ export default function ProductDetailPage() {
                     if (favData.success && Array.isArray(favData.data)) {
                         const isFav = favData.data.some((item: any) => item.slug === slug);
                         setIsFavorite(isFav);
+                        setFavoriteIds(new Set(favData.data.map((item: any) => item._id)));
                     }
                 } catch (err) {
                     console.error("Failed to check favorite status", err);
@@ -81,10 +85,26 @@ export default function ProductDetailPage() {
             }
         };
 
-        if (user && product) {
-            checkFavoriteStatus();
-        }
+        checkFavoriteStatus();
     }, [user, product, slug]);
+
+    // Fetch similar items
+    useEffect(() => {
+        const fetchSimilar = async () => {
+            if (slug) {
+                try {
+                    const data = await getSimilarItems(slug);
+                    if (data.success) {
+                        setSimilarItems(data.data);
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch similar items", err);
+                }
+            }
+        };
+
+        fetchSimilar();
+    }, [slug]);
 
     const handleFavorite = async () => {
         if (!slug) return;
@@ -150,14 +170,16 @@ export default function ProductDetailPage() {
                                 src={product.image || "/placeholder.jpg"}
                                 alt={product.title}
                                 fill
-                                className="object-cover"
+                                className="object-contain p-2"
                                 priority
                             />
-                            {product.isBiddable && (
+                            {product.isBiddable && isBuyerMode && (user?.username !== product.author?.username) && (
                                 <Badge className="absolute top-4 left-4 h-8 px-3 text-sm">
                                     Open to Bids
                                 </Badge>
                             )}
+
+
                         </div>
                         {/* Placeholder for thumbnails if multiple images exist */}
                     </div>
@@ -167,15 +189,19 @@ export default function ProductDetailPage() {
                         <div>
                             <div className="flex items-start justify-between gap-4">
                                 <h1 className="text-3xl md:text-4xl font-bold text-foreground">{product.title}</h1>
-                                <Button
-                                    size="icon"
-                                    variant="outline"
-                                    className="rounded-full shrink-0"
-                                    onClick={handleFavorite}
-                                    disabled={favLoading}
-                                >
-                                    <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
-                                </Button>
+                                {isBuyerMode && (user?.username !== product.author?.username) && (
+                                    <Button
+                                        size="icon"
+                                        variant="outline"
+                                        className="rounded-full shrink-0"
+                                        onClick={handleFavorite}
+                                        disabled={favLoading}
+                                    >
+                                        <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+                                    </Button>
+                                )}
+
+
                             </div>
                             <div className="flex items-center gap-4 mt-4 text-muted-foreground">
                                 <div className="flex items-center gap-1">
@@ -198,7 +224,9 @@ export default function ProductDetailPage() {
                         <div className="space-y-4">
                             <div className="flex items-end gap-2">
                                 <span className="text-4xl font-bold text-primary">Rs. {product.price}</span>
-                                {product.isBiddable && <span className="text-sm font-medium text-muted-foreground mb-2">(Starting Price)</span>}
+                                {product.isBiddable && isBuyerMode && (user?.username !== product.author?.username) && <span className="text-sm font-medium text-muted-foreground mb-2">(Starting Price)</span>}
+
+
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-3">
@@ -207,15 +235,22 @@ export default function ProductDetailPage() {
                                     Contact Seller
                                 </Button>
                                 {product.isBiddable ? (
-                                    <Button size="lg" variant="secondary" className="flex-1 gap-2 text-lg">
-                                        Place Bid
-                                    </Button>
+                                    isBuyerMode && (user?.username !== product.author?.username) && (
+                                        <Button size="lg" variant="secondary" className="flex-1 gap-2 text-lg">
+                                            Place Bid
+                                        </Button>
+                                    )
                                 ) : (
-                                    <Button size="lg" variant="secondary" className="flex-1 gap-2 text-lg">
-                                        <ShoppingCart className="h-5 w-5" />
-                                        Buy Now
-                                    </Button>
+                                    isBuyerMode && (user?.username !== product.author?.username) && (
+                                        <Button size="lg" variant="secondary" className="flex-1 gap-2 text-lg">
+                                            <ShoppingCart className="h-5 w-5" />
+                                            Buy Now
+                                        </Button>
+                                    )
                                 )}
+
+
+
                             </div>
                         </div>
 
@@ -262,6 +297,36 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* Similar Items Section */}
+                {similarItems.length > 0 && (
+                    <div className="mt-16 space-y-8">
+                        <Separator />
+                        <div>
+                            <h2 className="text-3xl font-bold mb-2">Similar Items</h2>
+                            <p className="text-muted-foreground">You might also be interested in these</p>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
+                            {similarItems.map((item) => (
+                                <ProductCard
+                                    key={item._id}
+                                    id={item._id}
+                                    slug={item.slug}
+                                    {...item}
+                                    isFavorite={favoriteIds.has(item._id)}
+                                    onFavoriteToggle={() => {
+                                        setFavoriteIds(prev => {
+                                            const newSet = new Set(prev);
+                                            if (newSet.has(item._id)) newSet.delete(item._id);
+                                            else newSet.add(item._id);
+                                            return newSet;
+                                        });
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </main>
 
             <Footer />

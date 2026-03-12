@@ -381,6 +381,45 @@ export async function updateItem(slug: string, data: FormData) {
   }
 }
 
+export async function searchSemantic(query: string) {
+  try {
+    const response = await api.get(`/item/search/semantic?query=${encodeURIComponent(query)}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to perform semantic search');
+    } else {
+      throw new Error(error.message || 'Failed to perform semantic search');
+    }
+  }
+}
+
+export async function getSimilarItems(slug: string) {
+  try {
+    const response = await api.get(`/item/${slug}/similar`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch similar items');
+    } else {
+      throw new Error(error.message || 'Failed to fetch similar items');
+    }
+  }
+}
+
+export async function getRecommendations() {
+  try {
+    const response = await api.get('/item/recommendations/all');
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch recommendations');
+    } else {
+      throw new Error(error.message || 'Failed to fetch recommendations');
+    }
+  }
+}
+
 export const endpoints = {
   auth: {
     login: '/auth/login',
