@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(userData);
             return { success: true };
         } catch (error: any) {
-            console.error('Login failed:', error);
+            console.warn('Login failed:', error.message);
             // Check if it's the specific verification error/response if it came as an error (though we return 200 now)
             if (error.response?.data?.verificationRequired) {
                 return {
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             // Don't set user here - wait for verification
             return { success: true };
         } catch (error: any) {
-            console.error('Registration failed:', error);
+            console.warn('Registration failed:', error.message);
             return { success: false, error: error.message };
         }
     };
@@ -118,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(userData);
             return { success: true };
         } catch (error: any) {
-            console.error('Verification failed:', error);
+            console.warn('Verification failed:', error.message);
             return { success: false, error: error.message };
         }
     };
@@ -128,7 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await resendVerificationCode(email);
             return { success: true };
         } catch (error: any) {
-            console.error('Resend code failed:', error);
+            console.warn('Resend code failed:', error.message);
             return { success: false, error: error.message };
         }
     };
@@ -152,7 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(userData);
             return { success: true };
         } catch (error: any) {
-            console.error('Google login failed:', error);
+            console.warn('Google login failed:', error.message);
             return { success: false, error: error.message };
         }
     };
@@ -164,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(userData);
             return { success: true };
         } catch (error: any) {
-            console.error('OAuth completion failed:', error);
+            console.warn('OAuth completion failed:', error.message);
             throw error; // Re-throw to let the dialog handle the error
         }
     };
@@ -176,7 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(userData);
             return { success: true };
         } catch (error: any) {
-            console.error('Facebook login failed:', error);
+            console.warn('Facebook login failed:', error.message);
             return { success: false, error: error.message };
         }
     };
@@ -194,7 +194,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 window.location.href = '/';
             }, 100);
         } catch (error: any) {
-            console.error('Logout failed:', error);
+            console.warn('Logout failed:', error.message);
             // Even if backend fails, clear local state and redirect
             setUser(null);
             setIsBuyerMode(true);

@@ -61,7 +61,7 @@ export default function ForgotPasswordPage(): JSX.Element {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-amber-50 to-indigo-100">
             <div className="w-full max-w-md">
                 {/* Back to Login Link */}
                 <Link
@@ -78,8 +78,8 @@ export default function ForgotPasswordPage(): JSX.Element {
                 >
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                            <Mail className="text-blue-600" size={32} />
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-4">
+                            <Mail className="text-amber-700" size={32} />
                         </div>
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">Forgot Password?</h1>
                         <p className="text-gray-600 text-sm">
@@ -96,7 +96,7 @@ export default function ForgotPasswordPage(): JSX.Element {
                                 </label>
                                 <div className={`flex items-center border rounded-lg h-12 px-3 transition ${emailWarning
                                         ? 'border-amber-400 focus-within:border-amber-500'
-                                        : 'border-gray-200 focus-within:border-blue-500'
+                                        : 'border-gray-200 focus-within:border-amber-700'
                                     }`}>
                                     <input
                                         id="email"
@@ -123,7 +123,7 @@ export default function ForgotPasswordPage(): JSX.Element {
                             <button
                                 disabled={loading}
                                 type="submit"
-                                className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                className="w-full bg-amber-700 text-white py-3 rounded-lg font-medium hover:bg-amber-800 transition disabled:opacity-60 disabled:cursor-not-allowed"
                             >
                                 {loading ? 'Sending...' : 'Send Reset Link'}
                             </button>
@@ -151,8 +151,8 @@ export default function ForgotPasswordPage(): JSX.Element {
                                 We've sent password reset instructions to your email address.
                                 Please check your inbox and follow the link to reset your password.
                             </p>
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                                <p className="text-sm text-blue-800">
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                                <p className="text-sm text-amber-800">
                                     <strong>Didn't receive the email?</strong><br />
                                     Check your spam folder or try again in a few minutes.
                                 </p>
@@ -171,7 +171,7 @@ export default function ForgotPasswordPage(): JSX.Element {
                         <div className="mt-6 text-center">
                             <p className="text-gray-600 text-sm">
                                 Remember your password?{' '}
-                                <Link href="/login" className="text-blue-600 font-medium hover:underline">
+                                <Link href="/login" className="text-amber-700 font-medium hover:underline">
                                     Sign In
                                 </Link>
                             </p>

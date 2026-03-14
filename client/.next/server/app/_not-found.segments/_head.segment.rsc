@@ -1,7 +1,7 @@
 1:"$Sreact.fragment"
-2:I[50105,["/_next/static/chunks/02cd7283b8127b4a.js","/_next/static/chunks/9c679bfa3223d8c4.js","/_next/static/chunks/e4bf5b8ca1b8d621.js"],"ViewportBoundary"]
-4:I[50105,["/_next/static/chunks/02cd7283b8127b4a.js","/_next/static/chunks/9c679bfa3223d8c4.js","/_next/static/chunks/e4bf5b8ca1b8d621.js"],"MetadataBoundary"]
+2:I[99017,["/_next/static/chunks/c80c657095a53aaf.js","/_next/static/chunks/2264907ff3c595a7.js","/_next/static/chunks/9a5580dadb70a3cf.js","/_next/static/chunks/72c7736d8bd0a7f9.js","/_next/static/chunks/f5ff641ecd7de7d4.js"],"ViewportBoundary"]
+4:I[99017,["/_next/static/chunks/c80c657095a53aaf.js","/_next/static/chunks/2264907ff3c595a7.js","/_next/static/chunks/9a5580dadb70a3cf.js","/_next/static/chunks/72c7736d8bd0a7f9.js","/_next/static/chunks/f5ff641ecd7de7d4.js"],"MetadataBoundary"]
 5:"$Sreact.suspense"
-0:{"buildId":"mMYxKndir2UTJ2nKauIod","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"l8zmPWe7C3gHYNIDqbCsa","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
 3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
-6:[["$","title","0",{"children":"ReMarket Hub - Buy, Sell, or Bid on Amazing Deals"}],["$","meta","1",{"name":"description","content":"Join thousands of happy buyers and sellers. Find great deals or sell your items quickly and easily."}]]
+6:[["$","title","0",{"children":"Dosro Bazar"}],["$","meta","1",{"name":"description","content":"Join thousands of happy buyers and sellers. Find great deals or sell your items quickly and easily."}]]

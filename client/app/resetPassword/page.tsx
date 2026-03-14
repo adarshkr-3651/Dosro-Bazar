@@ -92,7 +92,7 @@ function ResetPasswordContent(): JSX.Element {
         if (!password) return { strength: 0, label: '', color: '' };
         if (password.length < 6) return { strength: 1, label: 'Weak', color: 'bg-red-500' };
         if (password.length < 10) return { strength: 2, label: 'Fair', color: 'bg-yellow-500' };
-        if (password.length < 14) return { strength: 3, label: 'Good', color: 'bg-blue-500' };
+        if (password.length < 14) return { strength: 3, label: 'Good', color: 'bg-amber-600' };
         return { strength: 4, label: 'Strong', color: 'bg-green-500' };
     };
 

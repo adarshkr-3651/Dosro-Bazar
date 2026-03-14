@@ -1,8 +1,19 @@
 {
   "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/adminlogin/page": "app/adminlogin/page.js",
+  "/api/advertisements/route": "app/api/advertisements/route.js",
+  "/favorites/page": "app/favorites/page.js",
+  "/forgotPassword/page": "app/forgotPassword/page.js",
   "/login/page": "app/login/page.js",
   "/page": "app/page.js",
+  "/products/[slug]/edit/page": "app/products/[slug]/edit/page.js",
+  "/products/[slug]/page": "app/products/[slug]/page.js",
   "/profile/page": "app/profile/page.js",
-  "/signUp/page": "app/signUp/page.js"
+  "/resetPassword/page": "app/resetPassword/page.js",
+  "/search/page": "app/search/page.js",
+  "/signUp/page": "app/signUp/page.js",
+  "/upload/page": "app/upload/page.js",
+  "/verify-email/page": "app/verify-email/page.js"
 }

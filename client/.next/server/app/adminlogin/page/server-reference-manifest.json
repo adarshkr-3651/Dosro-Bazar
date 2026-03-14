@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40d02769005bc7bce6ff3e728f5f1f717528c656f3": {
+      "workers": {
+        "app/adminlogin/page": {
+          "moduleId": 7762,
+          "async": false,
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/adminlogin/page": "action-browser"
+      },
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+    }
+  },
+  "edge": {}
+}

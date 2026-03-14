@@ -1,10 +1,12 @@
-const asyncErrorWrapper = require("express-async-handler")
-const User = require("../Models/user");
-const Story = require("../Models/story");
-const CustomError = require("../Helpers/error/CustomError");
-const { comparePassword, validateUserInput } = require("../Helpers/input/inputHelpers");
+import asyncErrorWrapper from "express-async-handler";
+import User from "../Models/user.js";
+import Item from "../Models/item.js";
+import CustomError from "../Helpers/error/CustomError.js";
+import { comparePassword, validateUserInput } from "../Helpers/input/inputHelpers.js";
+import sendEmail from "../Helpers/Libraries/sendEmail.js";
+import { passwordChangeTemplate } from "../Helpers/Libraries/emailTemplates.js";
+import verifyIdProof from "../Helpers/Libraries/idVerification.js";
 
-// Get User Profile
 const profile = asyncErrorWrapper(async (req, res, next) => {
 
     console.log("profile function of Controllers user.js")
@@ -15,26 +17,101 @@ const profile = asyncErrorWrapper(async (req, res, next) => {
 
 })
 
-// Edit Profile
+
 const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
     console.log("editProfile function of Controllers user.js")
-    
-    const { email, username } = req.body
 
-    const user = await User.findByIdAndUpdate(req.user.id, {
-        email, username,
-        photo: req.savedUserPhoto
-    },
-        {
-            new: true,
-            runValidators: true
-        })
+    const { email, username, theme, phone, address, idProofType } = req.body
+
+    // Prepare update data
+    const updateData = {};
+
+    // Only update fields that are provided
+    if (email !== undefined) updateData.email = email;
+    if (username !== undefined) updateData.username = username;
+    if (phone !== undefined) updateData.phone = phone;
+    if (address !== undefined) updateData.address = address;
+    if (idProofType !== undefined) updateData.idProofType = idProofType;
+
+    // If theme is provided, update it
+    if (theme && ['light', 'dark', 'system'].includes(theme)) {
+        updateData.theme = theme;
+    }
+
+    // Handle uploaded files
+    if (req.files) {
+        if (req.files.photo && req.files.photo[0]) {
+            updateData.photo = req.files.photo[0].path;
+        }
+        if (req.files.idProof && req.files.idProof[0]) {
+            updateData.idProof = req.files.idProof[0].path;
+        }
+    }
+
+    // Use findById and save() to ensure instance methods work and hooks fire
+    const user = await User.findById(req.user.id);
+
+    if (email !== undefined) user.email = email;
+    if (username !== undefined) user.username = username;
+    if (phone !== undefined) user.phone = phone;
+    if (address !== undefined) user.address = address;
+    if (idProofType !== undefined) user.idProofType = idProofType;
+    if (theme && ['light', 'dark', 'system'].includes(theme)) user.theme = theme;
+
+    if (req.files) {
+        if (req.files.photo && req.files.photo[0]) user.photo = req.files.photo[0].path;
+        if (req.files.idProof && req.files.idProof[0]) {
+            user.idProof = req.files.idProof[0].path;
+
+            // Start verification process if idProof is uploaded
+            console.log(`[editProfile] Starting verification for user ${user.id} with ID Type: ${user.idProofType}`);
+            console.log(`[editProfile] ID Proof Path/URL: ${user.idProof}`);
+
+            // Set pending status initially
+            user.verificationStatus = 'pending';
+            user.verificationFeedback = "ℹ️ Verification in progress...";
+
+            // Run OCR verification
+            try {
+                const verificationResult = await verifyIdProof(user.idProof, user.idProofType);
+
+                user.verificationStatus = verificationResult.status;
+                user.verificationFeedback = verificationResult.feedback;
+
+                console.log(`[editProfile] Verification finished for user ${user.id}: ${user.verificationStatus}`);
+                console.log(`[editProfile] Feedback: ${user.verificationFeedback}`);
+            } catch (vError) {
+                console.error(`[editProfile] Verification failed for user ${user.id}:`, vError);
+                user.verificationStatus = 'pending';
+                user.verificationFeedback = "ℹ️ OCR service encountered an error. Admin will verify manually.";
+            }
+        }
+    }
+
+    // Recalculate role based on new profile data
+    user.updateRoleBasedOnProfile();
+
+    await user.save();
+
+    let responseMessage = "Profile updated successfully!";
+    if (req.files && req.files.idProof) {
+        console.log(`[editProfile] ID Proof uploaded, current status: ${user.verificationStatus}`);
+        if (user.verificationStatus === 'verified') {
+            responseMessage = "Profile updated and identity verified successfully! ✅";
+        } else if (user.verificationStatus === 'rejected') {
+            responseMessage = `Profile updated, but identity verification failed: ${user.verificationFeedback} ⚠️`;
+        } else if (user.verificationStatus === 'pending') {
+            responseMessage = "Profile updated. Identity verification is pending manual review. ℹ️";
+        }
+    }
+
+    console.log(`[editProfile] Final response message: "${responseMessage}"`);
 
     return res.status(200).json({
         success: true,
+        message: responseMessage,
         data: user
-
     })
 
 })
@@ -58,49 +135,65 @@ const changePassword = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError('Old password is incorrect ', 400))
     }
 
-    user.password = newPassword
-
+    // Save the new password
+    user.password = newPassword;
     await user.save();
 
+    // Send password change notification email (non-blocking)
+    const changeTime = new Date().toLocaleString('en-US', {
+        dateStyle: 'full',
+        timeStyle: 'long'
+    });
+
+    // Only send email if user has an email address
+    if (user.email) {
+        sendEmail({
+            from: process.env.EMAIL_USERNAME,
+            to: user.email,
+            subject: '🔒 Password Changed Successfully',
+            html: passwordChangeTemplate(user.username, user.email, changeTime)
+        }).catch(error => {
+            console.error('[user.js] changePassword() - Failed to send password change notification:', error.message);
+            // Don't throw error - email failure shouldn't prevent password change
+        });
+    }
 
     return res.status(200).json({
         success: true,
-        message: "Change Password  Successfully",
-        user: user
-
-    })
+        message: "Password changed successfully"
+    });
 
 })
 
 
-const addStoryToReadList = asyncErrorWrapper(async (req, res, next) => {
+const addItemToReadList = asyncErrorWrapper(async (req, res, next) => {
 
     const { slug } = req.params
     const { activeUser } = req.body;
 
-    const story = await Story.findOne({ slug })
+    const item = await Item.findOne({ slug })
 
     const user = await User.findById(activeUser._id)
 
-    if (!user.readList.includes(story.id)) {
+    if (!user.readList.includes(item.id)) {
 
-        user.readList.push(story.id)
+        user.readList.push(item.id)
         user.readListLength = user.readList.length
         await user.save();
     }
 
     else {
-        const index = user.readList.indexOf(story.id)
+        const index = user.readList.indexOf(item.id)
         user.readList.splice(index, 1)
         user.readListLength = user.readList.length
         await user.save();
     }
 
-    const status = user.readList.includes(story.id)
+    const status = user.readList.includes(item.id)
 
     return res.status(200).json({
         success: true,
-        story: story,
+        story: item,
         user: user,
         status: status
     })
@@ -116,9 +209,9 @@ const readListPage = asyncErrorWrapper(async (req, res, next) => {
 
     for (let index = 0; index < user.readList.length; index++) {
 
-        var story = await Story.findById(user.readList[index]).populate("author")
+        var item = await Item.findById(user.readList[index]).populate("author")
 
-        readList.push(story)
+        readList.push(item)
 
     }
 
@@ -129,10 +222,64 @@ const readListPage = asyncErrorWrapper(async (req, res, next) => {
 
 })
 
-module.exports = {
+
+const toggleFavorite = asyncErrorWrapper(async (req, res, next) => {
+    const { slug } = req.params;
+
+    // Find the item
+    const item = await Item.findOne({ slug });
+    if (!item) {
+        return next(new CustomError("Item not found", 404));
+    }
+
+    // Find the user
+    // We use req.user.id from the auth middleware
+    const user = await User.findById(req.user.id);
+
+    if (user.favorites.includes(item._id)) {
+        // Remove from favorites
+        const index = user.favorites.indexOf(item._id);
+        user.favorites.splice(index, 1);
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            status: false,
+            message: "Removed from favorites"
+        });
+    } else {
+        // Add to favorites
+        user.favorites.push(item._id);
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            status: true,
+            message: "Added to favorites"
+        });
+    }
+});
+
+const getFavorites = asyncErrorWrapper(async (req, res, next) => {
+    const user = await User.findById(req.user.id).populate({
+        path: "favorites",
+        populate: { path: "author", select: "username photo" } // Populate author details just in case
+    });
+
+    return res.status(200).json({
+        success: true,
+        count: user.favorites.length,
+        data: user.favorites
+    });
+});
+
+export {
     profile,
     editProfile,
     changePassword,
-    addStoryToReadList,
-    readListPage
-}
+    addItemToReadList,
+    readListPage,
+    toggleFavorite,
+    getFavorites
+};
+

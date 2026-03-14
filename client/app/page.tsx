@@ -47,12 +47,14 @@ export default function Home() {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
+        console.log("[Home] Fetching recommendations...");
         const data = await getRecommendations();
         if (data.success) {
+          console.log(`[Home] Successfully loaded ${data.data?.length || 0} recommendations.`);
           setRecommendedItems(data.data);
         }
       } catch (error) {
-        console.error("Failed to fetch recommendations:", error);
+        console.error("[Home] Error loading recommendations:", error);
       }
     };
 

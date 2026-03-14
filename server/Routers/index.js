@@ -1,16 +1,24 @@
-const express = require("express")
+import express from "express";
 
-const router = express.Router()
+const router = express.Router();
 
-const authRoute = require("./auth")
-const storyRoute = require("./story")
-const userRoute = require("./user")
-const commentRoute = require("./comment")
+import authRoute from "./auth.js";
+import itemRoute from "./item.js";
+import userRoute from "./user.js";
+import commentRoute from "./comment.js";
+import jwksRoute from "./jwks.js";
+import adminRoute from "./admin.js";
+import chatRoute from "./chat.js";
 
-router.use("/auth",authRoute)
-router.use("/story",storyRoute)
-router.use("/user",userRoute)
-router.use("/comment",commentRoute)
+// Mount JWKS route first (public endpoint)
+router.use("/", jwksRoute)
+
+router.use("/auth", authRoute)
+router.use("/item", itemRoute)
+router.use("/user", userRoute)
+router.use("/comment", commentRoute)
+router.use("/admin", adminRoute)
+router.use("/chat", chatRoute)
 
 
-module.exports = router
+export default router;

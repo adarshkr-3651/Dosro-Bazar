@@ -18,16 +18,18 @@ All colors MUST be HSL.
     --popover-foreground: 222 47% 11%;
 
     /* Dosro Bazar Brand Colors */
-    --primary: 177 77% 56%; /* Cyan */
+    --primary: 28 73% 40%;
+    /* Brown */
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 338 94% 67%; /* Pink/Magenta */
+
+    --secondary: 142 71% 45%;
+    /* Brand Green */
     --secondary-foreground: 0 0% 100%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 177 77% 56%;
+    --accent: 28 73% 40%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -35,20 +37,20 @@ All colors MUST be HSL.
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 177 77% 56%;
+    --ring: 28 73% 40%;
 
     --radius: 0.75rem;
-    
+
     /* Brand Gradients */
-    --gradient-brand: linear-gradient(135deg, hsl(177 77% 56%), hsl(338 94% 67%));
-    --gradient-brand-reverse: linear-gradient(135deg, hsl(338 94% 67%), hsl(177 77% 56%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 98%), hsl(177 77% 96%));
-    
+    --gradient-brand: linear-gradient(135deg, hsl(28 73% 40%), hsl(142 71% 45%));
+    --gradient-brand-reverse: linear-gradient(135deg, hsl(142 71% 45%), hsl(28 73% 40%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 98%), hsl(142 100% 96%));
+
     /* Shadows */
-    --shadow-soft: 0 2px 8px hsla(177 77% 56% / 0.1);
-    --shadow-medium: 0 4px 16px hsla(177 77% 56% / 0.15);
-    --shadow-glow: 0 0 24px hsla(177 77% 56% / 0.3);
-    
+    --shadow-soft: 0 2px 8px hsla(28 73% 40% / 0.1);
+    --shadow-medium: 0 4px 16px hsla(28 73% 40% / 0.15);
+    --shadow-glow: 0 0 24px hsla(28 73% 40% / 0.3);
+
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -82,16 +84,16 @@ All colors MUST be HSL.
     --popover: 222 47% 15%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 177 77% 56%;
+    --primary: 28 73% 40%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 338 94% 67%;
+    --secondary: 142 50% 45%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 177 77% 56%;
+    --accent: 28 73% 40%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
@@ -99,7 +101,7 @@ All colors MUST be HSL.
 
     --border: 217 33% 18%;
     --input: 217 33% 18%;
-    --ring: 177 77% 56%;
+    --ring: 28 73% 40%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -127,6 +129,7 @@ All colors MUST be HSL.
     opacity: 0;
     transform: translateY(-1rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -137,6 +140,7 @@ All colors MUST be HSL.
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -146,6 +150,7 @@ All colors MUST be HSL.
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -155,6 +160,7 @@ All colors MUST be HSL.
   from {
     width: 100%;
   }
+
   to {
     width: 0%;
   }
@@ -176,5 +182,3 @@ All colors MUST be HSL.
 .animate-shrinkWidth {
   animation: shrinkWidth linear forwards;
 }
-
-

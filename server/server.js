@@ -4,32 +4,44 @@
 
 console.log("Starting MERN Blog Backend Server... in server.js")
 
-// Import required packages
-const express = require("express")           // Web framework for Node.js
-const dotenv = require("dotenv")             // Load environment variables from .env file
-const cors = require("cors")                 // Enable Cross-Origin Resource Sharing
-const path = require("path")                 // File path utilities
-const rateLimit = require("express-rate-limit") // Rate limiting middleware
-const helmet = require("helmet")             // Security headers middleware
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
 
-console.log("All packages imported successfully in server.js")
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+console.log("Loading environment configuration... in server.js")
+// Use absolute path to ensure config.env is found regardless of where server is started
+const configPath = path.join(__dirname, 'Config', 'config.env');
+const envResult = dotenv.config({
+    path: configPath
+});
+
+if (envResult.error) {
+    console.error("Error loading config.env:", envResult.error);
+    console.error("Tried path:", configPath);
+} else {
+    console.log("Environment variables loaded successfully from:", configPath);
+    // Log Cloudinary config status
+    console.log("Cloudinary Config Check:");
+    console.log("  - CLOUDINARY_CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME ? "✓" : "✗ MISSING");
+    console.log("  - CLOUDINARY_API_KEY:", process.env.CLOUDINARY_API_KEY ? "✓" : "✗ MISSING");
+    console.log("  - CLOUDINARY_API_SECRET:", process.env.CLOUDINARY_API_SECRET ? "✓" : "✗ MISSING");
+}
 
 // Import custom modules
-const IndexRoute = require("./Routers/index")                    // Main router that handles all API routes
-const connectDatabase = require("./Helpers/database/connectDatabase") // Database connection helper
-const customErrorHandler = require("./Middlewares/Errors/customErrorHandler") // Global error handler
+import IndexRoute from "./Routers/index.js";
+import connectDatabase from "./Helpers/database/connectDatabase.js";
+import customErrorHandler from "./Middlewares/Errors/customErrorHandler.js";
+import initializeAdmin from "./Helpers/auth/initAdmin.js";
 
 console.log("Custom modules imported successfully in server.js")
-
-// ========================================
-// ENVIRONMENT CONFIGURATION
-// ========================================
-// Load environment variables from config.env file
-console.log("Loading environment configuration... in server.js")
-dotenv.config({
-    path:  './Config/config.env'
-})
-console.log("Environment variables loaded in server.js")
 
 // ========================================
 // DATABASE CONNECTION
@@ -38,11 +50,18 @@ console.log("Environment variables loaded in server.js")
 console.log("Connecting to database... in server.js")
 connectDatabase()
 
+// Initialize default admin account after database connection
+console.log("Initializing default admin account... in server.js")
+// Use setTimeout to ensure database connection is established
+setTimeout(() => {
+    initializeAdmin()
+}, 2000)
+
 // ========================================
 // EXPRESS APP INITIALIZATION
 // ========================================
 console.log("Initializing Express app... in server.js")
-const app = express() ;
+const app = express();
 console.log("Express app initialized in server.js")
 
 // ========================================
@@ -67,6 +86,14 @@ app.use(limiter)
 console.log("Rate limiting configured (100 requests per 15 minutes) in server.js")
 
 // ========================================
+// COOKIE PARSER MIDDLEWARE
+// ========================================
+// Parse cookies for httpOnly cookie support
+console.log("Setting up cookie parser... in server.js")
+app.use(cookieParser())
+console.log("Cookie parser configured in server.js")
+
+// ========================================
 // BODY PARSING MIDDLEWARE
 // ========================================
 // Parse JSON bodies with 10MB limit (for large file uploads)
@@ -82,21 +109,21 @@ console.log("Body parsing middleware configured (10MB limit) in server.js")
 // Configure Cross-Origin Resource Sharing
 console.log("Setting up CORS configuration... in server.js")
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
+    origin: process.env.NODE_ENV === 'production'
         ? ['https://your-production-domain.com']  // Production: specific domain
         : ['http://localhost:3000'],              // Development: React dev server
     credentials: true,                            // Allow cookies/credentials
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization']     // Allowed headers
 }))
-console.log("CORS configured for:", process.env.NODE_ENV === 'production' ? 'production' : 'development' , "in server.js")
+console.log("CORS configured for:", process.env.NODE_ENV === 'production' ? 'production' : 'development', "in server.js")
 
 // ========================================
 // ROUTES
 // ========================================
 // Mount all API routes under root path
 console.log("Setting up API routes... in server.js")
-app.use("/",IndexRoute)
+app.use("/", IndexRoute)
 console.log("API routes mounted in server.js")
 
 // ========================================
@@ -112,17 +139,17 @@ console.log("Global error handler configured in server.js")
 // ========================================
 // Serve static files (images, etc.) from public directory
 console.log("Setting up static file serving... in server.js")
-app.use(express.static(path.join(__dirname , "public") ))
+app.use(express.static(path.join(__dirname, "public")))
 console.log("Static files configured from public directory in server.js")
 
 // ========================================
 // SERVER STARTUP
 // ========================================
-const PORT = process.env.PORT || 5000 ; // Use environment PORT or default to 5000
+const PORT = process.env.PORT || 5000; // Use environment PORT or default to 5000
 console.log(`Starting server on port ${PORT}... in server.js`)
 
 // Start the server
-const server = app.listen(PORT,()=>{
+const server = app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode in server.js`)
     console.log(`API available at: http://localhost:${PORT}`)
     console.log(`Static files at: http://localhost:${PORT}/public`)
@@ -132,8 +159,8 @@ const server = app.listen(PORT,()=>{
 // ERROR HANDLING FOR UNHANDLED PROMISES
 // ========================================
 // Gracefully handle unhandled promise rejections
-process.on("unhandledRejection",(err , promise) =>{
-    console.log("Unhandled Promise Rejection:", err , "in server.js")
+process.on("unhandledRejection", (err, promise) => {
+    console.log("Unhandled Promise Rejection:", err, "in server.js")
     // Close server and exit process
-    server.close(()=>process.exit(1))
+    server.close(() => process.exit(1))
 })

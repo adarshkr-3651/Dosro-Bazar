@@ -17,7 +17,9 @@ export async function loginUser(identifier: string, password: string) {
   } catch (error: any) {
     if (error.response) {
       // Backend returns errors in 'error' field, not 'message'
-      throw new Error(error.response.data.error || error.response.data.message || 'Login failed');
+      const err = new Error(error.response.data.error || error.response.data.message || 'Login failed');
+      (err as any).response = error.response;
+      throw err;
     } else {
       throw new Error(error.message || 'Login failed');
     }
@@ -308,9 +310,12 @@ api.interceptors.response.use(
         // If refresh successful, process the queue and retry original request
         processQueue(null);
         return api(originalRequest);
-      } catch (refreshError) {
+      } catch (refreshError: any) {
         // If refresh fails, it means session is truly expired
-        console.error('Token refresh failed:', refreshError);
+        // Avoid logging expected 400/401 errors to keep the Next.js dev overlay clean
+        if (refreshError.response?.status !== 400 && refreshError.response?.status !== 401) {
+            console.error('Token refresh failed:', refreshError);
+        }
         processQueue(refreshError);
 
         // Reject with original error so components know it failed
@@ -383,9 +388,15 @@ export async function updateItem(slug: string, data: FormData) {
 
 export async function searchSemantic(query: string) {
   try {
+    console.log(`[API] searchSemantic called with query: "${query}"`);
     const response = await api.get(`/item/search/semantic?query=${encodeURIComponent(query)}`);
+    console.log(`[API] searchSemantic success:`, { 
+      count: response.data?.data?.length || 0,
+      firstItem: response.data?.data?.[0]?.title 
+    });
     return response.data;
   } catch (error: any) {
+    console.error(`[API] searchSemantic failed:`, error.message);
     if (error.response) {
       throw new Error(error.response.data.error || error.response.data.message || 'Failed to perform semantic search');
     } else {
@@ -409,13 +420,31 @@ export async function getSimilarItems(slug: string) {
 
 export async function getRecommendations() {
   try {
+    console.log(`[API] getRecommendations called`);
     const response = await api.get('/item/recommendations/all');
+    console.log(`[API] getRecommendations success:`, { 
+      count: response.data?.data?.length || 0 
+    });
     return response.data;
   } catch (error: any) {
+    console.error(`[API] getRecommendations failed:`, error.message);
     if (error.response) {
       throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch recommendations');
     } else {
       throw new Error(error.message || 'Failed to fetch recommendations');
+    }
+  }
+}
+
+export async function chatWithAI(message: string) {
+  try {
+    const response = await api.post('/chat', { message });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to get AI response');
+    } else {
+      throw new Error(error.message || 'Failed to get AI response');
     }
   }
 }

@@ -1,21 +1,18 @@
-const express = require("express")
+import express from "express";
+import { getAccessToRoute } from "../Middlewares/Authorization/auth.js";
+import { addNewCommentToItem, getAllCommentByItem, commentLike, getCommentLikeStatus } from "../Controllers/comment.js";
+import { checkItemExist } from "../Middlewares/database/databaseErrorhandler.js";
 
-const { getAccessToRoute } = require("../Middlewares/Authorization/auth");
-
-const { addNewCommentToStory ,getAllCommentByStory,commentLike ,getCommentLikeStatus} = require("../Controllers/comment")
-
-const { checkStoryExist } = require("../Middlewares/database/databaseErrorhandler");
-
-const router = express.Router() ;
+const router = express.Router();
 
 
-router.post("/:slug/addComment",[getAccessToRoute,checkStoryExist] ,addNewCommentToStory)
+router.post("/:slug/addComment", [getAccessToRoute, checkItemExist], addNewCommentToItem)
 
-router.get("/:slug/getAllComment",getAllCommentByStory)
+router.get("/:slug/getAllComment", getAllCommentByItem)
 
-router.post("/:comment_id/like",commentLike)
+router.post("/:comment_id/like", commentLike)
 
-router.post("/:comment_id/getCommentLikeStatus",getCommentLikeStatus)
+router.post("/:comment_id/getCommentLikeStatus", getCommentLikeStatus)
 
 
-module.exports = router
+export default router;

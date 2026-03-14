@@ -30,7 +30,7 @@ export default async function AdminLayout({
                     <div className="p-2 bg-emerald-500/10 rounded-lg">
                         <ShieldCheck className="w-6 h-6 text-emerald-500" />
                     </div>
-                    <span className="font-bold text-white tracking-tight">Remarket Hub Admin</span>
+                    <span className="font-bold text-white tracking-tight">Dosro Bazar Admin</span>
                 </div>
 
                 <nav className="flex-1 px-4 py-8 space-y-2">

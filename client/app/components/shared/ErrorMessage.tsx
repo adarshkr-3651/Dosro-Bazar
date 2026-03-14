@@ -70,11 +70,11 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
         },
         info: {
             icon: Info,
-            bgColor: 'bg-gradient-to-r from-blue-50 to-blue-100/80',
-            borderColor: 'border-blue-300',
-            textColor: 'text-blue-800',
-            iconColor: 'text-blue-600',
-            glowColor: 'shadow-blue-200/50',
+            bgColor: 'bg-gradient-to-r from-amber-50 to-amber-100/80',
+            borderColor: 'border-amber-300',
+            textColor: 'text-amber-800',
+            iconColor: 'text-amber-600',
+            glowColor: 'shadow-amber-200/50',
         },
         success: {
             icon: CheckCircle,

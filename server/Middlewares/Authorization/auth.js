@@ -1,36 +1,57 @@
-const CustomError = require("../../Helpers/error/CustomError");
-const User = require("../../Models/user")
-const jwt = require("jsonwebtoken");
-const asyncErrorWrapper =require("express-async-handler")
-const { isTokenIncluded ,getAccessTokenFromHeader} = require("../../Helpers/auth/tokenHelpers");
+import CustomError from "../../Helpers/error/CustomError.js";
+import User from "../../Models/user.js";
+import jwt from "jsonwebtoken";
+import asyncErrorWrapper from "express-async-handler";
+import { isTokenIncluded, getAccessTokenFromHeader } from "../../Helpers/auth/tokenHelpers.js";
+import { getAccessToken } from "../../Helpers/auth/cookieHelpers.js";
+import keyManager from "../../Helpers/auth/keyManager.js";
 
 
-const getAccessToRoute = asyncErrorWrapper(async(req,res,next) =>{
+const getAccessToRoute = asyncErrorWrapper(async (req, res, next) => {
 
-    const {JWT_SECRET_KEY} =process.env ;
+    // Try to get token from cookies first, then from header
+    const accessToken = getAccessToken(req);
 
-    if(!isTokenIncluded(req)) {
+    console.log("[auth.js] getAccessToRoute() - Token to verify:", accessToken ? (accessToken.substring(0, 20) + "...") : "null");
 
-        return next(new CustomError("You are not authorized to access this route ", 401))
+    if (!accessToken) {
+        return next(new CustomError("You are not authorized to access this route", 401))
     }
 
-    const accessToken = getAccessTokenFromHeader(req)
-    console.log("accessToken function of Middlewares auth.js", accessToken)
-    console.log("JWT_SECRET_KEY function of Middlewares auth.js", JWT_SECRET_KEY)
-    const decoded = jwt.verify(accessToken,JWT_SECRET_KEY) ;
-    console.log("getAccessToRoute function of Middlewares auth.js", decoded)
-    const user = await User.findById(decoded.id)
-   
-    if(!user) {
-        return next(new CustomError("You are not authorized to access this route ", 401))
+    console.log("getAccessToRoute function of Middlewares auth.js - Verifying access token")
+
+    try {
+        // Verify token with RSA public key
+        const decoded = jwt.verify(accessToken, keyManager.getPublicKey(), {
+            algorithms: ['RS256']
+        });
+
+        console.log("[auth.js] Token verified successfully for user:", decoded.email)
+
+        // Get user from database
+        const user = await User.findById(decoded.id)
+
+        if (!user) {
+            return next(new CustomError("You are not authorized to access this route", 401))
+        }
+
+        req.user = user;
+        next()
+
+    } catch (error) {
+        console.log("[auth.js] Token verification failed:", error.message)
+
+        if (error.name === 'TokenExpiredError') {
+            return next(new CustomError("Access token expired. Please refresh your token.", 401))
+        } else if (error.name === 'JsonWebTokenError') {
+            return next(new CustomError("Invalid access token", 401))
+        } else {
+            return next(new CustomError("Token verification failed", 401))
+        }
     }
-
-    req.user = user ; 
-
-    next()
 
 })
 
 
 
-module.exports ={getAccessToRoute}
+export { getAccessToRoute };

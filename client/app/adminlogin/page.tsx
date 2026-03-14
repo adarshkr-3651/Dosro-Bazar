@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
                         <ShieldCheck className="w-10 h-10 text-emerald-500" />
                     </div>
                     <h1 className="text-3xl font-bold tracking-tight text-white mt-4">Admin Access</h1>
-                    <p className="text-zinc-400">Secure gateway for Remarket Hub Backend</p>
+                    <p className="text-zinc-400">Secure gateway for Dosro Bazar Backend</p>
                 </div>
 
                 <Card className="border-zinc-800 bg-zinc-900/50 backdrop-blur-xl shadow-2xl">
@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
 
                 <p className="text-center text-xs text-zinc-600">
                     Authorized personnel only. All access attempts are monitored and logged.
-                    <br />© 2025 Remarket Hub Admin Network
+                    <br />© 2025 Dosro Bazar Admin Network
                 </p>
             </div>
         </div>

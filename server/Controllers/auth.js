@@ -1,19 +1,64 @@
-const asyncErrorWrapper = require("express-async-handler")
-const User = require("../Models/user");
-const RefreshToken = require("../Models/refreshToken");
-const CustomError = require("../Helpers/error/CustomError");
-const { sendTokens, verifyAndRotateRefreshToken } = require("../Helpers/auth/tokenHelpers");
-const { getRefreshToken, clearAuthCookies } = require("../Helpers/auth/cookieHelpers");
-const sendEmail = require("../Helpers/Libraries/sendEmail");
-const { passwordResetTemplate, loginNotificationTemplate } = require("../Helpers/Libraries/emailTemplates");
-const { validateUserInput, comparePassword } = require("../Helpers/input/inputHelpers");
-const { OAuth2Client } = require('google-auth-library');
+import asyncErrorWrapper from "express-async-handler";
+import User from "../Models/user.js";
+import RefreshToken from "../Models/refreshToken.js";
+import CustomError from "../Helpers/error/CustomError.js";
+import { sendTokens, verifyAndRotateRefreshToken } from "../Helpers/auth/tokenHelpers.js";
+import { getRefreshToken, clearAuthCookies } from "../Helpers/auth/cookieHelpers.js";
+import sendEmail from "../Helpers/Libraries/sendEmail.js";
+import { passwordResetTemplate, loginNotificationTemplate, verificationCodeTemplate, welcomeTemplate } from "../Helpers/Libraries/emailTemplates.js";
+import { validateUserInput, comparePassword } from "../Helpers/input/inputHelpers.js";
+import { OAuth2Client } from 'google-auth-library';
+import crypto from 'crypto';
 
 const client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
     'postmessage' // Special redirect URI for popup/iframe flows
 );
+
+// Helper function to track devices
+const trackDevice = async (user, req) => {
+    // Get real IP address (handle proxies/load balancers)
+    let ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'Unknown';
+    if (ipAddress && ipAddress.indexOf(',') > -1) {
+        ipAddress = ipAddress.split(',')[0];
+    }
+    if (ipAddress && ipAddress.includes('::ffff:')) {
+        ipAddress = ipAddress.replace('::ffff:', '');
+    }
+    if (ipAddress === '::1') {
+        ipAddress = '127.0.0.1 (Localhost)';
+    }
+
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+
+    if (!user.devices) {
+        user.devices = [];
+    }
+
+    // Check if device already exists
+    const existingDeviceIndex = user.devices.findIndex(
+        device => device.ipAddress === ipAddress && device.userAgent === userAgent
+    );
+
+    if (existingDeviceIndex >= 0) {
+        // Update lastActive
+        user.devices[existingDeviceIndex].lastActive = Date.now();
+    } else {
+        // Add new device
+        user.devices.push({
+            ipAddress,
+            userAgent,
+            lastActive: Date.now()
+        });
+
+        // Keep only last 10 devices to avoid document size issues
+        if (user.devices.length > 10) {
+            user.devices.shift();
+        }
+    }
+    await user.save();
+};
 
 const getPrivateData = asyncErrorWrapper((req, res, next) => {
     console.log("getPrivateData function of Controllers auth.js")
@@ -27,7 +72,6 @@ const getPrivateData = asyncErrorWrapper((req, res, next) => {
     })
 })
 
-// User Registration
 const register = asyncErrorWrapper(async (req, res, next) => {
     console.log("register function of Controllers auth.js")
 
@@ -51,9 +95,117 @@ const register = asyncErrorWrapper(async (req, res, next) => {
 
     console.log("[auth.js] register() - User created successfully:", newUser.phone)
 
-    console.log("[auth.js] register() - Generating access and refresh tokens...")
-    await sendTokens(newUser, 201, res, req)
-    console.log("[auth.js] register() - Registration completed successfully")
+    // Generate Verification Code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    newUser.verificationCode = verificationCode;
+    newUser.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    await newUser.save();
+
+    console.log("[auth.js] register() - Verification code generated:", verificationCode);
+
+    // Send Verification Email
+    if (email) {
+        try {
+            await sendEmail({
+                from: process.env.EMAIL_USERNAME,
+                to: email,
+                subject: '🛡️ Verify Your Email - Dosro Bazar',
+                html: verificationCodeTemplate(verificationCode, username)
+            });
+            console.log("[auth.js] register() - Verification email sent to:", email);
+        } catch (error) {
+            console.error('[auth.js] register() - Failed to send verification email:', error.message);
+            // We don't return error here because the user is created, 
+            // but they might need to use 'resend' later if email fails.
+        }
+    }
+
+    return res.status(201).json({
+        success: true,
+        message: email
+            ? "Registration successful! Please check your email for verification code."
+            : "Registration successful! (No email provided for verification)",
+        email: email
+    });
+})
+
+const verifyEmail = asyncErrorWrapper(async (req, res, next) => {
+    const { email, code } = req.body;
+
+    if (!email || !code) {
+        return next(new CustomError("Please provide email and verification code", 400));
+    }
+
+    const user = await User.findOne({
+        email,
+        verificationCode: code,
+        verificationCodeExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        return next(new CustomError("Invalid or expired verification code", 400));
+    }
+
+    // Mark as verified
+    user.isVerified = true;
+    user.verificationCode = undefined;
+    user.verificationCodeExpire = undefined;
+    await user.save();
+
+    console.log("[auth.js] verifyEmail() - User verified successfully:", email);
+
+    // Send Welcome Email
+    sendEmail({
+        from: process.env.EMAIL_USERNAME,
+        to: email,
+        subject: '🚀 Welcome to Dosro Bazar!',
+        html: welcomeTemplate(user.username)
+    }).catch(err => console.error('[auth.js] verifyEmail() - Welcome email error:', err.message));
+
+    // After verification, generate tokens and log them in
+    await sendTokens(user, 200, res, req);
+})
+
+const resendVerificationCode = asyncErrorWrapper(async (req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return next(new CustomError("Please provide an email address", 400));
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return next(new CustomError("No user found with this email", 404));
+    }
+
+    if (user.isVerified) {
+        return next(new CustomError("This email is already verified", 400));
+    }
+
+    // Generate new code
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.verificationCode = verificationCode;
+    user.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000);
+    await user.save();
+
+    console.log("[auth.js] resendVerificationCode() - New code generated for:", email, code = verificationCode);
+
+    try {
+        await sendEmail({
+            from: process.env.EMAIL_USERNAME,
+            to: email,
+            subject: '🛡️ New Verification Code - Dosro Bazar',
+            html: verificationCodeTemplate(verificationCode, user.username)
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "A new verification code has been sent to your email."
+        });
+    } catch (error) {
+        return next(new CustomError("Email could not be sent. Please try again later.", 500));
+    }
 })
 
 const login = asyncErrorWrapper(async (req, res, next) => {
@@ -94,11 +246,45 @@ const login = asyncErrorWrapper(async (req, res, next) => {
     }
     console.log("[auth.js] login() - Password comparison successful")
 
+    // CHECK EMAIL VERIFICATION (New Logic)
+    if (user.authProvider === 'email' && !user.isVerified) {
+        console.log("[auth.js] login() - User email not verified. Sending new code...")
+
+        // Generate new verification code
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        user.verificationCode = verificationCode;
+        user.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+        await user.save();
+
+        // Send Verification Email
+        try {
+            await sendEmail({
+                from: process.env.EMAIL_USERNAME,
+                to: user.email,
+                subject: '🛡️ Verify Your Email - Dosro Bazar',
+                html: verificationCodeTemplate(verificationCode, user.username)
+            });
+            console.log("[auth.js] login() - Verification email sent to:", user.email);
+        } catch (error) {
+            console.error('[auth.js] login() - Failed to send verification email:', error.message);
+            // Even if email fails, we block login. User can try again to resend.
+        }
+
+        return res.status(200).json({
+            success: false,
+            verificationRequired: true,
+            email: user.email,
+            message: "Email not verified. A new verification code has been sent."
+        });
+    }
+
     console.log("[auth.js] login() - Generating access and refresh tokens...")
+    await trackDevice(user, req);
     await sendTokens(user, 200, res, req);
     console.log("[auth.js] login() - Login completed successfully")
 
     // Send login notification email (non-blocking)
+    // Only if verified and logged in
     const loginTime = new Date().toLocaleString('en-US', {
         dateStyle: 'full',
         timeStyle: 'long'
@@ -139,6 +325,46 @@ const login = asyncErrorWrapper(async (req, res, next) => {
 
 
 
+
+
+const adminLogin = asyncErrorWrapper(async (req, res, next) => {
+    console.log("adminLogin function of Controllers auth.js")
+
+    const { identifier, password } = req.body;
+
+    // 1. Validate Input
+    if (!identifier || !password) {
+        return next(new CustomError("Please provide admin credentials", 400));
+    }
+
+    // 2. Check against Environment Variables
+    const { ADMIN_EMAIL, ADMIN_PHONE, ADMIN_PASSWORD } = process.env;
+
+    const isIdentifierMatch = (identifier === ADMIN_EMAIL || identifier === ADMIN_PHONE);
+    const isPasswordMatch = (password === ADMIN_PASSWORD);
+
+    if (!isIdentifierMatch || !isPasswordMatch) {
+        console.log("[auth.js] adminLogin() - Invalid admin credentials provided");
+        return next(new CustomError("Invalid admin credentials", 401));
+    }
+
+    console.log("[auth.js] adminLogin() - Env credentials validated. Completing login...");
+
+    // 3. Find the user in DB to get the _id for the token
+    const adminUser = await User.findOne({
+        $or: [{ email: identifier }, { phone: identifier }]
+    });
+
+    if (!adminUser) {
+        console.log("[auth.js] adminLogin() - Admin user not found in DB despite Env match.");
+        return next(new CustomError("Admin account setup incomplete. Please restart server.", 500));
+    }
+
+    // 4. Generate Tokens
+    await trackDevice(adminUser, req);
+    await sendTokens(adminUser, 200, res, req);
+    console.log("[auth.js] adminLogin() - Admin login successful");
+});
 
 const forgotpassword = asyncErrorWrapper(async (req, res, next) => {
     const { URI, EMAIL_USERNAME } = process.env;
@@ -244,7 +470,7 @@ const refreshAccessToken = asyncErrorWrapper(async (req, res, next) => {
         console.log("[auth.js] refreshAccessToken() - Tokens refreshed successfully")
 
         // Check if using cookies
-        const useCookies = process.env.USE_HTTP_ONLY_COOKIES === 'true';
+        const useCookies = process.env.USE_HTTP_ONLY_COOKIES?.trim() === 'true';
         const isProduction = process.env.NODE_ENV === 'production';
 
         if (useCookies) {
@@ -253,14 +479,16 @@ const refreshAccessToken = asyncErrorWrapper(async (req, res, next) => {
                 httpOnly: true,
                 secure: isProduction,
                 sameSite: isProduction ? 'strict' : 'lax',
-                maxAge: 15 * 60 * 1000
+                maxAge: 15 * 60 * 1000,
+                path: '/'
             });
 
             res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
                 secure: isProduction,
                 sameSite: isProduction ? 'strict' : 'lax',
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                path: '/'
             });
 
             return res.status(200).json({
@@ -295,7 +523,7 @@ const logout = asyncErrorWrapper(async (req, res, next) => {
     await RefreshToken.revokeAllForUser(userId, 'User logout');
 
     // Clear cookies if using httpOnly cookies
-    if (process.env.USE_HTTP_ONLY_COOKIES === 'true') {
+    if (process.env.USE_HTTP_ONLY_COOKIES?.trim() === 'true') {
         clearAuthCookies(res);
     }
 
@@ -367,7 +595,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
             // Existing user - proceed with login
         } else {
             // Create new user - phone is optional for Google users
-            const randomPassword = require('crypto').randomBytes(16).toString('hex');
+            const randomPassword = crypto.randomBytes(16).toString('hex');
 
             user = await User.create({
                 username: name,
@@ -394,6 +622,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
         }
 
         // User has valid phone, proceed with normal login
+    await trackDevice(user, req);
         await sendTokens(user, 200, res, req);
     } catch (error) {
         console.error('[auth.js] googleLogin() - Error:', error.message);
@@ -434,7 +663,7 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
             console.log('[auth.js] facebookLogin() - Existing user found');
         } else {
             // Create new user
-            const randomPassword = require('crypto').randomBytes(16).toString('hex');
+            const randomPassword = crypto.randomBytes(16).toString('hex');
             // Generate a temporary phone number for OAuth users
             const tempPhone = `+FB${facebookId.substring(0, 12)}`;
 
@@ -461,6 +690,7 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
             await user.save();
         }
 
+        await trackDevice(user, req);
         await sendTokens(user, 200, res, req);
     } catch (err) {
         console.error('[auth.js] facebookLogin() - Error:', err.message);
@@ -500,11 +730,16 @@ const completeOAuthRegistration = asyncErrorWrapper(async (req, res, next) => {
         }
 
         user.phone = phone;
+
+        // Recalculate role based on new profile data
+        user.updateRoleBasedOnProfile();
+
         await user.save();
 
         console.log('[auth.js] completeOAuthRegistration() - Phone updated successfully');
 
         // Send authentication tokens
+        await trackDevice(user, req);
         await sendTokens(user, 200, res, req);
     } catch (error) {
         console.error('[auth.js] completeOAuthRegistration() - Error:', error.message);
@@ -513,9 +748,10 @@ const completeOAuthRegistration = asyncErrorWrapper(async (req, res, next) => {
 });
 
 
-module.exports = {
+export {
     register,
     login,
+    adminLogin,
     resetpassword,
     forgotpassword,
     getPrivateData,
@@ -523,5 +759,7 @@ module.exports = {
     logout,
     googleLogin,
     facebookLogin,
-    completeOAuthRegistration
-}
+    completeOAuthRegistration,
+    verifyEmail,
+    resendVerificationCode
+};

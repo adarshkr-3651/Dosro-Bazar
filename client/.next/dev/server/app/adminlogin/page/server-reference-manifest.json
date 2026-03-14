@@ -1,0 +1,20 @@
+{
+  "node": {
+    "405ec430ed87a2f7abc8dff20dd469727520f27b22": {
+      "workers": {
+        "app/adminlogin/page": {
+          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/adminlogin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/adminlogin/page": "action-browser"
+      },
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+    }
+  },
+  "edge": {}
+}

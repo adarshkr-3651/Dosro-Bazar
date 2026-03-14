@@ -1,42 +1,43 @@
-const asyncErrorWrapper = require("express-async-handler")
-const CustomError = require("../../Helpers/error/CustomError");
-const Story = require("../../Models/story")
+import asyncErrorWrapper from "express-async-handler";
+import CustomError from "../../Helpers/error/CustomError.js";
+import Item from "../../Models/item.js";
 
 
-const checkStoryExist = asyncErrorWrapper(async (req,res,next) => {
-  
-    const {slug} = req.params  ;
-    const story = await Story.findOne({
-      slug : slug
+const checkItemExist = asyncErrorWrapper(async (req, res, next) => {
+
+    const { slug } = req.params;
+    const item = await Item.findOne({
+        slug: slug
     })
 
-    if(!story) {
-        return next(new CustomError("There is no such story with that slug ",400))
+    if (!item) {
+        return next(new CustomError("There is no such item with that slug ", 400))
     }
 
-    next() ; 
+    next();
 
 })
 
 
-const checkUserAndStoryExist = asyncErrorWrapper(async(req, res, next) => {
+const checkUserAndItemExist = asyncErrorWrapper(async (req, res, next) => {
 
-    const {slug} =req.params 
+    const { slug } = req.params
 
-    const story = await Story.findOne({
-        slug : slug ,
-        author :req.user 
+    const item = await Item.findOne({
+        slug: slug,
+        author: req.user
     })
 
-    if (!story ) {
-        return next(new CustomError("There is no story with that slug associated with User ",400))
+    if (!item) {
+        return next(new CustomError("There is no item with that slug associated with User ", 400))
     }
 
-    next() ; 
+    next();
 
 })
 
-module.exports ={
-    checkStoryExist,
-    checkUserAndStoryExist
-}
+export {
+    checkItemExist,
+    checkUserAndItemExist
+};
+

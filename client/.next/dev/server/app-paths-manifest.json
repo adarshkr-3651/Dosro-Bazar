@@ -1,6 +1,9 @@
 {
-  "/login/page": "app/login/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/advertisements/route": "app/api/advertisements/route.js",
   "/page": "app/page.js",
+  "/products/[slug]/edit/page": "app/products/[slug]/edit/page.js",
+  "/products/[slug]/page": "app/products/[slug]/page.js",
   "/profile/page": "app/profile/page.js",
   "/upload/page": "app/upload/page.js"
 }

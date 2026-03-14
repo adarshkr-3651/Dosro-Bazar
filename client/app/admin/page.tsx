@@ -21,7 +21,7 @@ export default function AdminDashboard() {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex flex-col gap-2">
                 <h1 className="text-3xl font-bold tracking-tight text-white">System Overview</h1>
-                <p className="text-zinc-500 text-lg">Real-time health and performance metrics for Remarket Hub.</p>
+                <p className="text-zinc-500 text-lg">Real-time health and performance metrics for Dosro Bazar.</p>
             </div>
 
             {/* Stats Grid */}

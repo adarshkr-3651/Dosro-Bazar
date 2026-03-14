@@ -12,6 +12,28 @@ import logo from "../../public/logo.png"
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
+
+const resolvePhotoUrl = (photoPath?: string | null) => {
+    if (!photoPath || photoPath === 'user.png') {
+        return null;
+    }
+
+    if (photoPath.startsWith("http://") || photoPath.startsWith("https://")) {
+        return photoPath;
+    }
+
+    const cleanedPath = photoPath
+        .replace(/^public\//, "")
+        .replace(/^\/+/, "");
+
+    const finalPath = cleanedPath.includes("/")
+        ? cleanedPath
+        : `userPhotos/${cleanedPath}`;
+
+    return `${API_BASE_URL}/${finalPath}`;
+};
+
 interface HeaderProps {
   isBuyerMode?: boolean;
   onModeToggle?: (checked: boolean) => void;
@@ -120,28 +142,63 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
             </form>
           </div>
 
-          {/* Upload Button - Seller Mode Only - Outside actions container to prevent shifting */}
-          {!currentIsBuyerMode && (
-            <Button size="sm" className="hidden lg:flex gap-2" asChild>
-              <Link href="/upload">
-                <Upload className="h-4 w-4" />
-                <span>Upload Item</span>
-              </Link>
-            </Button>
-          )}
+          {/* Mode Toggle - Moved outside of right side actions to act as a primary separator */}
+          <div className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50 w-[88px] md:w-[94px] justify-center mx-2">
+            <Label htmlFor="mode-toggle-desktop" className="text-xs md:text-sm font-medium cursor-pointer min-w-[28px] text-center">
+              {currentIsBuyerMode ? "Buy" : "Sell"}
+            </Label>
+            <Switch
+              id="mode-toggle-desktop"
+              checked={!currentIsBuyerMode}
+              onCheckedChange={handleModeChange}
+            />
+          </div>
 
           {/* Right Side Actions - Always ml-auto to stay on the right */}
           <div className="flex items-center gap-2 md:gap-4 ml-auto">
-            {/* Mode Toggle */}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50">
-              <Label htmlFor="mode-toggle" className="text-xs md:text-sm font-medium cursor-pointer min-w-[40px] text-center">
-                {currentIsBuyerMode ? "Buy" : "Sell"}
-              </Label>
-              <Switch
-                id="mode-toggle"
-                checked={!currentIsBuyerMode}
-                onCheckedChange={handleModeChange}
-              />
+
+            {/* Upload Button Component (Seller Mode) OR Favorites Component (Buyer Mode) */}
+            <div className="hidden md:flex items-center w-[130px] justify-end">
+              {!currentIsBuyerMode ? (
+                <Button size="sm" className="flex gap-2 w-full" asChild>
+                  <Link href="/upload">
+                    <Upload className="h-4 w-4" />
+                    <span>Upload Item</span>
+                  </Link>
+                </Button>
+              ) : (
+                <Button variant="ghost" size="icon" asChild>
+                  <Link href="/favorites">
+                    <Heart className="h-5 w-5" />
+                  </Link>
+                </Button>
+              )}
+            </div>
+
+            {/* Mobile-only Upload/Favorites */}
+            <div className="flex items-center lg:hidden">
+              <div className="flex items-center gap-2 px-2 py-1 mr-1 rounded-lg bg-muted/50 justify-center">
+                <Switch
+                  id="mode-toggle-mobile"
+                  checked={!currentIsBuyerMode}
+                  onCheckedChange={handleModeChange}
+                  className="scale-90"
+                />
+              </div>
+
+              {!currentIsBuyerMode ? (
+                <Button variant="ghost" size="icon" asChild>
+                  <Link href="/upload">
+                    <Upload className="h-5 w-5" />
+                  </Link>
+                </Button>
+              ) : (
+                <Button variant="ghost" size="icon" asChild>
+                  <Link href="/favorites">
+                    <Heart className="h-5 w-5" />
+                  </Link>
+                </Button>
+              )}
             </div>
 
 
@@ -154,19 +211,23 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
               </span>
             </Button>
 
-            {currentIsBuyerMode && (
-              <Button variant="ghost" size="icon" asChild>
-                <Link href="/favorites">
-                  <Heart className="h-5 w-5" />
-                </Link>
-              </Button>
-            )}
-
 
             {user ? (
               <>
                 <Button onClick={() => userProfile()} variant="ghost" size="sm" className="gap-2">
-                  <User className="h-5 w-5" />
+                  {user.photo && resolvePhotoUrl(user.photo) ? (
+                    <div className="relative h-6 w-6 rounded-full overflow-hidden border">
+                      <Image 
+                        src={resolvePhotoUrl(user.photo)!} 
+                        alt="Profile" 
+                        fill 
+                        className="object-cover" 
+                        unoptimized={resolvePhotoUrl(user.photo)?.startsWith('http')}
+                      />
+                    </div>
+                  ) : (
+                    <User className="h-5 w-5" />
+                  )}
                   <span className="hidden md:inline">{user.username?.split(' ')[0] || 'Profile'}</span>
                 </Button>
                 <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">

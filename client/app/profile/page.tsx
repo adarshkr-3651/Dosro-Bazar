@@ -10,13 +10,14 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock } from "lucide-react";
+import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Crosshair } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Switch } from "@/app/components/ui/switch";
 import { Textarea } from "@/app/components/ui/textarea";
 import { Badge } from "@/app/components/ui/badge";
 import { FileText, ShieldCheck, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
@@ -63,8 +64,11 @@ export default function ProfilePage() {
     const [idProof, setIdProof] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [idProofPreviewUrl, setIdProofPreviewUrl] = useState<string | null>(null);
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [isSecurityOpen, setIsSecurityOpen] = useState(false);
+    const [language, setLanguage] = useState("English");
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -88,16 +92,98 @@ export default function ProfilePage() {
         }
     }, [user]);
 
+    const handleLocationFetch = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocation not supported");
+            return;
+        }
+
+        toast.loading("Fetching specific location...", { id: "geo" });
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`);
+                    const data = await res.json();
+                    const addr = data.address;
+
+                    // Build a more specific address string
+                    const parts = [];
+                    // Very specific landmarks
+                    if (addr.hospital) parts.push(addr.hospital);
+                    if (addr.amenity && addr.amenity !== addr.hospital) parts.push(addr.amenity);
+                    if (addr.building) parts.push(addr.building);
+                    if (addr.landmark) parts.push(addr.landmark);
+                    
+                    // Street/Road
+                    if (addr.road) parts.push(addr.road);
+                    
+                    // Locality/Suburb
+                    if (addr.suburb) parts.push(addr.suburb);
+                    else if (addr.neighbourhood) parts.push(addr.neighbourhood);
+                    else if (addr.hamlet) parts.push(addr.hamlet);
+                    else if (addr.village) parts.push(addr.village);
+                    
+                    // City/District
+                    if (addr.city) parts.push(addr.city);
+                    else if (addr.town) parts.push(addr.town);
+                    
+                    if (addr.district) parts.push(addr.district);
+                    else if (addr.county) parts.push(addr.county);
+                    
+                    // State
+                    if (addr.state) parts.push(addr.state);
+
+                    // Join with commas
+                    const locationString = parts.length > 0 ? parts.join(", ") : "Unknown Location";
+
+                    setFormData(prev => ({ ...prev, address: locationString }));
+                    toast.success("Location updated", { id: "geo" });
+                } catch (error) {
+                    setFormData(prev => ({ ...prev, address: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}` }));
+                    toast.error("Detailed address not found, coordinates used", { id: "geo" });
+                }
+            },
+            (error) => {
+                toast.error("Failed to get location", { id: "geo" });
+            }
+        );
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setPhoto(file);
             setPreviewUrl(URL.createObjectURL(file));
+            
+            // Auto-save photo immediately
+            const data = new FormData();
+            data.append("photo", file);
+            // Append other required fields for profile update if any, 
+            // but controller usually handles partial updates or we send current formData
+            data.append("username", formData.username);
+            data.append("email", formData.email);
+            data.append("phone", formData.phone);
+            data.append("address", formData.address);
+            data.append("idProofType", formData.idProofType);
+
+            try {
+                setLoading(true);
+                const response = await updateProfile(data);
+                if (response.data) {
+                    setUser(response.data);
+                }
+                setMessage({ type: 'success', text: 'Photo updated and saved automatically!' });
+            } catch (error: any) {
+                setMessage({ type: 'error', text: error.message || 'Failed to auto-save photo' });
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -226,8 +312,9 @@ export default function ProfilePage() {
                                             src={previewUrl}
                                             alt="Profile preview"
                                             fill
-                                            className="object-cover"
+                                            className="object-cover cursor-pointer hover:opacity-90 transition-opacity"
                                             unoptimized={previewUrl.startsWith('http')}
+                                            onClick={() => setSelectedImage(previewUrl)}
                                         />
                                     ) : (
                                         <div className="h-full w-full flex items-center justify-center bg-secondary/10">
@@ -286,14 +373,94 @@ export default function ProfilePage() {
                             <CardContent>
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
-                                        {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                                        {resolvedTheme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
                                         <span className="text-sm font-medium">Dark Mode</span>
                                     </div>
                                     <Switch
-                                        checked={mounted && theme === "dark"}
+                                        checked={mounted && resolvedTheme === "dark"}
                                         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
                                     />
                                 </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Language Card (New) */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-lg">Language</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm font-medium">Select Language</span>
+                                        <select 
+                                            value={language} 
+                                            onChange={(e) => setLanguage(e.target.value)}
+                                            className="bg-transparent text-sm border-none focus:ring-0 cursor-pointer text-primary"
+                                        >
+                                            <option value="English">English</option>
+                                            <option value="Nepali">Nepali</option>
+                                        </select>
+                                    </div>
+                                    <p className="text-[10px] text-muted-foreground">Select your preferred language for the marketplace interface.</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Recent Devices Card (Moved to Sidebar) */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-lg">Recent Devices</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                {user.devices && user.devices.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {[...user.devices]
+                                            .sort((a, b) => new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime())
+                                            .map((device, index) => {
+                                                const isMobile = /mobile|android|iphone/i.test(device.userAgent);
+                                                const isTablet = /ipad|tablet/i.test(device.userAgent);
+                                                
+                                                let DeviceIcon = Laptop;
+                                                if (isMobile) DeviceIcon = Smartphone;
+                                                else if (isTablet) DeviceIcon = Monitor;
+
+                                                const userAgentSummary = device.userAgent.split(' ')[0] || "Browser";
+                                                const isCurrentDevice = typeof navigator !== 'undefined' && navigator.userAgent === device.userAgent;
+
+                                                return (
+                                                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg border bg-card text-card-foreground shadow-sm">
+                                                        <div className="p-2 bg-primary/10 rounded-full text-primary shrink-0">
+                                                            <DeviceIcon className="h-4 w-4" />
+                                                        </div>
+                                                        <div className="flex-1 space-y-1 overflow-hidden">
+                                                            <div className="flex items-center gap-2 flex-wrap">
+                                                                <p className="text-sm font-medium leading-none truncate">
+                                                                    {userAgentSummary}
+                                                                </p>
+                                                                {isCurrentDevice && (
+                                                                    <Badge variant="outline" className="text-[10px] h-4 bg-green-500/10 text-green-600 border-green-200 dark:border-green-800 dark:text-green-400 px-1 py-0 cursor-default">Current</Badge>
+                                                                )}
+                                                            </div>
+                                                            <p className="text-xs text-muted-foreground truncate">
+                                                                IP: {device.ipAddress}
+                                                            </p>
+                                                            <p className="text-[10px] text-muted-foreground">
+                                                                {new Date(device.lastActive).toLocaleString(undefined, {
+                                                                    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                                                                })}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-4 text-muted-foreground">
+                                        <Laptop className="h-8 w-8 mx-auto mb-2 opacity-20" />
+                                        <p className="text-sm">No recent devices.</p>
+                                    </div>
+                                )}
                             </CardContent>
                         </Card>
                     </div>
@@ -325,17 +492,30 @@ export default function ProfilePage() {
 
                                         <div className="space-y-2">
                                             <Label htmlFor="email">Email</Label>
-                                            <div className="relative">
-                                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                                <Input
-                                                    id="email"
-                                                    name="email"
-                                                    type="email"
-                                                    value={formData.email}
-                                                    onChange={handleChange}
-                                                    className="pl-10"
-                                                    placeholder="your.email@example.com"
-                                                />
+                                            <div className="flex gap-2">
+                                                <div className="relative flex-1">
+                                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                                    <Input
+                                                        id="email"
+                                                        name="email"
+                                                        type="email"
+                                                        value={formData.email}
+                                                        onChange={handleChange}
+                                                        className="pl-10"
+                                                        placeholder="your.email@example.com"
+                                                    />
+                                                </div>
+                                                {formData.email && user.verificationStatus !== 'verified' && (
+                                                    <Button 
+                                                        type="button" 
+                                                        variant="outline" 
+                                                        size="sm"
+                                                        onClick={() => router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)}
+                                                        className="shrink-0"
+                                                    >
+                                                        Verify
+                                                    </Button>
+                                                )}
                                             </div>
                                         </div>
 
@@ -350,7 +530,7 @@ export default function ProfilePage() {
                                                     value={formData.phone}
                                                     onChange={handleChange}
                                                     className="pl-10"
-                                                    placeholder="+1234567890"
+                                                    placeholder="98XXXXXXXX"
                                                 />
                                             </div>
                                         </div>
@@ -363,26 +543,26 @@ export default function ProfilePage() {
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <Label htmlFor="idProofType">Identification Type</Label>
-                                                <select
-                                                    id="idProofType"
-                                                    name="idProofType"
-                                                    value={formData.idProofType}
-                                                    onChange={(e) => handleChange(e as any)}
-                                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                                >
-                                                    <option value="">Select ID Type</option>
-                                                    <option value="Citizenship">Citizenship</option>
-                                                    <option value="PAN">PAN</option>
-                                                    <option value="NID">NID</option>
-                                                    <option value="Driving License">Driving License</option>
-                                                </select>
-                                            </div>
+                                            <div className="space-y-4">
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="idProofType">Identification Type</Label>
+                                                    <select
+                                                        id="idProofType"
+                                                        name="idProofType"
+                                                        value={formData.idProofType}
+                                                        onChange={(e) => handleChange(e as any)}
+                                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                    >
+                                                        <option value="">Select ID Type</option>
+                                                        <option value="Citizenship">Citizenship</option>
+                                                        <option value="PAN">PAN</option>
+                                                        <option value="NID">NID</option>
+                                                        <option value="Driving License">Driving License</option>
+                                                    </select>
+                                                </div>
 
-                                            <div className="space-y-2">
-                                                <Label htmlFor="idProof">ID Proof Image</Label>
-                                                <div className="flex flex-col gap-2">
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="idProof">ID Proof Image</Label>
                                                     <Input
                                                         id="idProof"
                                                         type="file"
@@ -390,18 +570,27 @@ export default function ProfilePage() {
                                                         onChange={handleIdProofChange}
                                                         className="cursor-pointer"
                                                     />
-                                                    {idProofPreviewUrl && (
-                                                        <div className="relative mt-2 h-40 w-full rounded-md overflow-hidden bg-muted border">
-                                                            <Image
-                                                                src={idProofPreviewUrl}
-                                                                alt="ID Proof preview"
-                                                                fill
-                                                                className="object-contain"
-                                                                unoptimized={idProofPreviewUrl.startsWith('http')}
-                                                            />
-                                                        </div>
-                                                    )}
                                                 </div>
+                                            </div>
+
+                                            <div className="flex items-center justify-center">
+                                                {idProofPreviewUrl ? (
+                                                    <div className="relative h-48 w-full rounded-md overflow-hidden bg-muted border">
+                                                        <Image
+                                                            src={idProofPreviewUrl}
+                                                            alt="ID Proof preview"
+                                                            fill
+                                                            className="object-contain cursor-pointer hover:opacity-90 transition-opacity"
+                                                            unoptimized={idProofPreviewUrl.startsWith('http')}
+                                                            onClick={() => setSelectedImage(idProofPreviewUrl)}
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div className="h-48 w-full rounded-md border border-dashed flex flex-col items-center justify-center text-muted-foreground bg-muted/30">
+                                                        <FileText className="h-10 w-10 mb-2 opacity-20" />
+                                                        <p className="text-sm">Preview will appear here</p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
 
@@ -413,7 +602,7 @@ export default function ProfilePage() {
                                         )}
 
                                         {user.verificationStatus === 'pending' && (
-                                            <div className="mt-4 flex items-center gap-2 p-3 rounded-md bg-blue-50 dark:bg-blue-950/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800/50 text-xs">
+                                            <div className="mt-4 flex items-center gap-2 p-3 rounded-md bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800/50 text-xs">
                                                 <Loader2 className="h-4 w-4 animate-spin flex-shrink-0" />
                                                 <p>{user.verificationFeedback || "Your ID is being verified. Please wait..."}</p>
                                             </div>
@@ -437,21 +626,6 @@ export default function ProfilePage() {
                                         )}
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="address">Address</Label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                            <Textarea
-                                                id="address"
-                                                name="address"
-                                                value={formData.address}
-                                                onChange={handleChange}
-                                                className="pl-10 min-h-[100px]"
-                                                placeholder="Your address"
-                                            />
-                                        </div>
-                                    </div>
-
                                     {message && (
                                         <div className={`p-3 rounded-md text-sm ${message.type === 'success' ? 'bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
                                             }`}>
@@ -459,29 +633,64 @@ export default function ProfilePage() {
                                         </div>
                                     )}
 
-                                    <div className="flex justify-end">
-                                        <Button type="submit" disabled={loading} className="min-w-[120px]">
-                                            {loading ? (
-                                                <>
-                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                    Saving...
-                                                </>
-                                            ) : (
-                                                "Save Changes"
-                                            )}
-                                        </Button>
+                                    <div className="pt-6 border-t">
+                                        <div className="flex flex-col md:flex-row items-end gap-4">
+                                            <div className="flex-1 space-y-2 w-full">
+                                                <Label htmlFor="address">Address</Label>
+                                                <div className="relative group">
+                                                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                                    <Textarea
+                                                        id="address"
+                                                        name="address"
+                                                        value={formData.address}
+                                                        onChange={handleChange}
+                                                        className="pl-10 pr-10 min-h-[40px] h-10 py-2 resize-none"
+                                                        placeholder="Your address"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleLocationFetch}
+                                                        className="absolute right-3 top-3 text-muted-foreground hover:text-primary transition-colors"
+                                                        title="Get current location"
+                                                    >
+                                                        <Crosshair className="h-4 w-4" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <Button type="submit" disabled={loading} className="min-w-[120px] shrink-0">
+                                                {loading ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        Saving...
+                                                    </>
+                                                ) : (
+                                                    "Save Changes"
+                                                )}
+                                            </Button>
+                                        </div>
                                     </div>
                                 </form>
                             </CardContent>
                         </Card>
 
                         <Card>
-                            <CardHeader>
-                                <CardTitle className="text-xl">Security</CardTitle>
-                                <CardDescription>Manage your password and security questions.</CardDescription>
+                            <CardHeader 
+                                className="cursor-pointer hover:bg-muted/50 transition-colors"
+                                onClick={() => setIsSecurityOpen(!isSecurityOpen)}
+                            >
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle className="text-xl">Security</CardTitle>
+                                        <CardDescription>Manage your password and security questions.</CardDescription>
+                                    </div>
+                                    <Button variant="ghost" size="sm">
+                                        {isSecurityOpen ? "Close" : "Open"}
+                                    </Button>
+                                </div>
                             </CardHeader>
-                            <CardContent>
-                                <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                            {isSecurityOpen && (
+                                <CardContent>
+                                    <form onSubmit={handlePasswordSubmit} className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2 md:col-span-2">
                                             <Label htmlFor="currentPassword">Current Password</Label>
@@ -554,12 +763,44 @@ export default function ProfilePage() {
                                     </div>
                                 </form>
                             </CardContent>
+                            )}
                         </Card>
                     </div>
                 </div>
             </main>
 
             <Footer />
+
+            {/* Image Preview Modal */}
+            {selectedImage && (
+                <div 
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm animate-in fade-in duration-300"
+                    onClick={() => setSelectedImage(null)}
+                >
+                    <div className="relative max-w-5xl max-h-[90vh] w-full mx-4 overflow-hidden rounded-lg shadow-2xl scale-in-center">
+                        <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="absolute top-4 right-4 z-[110] bg-black/20 hover:bg-black/40 text-white rounded-full transition-all"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedImage(null);
+                            }}
+                        >
+                            <X className="h-6 w-6" />
+                        </Button>
+                        <div className="relative w-full h-[80vh]">
+                            <Image
+                                src={selectedImage}
+                                alt="Large preview"
+                                fill
+                                className="object-contain"
+                                unoptimized={selectedImage.startsWith('http')}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

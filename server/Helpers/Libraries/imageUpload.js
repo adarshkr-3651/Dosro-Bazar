@@ -1,57 +1,80 @@
-const CustomError = require("../error/CustomError")
+import CustomError from "../error/CustomError.js";
+import multer from "multer";
+import cloudinary from "./cloudinaryConfig.js";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-const multer = require("multer")
-const path = require("path")
+// Configure Cloudinary storage for user photos
+const userPhotoStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "dosro-bazar/profiles",
+        allowed_formats: ["jpg", "jpeg", "png", "gif"],
+        transformation: [{ width: 500, height: 500, crop: "limit" }],
+        public_id: (req, file) => {
+            return `user_${req.user.id}_${Date.now()}`;
+        },
+    },
+});
 
-const storage = multer.diskStorage({
+// Configure Cloudinary storage for story images
+const storyImageStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "dosro-bazar/stories",
+        allowed_formats: ["jpg", "jpeg", "png", "gif"],
+        public_id: (req, file) => {
+            return `story_${Date.now()}_${file.originalname.split('.')[0]}`;
+        },
+    },
+});
 
-    destination : function(req,file,cb ){
-        const rootDir = path.dirname(require.main.filename) 
-        
-        if(file.fieldname === "photo"){
-            cb(null , path.join( rootDir,"/public/userPhotos"))
-        }
-        else {
-            cb(null , path.join( rootDir,"/public/storyImages"))
-        }
-
-    } ,
-
-    filename :function(req,file,cb ) {
-
-       
-        if(file.fieldname ==="photo"){
-            const extentions =file.mimetype.split("/")[1]
-           
-            req.savedUserPhoto ="photo_user_" +req.user.id + "."+ extentions
-
-            cb(null ,req.savedUserPhoto)
-        }
-
-        else {
-            req.savedStoryImage ="image_" +new Date().toISOString().replace(/:/g, '-') + file.originalname 
-
-            cb(null ,req.savedStoryImage)
-        }
-
-    }
-
-})
-
-
-const fileFilter =(req,file,cb ) => {
-
-    allowedMimeTypes = ["image/jpeg","image/jpg","image/png","image/gif"]
+// File filter to validate image types
+const fileFilter = (req, file, cb) => {
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 
     if (!allowedMimeTypes.includes(file.mimetype)) {
-        return cb(new CustomError("Please provide a valid image file ",400), false)
+        return cb(new CustomError("Please provide a valid image file", 400), false);
     }
-    
-    cb(null , true ) ;
-    
-}
 
-const imageUpload = multer({storage ,fileFilter  })
+    cb(null, true);
+};
+
+// Create multer upload middleware with dynamic storage based on field name
+const imageUpload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            // This won't be used with Cloudinary, but required for multer
+            cb(null, "/tmp");
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.originalname);
+        },
+    }),
+    fileFilter: fileFilter,
+});
+
+// Override with Cloudinary storage
+const cloudinaryUpload = (fieldName) => {
+    const storage = fieldName === "photo" ? userPhotoStorage : storyImageStorage;
+    return multer({ storage, fileFilter });
+};
+
+// Export single file upload for backward compatibility
+const singleUpload = multer({
+    storage: userPhotoStorage,
+    fileFilter: fileFilter,
+});
+
+// Export multi-file upload for profile update
+const profileUpload = multer({
+    storage: userPhotoStorage,
+    fileFilter: fileFilter,
+}).fields([
+    { name: "photo", maxCount: 1 },
+    { name: "idProof", maxCount: 1 }
+]);
+
+export { cloudinaryUpload, profileUpload };
+export default singleUpload;
 
 
-module.exports = imageUpload ; 

@@ -1,18 +1,48 @@
 {
   "app": {
-    "[project]/Desktop/remarket-hub-main/remarket-hub-main/app/_not-found/page": [
+    "[project]/Desktop/remarket-hub-main/client/app/_not-found/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/remarket-hub-main/app/login/page": [
+    "[project]/Desktop/remarket-hub-main/client/app/admin/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/remarket-hub-main/app/page": [
+    "[project]/Desktop/remarket-hub-main/client/app/adminlogin/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/remarket-hub-main/app/profile/page": [
+    "[project]/Desktop/remarket-hub-main/client/app/favorites/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/remarket-hub-main/app/signUp/page": [
+    "[project]/Desktop/remarket-hub-main/client/app/forgotPassword/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/login/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/products/[slug]/edit/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/products/[slug]/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/profile/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/resetPassword/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/search/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/signUp/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/upload/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/remarket-hub-main/client/app/verify-email/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ]
   },

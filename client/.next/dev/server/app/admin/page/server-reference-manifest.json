@@ -1,0 +1,50 @@
+{
+  "node": {
+    "0083b4d12061e759d99492aa576470fe7a34dfb5b1": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "isAdminAuthenticated",
+          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "rsc"
+      },
+      "exportedName": "isAdminAuthenticated",
+      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+    },
+    "00c367fbe8b23eab14423b7ab1ee9a5e2cdb4fa131": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "logoutAdmin",
+          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "action-browser"
+      },
+      "exportedName": "logoutAdmin",
+      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+    },
+    "405ec430ed87a2f7abc8dff20dd469727520f27b22": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/page": "rsc"
+      },
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+    }
+  },
+  "edge": {}
+}

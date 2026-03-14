@@ -5,21 +5,51 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const HeroBanner = () => {
-  const images = [
-    "/advertisement/1.jpg",
-    "/advertisement/2.jpg",
-    "/advertisement/3.png",
-  ];
-
+  const [images, setImages] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchAdvertisements = async () => {
+      try {
+        const response = await fetch('/api/advertisements');
+        const data = await response.json();
+        if (data.images && data.images.length > 0) {
+          setImages(data.images);
+        } else {
+          // Fallback if no images found or error
+          setImages(["/advertisement/1.jpg", "/advertisement/2.jpg", "/advertisement/3.png"]);
+        }
+      } catch (error) {
+        console.error('Error fetching advertisements:', error);
+        setImages(["/advertisement/1.jpg", "/advertisement/2.jpg", "/advertisement/3.png"]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAdvertisements();
+  }, []);
+
+  useEffect(() => {
+    if (images.length === 0) return;
+
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(timer);
   }, [images.length]);
+
+  if (loading) {
+    return (
+      <div className="w-full py-6 md:py-0 flex justify-center items-center">
+        <div className="w-full h-[220px] md:h-[350px] rounded-3xl overflow-hidden shadow-2xl bg-gray-200 animate-pulse" />
+      </div>
+    );
+  }
+
+  if (images.length === 0) return null;
 
   return (
     <div className="w-full py-6 md:py-0 flex justify-center items-center">

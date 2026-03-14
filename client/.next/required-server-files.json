@@ -75,6 +75,10 @@
           "protocol": "http",
           "hostname": "localhost",
           "port": "5000"
+        },
+        {
+          "protocol": "https",
+          "hostname": "lh3.googleusercontent.com"
         }
       ],
       "qualities": [
@@ -307,8 +311,8 @@
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\adars\\Desktop\\remarket-hub-main\\remarket-hub-main",
-  "relativeAppDir": "Desktop\\remarket-hub-main\\remarket-hub-main",
+  "appDir": "C:\\Users\\adars\\Desktop\\remarket-hub-main\\client",
+  "relativeAppDir": "Desktop\\remarket-hub-main\\client",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",

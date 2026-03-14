@@ -1,8 +1,19 @@
 {
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/admin/page": "/admin",
+  "/adminlogin/page": "/adminlogin",
+  "/api/advertisements/route": "/api/advertisements",
+  "/favorites/page": "/favorites",
+  "/forgotPassword/page": "/forgotPassword",
   "/login/page": "/login",
   "/page": "/",
+  "/products/[slug]/edit/page": "/products/[slug]/edit",
+  "/products/[slug]/page": "/products/[slug]",
   "/profile/page": "/profile",
-  "/signUp/page": "/signUp"
+  "/resetPassword/page": "/resetPassword",
+  "/search/page": "/search",
+  "/signUp/page": "/signUp",
+  "/upload/page": "/upload",
+  "/verify-email/page": "/verify-email"
 }

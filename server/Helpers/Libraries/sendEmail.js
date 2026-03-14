@@ -1,28 +1,42 @@
-const nodemailer = require('nodemailer')
+import nodemailer from "nodemailer";
 
-const sendEmail = async (mailOptions) =>{
+const sendEmail = async (mailOptions) => {
+    console.log("sendEmail function of Helpers/Libraries/sendEmail.js");
 
-    const {SMTP_HOST,SMTP_PORT,EMAIL_USERNAME,EMAIL_PASS}=process.env
+    // Check if email configuration exists
+    const { SMTP_HOST, SMTP_PORT, EMAIL_USERNAME, EMAIL_PASSWORD } = process.env;
 
-    let transporter = nodemailer.createTransport({
+    if (!SMTP_HOST || !EMAIL_USERNAME || !EMAIL_PASSWORD) {
+        console.warn("[sendEmail] Email configuration not found in environment variables");
+        console.warn("[sendEmail] Email functionality is disabled. Please configure SMTP settings in .env");
+        // Return success to prevent blocking, but log the issue
+        return {
+            success: false,
+            message: "Email configuration not set up"
+        };
+    }
 
-        host : SMTP_HOST ,
-        port : SMTP_PORT  ,
-        auth :{
-            user : EMAIL_USERNAME ,
-            pass : EMAIL_PASS
-        } ,
-         tls: {rejectUnauthorized: false}
-       
-    })
+    try {
+        // Create transporter
+        let transporter = nodemailer.createTransport({
+            host: SMTP_HOST,
+            port: SMTP_PORT || 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: EMAIL_USERNAME,
+                pass: EMAIL_PASSWORD
+            }
+        });
 
-    let info = await transporter.sendMail(mailOptions) ; 
+        // Send email
+        let info = await transporter.sendMail(mailOptions);
 
-    console.log(`Message send : ${info.messageId}`)
+        console.log("[sendEmail] Email sent successfully:", info.messageId);
+        return info;
+    } catch (error) {
+        console.error("[sendEmail] Error sending email:", error.message);
+        throw new Error(`Email could not be sent: ${error.message}`);
+    }
+};
 
-}
-
-
-module.exports = sendEmail
-
-
+export default sendEmail;

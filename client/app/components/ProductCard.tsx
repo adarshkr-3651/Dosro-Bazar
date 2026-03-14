@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Heart, MapPin } from "lucide-react";
+import { Heart, MapPin, Image as ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
@@ -14,13 +14,17 @@ interface ProductCardProps {
   slug?: string;
   title: string;
   price: number;
-  image: string;
+  image?: string; // Kept for backward compatibility
+  images?: string[]; 
   location: string;
   timePosted: string;
   isBiddable?: boolean;
   isFavorite?: boolean;
   onFavoriteToggle?: () => void;
   showEdit?: boolean;
+  offerPrice?: number;
+  offerDuration?: string;
+  offerUnit?: string;
 }
 
 const ProductCard = ({
@@ -29,16 +33,35 @@ const ProductCard = ({
   title,
   price,
   image,
+  images,
   location,
   timePosted,
   isBiddable = false,
   isFavorite: initialFavorite = false,
   onFavoriteToggle,
   showEdit = false,
+  offerPrice = 0,
+  offerDuration = "",
+  offerUnit = "h",
 }: ProductCardProps) => {
+  const [currentIdx, setCurrentIdx] = useState(0);
   const [isFav, setIsFav] = useState(initialFavorite);
   const [loading, setLoading] = useState(false);
   const { isBuyerMode } = useAuth();
+
+  const allImages = (images && images.length > 0 ? images : (image ? [image] : [])).filter(img => img && img !== "");
+  const hasMultipleImages = allImages.length > 1;
+
+  // Auto-slide effect
+  useEffect(() => {
+    if (!hasMultipleImages) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % allImages.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [hasMultipleImages, allImages.length]);
 
   // Sync internal state with prop changes (for when parent updates list)
   useEffect(() => {
@@ -74,19 +97,75 @@ const ProductCard = ({
     }
   };
 
+  const nextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentIdx((prev) => (prev + 1) % allImages.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentIdx((prev) => (prev - 1 + allImages.length) % allImages.length);
+  };
+
   return (
     <Card className="group h-full overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 rounded-xl border-muted/60">
       <div className="relative aspect-square overflow-hidden bg-muted/30">
         {/* Fallback image handling could be improved, but assuming image is valid URL for now */}
-        <Link href={productUrl} className="block w-full h-full">
-          <Image
-            src={image || "/placeholder.jpg"}
-            alt={title}
-            fill
-            className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out p-1"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </Link>
+        {allImages.length > 0 ? (
+          <Link href={productUrl} className="block w-full h-full">
+            <div className="relative w-full h-full">
+              {allImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${idx === currentIdx ? "opacity-100 z-10" : "opacity-0 z-0"}`}
+                >
+                  <Image
+                    src={img}
+                    alt={`${title} - view ${idx + 1}`}
+                    fill
+                    className="object-contain p-1"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+              ))}
+              
+              {/* Carousel Navigation */}
+              {hasMultipleImages && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/20"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-20 h-8 w-8 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/20"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                  
+                  {/* Pagination Dots */}
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1 px-2 py-1 rounded-full bg-black/10 backdrop-blur-sm">
+                    {allImages.map((_, i) => (
+                      <div
+                        key={i}
+                        className={`h-1 rounded-full transition-all duration-300 ${i === currentIdx ? "w-3 bg-white" : "w-1 bg-white/50"}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </Link>
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/30 bg-muted/20">
+            <ImageIcon className="h-12 w-12 mb-1" />
+            <span className="text-[10px] font-medium uppercase tracking-widest">No Preview</span>
+          </div>
+        )}
         {isBuyerMode && !showEdit && (
           <Button
             size="icon"
@@ -101,9 +180,10 @@ const ProductCard = ({
             <Heart className={`h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`} />
           </Button>
         )}
-        {isBiddable && isBuyerMode && !showEdit && (
-          <Badge className="absolute top-2 left-2 bg-black/70 hover:bg-black/80 text-white backdrop-blur-sm px-2 py-0.5 text-[10px] h-5 font-normal tracking-wide z-10 rounded-full border-none">
-            Bid
+        {offerPrice > 0 && (
+          <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600 text-white backdrop-blur-sm px-2 py-0.5 text-[10px] h-5 font-bold tracking-wide z-10 rounded-full border-none flex items-center gap-1 shadow-sm">
+            <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
+            OFFER {offerDuration && <span>• {offerDuration}{offerUnit}</span>}
           </Badge>
         )}
 
@@ -113,8 +193,15 @@ const ProductCard = ({
         <Link href={productUrl} className="block mb-1.5">
           <h3 className="font-medium text-sm leading-tight line-clamp-2 group-hover:text-primary transition-colors text-foreground/90">{title}</h3>
         </Link>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-base font-bold text-primary tracking-tight">Rs. {price.toLocaleString()}</span>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-2">
+          {offerPrice > 0 ? (
+            <>
+              <span className="text-base font-bold text-red-500 tracking-tight">Rs. {offerPrice.toLocaleString()}</span>
+              <span className="text-[11px] text-muted-foreground/60 line-through decoration-muted-foreground/40">Rs. {price.toLocaleString()}</span>
+            </>
+          ) : (
+            <span className="text-base font-bold text-primary tracking-tight">Rs. {price.toLocaleString()}</span>
+          )}
           {isBiddable && isBuyerMode && !showEdit && (
             <Button size="sm" variant="outline" className="h-6 text-[10px] px-2 rounded-full pointer-events-none bg-transparent hover:bg-transparent">
               Bid Now

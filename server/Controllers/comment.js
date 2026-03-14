@@ -1,67 +1,67 @@
-const asyncErrorWrapper = require("express-async-handler")
-const Story = require("../Models/story");
-const Comment = require("../Models/comment");
+import asyncErrorWrapper from "express-async-handler";
+import Item from "../Models/item.js";
+import Comment from "../Models/comment.js";
 
-const addNewCommentToStory  =asyncErrorWrapper(async(req,res,next)=> {
+const addNewCommentToItem = asyncErrorWrapper(async (req, res, next) => {
 
-    const {slug} = req.params 
+    const { slug } = req.params
 
-    const {star , content } =req.body 
+    const { star, content } = req.body
 
-    const story = await Story.findOne({slug :slug })
+    const item = await Item.findOne({ slug: slug })
 
     const comment = await Comment.create({
 
-        story :story._id ,
-        content :content ,
-        author : req.user.id ,
-        star:star 
+        story: item._id,
+        content: content,
+        author: req.user.id,
+        star: star
     })
 
-    story.comments.push(comment._id)
+    item.comments.push(comment._id)
 
-    story.commentCount = story.comments.length
+    item.commentCount = item.comments.length
 
-    await story.save();
+    await item.save();
 
-    console.log("addNewCommentToStory function of Controllers comment.js")
+    console.log("addNewCommentToItem function of Controllers comment.js")
 
     return res.status(200).json({
-        success :true  , 
-        data : comment 
+        success: true,
+        data: comment
     })
 
 })
 
 
-const getAllCommentByStory = asyncErrorWrapper(async(req, res, next) => {
+const getAllCommentByItem = asyncErrorWrapper(async (req, res, next) => {
 
     const { slug } = req.params
 
-    const story = await Story.findOne({slug:slug})
+    const item = await Item.findOne({ slug: slug })
 
-    const commmentList =await Comment.find({
-        story : story._id 
+    const commmentList = await Comment.find({
+        story: item._id
     }).populate({
-        path :"author",
-        select:"username photo"
+        path: "author",
+        select: "username photo"
     }).sort("-createdAt")
 
-    console.log("getAllCommentByStory function of Controllers comment.js")
+    console.log("getAllCommentByItem function of Controllers comment.js")
 
     return res.status(200)
         .json({
             success: true,
-            count: story.commentCount,
+            count: item.commentCount,
             data: commmentList
         })
 
 })
 
-const commentLike = asyncErrorWrapper(async(req, res, next) => {
+const commentLike = asyncErrorWrapper(async (req, res, next) => {
 
-    const { activeUser} =  req.body 
-    const { comment_id} =  req.params 
+    const { activeUser } = req.body
+    const { comment_id } = req.params
 
     console.log("commentLike function of Controllers comment.js")
 
@@ -71,9 +71,9 @@ const commentLike = asyncErrorWrapper(async(req, res, next) => {
     if (!comment.likes.includes(activeUser._id)) {
 
         comment.likes.push(activeUser._id)
-        comment.likeCount = comment.likes.length ;
+        comment.likeCount = comment.likes.length;
 
-        await comment.save()  ;
+        await comment.save();
 
     }
     else {
@@ -81,24 +81,24 @@ const commentLike = asyncErrorWrapper(async(req, res, next) => {
         const index = comment.likes.indexOf(activeUser._id)
         comment.likes.splice(index, 1)
         comment.likeCount = comment.likes.length
-        await comment.save()  ;
+        await comment.save();
     }
 
     const likeStatus = comment.likes.includes(activeUser._id)
-    
+
     return res.status(200)
         .json({
             success: true,
-            data : comment,
-            likeStatus:likeStatus
+            data: comment,
+            likeStatus: likeStatus
         })
 
 })
 
-const getCommentLikeStatus = asyncErrorWrapper(async(req, res, next) => {
+const getCommentLikeStatus = asyncErrorWrapper(async (req, res, next) => {
 
-    const { activeUser} =  req.body 
-    const { comment_id} =  req.params 
+    const { activeUser } = req.body
+    const { comment_id } = req.params
 
     const comment = await Comment.findById(comment_id)
     const likeStatus = comment.likes.includes(activeUser._id)
@@ -106,16 +106,16 @@ const getCommentLikeStatus = asyncErrorWrapper(async(req, res, next) => {
     console.log("getCommentLikeStatus function of Controllers comment.js")
 
     return res.status(200)
-    .json({
-        success: true,
-        likeStatus:likeStatus
-    })
+        .json({
+            success: true,
+            likeStatus: likeStatus
+        })
 
 })
 
-module.exports ={
-    addNewCommentToStory,
-    getAllCommentByStory,
+export {
+    addNewCommentToItem,
+    getAllCommentByItem,
     commentLike,
     getCommentLikeStatus
-}
+};
