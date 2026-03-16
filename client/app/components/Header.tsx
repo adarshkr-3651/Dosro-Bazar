@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Bell, Heart, User, Menu, Upload, LogOut } from "lucide-react";
+import { Search, Bell, Heart, User, Menu, Upload, LogOut, MessageCircle } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Switch } from "@/app/components/ui/switch";
@@ -204,6 +204,12 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
 
 
             {/* Action Buttons */}
+            <Button variant="ghost" size="icon" className="relative" asChild>
+              <Link href="/messages">
+                <MessageCircle className="h-5 w-5" />
+              </Link>
+            </Button>
+
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center">

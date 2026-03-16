@@ -1,6 +1,6 @@
 import express from "express";
 import imageUpload from "../Helpers/Libraries/imageUpload.js";
-import { profile, editProfile, changePassword, addItemToReadList, readListPage, toggleFavorite, getFavorites } from "../Controllers/user.js";
+import { profile, editProfile, changePassword, addItemToReadList, readListPage, toggleFavorite, getFavorites, toggleOnlineStatus } from "../Controllers/user.js";
 import { getAccessToRoute } from "../Middlewares/Authorization/auth.js";
 import { profileUpload } from "../Helpers/Libraries/imageUpload.js";
 
@@ -12,6 +12,8 @@ router.get("/profile", getAccessToRoute, profile)
 router.post("/editProfile", [getAccessToRoute, profileUpload], editProfile)
 
 router.put("/changePassword", getAccessToRoute, changePassword)
+
+router.put("/toggleOnlineStatus", getAccessToRoute, toggleOnlineStatus)
 
 router.post("/:slug/addItemToReadList", getAccessToRoute, addItemToReadList)
 

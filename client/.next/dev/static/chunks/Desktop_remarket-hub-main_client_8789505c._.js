@@ -307,6 +307,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/menu.js [app-client] (ecmascript) <export default as Menu>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/upload.js [app-client] (ecmascript) <export default as Upload>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/log-out.js [app-client] (ecmascript) <export default as LogOut>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/message-circle.js [app-client] (ecmascript) <export default as MessageCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/components/ui/input.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/components/ui/switch.tsx [app-client] (ecmascript)");
@@ -643,12 +644,36 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                     variant: "ghost",
                                     size: "icon",
                                     className: "relative",
+                                    asChild: true,
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                        href: "/messages",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__["MessageCircle"], {
+                                            className: "h-5 w-5"
+                                        }, void 0, false, {
+                                            fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
+                                            lineNumber: 209,
+                                            columnNumber: 17
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
+                                        lineNumber: 208,
+                                        columnNumber: 15
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
+                                    lineNumber: 207,
+                                    columnNumber: 13
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                    variant: "ghost",
+                                    size: "icon",
+                                    className: "relative",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"], {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 208,
+                                            lineNumber: 214,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -656,13 +681,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                             children: "3"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 215,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 207,
+                                    lineNumber: 213,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 user ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -683,18 +708,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                         unoptimized: resolvePhotoUrl(user.photo)?.startsWith('http')
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                        lineNumber: 220,
+                                                        lineNumber: 226,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 219,
+                                                    lineNumber: 225,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 229,
+                                                    lineNumber: 235,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -702,13 +727,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     children: user.username?.split(' ')[0] || 'Profile'
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 231,
+                                                    lineNumber: 237,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 217,
+                                            lineNumber: 223,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -721,7 +746,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 234,
+                                                    lineNumber: 240,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -729,13 +754,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     children: "Logout"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 235,
+                                                    lineNumber: 241,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 233,
+                                            lineNumber: 239,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -749,17 +774,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                             children: "Login"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 241,
+                                            lineNumber: 247,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 240,
+                                        lineNumber: 246,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 239,
+                                    lineNumber: 245,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -770,12 +795,12 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 247,
+                                        lineNumber: 253,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 252,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
@@ -807,7 +832,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                lineNumber: 262,
+                                lineNumber: 268,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -817,18 +842,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "pl-10 bg-muted/50"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                lineNumber: 263,
+                                lineNumber: 269,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                        lineNumber: 254,
+                        lineNumber: 260,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                    lineNumber: 253,
+                    lineNumber: 259,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             ]
@@ -1745,44 +1770,39 @@ function UploadPage() {
     const handleGenerateDescription = async ()=>{
         if (!formData.title) return;
         setLoading(true);
-        __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].loading("Generating professional description...", {
+        __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].loading("Generating description with Gemini AI...", {
             id: "gen"
         });
-        // Simulate AI thinking time
-        await new Promise((resolve)=>setTimeout(resolve, 1500));
-        const title = formData.title.toLowerCase();
-        const condition = formData.condition || "Excellent";
-        const category = formData.category || "Item";
-        // Logic to inject specific technical details based on keywords
-        let specs = "";
-        if (title.includes("iphone") || title.includes("samsung") || title.includes("pixel") || title.includes("phone")) {
-            const isLatest = title.includes("15") || title.includes("16") || title.includes("s24") || title.includes("s23");
-            specs = `\n\n✨ TECHNICAL SPECIFICATIONS:\n` + `- Display: ${isLatest ? 'Super Retina XDR / Dynamic AMOLED 2X' : 'High Resolution OLED/LCD'}\n` + `- RAM: ${isLatest ? '8GB / 12GB' : '6GB / 8GB'} for smooth multitasking\n` + `- Storage (ROM): 128GB / 256GB / 512GB\n` + `- Camera: Advanced Multi-lens System with Night Mode & Pro Video\n` + `- Battery: Long-lasting ${isLatest ? '5000mAh' : '4500mAh'} equivalent with Fast Charging`;
-        } else if (title.includes("laptop") || title.includes("macbook") || title.includes("dell") || title.includes("hp")) {
-            specs = `\n\n💻 TECHNICAL SPECIFICATIONS:\n` + `- Processor: High-Performance Multi-core Chip\n` + `- RAM: 16GB / 32GB High Speed Memory\n` + `- Storage: 512GB / 1TB NVMe SSD\n` + `- Display: Crystal Clear Anti-glare Screen\n` + `- Graphics: Integrated/Dedicated GPU for seamless visuals`;
-        }
-        const templates = [
-            `🚀 **FOR SALE: ${formData.title}** 🚀\n\nAre you looking for a premium ${category} that delivers top-tier performance? Look no further! This ${formData.title} is in ${condition} condition and has been meticulously cared for. Whether you're a professional or a casual user, this device will exceed your expectations.\n\n🌟 KEY HIGHLIGHTS:\n- Exceptional Performance & Speed\n- Sleek and Modern Design\n- 100% Fully Functional & Tested\n- Great Value for Price${specs}\n\n✅ CONDITION DETAILS:\n- Overall Condition: ${condition}\n- No hidden defects or issues\n- Screen/Body: Well preserved\n\nDon't miss out on this fantastic opportunity! This ${formData.title} is priced to sell quickly. Direct message me now to grab it before someone else does!`,
-            `🔥 **GREAT DEAL: ${formData.title}** 🔥\n\nLooking to upgrade? I'm selling my ${formData.title} which is in ${condition} condition. This ${category} offers a perfect blend of style and utility, making it an essential addition to your daily tech lineup. Carefully used and ready for its new owner!${specs}\n\n💎 WHY BUY THIS?\n- Verified Quality & Reliability\n- Premium Build Materials\n- Excellent Battery Efficiency\n- Optimized Software Experience\n\n📦 WHAT'S INCLUDED:\n- ${formData.title}\n- Original/Standard Essentials\n\nPrice is negotiable for serious buyers. First come, first served!`,
-            `✨ **PREMIUM ${formData.title.toUpperCase()} FOR SALE** ✨\n\nOwn this incredible ${formData.title} today! Known for its reliability and industry-leading features, this ${category} is currently in ${condition} state and performs like a charm. Perfect for anyone who wants a high-quality device without paying full retail price.${specs}\n\n🏆 SPECIAL FEATURES:\n- Immersive Display & Audio\n- Powerful Processing Capabilities\n- Clean and Maintained Aesthetics\n- Future-proof Technology\n\nEverything works perfectly as expected. I am selling this because I've recently upgraded. Feel free to ask any questions!`
-        ];
-        const description = templates[Math.floor(Math.random() * templates.length)];
-        setFormData((prev)=>({
-                ...prev,
-                content: description
-            }));
-        __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Professional description created!", {
-            id: "gen"
-        });
-        setLoading(false);
-        // Auto-adjust height of textarea
-        setTimeout(()=>{
-            const textarea = document.getElementById("content");
-            if (textarea) {
-                textarea.style.height = "auto";
-                textarea.style.height = `${textarea.scrollHeight}px`;
+        try {
+            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["generateItemDescription"])(formData.title, formData.category, formData.condition, formData.price);
+            if (result.success) {
+                setFormData((prev)=>({
+                        ...prev,
+                        content: result.data
+                    }));
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("AI description generated!", {
+                    id: "gen"
+                });
+                // Auto-adjust textarea height
+                setTimeout(()=>{
+                    const textarea = document.getElementById("content");
+                    if (textarea) {
+                        textarea.style.height = "auto";
+                        textarea.style.height = `${textarea.scrollHeight}px`;
+                    }
+                }, 100);
+            } else {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Failed to generate description", {
+                    id: "gen"
+                });
             }
-        }, 100);
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(error.message || "Failed to generate description", {
+                id: "gen"
+            });
+        } finally{
+            setLoading(false);
+        }
     };
     const handlePriceChange = (e)=>{
         const value = e.target.value.replace(/[^0-9]/g, "");
@@ -1959,7 +1979,7 @@ function UploadPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                lineNumber: 405,
+                lineNumber: 385,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1993,13 +2013,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 417,
+                                                                        lineNumber: 397,
                                                                         columnNumber: 113
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 417,
+                                                                lineNumber: 397,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2013,13 +2033,13 @@ function UploadPage() {
                                                                 required: true
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 418,
+                                                                lineNumber: 398,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 416,
+                                                        lineNumber: 396,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2032,23 +2052,23 @@ function UploadPage() {
                                                                 className: "h-4 w-4 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 432,
+                                                                lineNumber: 412,
                                                                 columnNumber: 60
                                                             }, this) : "Publish"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                            lineNumber: 427,
+                                                            lineNumber: 407,
                                                             columnNumber: 45
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 426,
+                                                        lineNumber: 406,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 415,
+                                                lineNumber: 395,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2067,13 +2087,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 440,
+                                                                        lineNumber: 420,
                                                                         columnNumber: 114
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 440,
+                                                                lineNumber: 420,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2083,7 +2103,7 @@ function UploadPage() {
                                                                         className: "absolute left-3 top-2.5 h-4 w-4 text-muted-foreground"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 442,
+                                                                        lineNumber: 422,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2095,19 +2115,19 @@ function UploadPage() {
                                                                         required: true
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 443,
+                                                                        lineNumber: 423,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 441,
+                                                                lineNumber: 421,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 439,
+                                                        lineNumber: 419,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2126,13 +2146,13 @@ function UploadPage() {
                                                                                 children: "*"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 456,
+                                                                                lineNumber: 436,
                                                                                 columnNumber: 118
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 456,
+                                                                        lineNumber: 436,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2146,7 +2166,7 @@ function UploadPage() {
                                                                                 className: "w-3 h-3 rounded border-secondary/30 text-secondary focus:ring-secondary/20 cursor-pointer"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 458,
+                                                                                lineNumber: 438,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2155,19 +2175,19 @@ function UploadPage() {
                                                                                 children: "Fill from Profile"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 465,
+                                                                                lineNumber: 445,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 457,
+                                                                        lineNumber: 437,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 455,
+                                                                lineNumber: 435,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2182,12 +2202,12 @@ function UploadPage() {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 477,
+                                                                            lineNumber: 457,
                                                                             columnNumber: 53
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 471,
+                                                                        lineNumber: 451,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2205,25 +2225,25 @@ function UploadPage() {
                                                                         required: true
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 479,
+                                                                        lineNumber: 459,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 470,
+                                                                lineNumber: 450,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 454,
+                                                        lineNumber: 434,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 437,
+                                                lineNumber: 417,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2242,13 +2262,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 495,
+                                                                        lineNumber: 475,
                                                                         columnNumber: 116
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 495,
+                                                                lineNumber: 475,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2259,13 +2279,13 @@ function UploadPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 496,
+                                                                lineNumber: 476,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 494,
+                                                        lineNumber: 474,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2288,7 +2308,7 @@ function UploadPage() {
                                                                 required: true
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 501,
+                                                                lineNumber: 481,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2305,12 +2325,12 @@ function UploadPage() {
                                                                     children: "Clear"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                    lineNumber: 516,
+                                                                    lineNumber: 496,
                                                                     columnNumber: 53
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 514,
+                                                                lineNumber: 494,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2327,7 +2347,7 @@ function UploadPage() {
                                                                             className: "h-3 w-3 text-primary animate-pulse"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 536,
+                                                                            lineNumber: 516,
                                                                             columnNumber: 53
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2335,30 +2355,30 @@ function UploadPage() {
                                                                             children: "Generate"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 537,
+                                                                            lineNumber: 517,
                                                                             columnNumber: 53
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                    lineNumber: 528,
+                                                                    lineNumber: 508,
                                                                     columnNumber: 49
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 527,
+                                                                lineNumber: 507,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 500,
+                                                        lineNumber: 480,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 493,
+                                                lineNumber: 473,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2376,13 +2396,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 547,
+                                                                        lineNumber: 527,
                                                                         columnNumber: 99
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 547,
+                                                                lineNumber: 527,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2401,7 +2421,7 @@ function UploadPage() {
                                                                                     className: "object-cover"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 556,
+                                                                                    lineNumber: 536,
                                                                                     columnNumber: 57
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2412,18 +2432,18 @@ function UploadPage() {
                                                                                         className: "h-3 w-3"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 561,
+                                                                                        lineNumber: 541,
                                                                                         columnNumber: 61
                                                                                     }, this)
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 557,
+                                                                                    lineNumber: 537,
                                                                                     columnNumber: 57
                                                                                 }, this)
                                                                             ]
                                                                         }, index, true, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 555,
+                                                                            lineNumber: 535,
                                                                             columnNumber: 53
                                                                         }, this)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2437,7 +2457,7 @@ function UploadPage() {
                                                                                 className: "hidden"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 566,
+                                                                                lineNumber: 546,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2447,7 +2467,7 @@ function UploadPage() {
                                                                                         className: `h-5 w-5 ${isDragging ? 'text-primary' : 'text-muted-foreground/60'}`
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 568,
+                                                                                        lineNumber: 548,
                                                                                         columnNumber: 57
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2455,31 +2475,31 @@ function UploadPage() {
                                                                                         children: isDragging ? 'DROP' : 'ADD'
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 569,
+                                                                                        lineNumber: 549,
                                                                                         columnNumber: 57
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 567,
+                                                                                lineNumber: 547,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 565,
+                                                                        lineNumber: 545,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 548,
+                                                                lineNumber: 528,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 546,
+                                                        lineNumber: 526,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2494,7 +2514,7 @@ function UploadPage() {
                                                                         children: "Category (Optional)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 581,
+                                                                        lineNumber: 561,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2511,7 +2531,7 @@ function UploadPage() {
                                                                                 children: "Select category"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 587,
+                                                                                lineNumber: 567,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             categories.map((cat)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2519,19 +2539,19 @@ function UploadPage() {
                                                                                     children: cat
                                                                                 }, cat, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 588,
+                                                                                    lineNumber: 568,
                                                                                     columnNumber: 78
                                                                                 }, this))
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 582,
+                                                                        lineNumber: 562,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 580,
+                                                                lineNumber: 560,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2543,7 +2563,7 @@ function UploadPage() {
                                                                         children: "Condition (Optional)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 593,
+                                                                        lineNumber: 573,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2560,7 +2580,7 @@ function UploadPage() {
                                                                                 children: "Select condition"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 599,
+                                                                                lineNumber: 579,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             conditions.map((cond)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2568,31 +2588,31 @@ function UploadPage() {
                                                                                     children: cond
                                                                                 }, cond, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 600,
+                                                                                    lineNumber: 580,
                                                                                     columnNumber: 79
                                                                                 }, this))
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 594,
+                                                                        lineNumber: 574,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 592,
+                                                                lineNumber: 572,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 579,
+                                                        lineNumber: 559,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 544,
+                                                lineNumber: 524,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2613,7 +2633,7 @@ function UploadPage() {
                                                                                 children: "Allow Bidding"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 611,
+                                                                                lineNumber: 591,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2621,13 +2641,13 @@ function UploadPage() {
                                                                                 children: "Let users offer prices."
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 612,
+                                                                                lineNumber: 592,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 610,
+                                                                        lineNumber: 590,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2639,13 +2659,13 @@ function UploadPage() {
                                                                             })
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 614,
+                                                                        lineNumber: 594,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 609,
+                                                                lineNumber: 589,
                                                                 columnNumber: 45
                                                             }, this),
                                                             formData.isBiddable && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2657,7 +2677,7 @@ function UploadPage() {
                                                                         children: "Min. Starting Bid (Rs.)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 623,
+                                                                        lineNumber: 603,
                                                                         columnNumber: 53
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2667,7 +2687,7 @@ function UploadPage() {
                                                                                 className: "absolute left-3 top-2.5 h-4 w-4 text-muted-foreground"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 625,
+                                                                                lineNumber: 605,
                                                                                 columnNumber: 57
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2679,25 +2699,25 @@ function UploadPage() {
                                                                                 className: "pl-10 h-10"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 626,
+                                                                                lineNumber: 606,
                                                                                 columnNumber: 57
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 624,
+                                                                        lineNumber: 604,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 622,
+                                                                lineNumber: 602,
                                                                 columnNumber: 49
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 608,
+                                                        lineNumber: 588,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2714,14 +2734,14 @@ function UploadPage() {
                                                                                 className: "h-4 w-4 text-primary"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 642,
+                                                                                lineNumber: 622,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             " Listing Expiry"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 641,
+                                                                        lineNumber: 621,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2747,12 +2767,12 @@ function UploadPage() {
                                                                                         children: opt
                                                                                     }, opt, false, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 647,
+                                                                                        lineNumber: 627,
                                                                                         columnNumber: 61
                                                                                     }, this))
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 645,
+                                                                                lineNumber: 625,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             formData.expiry === "Custom" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2769,7 +2789,7 @@ function UploadPage() {
                                                                                         className: "h-8 text-[11px] flex-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 658,
+                                                                                        lineNumber: 638,
                                                                                         columnNumber: 61
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2785,7 +2805,7 @@ function UploadPage() {
                                                                                                 children: "Hrs"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 669,
+                                                                                                lineNumber: 649,
                                                                                                 columnNumber: 65
                                                                                             }, this),
                                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2793,7 +2813,7 @@ function UploadPage() {
                                                                                                 children: "Days"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 670,
+                                                                                                lineNumber: 650,
                                                                                                 columnNumber: 65
                                                                                             }, this),
                                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2801,31 +2821,31 @@ function UploadPage() {
                                                                                                 children: "Mo"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 671,
+                                                                                                lineNumber: 651,
                                                                                                 columnNumber: 65
                                                                                             }, this)
                                                                                         ]
                                                                                     }, void 0, true, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 664,
+                                                                                        lineNumber: 644,
                                                                                         columnNumber: 61
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 657,
+                                                                                lineNumber: 637,
                                                                                 columnNumber: 57
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 644,
+                                                                        lineNumber: 624,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 640,
+                                                                lineNumber: 620,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2839,14 +2859,14 @@ function UploadPage() {
                                                                                 className: "h-4 w-4 text-primary"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 681,
+                                                                                lineNumber: 661,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             " Limited Time Offer"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 680,
+                                                                        lineNumber: 660,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2864,7 +2884,7 @@ function UploadPage() {
                                                                                 className: "h-8 text-[11px]"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 684,
+                                                                                lineNumber: 664,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2881,7 +2901,7 @@ function UploadPage() {
                                                                                         className: "h-8 text-[11px] flex-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 691,
+                                                                                        lineNumber: 671,
                                                                                         columnNumber: 57
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2897,7 +2917,7 @@ function UploadPage() {
                                                                                                 children: "Hrs"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 702,
+                                                                                                lineNumber: 682,
                                                                                                 columnNumber: 61
                                                                                             }, this),
                                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2905,37 +2925,37 @@ function UploadPage() {
                                                                                                 children: "Days"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 703,
+                                                                                                lineNumber: 683,
                                                                                                 columnNumber: 61
                                                                                             }, this)
                                                                                         ]
                                                                                     }, void 0, true, {
                                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 697,
+                                                                                        lineNumber: 677,
                                                                                         columnNumber: 57
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 690,
+                                                                                lineNumber: 670,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 683,
+                                                                        lineNumber: 663,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 679,
+                                                                lineNumber: 659,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 638,
+                                                        lineNumber: 618,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2951,14 +2971,14 @@ function UploadPage() {
                                                                                 className: "h-4 w-4 text-primary"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 714,
+                                                                                lineNumber: 694,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             " Accepted Payment Methods"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 713,
+                                                                        lineNumber: 693,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2976,18 +2996,18 @@ function UploadPage() {
                                                                                 children: method
                                                                             }, method, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                lineNumber: 718,
+                                                                                lineNumber: 698,
                                                                                 columnNumber: 57
                                                                             }, this))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                        lineNumber: 716,
+                                                                        lineNumber: 696,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 712,
+                                                                lineNumber: 692,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3003,7 +3023,7 @@ function UploadPage() {
                                                                                     children: "Delivery Available"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 734,
+                                                                                    lineNumber: 714,
                                                                                     columnNumber: 57
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3011,13 +3031,13 @@ function UploadPage() {
                                                                                     children: "Can you ship this item?"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 735,
+                                                                                    lineNumber: 715,
                                                                                     columnNumber: 57
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 733,
+                                                                            lineNumber: 713,
                                                                             columnNumber: 53
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3028,46 +3048,46 @@ function UploadPage() {
                                                                                 })
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 737,
+                                                                            lineNumber: 717,
                                                                             columnNumber: 53
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                    lineNumber: 732,
+                                                                    lineNumber: 712,
                                                                     columnNumber: 49
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 731,
+                                                                lineNumber: 711,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                        lineNumber: 710,
+                                                        lineNumber: 690,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 607,
+                                                lineNumber: 587,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                        lineNumber: 413,
+                                        lineNumber: 393,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                    lineNumber: 412,
+                                    lineNumber: 392,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                lineNumber: 411,
+                                lineNumber: 391,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3085,14 +3105,14 @@ function UploadPage() {
                                                             className: "h-5 w-5 text-primary"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                            lineNumber: 756,
+                                                            lineNumber: 736,
                                                             columnNumber: 41
                                                         }, this),
                                                         "Preview"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 755,
+                                                    lineNumber: 735,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3101,13 +3121,13 @@ function UploadPage() {
                                                     children: "Buyer View"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 759,
+                                                    lineNumber: 739,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                            lineNumber: 754,
+                                            lineNumber: 734,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3115,21 +3135,22 @@ function UploadPage() {
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ProductCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                 title: formData.title || "Item Title",
                                                 price: Number(formData.price) || 0,
-                                                images: imagePreviews.length > 0 ? imagePreviews : [
-                                                    ""
-                                                ],
+                                                images: imagePreviews,
                                                 location: formData.location || "Location",
                                                 timePosted: "Just now",
                                                 isBiddable: formData.isBiddable,
-                                                showEdit: false
+                                                showEdit: false,
+                                                offerPrice: Number(formData.offerPrice) || 0,
+                                                offerDuration: formData.offerDuration,
+                                                offerUnit: formData.offerUnit
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 763,
+                                                lineNumber: 743,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                            lineNumber: 762,
+                                            lineNumber: 742,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3140,62 +3161,62 @@ function UploadPage() {
                                                     children: "This is exactly how your item will appear to buyers. Detailed locations build more trust."
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 775,
+                                                    lineNumber: 758,
                                                     columnNumber: 37
                                                 }, this),
                                                 !isFormEmpty() && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                     type: "button",
                                                     variant: "outline",
                                                     onClick: clearForm,
-                                                    className: "w-full h-8 text-[10px] font-bold uppercase tracking-widest border-dashed hover:bg-destructive/5 hover:text-destructive hover:border-destructive transition-all",
+                                                    className: "w-full h-8 text-[10px] text-red-500 font-bold uppercase tracking-widest border-dashed hover:bg-destructive/5 hover:text-destructive hover:border-destructive transition-all",
                                                     children: "Clear Form"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 779,
+                                                    lineNumber: 762,
                                                     columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                            lineNumber: 774,
+                                            lineNumber: 757,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                    lineNumber: 753,
+                                    lineNumber: 733,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                lineNumber: 752,
+                                lineNumber: 732,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                        lineNumber: 409,
+                        lineNumber: 389,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                    lineNumber: 408,
+                    lineNumber: 388,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                lineNumber: 407,
+                lineNumber: 387,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                lineNumber: 795,
+                lineNumber: 778,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-        lineNumber: 404,
+        lineNumber: 384,
         columnNumber: 9
     }, this);
 }

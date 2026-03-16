@@ -64,6 +64,56 @@ console.log("Initializing Express app... in server.js")
 const app = express();
 console.log("Express app initialized in server.js")
 
+import http from "http";
+import { Server } from "socket.io";
+
+const httpServer = http.createServer(app);
+
+const io = new Server(httpServer, {
+    cors: {
+        origin: process.env.NODE_ENV === 'production'
+            ? ['https://your-production-domain.com']
+            : ['http://localhost:3000'],
+        credentials: true
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected via Socket.IO');
+
+    socket.on("joinUserRoom", (userId) => {
+        socket.join(userId);
+        socket.userId = userId; // Track user against this socket
+        console.log(`User ${userId} joined their personal room`);
+        
+        // Broadcast to others that this user is online
+        socket.broadcast.emit("userOnline", userId);
+    });
+
+    socket.on("joinConversation", (conversationId) => {
+        socket.join(conversationId);
+        console.log(`Socket joined conversation ${conversationId}`);
+    });
+
+    socket.on("disconnect", () => {
+        if (socket.userId) {
+            // Check if they have other open web-sockets in their user room (e.g. multiple tabs)
+            const room = io.sockets.adapter.rooms.get(socket.userId);
+            if (!room || room.size === 0) {
+                // If they have no more active sockets, broadcast offline
+                socket.broadcast.emit("userOffline", socket.userId);
+            }
+        }
+        console.log("User disconnected via Socket.IO");
+    });
+});
+
+// Make io accessible in routers
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
+
 // ========================================
 // SECURITY MIDDLEWARE
 // ========================================
@@ -149,7 +199,7 @@ const PORT = process.env.PORT || 5000; // Use environment PORT or default to 500
 console.log(`Starting server on port ${PORT}... in server.js`)
 
 // Start the server
-const server = app.listen(PORT, () => {
+const server = httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode in server.js`)
     console.log(`API available at: http://localhost:${PORT}`)
     console.log(`Static files at: http://localhost:${PORT}/public`)

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { getProductBySlug, toggleFavorite, getSimilarItems } from "../../lib/api";
+import { getProductBySlug, toggleFavorite, getSimilarItems, sendChatMessage } from "../../lib/api";
 import { Loader2, MapPin, Heart, Share2, MessageCircle, ShoppingCart, Clock, Tag, AlertCircle, Sparkles } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
@@ -33,6 +33,7 @@ interface Product {
     offerDuration?: string;
     offerUnit?: string;
     author: {
+        _id: string;
         username: string;
         photo: string;
     };
@@ -40,6 +41,7 @@ interface Product {
 
 export default function ProductDetailPage() {
     const params = useParams();
+    const router = useRouter();
     const slug = params.slug as string;
     const { user, isBuyerMode } = useAuth(); // Get user and mode from context
 
@@ -123,6 +125,25 @@ export default function ProductDetailPage() {
             toast.error(error.message || "Failed to update favorite");
         } finally {
             setFavLoading(false);
+        }
+    };
+
+    const handleInquire = async () => {
+        if (!user) {
+            toast.error("Please login to send messages");
+            router.push("/login");
+            return;
+        }
+        if (!product?.author?._id) {
+            toast.error("Seller information is missing");
+            return;
+        }
+
+        try {
+            await sendChatMessage(product.author._id, product._id, `Hi, I'm inquiring about "${product.title}"`);
+            router.push("/messages");
+        } catch (err: any) {
+            toast.error(err.message || "Failed to start conversation");
         }
     };
 
@@ -287,7 +308,7 @@ export default function ProductDetailPage() {
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <Button size="lg" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg">
+                                    <Button onClick={handleInquire} size="lg" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg">
                                         <MessageCircle className="h-4 w-4" />
                                         Inquire
                                     </Button>

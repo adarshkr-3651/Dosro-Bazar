@@ -11,7 +11,7 @@ import { Switch } from "@/app/components/ui/switch";
 import { Badge } from "@/app/components/ui/badge";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
-import { addItem } from "@/app/lib/api";
+import { addItem, generateItemDescription } from "@/app/lib/api";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
@@ -189,56 +189,36 @@ export default function UploadPage() {
         if (!formData.title) return;
 
         setLoading(true);
-        toast.loading("Generating professional description...", { id: "gen" });
+        toast.loading("Generating description with Gemini AI...", { id: "gen" });
 
-        // Simulate AI thinking time
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const result = await generateItemDescription(
+                formData.title,
+                formData.category,
+                formData.condition,
+                formData.price
+            );
 
-        const title = formData.title.toLowerCase();
-        const condition = formData.condition || "Excellent";
-        const category = formData.category || "Item";
+            if (result.success) {
+                setFormData(prev => ({ ...prev, content: result.data }));
+                toast.success("AI description generated!", { id: "gen" });
 
-        // Logic to inject specific technical details based on keywords
-        let specs = "";
-        if (title.includes("iphone") || title.includes("samsung") || title.includes("pixel") || title.includes("phone")) {
-            const isLatest = title.includes("15") || title.includes("16") || title.includes("s24") || title.includes("s23");
-            specs = `\n\n✨ TECHNICAL SPECIFICATIONS:\n` +
-                `- Display: ${isLatest ? 'Super Retina XDR / Dynamic AMOLED 2X' : 'High Resolution OLED/LCD'}\n` +
-                `- RAM: ${isLatest ? '8GB / 12GB' : '6GB / 8GB'} for smooth multitasking\n` +
-                `- Storage (ROM): 128GB / 256GB / 512GB\n` +
-                `- Camera: Advanced Multi-lens System with Night Mode & Pro Video\n` +
-                `- Battery: Long-lasting ${isLatest ? '5000mAh' : '4500mAh'} equivalent with Fast Charging`;
-        } else if (title.includes("laptop") || title.includes("macbook") || title.includes("dell") || title.includes("hp")) {
-            specs = `\n\n💻 TECHNICAL SPECIFICATIONS:\n` +
-                `- Processor: High-Performance Multi-core Chip\n` +
-                `- RAM: 16GB / 32GB High Speed Memory\n` +
-                `- Storage: 512GB / 1TB NVMe SSD\n` +
-                `- Display: Crystal Clear Anti-glare Screen\n` +
-                `- Graphics: Integrated/Dedicated GPU for seamless visuals`;
-        }
-
-        const templates = [
-            `🚀 **FOR SALE: ${formData.title}** 🚀\n\nAre you looking for a premium ${category} that delivers top-tier performance? Look no further! This ${formData.title} is in ${condition} condition and has been meticulously cared for. Whether you're a professional or a casual user, this device will exceed your expectations.\n\n🌟 KEY HIGHLIGHTS:\n- Exceptional Performance & Speed\n- Sleek and Modern Design\n- 100% Fully Functional & Tested\n- Great Value for Price${specs}\n\n✅ CONDITION DETAILS:\n- Overall Condition: ${condition}\n- No hidden defects or issues\n- Screen/Body: Well preserved\n\nDon't miss out on this fantastic opportunity! This ${formData.title} is priced to sell quickly. Direct message me now to grab it before someone else does!`,
-
-            `🔥 **GREAT DEAL: ${formData.title}** 🔥\n\nLooking to upgrade? I'm selling my ${formData.title} which is in ${condition} condition. This ${category} offers a perfect blend of style and utility, making it an essential addition to your daily tech lineup. Carefully used and ready for its new owner!${specs}\n\n💎 WHY BUY THIS?\n- Verified Quality & Reliability\n- Premium Build Materials\n- Excellent Battery Efficiency\n- Optimized Software Experience\n\n📦 WHAT'S INCLUDED:\n- ${formData.title}\n- Original/Standard Essentials\n\nPrice is negotiable for serious buyers. First come, first served!`,
-
-            `✨ **PREMIUM ${formData.title.toUpperCase()} FOR SALE** ✨\n\nOwn this incredible ${formData.title} today! Known for its reliability and industry-leading features, this ${category} is currently in ${condition} state and performs like a charm. Perfect for anyone who wants a high-quality device without paying full retail price.${specs}\n\n🏆 SPECIAL FEATURES:\n- Immersive Display & Audio\n- Powerful Processing Capabilities\n- Clean and Maintained Aesthetics\n- Future-proof Technology\n\nEverything works perfectly as expected. I am selling this because I've recently upgraded. Feel free to ask any questions!`
-        ];
-
-        const description = templates[Math.floor(Math.random() * templates.length)];
-
-        setFormData(prev => ({ ...prev, content: description }));
-        toast.success("Professional description created!", { id: "gen" });
-        setLoading(false);
-
-        // Auto-adjust height of textarea
-        setTimeout(() => {
-            const textarea = document.getElementById("content") as HTMLTextAreaElement;
-            if (textarea) {
-                textarea.style.height = "auto";
-                textarea.style.height = `${textarea.scrollHeight}px`;
+                // Auto-adjust textarea height
+                setTimeout(() => {
+                    const textarea = document.getElementById("content") as HTMLTextAreaElement;
+                    if (textarea) {
+                        textarea.style.height = "auto";
+                        textarea.style.height = `${textarea.scrollHeight}px`;
+                    }
+                }, 100);
+            } else {
+                toast.error("Failed to generate description", { id: "gen" });
             }
-        }, 100);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to generate description", { id: "gen" });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -768,6 +748,9 @@ export default function UploadPage() {
                                         timePosted="Just now"
                                         isBiddable={formData.isBiddable}
                                         showEdit={false}
+                                        offerPrice={Number(formData.offerPrice) || 0}
+                                        offerDuration={formData.offerDuration}
+                                        offerUnit={formData.offerUnit}
                                     />
                                 </div>
 
@@ -780,7 +763,7 @@ export default function UploadPage() {
                                             type="button"
                                             variant="outline"
                                             onClick={clearForm}
-                                            className="w-full h-8 text-[10px] font-bold uppercase tracking-widest border-dashed hover:bg-destructive/5 hover:text-destructive hover:border-destructive transition-all"
+                                            className="w-full h-8 text-[10px] text-red-500 font-bold uppercase tracking-widest border-dashed hover:bg-destructive/5 hover:text-destructive hover:border-destructive transition-all"
                                         >
                                             Clear Form
                                         </Button>

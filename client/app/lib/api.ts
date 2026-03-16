@@ -436,9 +436,12 @@ export async function getRecommendations() {
   }
 }
 
-export async function chatWithAI(message: string) {
+export async function chatWithAI(
+  message: string,
+  history: { role: "user" | "assistant"; content: string }[] = []
+) {
   try {
-    const response = await api.post('/chat', { message });
+    const response = await api.post('/chat', { message, history });
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -446,6 +449,84 @@ export async function chatWithAI(message: string) {
     } else {
       throw new Error(error.message || 'Failed to get AI response');
     }
+  }
+}
+
+export async function generateItemDescription(title: string, category?: string, condition?: string, price?: string) {
+  try {
+    const response = await api.post('/describe', { title, category, condition, price });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to generate description');
+    } else {
+      throw new Error(error.message || 'Failed to generate description');
+    }
+  }
+}
+
+export async function getConversations() {
+  try {
+    const response = await api.get('/chat-system/conversations');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch conversations');
+  }
+}
+
+export async function getMessages(conversationId: string) {
+  try {
+    const response = await api.get(`/chat-system/${conversationId}/messages`);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch messages');
+  }
+}
+
+export async function sendChatMessage(receiverId: string, itemId: string, text?: string, image?: string, location?: any) {
+  try {
+    const payload: any = { receiverId, itemId };
+    if (text) payload.text = text;
+    if (image) payload.image = image;
+    if (location) payload.location = location;
+    
+    const response = await api.post('/chat-system/message', payload);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to send message');
+  }
+}
+
+export async function uploadChatImage(file: File) {
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await api.post('/chat-system/uploadImage', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to upload chat image');
+  }
+}
+
+export async function toggleOnlineStatus(isOnlineVisible: boolean) {
+  try {
+    const response = await api.put('/user/toggleOnlineStatus', { isOnlineVisible });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to update visibility settings');
+  }
+}
+
+export async function deleteChatMessage(messageId: string) {
+  try {
+    const response = await api.delete(`/chat-system/message/${messageId}`);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to delete message');
   }
 }
 

@@ -1,117 +1,138 @@
 import asyncErrorWrapper from "express-async-handler";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import Item from "../Models/item.js";
+import KnowledgeChunk from "../Models/knowledgeChunk.js";
 import getEmbeddings from "../Helpers/Libraries/embeddings.js";
-import { HfInference } from "@huggingface/inference";
 
-const getChatResponse = asyncErrorWrapper(async (req, res, next) => {
-    const { message } = req.body;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+const getChatResponse = asyncErrorWrapper(async (req, res) => {
+    const { message, history = [] } = req.body;
 
     if (!message) {
         return res.status(400).json({ success: false, message: "Please provide a message" });
     }
 
-    console.log(`[Chat] Received message: "${message}"`);
-
-    // 1. Get embeddings for the user message
-    let embeddings = [];
-    try {
-        embeddings = await getEmbeddings(message);
-    } catch (error) {
-        console.error("[Chat] Embedding generation failed:", error.message);
+    if (!GEMINI_API_KEY) {
+        return res.status(500).json({ success: false, message: "Gemini API key not configured" });
     }
-    
-    let contextItems = [];
-    if (embeddings && embeddings.length > 0) {
-        try {
-            // 2. Perform vector search to find relevant items (RAG context)
-            contextItems = await Item.aggregate([
-                {
-                    $vectorSearch: {
-                        index: "vector_index",
-                        path: "embeddings",
-                        queryVector: embeddings,
-                        numCandidates: 100,
-                        limit: 5
-                    }
+
+    console.log(`[Chat] Received: "${message}" | History turns: ${history.length}`);
+
+    // ─── Step 1: Generate embedding for the user's message ───────────────────
+    let queryEmbeddings = [];
+    try {
+        queryEmbeddings = await getEmbeddings(message);
+    } catch (err) {
+        console.warn("[Chat] Embedding failed:", err.message);
+    }
+
+    // ─── Step 2: Parallel RAG — search items AND knowledge base ──────────────
+    let productContext = "";
+    let knowledgeContext = "";
+
+    if (queryEmbeddings.length > 0) {
+        const vectorSearchStage = (collection, indexName, limit) => collection.aggregate([
+            {
+                $vectorSearch: {
+                    index: indexName,
+                    path: "embeddings",
+                    queryVector: queryEmbeddings,
+                    numCandidates: 100,
+                    limit,
                 },
-                {
-                    $project: {
-                        title: 1,
-                        price: 1,
-                        category: 1,
-                        condition: 1,
-                        score: { $meta: "vectorSearchScore" }
-                    }
-                }
-            ]);
-            console.log(`[Chat] Found ${contextItems.length} relevant items for context.`);
-        } catch (error) {
-            console.warn("[Chat] Vector search failed (likely index missing), proceeding without item context:", error.message);
-            // Non-fatal, just proceed without specific item context
+            },
+            {
+                $project: {
+                    _id: 0,
+                    content: 1,
+                    title: 1,
+                    price: 1,
+                    category: 1,
+                    condition: 1,
+                    score: { $meta: "vectorSearchScore" },
+                },
+            },
+        ]);
+
+        const [productResults, knowledgeResults] = await Promise.allSettled([
+            vectorSearchStage(Item, "vector_index", 4),
+            vectorSearchStage(KnowledgeChunk, "knowledge_index", 5),
+        ]);
+
+        // Format product results
+        if (productResults.status === "fulfilled" && productResults.value.length > 0) {
+            const items = productResults.value;
+            productContext = `RELEVANT MARKETPLACE LISTINGS:\n${items
+                .map(i => `- ${i.title} | Rs. ${i.price} | ${i.category} | Condition: ${i.condition}`)
+                .join("\n")}`;
+            console.log(`[Chat] Found ${items.length} relevant products.`);
+        } else {
+            if (productResults.status === "rejected") {
+                console.warn("[Chat] Product vector search failed (index may be missing):", productResults.reason?.message);
+            }
+        }
+
+        // Format knowledge chunk results
+        if (knowledgeResults.status === "fulfilled" && knowledgeResults.value.length > 0) {
+            const chunks = knowledgeResults.value;
+            knowledgeContext = `WEBSITE KNOWLEDGE BASE:\n${chunks.map(c => c.content).join("\n\n")}`;
+            console.log(`[Chat] Found ${chunks.length} relevant knowledge chunks.`);
+        } else {
+            if (knowledgeResults.status === "rejected") {
+                console.warn("[Chat] Knowledge vector search failed (index may be missing):", knowledgeResults.reason?.message);
+            }
         }
     }
 
-    // 3. Prepare Prompt
-    const siteContext = contextItems.length > 0 
-        ? `Here are some relevant items currently available in our marketplace:\n${contextItems.map(item => `- ${item.title} (Price: Rs. ${item.price}, Category: ${item.category}, Condition: ${item.condition})`).join('\n')}`
-        : "Currently, I couldn't find specific items matching your query, but I can help you with general site information about buying, selling, and bidding.";
+    // ─── Step 3: Build conversation history string (last 10 turns) ───────────
+    const recentHistory = Array.isArray(history) ? history.slice(-10) : [];
+    const historyBlock = recentHistory.length > 0
+        ? `\nCONVERSATION HISTORY:\n${recentHistory
+            .map(t => `${t.role === "assistant" ? "ASSISTANT" : "USER"}: ${t.content}`)
+            .join("\n")}\n`
+        : "";
 
-    const systemPrompt = `You are a helpful and friendly AI assistant for \"Dosro Bazar\", a premium marketplace for buying, selling, and bidding on items. 
-Your goal is to assist users with their questions about items, site navigation, or how to use the platform.
-Be concise, professional, and helpful. Use the context provided below to answer user queries if relevant.
+    // ─── Step 4: Compose the system prompt ───────────────────────────────────
+    const contextSection = [productContext, knowledgeContext].filter(Boolean).join("\n\n");
 
-CONTEXT:
-${siteContext}
+    const systemPrompt = `You are a helpful, friendly AI assistant exclusively for "Dosro Bazar" — a second-hand marketplace in Nepal where users buy, sell, and bid on items.
 
-USER MESSAGE:
-${message}
+STRICT RULES:
+- Only answer questions related to Dosro Bazar, its products, features, policies, or how to use the platform.
+- If the question is completely unrelated to Dosro Bazar (e.g., general coding help, world news, math homework), politely say: "I can only help with questions about Dosro Bazar. Is there anything about the marketplace I can assist you with?"
+- Be concise, warm, and professional.
+- Use the context below to give accurate, specific answers.
+- If you don't know something specific, suggest the user check the listing or contact the seller directly.
+- Respond in the same language the user uses (Nepali or English).
 
-AI ASSISTANT RESPONSE:`;
+${contextSection ? `CONTEXT:\n${contextSection}` : "No specific context found for this query, but I can help with general platform questions."}
+${historyBlock}
+USER: ${message}
+ASSISTANT:`;
 
-    // 4. Call Hugging Face LLM
-    const HUGGING_FACE_TOKEN = process.env.HUGGING_FACE_TOKEN;
-    const CHAT_MODEL = process.env.HF_CHAT_MODEL || "mistralai/Mistral-7B-Instruct-v0.2";
-
-    if (!HUGGING_FACE_TOKEN || HUGGING_FACE_TOKEN === "your_hugging_face_token_here") {
-        return res.status(200).json({
-            success: true,
-            data: "I'm sorry, my AI brain isn't fully connected right now (API token missing in config.env). How else can I help you navigate Dosro Bazar?"
-        });
-    }
-
-    const hf = new HfInference(HUGGING_FACE_TOKEN);
-
+    // ─── Step 5: Generate response with Gemini Flash ──────────────────────────
     try {
-        const response = await hf.textGeneration({
-            model: CHAT_MODEL,
-            inputs: systemPrompt,
-            parameters: {
-                max_new_tokens: 250,
-                temperature: 0.7,
-                return_full_text: false,
+        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({
+            model: "gemini-2.5-flash",
+            generationConfig: {
+                maxOutputTokens: 350,
+                temperature: 0.6,
             },
         });
 
-        // Handle both possible response formats from HF (object or array of objects)
-        let generatedText = "";
-        if (Array.isArray(response)) {
-            generatedText = response[0]?.generated_text || "";
-        } else {
-            generatedText = response.generated_text || "";
-        }
-        
-        generatedText = generatedText.trim();
-        console.log(`[Chat] Generated response: "${generatedText.substring(0, 50)}..."`);
+        const result = await model.generateContent(systemPrompt);
+        const responseText = result.response.text().trim();
 
-        return res.status(200).json({
-            success: true,
-            data: generatedText || "I'm sorry, I couldn't generate a proper response at this moment."
-        });
+        console.log(`[Chat] Response: "${responseText.substring(0, 80)}..."`);
+
+        return res.status(200).json({ success: true, data: responseText });
     } catch (error) {
-        console.error("[Chat] Error calling HF Inference:", error.message);
+        console.error("[Chat] Gemini generation failed:", error.message);
         return res.status(500).json({
             success: false,
-            message: "Failed to generate AI response. Please try again later."
+            message: "Failed to generate AI response. Please try again later.",
         });
     }
 });

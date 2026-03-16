@@ -1,38 +1,40 @@
-import { HfInference } from "@huggingface/inference";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
+/**
+ * Generate embeddings using Google Gemini.
+ * Tries text-embedding-004 (768-dim) first, falls back to embedding-001 (768-dim).
+ */
 const getEmbeddings = async (text) => {
-    const HUGGING_FACE_TOKEN = process.env.HUGGING_FACE_TOKEN;
-    const MODEL_ID = process.env.HF_MODEL_ID || "sentence-transformers/all-MiniLM-L6-v2";
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-    if (!HUGGING_FACE_TOKEN || HUGGING_FACE_TOKEN === "your_hugging_face_token_here") {
-        console.warn("Hugging Face Token is missing or not set. Returning empty embeddings.");
+    if (!GEMINI_API_KEY) {
+        console.warn("[Embeddings] GEMINI_API_KEY is not set. Returning empty embeddings.");
         return [];
     }
 
-    const hf = new HfInference(HUGGING_FACE_TOKEN);
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    // Use stable gemini-embedding-001 with 768-dim
+    const modelIds = ["gemini-embedding-001", "embedding-001"];
 
-    try {
-        console.log(`[Embeddings] Generating embeddings for text: "${text.substring(0, 50)}..."`);
-
-        const embeddings = await hf.featureExtraction({
-            model: MODEL_ID,
-            inputs: text,
-        });
-
-        if (Array.isArray(embeddings)) {
-            console.log(`[Embeddings] Successfully generated ${embeddings.length} dimensions.`);
-            console.log(`[Embeddings] Sample (first 5 values):`, embeddings.slice(0, 5));
+    for (const modelId of modelIds) {
+        try {
+            console.log(`[Embeddings] Trying model "${modelId}" for: "${text.substring(0, 60)}..."`);
+            const model = genAI.getGenerativeModel({ model: modelId });
+            const result = await model.embedContent({
+                content: { role: 'user', parts: [{ text }] }, 
+                taskType: 'RETRIEVAL_QUERY', 
+                outputDimensionality: 768
+            });
+            const values = result.embedding.values;
+            console.log(`[Embeddings] ✅ ${modelId} → ${values.length}-dim vector.`);
+            return values;
+        } catch (error) {
+            console.warn(`[Embeddings] ⚠️ Model "${modelId}" failed: ${error.message}`);
         }
-
-        return embeddings;
-    } catch (error) {
-        console.error("Error generating embeddings:", error.message);
-        // If it's a 403, it's likely a permission issue
-        if (error.message.includes("403")) {
-            console.error("HINT: Your Hugging Face token might lack 'Inference' permissions.");
-        }
-        return [];
     }
+
+    console.error("[Embeddings] All embedding models failed. Returning empty array.");
+    return [];
 };
 
 export default getEmbeddings;

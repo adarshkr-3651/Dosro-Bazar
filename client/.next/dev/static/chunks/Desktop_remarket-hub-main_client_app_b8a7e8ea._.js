@@ -13,18 +13,26 @@ __turbopack_context__.s([
     ()=>completeOAuthRegistration,
     "default",
     ()=>__TURBOPACK__default__export__,
+    "deleteChatMessage",
+    ()=>deleteChatMessage,
     "endpoints",
     ()=>endpoints,
     "facebookLogin",
     ()=>facebookLogin,
     "forgotPassword",
     ()=>forgotPassword,
+    "generateItemDescription",
+    ()=>generateItemDescription,
     "getAllItems",
     ()=>getAllItems,
+    "getConversations",
+    ()=>getConversations,
     "getEditItemData",
     ()=>getEditItemData,
     "getFavorites",
     ()=>getFavorites,
+    "getMessages",
+    ()=>getMessages,
     "getMyListings",
     ()=>getMyListings,
     "getProductBySlug",
@@ -47,14 +55,20 @@ __turbopack_context__.s([
     ()=>resetPassword,
     "searchSemantic",
     ()=>searchSemantic,
+    "sendChatMessage",
+    ()=>sendChatMessage,
     "signUpUser",
     ()=>signUpUser,
     "toggleFavorite",
     ()=>toggleFavorite,
+    "toggleOnlineStatus",
+    ()=>toggleOnlineStatus,
     "updateItem",
     ()=>updateItem,
     "updateProfile",
     ()=>updateProfile,
+    "uploadChatImage",
+    ()=>uploadChatImage,
     "verifyEmail",
     ()=>verifyEmail
 ]);
@@ -491,10 +505,11 @@ async function getRecommendations() {
         }
     }
 }
-async function chatWithAI(message) {
+async function chatWithAI(message, history = []) {
     try {
         const response = await api.post('/chat', {
-            message
+            message,
+            history
         });
         return response.data;
     } catch (error) {
@@ -503,6 +518,86 @@ async function chatWithAI(message) {
         } else {
             throw new Error(error.message || 'Failed to get AI response');
         }
+    }
+}
+async function generateItemDescription(title, category, condition, price) {
+    try {
+        const response = await api.post('/describe', {
+            title,
+            category,
+            condition,
+            price
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to generate description');
+        } else {
+            throw new Error(error.message || 'Failed to generate description');
+        }
+    }
+}
+async function getConversations() {
+    try {
+        const response = await api.get('/chat-system/conversations');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to fetch conversations');
+    }
+}
+async function getMessages(conversationId) {
+    try {
+        const response = await api.get(`/chat-system/${conversationId}/messages`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to fetch messages');
+    }
+}
+async function sendChatMessage(receiverId, itemId, text, image, location) {
+    try {
+        const payload = {
+            receiverId,
+            itemId
+        };
+        if (text) payload.text = text;
+        if (image) payload.image = image;
+        if (location) payload.location = location;
+        const response = await api.post('/chat-system/message', payload);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to send message');
+    }
+}
+async function uploadChatImage(file) {
+    try {
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await api.post('/chat-system/uploadImage', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to upload chat image');
+    }
+}
+async function toggleOnlineStatus(isOnlineVisible) {
+    try {
+        const response = await api.put('/user/toggleOnlineStatus', {
+            isOnlineVisible
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to update visibility settings');
+    }
+}
+async function deleteChatMessage(messageId) {
+    try {
+        const response = await api.delete(`/chat-system/message/${messageId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Failed to delete message');
     }
 }
 const endpoints = {
@@ -975,9 +1070,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bot$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bot$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/bot.js [app-client] (ecmascript) <export default as Bot>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/user.js [app-client] (ecmascript) <export default as User>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/lib/api.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/lib/utils.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/context/AuthContext.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/react-markdown/lib/index.js [app-client] (ecmascript) <export Markdown as default>");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -986,18 +1084,87 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
+;
+const PROMPT_LIMIT = 30;
+const STORAGE_KEY = (userId)=>`remarket_chat_history_${userId}`;
+_c = STORAGE_KEY;
+const getInitialMessage = (name)=>({
+        role: "bot",
+        content: name ? `Hello ${name}! I'm your Dosro Bazar assistant. How can I help you today?` : "Hello! I'm your Dosro Bazar assistant. How can I help you today?"
+    });
 function Chatbot() {
     _s();
+    const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const [isOpen, setIsOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [messages, setMessages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([
-        {
-            role: "bot",
-            content: "Hello! I'm your Dosro Bazar assistant. How can I help you today?"
-        }
+        getInitialMessage(user?.username)
     ]);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [promptCount, setPromptCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const scrollRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // Load history from localStorage when user logs in
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Chatbot.useEffect": ()=>{
+            if (!user) return;
+            const key = STORAGE_KEY(user.id);
+            try {
+                const saved = localStorage.getItem(key);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    setMessages(parsed.messages);
+                    setPromptCount(parsed.count);
+                } else {
+                    setMessages([
+                        getInitialMessage(user.username)
+                    ]);
+                    setPromptCount(0);
+                }
+            } catch  {
+                setMessages([
+                    getInitialMessage(user.username)
+                ]);
+                setPromptCount(0);
+            }
+        }
+    }["Chatbot.useEffect"], [
+        user
+    ]);
+    // Clear history when user logs out
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Chatbot.useEffect": ()=>{
+            if (!user) {
+                setMessages([
+                    getInitialMessage()
+                ]);
+                setPromptCount(0);
+                setIsOpen(false);
+            }
+        }
+    }["Chatbot.useEffect"], [
+        user
+    ]);
+    // Save to localStorage whenever messages or count change
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Chatbot.useEffect": ()=>{
+            if (!user) return;
+            const key = STORAGE_KEY(user.id);
+            try {
+                localStorage.setItem(key, JSON.stringify({
+                    messages,
+                    count: promptCount
+                }));
+            } catch  {
+            // Storage quota exceeded or unavailable — fail silently
+            }
+        }
+    }["Chatbot.useEffect"], [
+        messages,
+        promptCount,
+        user
+    ]);
+    // Auto-scroll on new messages
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Chatbot.useEffect": ()=>{
             if (scrollRef.current) {
@@ -1007,10 +1174,40 @@ function Chatbot() {
     }["Chatbot.useEffect"], [
         messages
     ]);
+    // Don't render for unauthenticated users
+    if (!user) return null;
+    const clearHistory = ()=>{
+        if (user) {
+            localStorage.removeItem(STORAGE_KEY(user.id));
+        }
+        setMessages([
+            getInitialMessage(user?.username)
+        ]);
+        setPromptCount(0);
+    };
     const handleSendMessage = async ()=>{
         if (!input.trim() || isLoading) return;
         const userMessage = input.trim();
         setInput("");
+        // Check limit before sending
+        const newCount = promptCount + 1;
+        if (newCount > PROMPT_LIMIT) {
+            setMessages((prev)=>[
+                    ...prev,
+                    {
+                        role: "user",
+                        content: userMessage
+                    },
+                    {
+                        role: "system",
+                        content: `You've reached the ${PROMPT_LIMIT}-message limit. Starting a fresh conversation.`
+                    }
+                ]);
+            // Brief delay so user can see the notice, then reset
+            setTimeout(()=>clearHistory(), 1500);
+            return;
+        }
+        setPromptCount(newCount);
         setMessages((prev)=>[
                 ...prev,
                 {
@@ -1019,8 +1216,14 @@ function Chatbot() {
                 }
             ]);
         setIsLoading(true);
+        // Build history for backend (all prior turns except initial greeting and system messages)
+        const history = messages.filter((m)=>m.role !== "system").slice(1) // skip initial greeting
+        .map((m)=>({
+                role: m.role === "bot" ? "assistant" : "user",
+                content: m.content
+            }));
         try {
-            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["chatWithAI"])(userMessage);
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["chatWithAI"])(userMessage, history);
             if (response.success) {
                 setMessages((prev)=>[
                         ...prev,
@@ -1038,7 +1241,7 @@ function Chatbot() {
                         }
                     ]);
             }
-        } catch (error) {
+        } catch  {
             setMessages((prev)=>[
                     ...prev,
                     {
@@ -1050,6 +1253,7 @@ function Chatbot() {
             setIsLoading(false);
         }
     };
+    const remainingPrompts = PROMPT_LIMIT - promptCount;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "fixed bottom-6 right-6 z-50 flex flex-col items-end",
         children: [
@@ -1068,42 +1272,42 @@ function Chatbot() {
                                             size: 20
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 60,
+                                            lineNumber: 159,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                        lineNumber: 59,
+                                        lineNumber: 158,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                 className: "font-semibold text-sm",
-                                                children: "ReMarket Assistant"
+                                                children: "Dosro Bazar Assistant"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                lineNumber: 63,
+                                                lineNumber: 162,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 className: "text-[10px] opacity-80",
-                                                children: "Online & ready to help"
+                                                children: remainingPrompts <= 5 ? `${remainingPrompts} message${remainingPrompts !== 1 ? "s" : ""} remaining` : "Online & ready to help"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                lineNumber: 64,
+                                                lineNumber: 163,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                        lineNumber: 62,
+                                        lineNumber: 161,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                lineNumber: 58,
+                                lineNumber: 157,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1115,25 +1319,53 @@ function Chatbot() {
                                     size: 18
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                    lineNumber: 73,
+                                    lineNumber: 176,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                lineNumber: 67,
+                                lineNumber: 170,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                        lineNumber: 57,
+                        lineNumber: 156,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         ref: scrollRef,
                         className: "flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-primary/20",
                         children: [
-                            messages.map((msg, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            messages.map((msg, i)=>{
+                                if (msg.role === "system") {
+                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center gap-2 justify-center",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
+                                                size: 14,
+                                                className: "text-amber-500 shrink-0"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
+                                                lineNumber: 189,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-[11px] text-center text-muted-foreground italic",
+                                                children: msg.content
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
+                                                lineNumber: 190,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, i, true, {
+                                        fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
+                                        lineNumber: 188,
+                                        columnNumber: 19
+                                    }, this);
+                                }
+                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex gap-2 max-w-[85%]", msg.role === "user" ? "ml-auto flex-row-reverse" : ""),
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1142,34 +1374,41 @@ function Chatbot() {
                                                 size: 14
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                lineNumber: 94,
-                                                columnNumber: 42
+                                                lineNumber: 212,
+                                                columnNumber: 44
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bot$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bot$3e$__["Bot"], {
                                                 size: 14
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                lineNumber: 94,
-                                                columnNumber: 63
+                                                lineNumber: 212,
+                                                columnNumber: 65
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 90,
-                                            columnNumber: 17
+                                            lineNumber: 204,
+                                            columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-3 rounded-2xl text-sm shadow-sm", msg.role === "user" ? "bg-primary text-primary-foreground rounded-tr-none" : "bg-muted text-foreground rounded-tl-none"),
-                                            children: msg.content
+                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-3 rounded-2xl text-sm shadow-sm", msg.role === "user" ? "bg-primary text-primary-foreground rounded-tr-none" : "bg-muted text-foreground rounded-tl-none prose prose-sm dark:prose-invert max-w-none break-words"),
+                                            children: msg.role === "bot" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$react$2d$markdown$2f$lib$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__Markdown__as__default$3e$__["default"], {
+                                                children: msg.content
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
+                                                lineNumber: 223,
+                                                columnNumber: 23
+                                            }, this) : msg.content
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 96,
-                                            columnNumber: 17
+                                            lineNumber: 214,
+                                            columnNumber: 19
                                         }, this)
                                     ]
                                 }, i, true, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                    lineNumber: 83,
-                                    columnNumber: 15
-                                }, this)),
+                                    lineNumber: 197,
+                                    columnNumber: 17
+                                }, this);
+                            }),
                             isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex gap-2 max-w-[85%]",
                                 children: [
@@ -1179,12 +1418,12 @@ function Chatbot() {
                                             size: 14
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 109,
+                                            lineNumber: 234,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                        lineNumber: 108,
+                                        lineNumber: 233,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1196,44 +1435,44 @@ function Chatbot() {
                                                     className: "w-1.5 h-1.5 bg-foreground/20 rounded-full animate-bounce"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                    lineNumber: 113,
+                                                    lineNumber: 238,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "w-1.5 h-1.5 bg-foreground/20 rounded-full animate-bounce [animation-delay:0.2s]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                    lineNumber: 114,
+                                                    lineNumber: 239,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "w-1.5 h-1.5 bg-foreground/20 rounded-full animate-bounce [animation-delay:0.4s]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                                    lineNumber: 115,
+                                                    lineNumber: 240,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 112,
+                                            lineNumber: 237,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                        lineNumber: 111,
+                                        lineNumber: 236,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                lineNumber: 107,
+                                lineNumber: 232,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                        lineNumber: 78,
+                        lineNumber: 181,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1251,7 +1490,7 @@ function Chatbot() {
                                         className: "flex-1 bg-muted border-none rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                        lineNumber: 125,
+                                        lineNumber: 250,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1264,44 +1503,50 @@ function Chatbot() {
                                             size: 18
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 139,
-                                            columnNumber: 30
+                                            lineNumber: 265,
+                                            columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__["Send"], {
                                             size: 18
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                            lineNumber: 139,
-                                            columnNumber: 79
+                                            lineNumber: 267,
+                                            columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 258,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                lineNumber: 124,
+                                lineNumber: 249,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "text-[10px] text-center text-muted-foreground mt-2",
-                                children: "Powered by ReMarket AI"
-                            }, void 0, false, {
+                                children: [
+                                    "Powered by Dosro Bazar AI · ",
+                                    promptCount,
+                                    "/",
+                                    PROMPT_LIMIT,
+                                    " messages used"
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                                lineNumber: 142,
+                                lineNumber: 271,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                        lineNumber: 123,
+                        lineNumber: 248,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                lineNumber: 55,
+                lineNumber: 154,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1312,31 +1557,36 @@ function Chatbot() {
                     size: 28
                 }, void 0, false, {
                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                    lineNumber: 158,
+                    lineNumber: 289,
                     columnNumber: 19
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageCircle$3e$__["MessageCircle"], {
                     size: 28
                 }, void 0, false, {
                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                    lineNumber: 158,
+                    lineNumber: 289,
                     columnNumber: 37
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-                lineNumber: 150,
+                lineNumber: 279,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Chatbot.tsx",
-        lineNumber: 52,
+        lineNumber: 151,
         columnNumber: 5
     }, this);
 }
-_s(Chatbot, "hnVAzTgxSUaFXT9lvJvZ0uJaRVY=");
-_c = Chatbot;
-var _c;
-__turbopack_context__.k.register(_c, "Chatbot");
+_s(Chatbot, "6HJdSiCpMWKcMnAQ62+ml2UKg0U=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
+    ];
+});
+_c1 = Chatbot;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "STORAGE_KEY");
+__turbopack_context__.k.register(_c1, "Chatbot");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }

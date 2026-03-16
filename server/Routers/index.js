@@ -9,6 +9,8 @@ import commentRoute from "./comment.js";
 import jwksRoute from "./jwks.js";
 import adminRoute from "./admin.js";
 import chatRoute from "./chat.js";
+import descriptionRoute from "./description.js";
+import chatSystemRoute from "./chatSystem.js";
 
 // Mount JWKS route first (public endpoint)
 router.use("/", jwksRoute)
@@ -19,6 +21,7 @@ router.use("/user", userRoute)
 router.use("/comment", commentRoute)
 router.use("/admin", adminRoute)
 router.use("/chat", chatRoute)
-
+router.use("/describe", descriptionRoute)
+router.use("/chat-system", chatSystemRoute)
 
 export default router;

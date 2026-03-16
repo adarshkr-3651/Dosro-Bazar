@@ -273,6 +273,20 @@ const getFavorites = asyncErrorWrapper(async (req, res, next) => {
     });
 });
 
+const toggleOnlineStatus = asyncErrorWrapper(async (req, res, next) => {
+    const { isOnlineVisible } = req.body;
+    
+    const user = await User.findById(req.user.id);
+    user.isOnlineVisible = isOnlineVisible;
+    await user.save();
+    
+    return res.status(200).json({
+        success: true,
+        data: user,
+        message: `Online status is now ${isOnlineVisible ? 'Visible' : 'Hidden'}`
+    });
+});
+
 export {
     profile,
     editProfile,
@@ -280,6 +294,7 @@ export {
     addItemToReadList,
     readListPage,
     toggleFavorite,
-    getFavorites
+    getFavorites,
+    toggleOnlineStatus
 };
 

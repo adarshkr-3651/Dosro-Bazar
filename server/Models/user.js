@@ -180,7 +180,17 @@ const UserSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         }
-    }]
+    }],
+    otp: {
+        type: String
+    },
+    otpExpires: {
+        type: Date
+    },
+    isOnlineVisible: {
+        type: Boolean,
+        default: true
+    }
 }, {
     timestamps: true  // Automatically add createdAt and updatedAt fields
 });
