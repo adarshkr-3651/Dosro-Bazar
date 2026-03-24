@@ -32,6 +32,17 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
         console.log("[item.js] addItem() - Generating embeddings...");
         const embeddings = await getEmbeddings(`${title} ${content.substring(0, 500)}`);
 
+        let offerExpiresAt = null;
+        if (parseFloat(offerPrice) > 0 && offerDuration) {
+            const duration = parseFloat(offerDuration);
+            offerExpiresAt = new Date();
+            if (offerUnit === "h") {
+                offerExpiresAt.setHours(offerExpiresAt.getHours() + duration);
+            } else if (offerUnit === "d") {
+                offerExpiresAt.setDate(offerExpiresAt.getDate() + duration);
+            }
+        }
+
         console.log("[item.js] addItem() - Creating item in database...");
         const newItem = await Item.create({
             title,
@@ -48,6 +59,7 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
             offerPrice: parseFloat(offerPrice) || 0,
             offerDuration: offerDuration || "",
             offerUnit: offerUnit || "h",
+            offerExpiresAt: offerExpiresAt,
             expiry: expiry || "",
             expiryDuration: expiryDuration || "",
             expiryUnit: expiryUnit || "d",
@@ -187,7 +199,7 @@ const editItemPage = asyncErrorWrapper(async (req, res, next) => {
 
 const editItem = asyncErrorWrapper(async (req, res, next) => {
     const { slug } = req.params;
-    const { title, content, price, bidPrice, image, previousImage } = req.body;
+    const { title, content, price, bidPrice, isBiddable, offerPrice, offerDuration, offerUnit, expiry, expiryDuration, expiryUnit, deliveryAvailable, paymentMethods } = req.body;
 
     if (price < 0 || (bidPrice && bidPrice < 0)) {
         return next(new Error("Price or Bid Price cannot be negative"));
@@ -203,17 +215,48 @@ const editItem = asyncErrorWrapper(async (req, res, next) => {
 
     item.title = title;
     item.content = content;
-    item.image = req.file ? req.file.path : item.image;
 
-    if (!req.file) {
-        // if the image is not sent
-        item.image = image
+    // Handle Images
+    if (req.files && req.files.length > 0) {
+        item.images = req.files.map(file => file.path);
     }
-    else {
-        // if the image sent
-        // old image locatıon delete
-        deleteImageFile(req, previousImage)
 
+    // Update other fields
+    item.price = parseFloat(price) || item.price;
+    item.bidPrice = parseFloat(bidPrice) || item.bidPrice;
+    item.isBiddable = isBiddable === 'true' || isBiddable === true;
+    
+    // Handle Offers
+    const updateOfferPrice = parseFloat(offerPrice);
+    if (!isNaN(updateOfferPrice)) {
+        // If duration or unit changed, or if it's a new offer
+        if (item.offerPrice !== updateOfferPrice || item.offerDuration !== offerDuration || item.offerUnit !== offerUnit) {
+            item.offerPrice = updateOfferPrice;
+            item.offerDuration = offerDuration;
+            item.offerUnit = offerUnit;
+            
+            if (updateOfferPrice > 0 && offerDuration) {
+                const duration = parseFloat(offerDuration);
+                let expiresAt = new Date();
+                if (offerUnit === "h") {
+                    expiresAt.setHours(expiresAt.getHours() + duration);
+                } else if (offerUnit === "d") {
+                    expiresAt.setDate(expiresAt.getDate() + duration);
+                }
+                item.offerExpiresAt = expiresAt;
+            } else {
+                item.offerExpiresAt = null;
+            }
+        }
+    }
+
+    item.expiry = expiry || item.expiry;
+    item.expiryDuration = expiryDuration || item.expiryDuration;
+    item.expiryUnit = expiryUnit || item.expiryUnit;
+    item.deliveryAvailable = deliveryAvailable === 'true' || deliveryAvailable === true;
+    
+    if (paymentMethods) {
+        item.paymentMethods = typeof paymentMethods === 'string' ? JSON.parse(paymentMethods) : paymentMethods;
     }
 
     await item.save();
