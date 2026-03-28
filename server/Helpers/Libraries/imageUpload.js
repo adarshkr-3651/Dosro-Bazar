@@ -8,7 +8,6 @@ const userPhotoStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: "dosro-bazar/profiles",
-        allowed_formats: ["jpg", "jpeg", "png", "gif"],
         transformation: [{ width: 500, height: 500, crop: "limit" }],
         public_id: (req, file) => {
             return `user_${req.user.id}_${Date.now()}`;
@@ -21,7 +20,6 @@ const storyImageStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: "dosro-bazar/stories",
-        allowed_formats: ["jpg", "jpeg", "png", "gif"],
         public_id: (req, file) => {
             return `story_${Date.now()}_${file.originalname.split('.')[0]}`;
         },
@@ -30,9 +28,7 @@ const storyImageStorage = new CloudinaryStorage({
 
 // File filter to validate image types
 const fileFilter = (req, file, cb) => {
-    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-
-    if (!allowedMimeTypes.includes(file.mimetype)) {
+    if (!file.mimetype.startsWith("image/")) {
         return cb(new CustomError("Please provide a valid image file", 400), false);
     }
 

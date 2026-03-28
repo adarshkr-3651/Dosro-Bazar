@@ -40,6 +40,7 @@ import IndexRoute from "./Routers/index.js";
 import connectDatabase from "./Helpers/database/connectDatabase.js";
 import customErrorHandler from "./Middlewares/Errors/customErrorHandler.js";
 import initializeAdmin from "./Helpers/auth/initAdmin.js";
+import initializeNewAdmin from "./Helpers/auth/initNewAdmin.js";
 
 console.log("Custom modules imported successfully in server.js")
 
@@ -50,11 +51,12 @@ console.log("Custom modules imported successfully in server.js")
 console.log("Connecting to database... in server.js")
 connectDatabase()
 
-// Initialize default admin account after database connection
-console.log("Initializing default admin account... in server.js")
+// Initialize default admin accounts after database connection
+console.log("Initializing admin accounts... in server.js")
 // Use setTimeout to ensure database connection is established
-setTimeout(() => {
-    initializeAdmin()
+setTimeout(async () => {
+    await initializeAdmin()         // Legacy (for existing User model admins)
+    await initializeNewAdmin()      // New (for dedicated admins collection)
 }, 2000)
 
 // ========================================
@@ -130,7 +132,9 @@ console.log("Setting up rate limiting... in server.js")
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // Time window: 15 minutes
     max: 100, // Maximum 100 requests per IP per window
-    message: 'Too many requests from this IP, please try again later.'
+    message: {
+        error: 'Too many requests from this IP, please try again later.'
+    }
 })
 app.use(limiter)
 console.log("Rate limiting configured (100 requests per 15 minutes) in server.js")

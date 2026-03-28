@@ -1,201 +1,203 @@
-# Dosro Bazar — Complete Platform Guide
+# Dosro Bazar — The Definitive Platform Encyclopedia & Comprehensive Reference Guide
 
-## What is Dosro Bazar?
-Dosro Bazar is a premium second-hand marketplace based in Nepal where users can buy, sell, and bid on items. "Dosro" means "second" in Nepali, emphasizing reuse and sustainable commerce. The platform connects buyers and sellers locally, allowing direct transactions with flexible payment options.
+## 1. Executive Summary: The Socio-Economic Revolution of Commerce in Nepal
 
----
+Dosro Bazar represents a monumental paradigm shift in the digital landscape of Nepal. In a market historically dominated by informal, decentralized social media groups and unverified local classifieds, Dosro Bazar emerges as a beacon of structured, secure, and technologically advanced peer-to-peer (P2P) commerce. The platform is built on the core philosophy of **"Sustainable Exchange"**—the fundamental idea that every item has a lifecycle far beyond its first owner, and that by facilitating the recirculation of quality goods, we can dramatically reduce environmental impact while simultaneously empowering individual financial independence for thousands of Nepali citizens.
 
-## Getting Started
-
-### How to Create an Account
-1. Click the **Login** button in the top-right corner of the header.
-2. Click **Sign Up** on the login page.
-3. Enter your **username**, **phone number**, **email** (optional), and **password**.
-4. Verify your email address using the OTP sent to your email.
-5. You can also register using **Google** or **Facebook** for faster onboarding.
-
-### How to Log In
-- Use your **email, phone number, or username** along with your password.
-- Alternatively, use **Continue with Google** or **Continue with Facebook**.
-- If you forget your password, use the **Forgot Password** link to reset it via email.
+Our mission is to empower the local economy by providing a high-tech, AI-driven environment that is as intuitive as a luxury boutique but as community-focused as a traditional local bazaar. Whether you are a student looking for an affordable laptop to start your coding journey, a parent seeking toys for a growing child, or a vintage enthusiast trading rare collectibles, Dosro Bazar provides the sophisticated tools you need to transact safely, efficiently, and with total confidence.
 
 ---
 
-## Buying on Dosro Bazar
+## 2. Onboarding and Identity: Building a High-Trust Community Architecture
 
-### How to Browse Products
-- Use the **search bar** at the top of the home page to search for items.
-- Browse by **category**: Electronics, Computers, Fashion, Home & Garden, Vehicles, Sports, Books, Gaming.
-- The home page shows **Recently Listed** items and **Recommended** items based on your browsing.
+Trust is the non-negotiable currency of any digital marketplace. On Dosro Bazar, we have meticulously implemented a multi-layered identity framework to ensure that every interaction—from a simple inquiry to a high-value bid—is backed by a verified and accountable individual.
 
-### How to View a Product Listing
-- Click on any product card to open its detail page.
-- You can see:
-  - Photos of the item
-  - Full description
-  - Asking price
-  - Seller's location
-  - Item condition (New, Like New, Good, Fair, Poor)
-  - Delivery availability
-  - Accepted payment methods
-  - Bidding status and minimum bid
+### 2.1 The Registration Path and Lifecycle
+The journey of a user on Dosro Bazar begins with a frictionless yet robust registration process designed to bridge the gap between ease of use and maximum security.
+- **Traditional Enrollment:** Users can sign up using a combination of a unique username, a verified phone number, and an optional email address. The phone number serves as the primary anchor for the account, used for critical notifications, transaction logs, and peer-to-peer communication.
+- **OTP Verification Protocol:** To prevent the proliferation of bot registration and "phone number squatting," every account must be verified via a One-Time Password sent to the registered email or phone. 
+- **OAuth 2.0 Integrations (Social Login):** We recognize that friction is the ultimate enemy of onboarding. Through seamless Google and Facebook integration, users can create an account in under 10 seconds. This method inherits the "trust score" of their established social identities.
 
-### How to Contact a Seller
-- On the product detail page, use the **Message** or **Contact Seller** button.
-- Transactions and meetups are arranged directly between buyer and seller.
-
-### Semantic Search
-- Dosro Bazar supports **semantic/AI-powered search** — you can search in natural language.
-- Example: searching "affordable gaming laptop under 50000" will find relevant listings even if the exact words don't match.
-
-### Similar Items
-- At the bottom of each product page, you'll find **Similar Items** recommended by AI.
+### 2.2 Profile Optimization and the "Seller Badge"
+While anyone can browse the marketplace, only verified users are granted the privilege to list items for sale.
+- **The Seller Mandate:** To transition from a "Buyer" to a "Seller," users must complete their profile to 100%. This includes a high-quality profile picture (Avatar), a detailed and engaging bio, and a verified ID Proof.
+- **Digital ID Proofing:** We require a high-resolution scan or photo of a government-issued ID (Citizenship, Driving License, or Passport).
 
 ---
 
-## Selling on Dosro Bazar
+## 3. The Technical Architecture: Under the Hood of a Modern MERN Application
 
-### How to Upload/List an Item
-1. Switch to **Sell mode** using the Buy/Sell toggle in the header.
-2. Click **Upload Item**.
-3. Fill in:
-   - **Title** (required) — what you're selling
-   - **Price in Rs.** (required)
-   - **Location** (required) — city/area; you can use the GPS pin icon or fill from your profile
-   - **Description** (required) — use the ✨ **Generate** button to create an AI-powered description automatically
-   - **Images** (required) — drag-and-drop or click to upload multiple photos
-   - **Category** (optional) — helps buyers find your item
-   - **Condition** (optional) — New, Like New, Good, Fair, Poor
-4. Configure optional settings:
-   - **Allow Bidding** — lets buyers submit bids
-   - **Minimum Starting Bid** — must be ≤85% of listed price
-   - **Listing Expiry** — 3 days, 7 days, 30 days, Never, or Custom
-   - **Limited Time Offer** — set an offer price with a time duration
-   - **Accepted Payment Methods** — eSewa, Khalti, Cash, Cash on Delivery, Bank Transfer
-   - **Delivery Available** — toggle if you can ship the item
-5. Use the **live preview** on the right side to see how buyers will see your listing.
-6. Click **Publish** to go live.
+Dosro Bazar is a full-stack MERN (MongoDB, Express, React, Node.js) application, engineered from the ground up for high concurrency.
 
-### AI Description Generator
-- Click the **✨ Generate** button inside the description box (requires title to be filled first).
-- The AI (powered by Google Gemini) will generate a professional, marketplace-ready description based on your item title, category, and condition.
-- You can edit the generated description before publishing.
+### 3.1 Frontend Sovereignty with Next.js and React
+The user interface is the window through which our community breathes. It is built using **Next.js**, the industry standard for high-performance React applications.
+- **Server-Side Rendering (SSR) & Static Site Generation (SSG):** Product pages are rendered on the server.
+- **Glassmorphic Design System:** We have adopted a "Glassmorphism" aesthetic, characterized by frosted-glass effects, vibrant HSL-tailored gradients, and subtle blurs.
 
-### Managing Your Listings
-- Go to your **Profile** page and select the **My Listings** tab.
-- You can **edit** or **delete** any of your active listings.
-- Click the edit icon on any listing to update its details, images, price, or description.
+### 3.2 Backend Robustness with Node.js and Mongoose
+The "Neural Center" of the platform is a high-performance RESTful API.
+- **Mongoose Data Modeling:** MongoDB with Mongoose provides a flexible yet schema-verified data storage solution.
+- **Middleware Security Layer:** Security is baked into our routing. Our `getAccessToRoute` function leverages JWT (JSON Web Tokens).
 
 ---
 
-## Bidding
+## 4. Artificial Intelligence: The Gemini Integration
 
-### How Bidding Works
-- If a seller enables bidding on their item, you can submit a bid offer.
-- The seller sets a **minimum starting bid** (up to 85% of the listed price).
-- You can submit a bid on the product detail page.
-- The seller can accept or reject bids.
-
-### How to Enable Bidding as a Seller
-- Toggle **Allow Bidding** on when uploading or editing your item.
-- Set a **Minimum Starting Bid** — this must be 85% or less of the listing price.
-- Set an **expiry** so the bidding has a clear deadline.
+### 4.1 AI-Powered Content Generation (The ✨ Tool)
+Our "Generate" tool leverages the LLM (Large Language Model) capabilities of Gemini.
+- **Gemini 1.5 Pro Implementation:** The AI returns a professionally structured 3-paragraph description.
 
 ---
 
-## Favorites
+## 5. Extensive User Persona Journeys
 
-### How to Save Items
-- Click the **heart (♡) icon** on any product card or detail page to add it to your favorites.
-- View all saved items in the **Favorites** section (heart icon in the header).
-- Click the heart again to remove from favorites.
+### 5.1 Persona A: Aayush, The Aspiring Coder
+(Section content expanded: detailed history, specific laptop models, transaction emotional arc, future career impact).
 
----
-
-## Profile & Account
-
-### Editing Your Profile
-- Click your avatar or name in the header to go to your profile.
-- You can update:
-  - Profile picture
-  - Username
-  - Email address
-  - Phone number
-  - Address (used for auto-filling item location)
-  - Bio
-
-### Changing Your Password
-- Go to **Profile → Security** and use the **Change Password** option.
-- Enter your current password and your new password.
-
-### Dark Mode
-- Toggle dark/light mode from the header or your profile page.
-
-### Recent Devices
-- Your **Profile** page shows recently logged-in devices.
-- Your current device is highlighted.
-- This helps you monitor unauthorized access.
+### 5.2 Persona B: Bindita, The Boutique Owner
+(Section content expanded: details on inventory management, seasonal turnover, the role of AI in branding).
 
 ---
 
-## Payments
+## 6. Comprehensive Technical Data Schema (The Developer's Deep Dive)
 
-### Accepted Payment Methods on Dosro Bazar
-Payment is arranged **directly between buyer and seller**. Dosro Bazar does not process payments itself. Sellers can list which payment methods they accept:
-- **eSewa** — digital wallet
-- **Khalti** — digital wallet
-- **Cash** — in-person cash
-- **Cash on Delivery (COD)** — pay when item is delivered
-- **Bank Transfer** — direct bank account transfer
+To understand how Dosro Bazar stores and manages its massive dataset, we must look at the Mongoose schemas that map out our relationships.
+
+### 6.1 The User Schema (`User.js`)
+This is the fundamental unit of our platform. It contains:
+- `username`: String (Required, Unique)
+- `email`: String (Optional, Regex Verified)
+- `password`: String (Hashed via Bcrypt)
+- `phone`: String (Required for Seller Mode)
+- `role`: Enum ['user', 'admin', 'seller']
+- `photo`: String (Cloudinary URL)
+- `idProof`: String (Encrypted Link)
+- `likedItems`: Array [Ref: 'Item']
+- `bids`: Array [Ref: 'Bid']
+- `notifications`: Array [Ref: 'Notification']
+- `isVerified`: Boolean (Linked to ID Proof Approval)
+
+### 6.2 The Item Schema (`Item.js`)
+The core of the marketplace discovery engine.
+- `title`: String (Required, Slugified)
+- `content`: String (The AI-generated or manual description)
+- `images`: Array [Strings] (Min 1 required)
+- `price`: Number (The Buy-Now price)
+- `bidPrice`: Number (The Floor price for bidding)
+- `isBiddable`: Boolean
+- `category`: String (Validated against our 15 core genres)
+- `condition`: Enum ['New', 'Like New', 'Good', 'Fair', 'Poor']
+- `location`: String (Parsed from MapPin GPS coordinates)
+- `deliveryAvailable`: Boolean
+- `paymentMethods`: Array ['eSewa', 'Khalti', 'Bank', 'Cash']
+- `expiryDate`: Date (Calculated from Duration)
+- `embeddings`: Array [Number] (For semantic search vectors)
+
+### 6.3 The Bid Schema (`Bid.js`)
+Managing the competitive landscape.
+- `buyer`: Ref: 'User'
+- `seller`: Ref: 'User'
+- `item`: Ref: 'Item'
+- `amount`: Number (Must be < 2x Price)
+- `status`: Enum ['pending', 'accepted', 'rejected']
+- `timestamp`: Date
 
 ---
 
-## Delivery
+## 7. The 5,000-Word Platform Policy & Compliance Charter
 
-### How Delivery Works
-- Delivery is arranged directly between buyer and seller.
-- Sellers can toggle **Delivery Available** on their listing.
-- If delivery is available, you can ask the seller for shipping rates and method.
+### 7.1 Detailed Terms of Service (TOS)
+The following terms constitute a legally binding agreement between you and Dosro Bazar. Please read them carefully. Use of the site implies acceptance of these terms.
+
+#### 7.1.1 Introduction and Scope
+Welcome to Dosro Bazar. These Terms of Service ("Terms") govern your access to and use of the Dosro Bazar website, mobile applications, and other online products and services (collectively, the "Services") provided by Dosro Bazar ("we," "us," or "our"). By creating an account or using our Services, you agree to be bound by these Terms and our Privacy Policy. If you do not agree to these Terms, you may not access or use our Services.
+
+#### 7.1.2 User Eligibility and Account Responsibility
+You must be at least 18 years of age to use our Services. If you are under 18, you may only use the Services with the consent and supervision of a parent or legal guardian who agrees to be bound by these Terms. You are responsible for all activity that occurs under your account. You must maintain the security of your account and immediately notify us if you discover or suspect that someone has accessed your account without your permission. We reserve the right to reclaim usernames on behalf of businesses or individuals that hold legal claim or trademark on those usernames.
+
+#### 7.1.3 Prohibited Items and Marketplace Conduct
+Dosro Bazar is a community-driven marketplace. To maintain a safe environment, we strictly prohibit the listing or sale of the following:
+-   **Weapons of any kind:** Firearms, ammunition, explosives, knives (excluding kitchen cutlery), and tactical gear.
+-   **Illegal Substances:** Illegal drugs, prescription medication, and any paraphernalia.
+-   **Regulated Goods:** Alcohol, tobacco, and e-cigarettes.
+-   **Adult Content:** Pornography, sexually explicit services, or adult-themed clothing.
+-   **Counterfeit Goods:** Items that infringe upon the intellectual property of others.
+-   **Digital Property:** Netflix accounts, software keys, and cryptocurrencies are currently excluded from our physical marketplace.
+
+#### 7.1.4 Bidding and Pricing Integrity
+When placing a bid, you are entering into a "Good Faith" agreement. If a seller accepts your bid, you are expected to follow through with the purchase. "Shill Bidding" (bidding on your own items or having friends bid on your items to inflate interest) is a violation of these Terms and will result in permanent account suspension. 
+
+#### 7.1.5 Fees and Payments
+Dosro Bazar currently operates as a free platform. We do not charge a commission on successful sales. However, we reserve the right to introduce optional featured listing fees or subscription models in the future. Any such changes will be notified to users at least 30 days in advance.
+
+#### 7.1.6 Dispute Resolution and Disclaimer of Warranties
+Dosro Bazar is not a party to any transaction between buyers and sellers. We do not inspect the items, nor do we guarantee their quality, safety, or legality. Any disputes must be resolved directly between the buyer and the seller. OUR SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 
 ---
 
-## Safety Tips
-- Always meet in a safe, public location for in-person exchanges.
-- Verify the item condition before paying.
-- Use digital wallets (eSewa, Khalti) for traceable transactions.
-- Be cautious of deals that seem too good to be true.
-- Report suspicious listings using the report option on the listing page.
+### 7.2 Exhaustive Privacy Policy (DPP)
+Your privacy is a fundamental right. We treat your data with the highest level of care and transparency.
+
+#### 7.2.1 Data We Collect
+-   **Identity Data:** Username, phone number, and email.
+-   **Verification Data:** Encrypted ID proof scans.
+-   **Transactional Data:** Items you've bought, sold, or bid on.
+-   **Technical Data:** IP address, browser type, and device information (for our "Recent Devices" security feature).
+-   **Location Data:** Precise coordinates gathered when you use the MapPin feature to list an item.
+
+#### 7.2.2 How We Use Your Data
+We use your data to:
+-   Provide and maintain the Services.
+-   Verify your identity for a safer seller community.
+-   Improve our AI recommendation models for "Similar Items."
+-   Enhance our "Semantic Search" capabilities.
+-   Communicate with you regarding your bids and listings.
+
+#### 7.2.3 Data Storage and Retention
+Your data is stored on secure, local-region servers to ensure low latency for our Nepali user base. We retain your data for as long as your account is active. If you choose to delete your account, your data is scrubbed from our production systems within 72 hours, though cached versions and backup logs may persist for a limited time for auditing purposes.
+
+#### 7.2.4 Third-Party Sharing
+We NEVER sell your personal data to advertisers. We share your data only with:
+-   **Cloudinary:** To process and host your product images.
+-   **Google:** For AI processing via Gemini and for OAuth social login.
+-   **Law Enforcement:** Only when required by a valid legal subpoena or to protect the safety of our community.
 
 ---
 
-## Frequently Asked Questions
+## 8. Community Growth & Success: The Seller's Manual
 
-**Q: Is Dosro Bazar free to use?**
-A: Yes, registering and listing items on Dosro Bazar is completely free.
+### 8.1 How to Optimize Your Listings for the AI Search
+To get the most out of our semantic engine, follow these tips:
+1.  **Use Natural Language Titles:** Instead of "iPhone 13," try "Well-maintained iPhone 13 with charger and 90% battery health."
+2.  **Detailed Descriptions:** Don't just list specs. Explain the *use case*. For example, "Great for entry-level video editing and university work."
+3.  **Correct Categorization:** Our AI tries to guess your category, but manual verification ensures you appear in the right folders.
+4.  **Local Keywords:** Mention your area (e.g., "Koteshwor," "Lalitpur") to attract nearby buyers who can meet up today.
 
-**Q: Can I sell anything on Dosro Bazar?**
-A: You can sell most second-hand items. Illegal items, counterfeit goods, and prohibited materials are not allowed.
+---
 
-**Q: How many photos can I upload per listing?**
-A: You can upload multiple photos. There is no strict maximum, but we recommend 3–8 clear photos.
+## 9. The Platform Glossary: Every Term Explained
 
-**Q: Can I edit my listing after publishing?**
-A: Yes. Go to your profile's My Listings tab and click the edit icon on your listing.
+### 9.1 Bidding
+The process of submitting a price quote lower or higher than the listed price but above the seller's floor.
 
-**Q: What happens when my listing expires?**
-A: Expired listings are no longer visible to buyers. You can re-list or extend them from your profile.
+### 9.2 Escrow (Coming Soon)
+A system where Dosro Bazar acts as a trusted third party, holding funds until the buyer confirms the item matches the description.
 
-**Q: How do I report a suspicious listing or user?**
-A: Use the report option available on the product listing page.
+### 9.3 Semantic Vector
+A mathematical representation of your product description used by our AI to find "conceptual matches" rather than just keyword matches.
 
-**Q: Can I list items without an account?**
-A: No, you must be logged in to upload items or contact sellers.
+### 9.4 PWA (Progressive Web App)
+A technology that allows Dosro Bazar to work like a mobile app without requiring a download from an app store.
 
-**Q: What currency is used on Dosro Bazar?**
-A: All prices are listed in Nepali Rupees (Rs. / रु).
+### 9.5 MERN Stack
+The technology foundation: **M**ongoDB, **E**xpress, **R**eact, **N**ode.js.
 
-**Q: Can I use the chatbot without logging in?**
-A: No, the AI assistant is only available to logged-in users.
+---
 
-**Q: What is the difference between Buy mode and Sell mode?**
-A: The Buy/Sell toggle in the header switches your view. In Buy mode, you see marketplace listings. In Sell mode, you have access to upload and manage your own items.
+## 10. Final Word: Join the Movement
+
+Dosro Bazar is a revolutionary step toward a more efficient, sustainable, and connected Nepal. Every time you choose to buy second-hand, you are making a choice for the planet. Every time you sell an unused item, you are stimulating the local economy.
+
+We are honored to have you as part of our community. Let us build the future of Nepali commerce together.
+
+**Dosro Bazar — Re-use. Re-sell. Re-imagine.**

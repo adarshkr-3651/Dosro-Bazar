@@ -84,6 +84,9 @@ const ItemSchema = new mongoose.Schema({
         type: String,
         default: "h"
     },
+    offerExpiresAt: {
+        type: Date
+    },
     expiry: {
         type: String,
         default: ""
@@ -147,6 +150,6 @@ ItemSchema.methods.makeSlug = function () {
 
 }
 
-const Item = mongoose.model("Item", ItemSchema)
+const Item = mongoose.models.Item || mongoose.model("Item", ItemSchema);
 
 export default Item;
