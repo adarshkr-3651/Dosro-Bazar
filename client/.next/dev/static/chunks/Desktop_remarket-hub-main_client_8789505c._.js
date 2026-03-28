@@ -194,11 +194,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2
 ;
 ;
 const Switch = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$switch$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"], {
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50", className),
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent dark:border-primary transition-colors data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50", className),
         ...props,
         ref: ref,
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$switch$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Thumb"], {
-            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0")
+            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0", "dark:data-[state=unchecked]:bg-primary")
         }, void 0, false, {
             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ui/switch.tsx",
             lineNumber: 18,
@@ -318,9 +318,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$public$2f$logo$2e$png$2e$mjs__$7b$__IMAGE__$3d3e$__$225b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$public$2f$logo$2e$png__$28$static__in__ecmascript$2c$__tag__client$2922$__$7d$__$5b$app$2d$client$5d$__$28$structured__image__object__with__data__url$2c$__ecmascript$29$__ = __turbopack_context__.i('[project]/Desktop/remarket-hub-main/client/public/logo.png.mjs { IMAGE => "[project]/Desktop/remarket-hub-main/client/public/logo.png (static in ecmascript, tag client)" } [app-client] (structured image object with data url, ecmascript)');
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/context/AuthContext.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/sonner/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/app/lib/api.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
+;
 ;
 ;
 ;
@@ -348,6 +352,33 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
     _s();
     const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const [notifications, setNotifications] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Header.useEffect": ()=>{
+            if (user) {
+                const fetchNotifications = {
+                    "Header.useEffect.fetchNotifications": async ()=>{
+                        try {
+                            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getNotifications"])();
+                            if (response.success) {
+                                setNotifications(response.data);
+                            }
+                        } catch (err) {
+                            console.error("Failed to fetch notifications in Header", err);
+                        }
+                    }
+                }["Header.useEffect.fetchNotifications"];
+                fetchNotifications();
+                // Poll for new notifications every minute
+                const interval = setInterval(fetchNotifications, 60000);
+                return ({
+                    "Header.useEffect": ()=>clearInterval(interval)
+                })["Header.useEffect"];
+            }
+        }
+    }["Header.useEffect"], [
+        user
+    ]);
     // Use context if available, otherwise use props
     const currentIsBuyerMode = contextIsBuyerMode !== undefined ? contextIsBuyerMode : propsIsBuyerMode;
     const handleToggle = (checked)=>{
@@ -429,12 +460,12 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "h-10 w-auto cursor-pointer"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                lineNumber: 122,
+                                lineNumber: 145,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                            lineNumber: 121,
+                            lineNumber: 144,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -454,7 +485,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 135,
+                                        lineNumber: 158,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -464,18 +495,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "pl-10 bg-muted/50"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 136,
+                                        lineNumber: 159,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                lineNumber: 127,
+                                lineNumber: 150,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                            lineNumber: 126,
+                            lineNumber: 149,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -487,7 +518,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                     children: currentIsBuyerMode ? "Buy" : "Sell"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 147,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -496,13 +527,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                     onCheckedChange: handleModeChange
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 150,
+                                    lineNumber: 173,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                            lineNumber: 146,
+                            lineNumber: 169,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -521,25 +552,25 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 165,
+                                                    lineNumber: 188,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: "Upload Item"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 166,
+                                                    lineNumber: 189,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 164,
+                                            lineNumber: 187,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 163,
+                                        lineNumber: 186,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                         variant: "ghost",
@@ -551,22 +582,22 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                lineNumber: 172,
+                                                lineNumber: 195,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 171,
+                                            lineNumber: 194,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 170,
+                                        lineNumber: 193,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 184,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -581,12 +612,12 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                 className: "scale-90"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                lineNumber: 181,
+                                                lineNumber: 204,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 180,
+                                            lineNumber: 203,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         !currentIsBuyerMode ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -599,17 +630,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 192,
+                                                    lineNumber: 215,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                lineNumber: 191,
+                                                lineNumber: 214,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 190,
+                                            lineNumber: 213,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                             variant: "ghost",
@@ -621,23 +652,23 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 198,
+                                                    lineNumber: 221,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                lineNumber: 197,
+                                                lineNumber: 220,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 196,
+                                            lineNumber: 219,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 179,
+                                    lineNumber: 202,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -651,43 +682,51 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 232,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 231,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 207,
+                                    lineNumber: 230,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     variant: "ghost",
                                     size: "icon",
                                     className: "relative",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"], {
-                                            className: "h-5 w-5"
-                                        }, void 0, false, {
-                                            fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 214,
-                                            columnNumber: 15
-                                        }, ("TURBOPACK compile-time value", void 0)),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center",
-                                            children: "3"
-                                        }, void 0, false, {
-                                            fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 215,
-                                            columnNumber: 15
-                                        }, ("TURBOPACK compile-time value", void 0))
-                                    ]
-                                }, void 0, true, {
+                                    asChild: true,
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                        href: "/notifications",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Bell$3e$__["Bell"], {
+                                                className: "h-5 w-5"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
+                                                lineNumber: 238,
+                                                columnNumber: 17
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            notifications.filter((n)=>!n.isRead).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center",
+                                                children: notifications.filter((n)=>!n.isRead).length
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
+                                                lineNumber: 240,
+                                                columnNumber: 19
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
+                                        lineNumber: 237,
+                                        columnNumber: 15
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 213,
+                                    lineNumber: 236,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 user ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -708,18 +747,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                         unoptimized: resolvePhotoUrl(user.photo)?.startsWith('http')
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                        lineNumber: 226,
+                                                        lineNumber: 253,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 225,
+                                                    lineNumber: 252,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 235,
+                                                    lineNumber: 262,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -727,13 +766,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     children: user.username?.split(' ')[0] || 'Profile'
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 237,
+                                                    lineNumber: 264,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 223,
+                                            lineNumber: 250,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -746,7 +785,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 267,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -754,13 +793,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     children: "Logout"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                                    lineNumber: 241,
+                                                    lineNumber: 268,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 239,
+                                            lineNumber: 266,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -774,17 +813,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                             children: "Login"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 274,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 246,
+                                        lineNumber: 273,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 245,
+                                    lineNumber: 272,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -795,24 +834,24 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                        lineNumber: 253,
+                                        lineNumber: 280,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                    lineNumber: 252,
+                                    lineNumber: 279,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                            lineNumber: 158,
+                            lineNumber: 181,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                    lineNumber: 119,
+                    lineNumber: 142,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -832,7 +871,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                lineNumber: 268,
+                                lineNumber: 295,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -842,33 +881,33 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "pl-10 bg-muted/50"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                                lineNumber: 269,
+                                lineNumber: 296,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                        lineNumber: 260,
+                        lineNumber: 287,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-                    lineNumber: 259,
+                    lineNumber: 286,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-            lineNumber: 118,
+            lineNumber: 141,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/Header.tsx",
-        lineNumber: 117,
+        lineNumber: 140,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(Header, "rRyHExY+Q/rSlCzBAbyvFMHNL6Y=", false, function() {
+_s(Header, "HCYd38dZlseus91VdkFDmhO4fGk=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"],
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
@@ -1144,12 +1183,13 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-const ProductCard = ({ id, slug, title, price, image, images, location, timePosted, isBiddable = false, isFavorite: initialFavorite = false, onFavoriteToggle, showEdit = false, offerPrice = 0, offerDuration = "", offerUnit = "h" })=>{
+const ProductCard = ({ id, slug, title, price, image, images, location, timePosted, isBiddable = false, isFavorite: initialFavorite = false, onFavoriteToggle, showEdit = false, offerPrice = 0, offerDuration = "", offerUnit = "h", offerExpiresAt })=>{
     _s();
     const [currentIdx, setCurrentIdx] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [isFav, setIsFav] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(initialFavorite);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const { isBuyerMode } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
+    const [timeLeft, setTimeLeft] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const allImages = (images && images.length > 0 ? images : image ? [
         image
     ] : []).filter((img)=>img && img !== "");
@@ -1180,6 +1220,43 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
         }
     }["ProductCard.useEffect"], [
         initialFavorite
+    ]);
+    // Offer Countdown Effect
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ProductCard.useEffect": ()=>{
+            if (!offerExpiresAt || offerPrice <= 0) {
+                setTimeLeft("");
+                return;
+            }
+            const calculateTimeLeft = {
+                "ProductCard.useEffect.calculateTimeLeft": ()=>{
+                    const difference = +new Date(offerExpiresAt) - +new Date();
+                    if (difference <= 0) return "Expired";
+                    const hours = Math.floor(difference / (1000 * 60 * 60));
+                    const minutes = Math.floor(difference / 1000 / 60 % 60);
+                    const seconds = Math.floor(difference / 1000 % 60);
+                    const parts = [];
+                    if (hours > 0) parts.push(`${hours}h`);
+                    if (minutes > 0 || hours > 0) parts.push(`${minutes}m`);
+                    parts.push(`${seconds}s`);
+                    return parts.join(" ");
+                }
+            }["ProductCard.useEffect.calculateTimeLeft"];
+            const updateTimer = {
+                "ProductCard.useEffect.updateTimer": ()=>{
+                    const remaining = calculateTimeLeft();
+                    setTimeLeft(remaining);
+                }
+            }["ProductCard.useEffect.updateTimer"];
+            updateTimer();
+            const timer = setInterval(updateTimer, 1000);
+            return ({
+                "ProductCard.useEffect": ()=>clearInterval(timer)
+            })["ProductCard.useEffect"];
+        }
+    }["ProductCard.useEffect"], [
+        offerExpiresAt,
+        offerPrice
     ]);
     // Construct the detail page URL. Use slug if available, otherwise fall back to id.
     // Ideally, backend items always have slugs.
@@ -1236,12 +1313,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                             sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 124,
+                                            lineNumber: 161,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, idx, false, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 120,
+                                        lineNumber: 157,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))),
                                 hasMultipleImages && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1253,12 +1330,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                                lineNumber: 141,
+                                                lineNumber: 178,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 137,
+                                            lineNumber: 174,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1268,12 +1345,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                                lineNumber: 147,
+                                                lineNumber: 184,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 143,
+                                            lineNumber: 180,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1282,12 +1359,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                                     className: `h-1 rounded-full transition-all duration-300 ${i === currentIdx ? "w-3 bg-white" : "w-1 bg-white/50"}`
                                                 }, i, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                                    lineNumber: 153,
+                                                    lineNumber: 190,
                                                     columnNumber: 23
                                                 }, ("TURBOPACK compile-time value", void 0)))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 151,
+                                            lineNumber: 188,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -1295,12 +1372,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                            lineNumber: 118,
+                            lineNumber: 155,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 117,
+                        lineNumber: 154,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "w-full h-full flex flex-col items-center justify-center text-muted-foreground/30 bg-muted/20",
@@ -1309,7 +1386,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 className: "h-12 w-12 mb-1"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 165,
+                                lineNumber: 202,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1317,13 +1394,13 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: "No Preview"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 166,
+                                lineNumber: 203,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 164,
+                        lineNumber: 201,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     isBuyerMode && !showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1336,26 +1413,35 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                             className: `h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`
                         }, void 0, false, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                            lineNumber: 180,
+                            lineNumber: 217,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 170,
+                        lineNumber: 207,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
-                    offerPrice > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                    offerPrice > 0 && timeLeft !== "Expired" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                         className: "absolute bottom-2 left-2 bg-red-500 hover:bg-red-600 text-white backdrop-blur-sm px-2 py-0.5 text-[10px] h-5 font-bold tracking-wide z-10 rounded-full border-none flex items-center gap-1 shadow-sm",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "w-1 h-1 bg-white rounded-full animate-pulse"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 185,
+                                lineNumber: 222,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             "OFFER ",
-                            offerDuration && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            timeLeft ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                children: [
+                                    "• ",
+                                    timeLeft
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
+                                lineNumber: 223,
+                                columnNumber: 31
+                            }, ("TURBOPACK compile-time value", void 0)) : offerDuration && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: [
                                     "• ",
                                     offerDuration,
@@ -1363,19 +1449,19 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 186,
-                                columnNumber: 37
+                                lineNumber: 223,
+                                columnNumber: 77
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 184,
+                        lineNumber: 221,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                lineNumber: 114,
+                lineNumber: 151,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1389,18 +1475,18 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                             children: title
                         }, void 0, false, {
                             fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                            lineNumber: 194,
+                            lineNumber: 229,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 193,
+                        lineNumber: 228,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-2",
                         children: [
-                            offerPrice > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                            offerPrice > 0 && timeLeft !== "Expired" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "text-base font-bold text-red-500 tracking-tight",
@@ -1410,7 +1496,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 199,
+                                        lineNumber: 234,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1421,7 +1507,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 200,
+                                        lineNumber: 235,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
@@ -1433,7 +1519,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 203,
+                                lineNumber: 238,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             isBiddable && isBuyerMode && !showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1443,7 +1529,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: "Bid Now"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 206,
+                                lineNumber: 241,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1457,18 +1543,18 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                     children: "Edit"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 214,
+                                    lineNumber: 248,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 213,
+                                lineNumber: 247,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 196,
+                        lineNumber: 231,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1478,7 +1564,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 className: "h-3 w-3 shrink-0 opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 221,
+                                lineNumber: 255,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1486,7 +1572,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: location
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 222,
+                                lineNumber: 256,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1494,29 +1580,29 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: timePosted
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                                lineNumber: 223,
+                                lineNumber: 257,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                        lineNumber: 220,
+                        lineNumber: 254,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-                lineNumber: 192,
+                lineNumber: 227,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/remarket-hub-main/client/app/components/ProductCard.tsx",
-        lineNumber: 113,
+        lineNumber: 150,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(ProductCard, "WxzYV329WgFoQ5mAkxzQ37SwikM=", false, function() {
+_s(ProductCard, "gQBSTZGxV09MMWEhWRJ75MeZhho=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];
@@ -1668,8 +1754,12 @@ function UploadPage() {
     };
     const categories = [
         "Electronics",
+        "Computers",
         "Fashion",
         "Home & Garden",
+        "Health & Beauty",
+        "Books",
+        "Toys & Hobbies",
         "Sports",
         "Collectibles",
         "Vehicles",
@@ -2674,7 +2764,7 @@ function UploadPage() {
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                                         htmlFor: "minBid",
                                                                         className: "text-xs font-semibold",
-                                                                        children: "Min. Starting Bid (Rs.)"
+                                                                        children: "Minimum Bid (Rs.)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
                                                                         lineNumber: 603,
@@ -2737,7 +2827,7 @@ function UploadPage() {
                                                                                 lineNumber: 622,
                                                                                 columnNumber: 53
                                                                             }, this),
-                                                                            " Listing Expiry"
+                                                                            " Listing Expiry  (Optional)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
@@ -2862,7 +2952,7 @@ function UploadPage() {
                                                                                 lineNumber: 661,
                                                                                 columnNumber: 53
                                                                             }, this),
-                                                                            " Limited Time Offer"
+                                                                            " Limited Time Offer  (Optional)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
@@ -2974,7 +3064,7 @@ function UploadPage() {
                                                                                 lineNumber: 694,
                                                                                 columnNumber: 53
                                                                             }, this),
-                                                                            " Accepted Payment Methods"
+                                                                            " Accepted Payment Methods  (Optional)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
@@ -2984,15 +3074,16 @@ function UploadPage() {
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                         className: "flex flex-wrap gap-2",
                                                                         children: [
+                                                                            "Cash",
                                                                             "eSewa",
                                                                             "Khalti",
-                                                                            "Cash",
-                                                                            "Cash on Delivery",
-                                                                            "Bank Transfer"
-                                                                        ].map((method)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                            "COD",
+                                                                            "Bank"
+                                                                        ].map((method)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                                                type: "button",
                                                                                 onClick: ()=>togglePaymentMethod(method),
                                                                                 variant: formData.paymentMethods.includes(method) ? "default" : "outline",
-                                                                                className: "cursor-pointer py-1.5 px-3 select-none hover:bg-primary/10 transition-colors",
+                                                                                className: "flex-1 min-w-[70px] text-[9px] h-7 px-1 uppercase font-bold",
                                                                                 children: method
                                                                             }, method, false, {
                                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
@@ -3023,7 +3114,7 @@ function UploadPage() {
                                                                                     children: "Delivery Available"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 714,
+                                                                                    lineNumber: 715,
                                                                                     columnNumber: 57
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3031,13 +3122,13 @@ function UploadPage() {
                                                                                     children: "Can you ship this item?"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 715,
+                                                                                    lineNumber: 716,
                                                                                     columnNumber: 57
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 713,
+                                                                            lineNumber: 714,
                                                                             columnNumber: 53
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3048,18 +3139,18 @@ function UploadPage() {
                                                                                 })
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                            lineNumber: 717,
+                                                                            lineNumber: 718,
                                                                             columnNumber: 53
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                    lineNumber: 712,
+                                                                    lineNumber: 713,
                                                                     columnNumber: 49
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                                lineNumber: 711,
+                                                                lineNumber: 712,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
@@ -3105,14 +3196,14 @@ function UploadPage() {
                                                             className: "h-5 w-5 text-primary"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                            lineNumber: 736,
+                                                            lineNumber: 737,
                                                             columnNumber: 41
                                                         }, this),
                                                         "Preview"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 735,
+                                                    lineNumber: 736,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3121,13 +3212,13 @@ function UploadPage() {
                                                     children: "Buyer View"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 739,
+                                                    lineNumber: 740,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                            lineNumber: 734,
+                                            lineNumber: 735,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3145,12 +3236,12 @@ function UploadPage() {
                                                 offerUnit: formData.offerUnit
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                lineNumber: 743,
+                                                lineNumber: 744,
                                                 columnNumber: 37
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                            lineNumber: 742,
+                                            lineNumber: 743,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3161,7 +3252,7 @@ function UploadPage() {
                                                     children: "This is exactly how your item will appear to buyers. Detailed locations build more trust."
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 758,
+                                                    lineNumber: 759,
                                                     columnNumber: 37
                                                 }, this),
                                                 !isFormEmpty() && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3172,24 +3263,24 @@ function UploadPage() {
                                                     children: "Clear Form"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                                    lineNumber: 762,
+                                                    lineNumber: 763,
                                                     columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                            lineNumber: 757,
+                                            lineNumber: 758,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                    lineNumber: 733,
+                                    lineNumber: 734,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                                lineNumber: 732,
+                                lineNumber: 733,
                                 columnNumber: 25
                             }, this)
                         ]
@@ -3210,7 +3301,7 @@ function UploadPage() {
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$app$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/remarket-hub-main/client/app/upload/page.tsx",
-                lineNumber: 778,
+                lineNumber: 779,
                 columnNumber: 13
             }, this)
         ]

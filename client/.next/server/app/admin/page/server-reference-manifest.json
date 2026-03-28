@@ -1,49 +1,34 @@
 {
   "node": {
-    "0001a79e331d7543cfbf9ae1a83cade4c9e4b5565b": {
+    "40f235d61389b0760210980dba3b442ed2ab0f4e88": {
       "workers": {
         "app/admin/page": {
-          "moduleId": 12095,
+          "moduleId": 88030,
           "async": false,
-          "exportedName": "isAdminAuthenticated",
-          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
-        }
-      },
-      "layer": {
-        "app/admin/page": "rsc"
-      },
-      "exportedName": "isAdminAuthenticated",
-      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
-    },
-    "008469d19887757db5c7a8a263720765902bf18e95": {
-      "workers": {
-        "app/admin/page": {
-          "moduleId": 12095,
-          "async": false,
-          "exportedName": "logoutAdmin",
-          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
         }
       },
       "layer": {
         "app/admin/page": "action-browser"
       },
-      "exportedName": "logoutAdmin",
-      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "40d02769005bc7bce6ff3e728f5f1f717528c656f3": {
+    "00811f31f3f20d6f7b770c160ec15e89238c0e9af5": {
       "workers": {
         "app/admin/page": {
-          "moduleId": 12095,
+          "moduleId": 88030,
           "async": false,
-          "exportedName": "loginAdmin",
-          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+          "exportedName": "isAdminAuthenticated",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
         }
       },
       "layer": {
-        "app/admin/page": "rsc"
+        "app/admin/page": "action-browser"
       },
-      "exportedName": "loginAdmin",
-      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+      "exportedName": "isAdminAuthenticated",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     }
   },
   "edge": {}

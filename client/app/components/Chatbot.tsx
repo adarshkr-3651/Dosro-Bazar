@@ -7,6 +7,7 @@ import { chatWithAI } from "@/app/lib/api";
 import { cn } from "@/app/lib/utils";
 import { useAuth } from "@/app/context/AuthContext";
 import ReactMarkdown from "react-markdown";
+import { usePathname } from "next/navigation";
 
 interface Message {
   role: "user" | "bot" | "system";
@@ -31,6 +32,7 @@ export default function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const [promptCount, setPromptCount] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   // Load history from localStorage when user logs in
   useEffect(() => {
@@ -79,8 +81,8 @@ export default function Chatbot() {
     }
   }, [messages]);
 
-  // Don't render for unauthenticated users
-  if (!user) return null;
+  // Don't render for unauthenticated users, or inside the Admin portal
+  if (!user || pathname?.startsWith("/admin")) return null;
 
   const clearHistory = () => {
     if (user) {

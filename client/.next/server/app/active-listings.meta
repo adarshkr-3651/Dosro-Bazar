@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/active-listings/layout,_N_T_/active-listings/page,_N_T_/active-listings"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/active-listings/__PAGE__",
+    "/active-listings",
+    "/_index",
+    "/_head"
+  ]
+}

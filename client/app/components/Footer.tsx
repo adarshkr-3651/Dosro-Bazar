@@ -18,7 +18,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Image src={logo} alt="Dosro Bazar" width={144} height={48} className="h-12 mb-4" />
+            <Image src={logo} alt="Dosro Bazar" width={192} height={192} className="h-48 w-48 mb-4 object-contain" />
             <p className="text-sm text-muted-foreground mb-4">
               Your trusted marketplace for buying, selling, and bidding on quality items.
             </p>

@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import logo from "../../public/logo.png"
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
+import { useState, useEffect } from "react";
+import { getNotifications } from "../lib/api";
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
@@ -42,6 +44,27 @@ interface HeaderProps {
 const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle }: HeaderProps) => {
   const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = useAuth();
   const router = useRouter();
+  const [notifications, setNotifications] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (user) {
+      const fetchNotifications = async () => {
+        try {
+          const response = await getNotifications();
+          if (response.success) {
+            setNotifications(response.data);
+          }
+        } catch (err) {
+          console.error("Failed to fetch notifications in Header", err);
+        }
+      };
+      
+      fetchNotifications();
+      // Poll for new notifications every minute
+      const interval = setInterval(fetchNotifications, 60000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
 
   // Use context if available, otherwise use props
   const currentIsBuyerMode = contextIsBuyerMode !== undefined ? contextIsBuyerMode : propsIsBuyerMode!;
@@ -119,7 +142,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
         <div className="flex h-16 items-center gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src={logo} alt="Dosro Bazar" width={120} height={40} className="h-10 w-auto cursor-pointer" />
+            <Image src={logo} alt="Dosro Bazar" width={100} height={100} className="h-18 w-auto cursor-pointer" />
           </Link>
 
           {/* Search Bar - Hidden on mobile */}
@@ -167,11 +190,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                   </Link>
                 </Button>
               ) : (
-                <Button variant="ghost" size="icon" asChild>
-                  <Link href="/favorites">
-                    <Heart className="h-5 w-5" />
-                  </Link>
-                </Button>
+                user && (
+                  <Button variant="ghost" size="icon" asChild>
+                    <Link href="/favorites">
+                      <Heart className="h-5 w-5" />
+                    </Link>
+                  </Button>
+                )
               )}
             </div>
 
@@ -193,29 +218,39 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                   </Link>
                 </Button>
               ) : (
-                <Button variant="ghost" size="icon" asChild>
-                  <Link href="/favorites">
-                    <Heart className="h-5 w-5" />
-                  </Link>
-                </Button>
+                user && (
+                  <Button variant="ghost" size="icon" asChild>
+                    <Link href="/favorites">
+                      <Heart className="h-5 w-5" />
+                    </Link>
+                  </Button>
+                )
               )}
             </div>
 
 
 
             {/* Action Buttons */}
-            <Button variant="ghost" size="icon" className="relative" asChild>
-              <Link href="/messages">
-                <MessageCircle className="h-5 w-5" />
-              </Link>
-            </Button>
-
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center">
-                3
-              </span>
-            </Button>
+            {user && (
+              <>
+                <Button variant="ghost" size="icon" className="relative" asChild>
+                  <Link href="/messages">
+                    <MessageCircle className="h-5 w-5" />
+                  </Link>
+                </Button>
+                
+                <Button variant="ghost" size="icon" className="relative" asChild>
+                  <Link href="/notifications">
+                    <Bell className="h-5 w-5" />
+                    {notifications.filter(n => !n.isRead).length > 0 && (
+                      <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center">
+                        {notifications.filter(n => !n.isRead).length}
+                      </span>
+                    )}
+                  </Link>
+                </Button>
+              </>
+            )}
 
 
             {user ? (

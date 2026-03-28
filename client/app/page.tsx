@@ -19,6 +19,8 @@ export default function Home() {
   const { user, isBuyerMode, setIsBuyerMode } = useAuth(); // Using AuthContext to check login status
   const [mounted, setMounted] = useState(false);
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [showAllRecent, setShowAllRecent] = useState(false);
 
   // Initialize from mount
   useEffect(() => {
@@ -42,6 +44,22 @@ export default function Home() {
 
     fetchItems();
   }, []);
+
+  // Filter listings based on selected category
+  const filteredListings = selectedCategory === "All" 
+    ? recentListings 
+    : recentListings.filter(item => item.category === selectedCategory);
+
+  const filteredRecommended = selectedCategory === "All"
+    ? recommendedItems
+    : recommendedItems.filter((item: any) => item.category === selectedCategory);
+
+  // Limit listings for Recently Added section
+  // 2 rows = 10 items (assuming 5 cols)
+  // 5 rows = 25 items
+  const displayedRecent = showAllRecent 
+    ? filteredListings.slice(0, 25) 
+    : filteredListings.slice(0, 10);
 
   // Fetch recommendations
   useEffect(() => {
@@ -117,7 +135,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <CategoryNav />
+      <CategoryNav selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
 
       <main className="flex-1">
         <div className="container mx-auto px-4 py-6 space-y-12">
@@ -131,22 +149,39 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-3xl font-bold mb-2">Recently Listed</h2>
-                    <p className="text-muted-foreground">Fresh items just added to the marketplace</p>
+                    <p className="text-muted-foreground">
+                      {selectedCategory !== "All" 
+                        ? `Showing items in ${selectedCategory}` 
+                        : "Fresh items just added to the marketplace"}
+                    </p>
                   </div>
-                  <Button variant="outline">View All</Button>
+                  {filteredListings.length > 10 && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowAllRecent(!showAllRecent)}
+                    >
+                      {showAllRecent ? "Show Less" : "View All"}
+                    </Button>
+                  )}
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
-                  {recentListings.map((product) => (
-                    <ProductCard
-                      key={product._id}
-                      id={product._id}
-                      slug={product.slug}
-                      {...product}
-                      isFavorite={favoriteIds.has(product._id)}
-                      onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
-                    />
-                  ))}
-                </div>
+                {displayedRecent.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
+                    {displayedRecent.map((product) => (
+                      <ProductCard
+                        key={product._id}
+                        id={product._id}
+                        slug={product.slug}
+                        {...product}
+                        isFavorite={favoriteIds.has(product._id)}
+                        onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-muted/20 rounded-xl border-2 border-dashed">
+                    <p className="text-muted-foreground">No items found in this category.</p>
+                  </div>
+                )}
               </section>
 
               {/* Recommended Items Section */}
@@ -154,26 +189,54 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-3xl font-bold mb-2">Recommended for You</h2>
-                    <p className="text-muted-foreground">Handpicked based on your interests</p>
+                    <p className="text-muted-foreground">
+                      {selectedCategory !== "All" 
+                        ? `Recommendations in ${selectedCategory}` 
+                        : "Handpicked based on your interests"}
+                    </p>
                   </div>
                   <Button variant="outline">View All</Button>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
-                  {recommendedItems.map((product: any) => (
-                    <ProductCard
-                      key={product._id}
-                      id={product._id}
-                      slug={product.slug}
-                      {...product}
-                      isFavorite={favoriteIds.has(product._id)}
-                      onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
-                    />
-                  ))}
-                </div>
+                {filteredRecommended.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
+                    {filteredRecommended.map((product: any) => (
+                      <ProductCard
+                        key={product._id}
+                        id={product._id}
+                        slug={product.slug}
+                        {...product}
+                        isFavorite={favoriteIds.has(product._id)}
+                        onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-muted/20 rounded-xl border-2 border-dashed">
+                    <p className="text-muted-foreground">No recommendations found in this category.</p>
+                  </div>
+                )}
               </section>
             </>
           ) : (
             <>
+              {/* Stats Section */}
+              <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Link href="/active-listings" className="block transition-transform hover:scale-[1.02]">
+                  <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl py-3 px-6 text-white shadow-sm">
+                    <h3 className="text-sm font-semibold mb-0.5 opacity-90">Active Listings</h3>
+                    <p className="text-3xl font-bold">{sellerListings.length}</p>
+                  </div>
+                </Link>
+                <div className="bg-gradient-to-br from-secondary to-secondary/80 rounded-xl py-3 px-6 text-white shadow-sm">
+                  <h3 className="text-sm font-semibold mb-0.5 opacity-90">Total Sales</h3>
+                  <p className="text-3xl font-bold">Rs. 4,250</p>
+                </div>
+                <div className="bg-gradient-to-br from-primary/80 to-secondary/80 rounded-xl py-3 px-6 text-white shadow-sm">
+                  <h3 className="text-sm font-semibold mb-0.5 opacity-90">Pending Bids</h3>
+                  <p className="text-3xl font-bold">8</p>
+                </div>
+              </section>
+
               {/* Seller Mode View */}
               <section>
                 <div className="flex items-center justify-between mb-6">
@@ -191,22 +254,6 @@ export default function Home() {
                   {sellerListings.map((product) => (
                     <ProductCard key={product._id} id={product._id} slug={product.slug} {...product} showEdit={true} />
                   ))}
-                </div>
-              </section>
-
-              {/* Stats Section */}
-              <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-6 text-white">
-                  <h3 className="text-lg font-semibold mb-2">Active Listings</h3>
-                  <p className="text-4xl font-bold">{sellerListings.length}</p>
-                </div>
-                <div className="bg-gradient-to-br from-secondary to-secondary/80 rounded-xl p-6 text-white">
-                  <h3 className="text-lg font-semibold mb-2">Total Sales</h3>
-                  <p className="text-4xl font-bold">Rs. 4,250</p>
-                </div>
-                <div className="bg-gradient-to-br from-primary/80 to-secondary/80 rounded-xl p-6 text-white">
-                  <h3 className="text-lg font-semibold mb-2">Pending Bids</h3>
-                  <p className="text-4xl font-bold">8</p>
                 </div>
               </section>
             </>

@@ -25,12 +25,17 @@ interface Product {
 
 export default function FavoritesPage() {
     const router = useRouter();
-    const { isBuyerMode } = useAuth();
+    const { user, isBuyerMode } = useAuth();
 
     const [favorites, setFavorites] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchFavorites = async () => {
+        if (!user) {
+            setLoading(false);
+            return;
+        }
+        
         try {
             const data = await getFavorites();
             setFavorites(data.data || []);
@@ -43,7 +48,7 @@ export default function FavoritesPage() {
 
     useEffect(() => {
         fetchFavorites();
-    }, []);
+    }, [user]);
 
     // Helper to format time relative
     const formatTime = (dateString: string) => {
@@ -98,10 +103,14 @@ export default function FavoritesPage() {
                         )}
                         <div className="space-y-1">
                             <h3 className="text-xl font-semibold">
-                                {!isBuyerMode ? "Not Available in Seller Mode" : (favorites.length === 0 && !loading ? "No favorites yet" : "")}
+                                {!isBuyerMode ? "Not Available in Seller Mode" : 
+                                 !user ? "Login Required" :
+                                 (favorites.length === 0 && !loading ? "No favorites yet" : "")}
                             </h3>
                             <p className="text-muted-foreground">
-                                {!isBuyerMode ? "Please switch to Buyer mode to see your saved items." : "Start exploring and save items you like!"}
+                                {!isBuyerMode ? "Please switch to Buyer mode to see your saved items." : 
+                                 !user ? "Please log in to see your saved items." :
+                                 "Start exploring and save items you like!"}
                             </p>
                         </div>
                         <Button asChild>

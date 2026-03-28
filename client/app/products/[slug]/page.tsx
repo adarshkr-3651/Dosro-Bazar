@@ -5,9 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { getProductBySlug, toggleFavorite, getSimilarItems, sendChatMessage } from "../../lib/api";
-import { Loader2, MapPin, Heart, Share2, MessageCircle, ShoppingCart, Clock, Tag, AlertCircle, Sparkles } from "lucide-react";
+import { getProductBySlug, toggleFavorite, getSimilarItems, sendChatMessage, placeBid } from "../../lib/api";
+import { Loader2, MapPin, Heart, Share2, MessageCircle, ShoppingCart, Clock, Tag, AlertCircle, Sparkles, Gavel } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
 import { Badge } from "@/app/components/ui/badge";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Separator } from "@/app/components/ui/separator";
@@ -54,6 +55,8 @@ export default function ProductDetailPage() {
     const [similarItems, setSimilarItems] = useState<any[]>([]);
     const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+    const [bidAmount, setBidAmount] = useState<string>("");
+    const [bidLoading, setBidLoading] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -144,6 +147,44 @@ export default function ProductDetailPage() {
             router.push("/messages");
         } catch (err: any) {
             toast.error(err.message || "Failed to start conversation");
+        }
+    };
+
+    const handleBid = async (isPurchase = false) => {
+        if (!user) {
+            toast.error("Please login to place a bid");
+            router.push("/login");
+            return;
+        }
+        if (!product?._id) return;
+
+        const currentPrice = product.offerPrice && product.offerPrice > 0 ? product.offerPrice : product.price;
+        const amount = isPurchase ? currentPrice : Number(bidAmount);
+
+        if (!amount || isNaN(amount)) {
+            toast.error("Please enter a valid bid amount");
+            return;
+        }
+
+        if (amount < currentPrice) {
+            toast.error(`Bid must be at least Rs. ${currentPrice.toLocaleString()}`);
+            return;
+        }
+
+        if (amount > product.price * 2) {
+            toast.error(`Bid cannot exceed double the listed price (Rs. ${(product.price * 2).toLocaleString()})`);
+            return;
+        }
+
+        setBidLoading(true);
+        try {
+            await placeBid(product._id, amount);
+            toast.success(isPurchase ? "Purchase request sent!" : "Bid placed successfully!");
+            setBidAmount("");
+        } catch (err: any) {
+            toast.error(err.message || "Failed to place bid");
+        } finally {
+            setBidLoading(false);
         }
     };
 
@@ -307,22 +348,51 @@ export default function ProductDetailPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row gap-3">
-                                    <Button onClick={handleInquire} size="lg" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg">
-                                        <MessageCircle className="h-4 w-4" />
-                                        Inquire
-                                    </Button>
-                                    {isBuyerMode && (user?.username !== product.author?.username) && (
-                                        product.isBiddable ? (
-                                            <Button size="lg" variant="secondary" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-lg">
-                                                Place a Bid
+                                <div className="space-y-4">
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <Button onClick={handleInquire} size="lg" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-lg" disabled={bidLoading}>
+                                            <MessageCircle className="h-4 w-4" />
+                                            Inquire
+                                        </Button>
+                                        
+                                        {isBuyerMode && (user?.username !== product.author?.username) && (
+                                            product.isBiddable ? (
+                                                <Button onClick={() => handleBid(true)} disabled={bidLoading} size="lg" variant="secondary" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-lg">
+                                                    <ShoppingCart className="h-4 w-4" />
+                                                    Purchase
+                                                </Button>
+                                            ) : (
+                                                <Button size="lg" variant="secondary" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-lg">
+                                                    <ShoppingCart className="h-4 w-4" />
+                                                    Purchase
+                                                </Button>
+                                            )
+                                        )}
+                                    </div>
+
+                                    {isBuyerMode && product.isBiddable && (user?.username !== product.author?.username) && (
+                                        <div className="flex gap-2 animate-in fade-in slide-in-from-top-2 duration-500">
+                                            <div className="relative flex-1">
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold text-xs uppercase">Rs.</div>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Enter your quote"
+                                                    value={bidAmount}
+                                                    onChange={(e) => setBidAmount(e.target.value)}
+                                                    className="h-12 pl-10 pr-4 bg-background/50 border-primary/20 focus:border-primary transition-all font-bold"
+                                                    disabled={bidLoading}
+                                                />
+                                            </div>
+                                            <Button 
+                                                onClick={() => handleBid(false)} 
+                                                disabled={bidLoading || !bidAmount}
+                                                size="lg"
+                                                className="h-12 px-8 gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold uppercase text-[10px] tracking-widest shadow-lg"
+                                            >
+                                                {bidLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Gavel className="h-4 w-4" />}
+                                                Bid
                                             </Button>
-                                        ) : (
-                                            <Button size="lg" variant="secondary" className="flex-1 h-12 gap-2 text-xs font-bold uppercase tracking-widest bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-lg">
-                                                <ShoppingCart className="h-4 w-4" />
-                                                Purchase
-                                            </Button>
-                                        )
+                                        </div>
                                     )}
                                 </div>
                             </div>

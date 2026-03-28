@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
   withCredentials: true, // Important for HttpOnly cookies
   headers: {
     'Content-Type': 'application/json',
@@ -528,6 +528,54 @@ export async function deleteChatMessage(messageId: string) {
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Failed to delete message');
   }
+}
+
+// Bidding & Notifications
+export async function placeBid(itemId: string, amount: number) {
+    try {
+        const response = await api.post('/bid/place', { itemId, amount });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to place bid');
+    }
+}
+
+export async function getNotifications() {
+    try {
+        console.log("[api.ts] getNotifications() - Fetching notifications...");
+        const response = await api.get('/notification/all');
+        console.log("[api.ts] getNotifications() - Success:", { 
+            count: response.data?.data?.length || 0,
+            success: response.data?.success 
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error("[api.ts] getNotifications() - Error:", error.message);
+        const errorMessage = error.response?.data?.error || 
+                             error.response?.data?.message || 
+                             (typeof error.response?.data === 'string' ? error.response.data : null) ||
+                             error.message || 
+                             'Failed to fetch notifications';
+        throw new Error(errorMessage);
+    }
+}
+
+export async function updateBidStatus(bidId: string, status: 'accepted' | 'rejected') {
+    try {
+        const response = await api.post('/bid/status', { bidId, status });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to update bid status');
+    }
+}
+
+export async function markNotificationsAsRead() {
+    try {
+        const response = await api.post('/notification/read-all');
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
+    }
 }
 
 export const endpoints = {

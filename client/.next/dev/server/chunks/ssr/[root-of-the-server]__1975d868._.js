@@ -125,6 +125,8 @@ __turbopack_context__.s([
     ()=>getMessages,
     "getMyListings",
     ()=>getMyListings,
+    "getNotifications",
+    ()=>getNotifications,
     "getProductBySlug",
     ()=>getProductBySlug,
     "getProfile",
@@ -139,6 +141,10 @@ __turbopack_context__.s([
     ()=>loginUser,
     "logoutUser",
     ()=>logoutUser,
+    "markNotificationsAsRead",
+    ()=>markNotificationsAsRead,
+    "placeBid",
+    ()=>placeBid,
     "resendVerificationCode",
     ()=>resendVerificationCode,
     "resetPassword",
@@ -153,6 +159,8 @@ __turbopack_context__.s([
     ()=>toggleFavorite,
     "toggleOnlineStatus",
     ()=>toggleOnlineStatus,
+    "updateBidStatus",
+    ()=>updateBidStatus,
     "updateItem",
     ()=>updateItem,
     "updateProfile",
@@ -165,7 +173,7 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/remarket-hub-main/client/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 ;
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$remarket$2d$hub$2d$main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].create({
-    baseURL: ("TURBOPACK compile-time value", "http://localhost:5000"),
+    baseURL: ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
@@ -687,6 +695,51 @@ async function deleteChatMessage(messageId) {
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.message || 'Failed to delete message');
+    }
+}
+async function placeBid(itemId, amount) {
+    try {
+        const response = await api.post('/bid/place', {
+            itemId,
+            amount
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to place bid');
+    }
+}
+async function getNotifications() {
+    try {
+        console.log("[api.ts] getNotifications() - Fetching notifications...");
+        const response = await api.get('/notification/all');
+        console.log("[api.ts] getNotifications() - Success:", {
+            count: response.data?.data?.length || 0,
+            success: response.data?.success
+        });
+        return response.data;
+    } catch (error) {
+        console.error("[api.ts] getNotifications() - Error:", error.message);
+        const errorMessage = error.response?.data?.error || error.response?.data?.message || (typeof error.response?.data === 'string' ? error.response.data : null) || error.message || 'Failed to fetch notifications';
+        throw new Error(errorMessage);
+    }
+}
+async function updateBidStatus(bidId, status) {
+    try {
+        const response = await api.post('/bid/status', {
+            bidId,
+            status
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to update bid status');
+    }
+}
+async function markNotificationsAsRead() {
+    try {
+        const response = await api.post('/notification/read-all');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
     }
 }
 const endpoints = {

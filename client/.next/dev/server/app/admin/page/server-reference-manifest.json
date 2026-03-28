@@ -1,49 +1,34 @@
 {
   "node": {
-    "0083b4d12061e759d99492aa576470fe7a34dfb5b1": {
+    "403e5bd9bd93410a2b7260629bf10efd335929564d": {
       "workers": {
         "app/admin/page": {
-          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
-          "exportedName": "isAdminAuthenticated",
-          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
-        }
-      },
-      "layer": {
-        "app/admin/page": "rsc"
-      },
-      "exportedName": "isAdminAuthenticated",
-      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
-    },
-    "00c367fbe8b23eab14423b7ab1ee9a5e2cdb4fa131": {
-      "workers": {
-        "app/admin/page": {
-          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false,
-          "exportedName": "logoutAdmin",
-          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
         }
       },
       "layer": {
         "app/admin/page": "action-browser"
       },
-      "exportedName": "logoutAdmin",
-      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "405ec430ed87a2f7abc8dff20dd469727520f27b22": {
+    "002a968cbb897e18ed7420cf4c091b5cf87eb87193": {
       "workers": {
         "app/admin/page": {
-          "moduleId": "[project]/Desktop/remarket-hub-main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/remarket-hub-main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
-          "exportedName": "loginAdmin",
-          "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+          "exportedName": "isAdminAuthenticated",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
         }
       },
       "layer": {
-        "app/admin/page": "rsc"
+        "app/admin/page": "action-browser"
       },
-      "exportedName": "loginAdmin",
-      "filename": "Desktop/remarket-hub-main/client/app/lib/admin-actions.ts"
+      "exportedName": "isAdminAuthenticated",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     }
   },
   "edge": {}

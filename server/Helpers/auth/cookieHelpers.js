@@ -11,23 +11,43 @@ const isTokenInCookies = (req) => {
 };
 
 /**
- * Get access token from cookie or header
+ * Basic check to see if a string could be a JWT
+ */
+const isPotentialJwt = (token) => {
+    if (typeof token !== 'string') return false;
+    const parts = token.split('.');
+    return parts.length === 3 && parts.every(part => part.length > 0);
+};
+
+/**
+ * Get access token candidates from cookies or header
+ * Returns an array of potential tokens to try
  */
 const getAccessToken = (req) => {
-    // First check cookies (httpOnly)
-    if (req.cookies && req.cookies.accessToken) {
-        return req.cookies.accessToken;
-    }
+    const candidates = [];
 
-    // Fallback to Authorization header
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-        const token = req.headers.authorization.split(" ")[1];
-        if (token && token !== "undefined" && token !== "null") {
-            return token;
+    // 1. Check cookies (httpOnly)
+    if (req.cookies) {
+        // Standard user token
+        if (req.cookies.accessToken && isPotentialJwt(req.cookies.accessToken)) {
+            candidates.push(req.cookies.accessToken);
+        }
+        // Admin token
+        if (req.cookies.admin_access_token && isPotentialJwt(req.cookies.admin_access_token)) {
+            candidates.push(req.cookies.admin_access_token);
         }
     }
 
-    return null;
+    // 2. Fallback to Authorization header
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        const token = req.headers.authorization.split(" ")[1];
+        if (token && isPotentialJwt(token)) {
+            candidates.push(token);
+        }
+    }
+
+    // Return unique candidates only
+    return [...new Set(candidates)];
 };
 
 /**
@@ -35,7 +55,7 @@ const getAccessToken = (req) => {
  */
 const getRefreshToken = (req) => {
     // First check cookies (httpOnly)
-    if (req.cookies && req.cookies.refreshToken) {
+    if (req.cookies && req.cookies.refreshToken && req.cookies.refreshToken !== "undefined" && req.cookies.refreshToken !== "null") {
         return req.cookies.refreshToken;
     }
 

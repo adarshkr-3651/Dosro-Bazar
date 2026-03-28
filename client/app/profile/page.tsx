@@ -10,7 +10,7 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Crosshair } from "lucide-react";
+import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Switch } from "@/app/components/ui/switch";
@@ -638,23 +638,22 @@ export default function ProfilePage() {
                                             <div className="flex-1 space-y-2 w-full">
                                                 <Label htmlFor="address">Address</Label>
                                                 <div className="relative group">
-                                                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleLocationFetch}
+                                                        className="absolute left-3 top-3 text-muted-foreground hover:text-primary transition-colors z-10"
+                                                        title="Get current location"
+                                                    >
+                                                        <MapPin className="h-4 w-4" />
+                                                    </button>
                                                     <Textarea
                                                         id="address"
                                                         name="address"
                                                         value={formData.address}
                                                         onChange={handleChange}
-                                                        className="pl-10 pr-10 min-h-[40px] h-10 py-2 resize-none"
+                                                        className="pl-10 pr-3 min-h-[40px] h-10 py-2 resize-none"
                                                         placeholder="Your address"
                                                     />
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleLocationFetch}
-                                                        className="absolute right-3 top-3 text-muted-foreground hover:text-primary transition-colors"
-                                                        title="Get current location"
-                                                    >
-                                                        <Crosshair className="h-4 w-4" />
-                                                    </button>
                                                 </div>
                                             </div>
                                             <Button type="submit" disabled={loading} className="min-w-[120px] shrink-0">

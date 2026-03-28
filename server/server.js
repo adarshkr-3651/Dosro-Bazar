@@ -40,7 +40,6 @@ import IndexRoute from "./Routers/index.js";
 import connectDatabase from "./Helpers/database/connectDatabase.js";
 import customErrorHandler from "./Middlewares/Errors/customErrorHandler.js";
 import initializeAdmin from "./Helpers/auth/initAdmin.js";
-import initializeNewAdmin from "./Helpers/auth/initNewAdmin.js";
 
 console.log("Custom modules imported successfully in server.js")
 
@@ -56,7 +55,6 @@ console.log("Initializing admin accounts... in server.js")
 // Use setTimeout to ensure database connection is established
 setTimeout(async () => {
     await initializeAdmin()         // Legacy (for existing User model admins)
-    await initializeNewAdmin()      // New (for dedicated admins collection)
 }, 2000)
 
 // ========================================
@@ -214,7 +212,15 @@ const server = httpServer.listen(PORT, () => {
 // ========================================
 // Gracefully handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
-    console.log("Unhandled Promise Rejection:", err, "in server.js")
-    // Close server and exit process
-    server.close(() => process.exit(1))
-})
+    console.log("Unhandled Promise Rejection:", err, "in server.js");
+    
+    // Do not crash the server for file upload errors (Cloudinary throws HTTP 400)
+    if (err && (err.http_code === 400 || err.message === 'Invalid image file')) {
+        console.warn("⚠️ Ignored non-fatal upload promise rejection.");
+        return; // Continue running
+    }
+    
+    // Close server and exit process for critical errors
+    console.error("FATAL ERROR: Shutting down server...");
+    server.close(() => process.exit(1));
+});

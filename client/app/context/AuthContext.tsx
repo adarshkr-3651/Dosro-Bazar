@@ -45,6 +45,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         // Check for stored auth token and validate
         checkAuthStatus();
+
+        // Clear local favorites on window close/refresh as requested
+        const handleUnload = () => {
+            localStorage.removeItem("local_favorites");
+        };
+        window.addEventListener('beforeunload', handleUnload);
+        return () => window.removeEventListener('beforeunload', handleUnload);
     }, []);
 
     const setIsBuyerMode = (mode: boolean) => {
@@ -57,6 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             // Try to fetch profile. If it succeeds, we are logged in (via cookie)
             const userData = await getProfile();
             setUser(userData);
+            // Clear local favorites if user is logged in
+            localStorage.removeItem("local_favorites");
         } catch (error: any) {
             // If 401, it just means user is not logged in, which is expected on initial load
             if (error.status !== 401 && error.response?.status !== 401) {
@@ -84,6 +93,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             // Backend sets HttpOnly cookies automatically
             const userData = await getProfile();
             setUser(userData);
+            // Clear local favorites on successful login
+            localStorage.removeItem("local_favorites");
             return { success: true };
         } catch (error: any) {
             console.warn('Login failed:', error.message);

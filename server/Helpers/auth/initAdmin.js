@@ -1,4 +1,5 @@
 import User from "../../Models/user.js";
+import Admin from "../../Models/Admin.js";
 
 /**
  * Initialize default admin account from environment variables
@@ -14,42 +15,55 @@ const initializeAdmin = async () => {
             return;
         }
 
-        // Check if admin user already exists
-        const existingAdmin = await User.findOne({
+        // --- 1. Initialize Legacy Admin in User Collection ---
+        const existingLegacyAdmin = await User.findOne({
             $or: [
                 { email: ADMIN_EMAIL },
                 { phone: ADMIN_PHONE }
             ]
         });
 
-        if (existingAdmin) {
-            // Update existing user to admin if not already
-            if (existingAdmin.role !== 'admin') {
-                existingAdmin.role = 'admin';
-                await existingAdmin.save();
-                console.log(`[initAdmin] ✅ Updated existing user to admin: ${existingAdmin.email || existingAdmin.phone}`);
-            } else {
-                console.log(`[initAdmin] ✅ Admin account already exists: ${existingAdmin.email || existingAdmin.phone}`);
+        if (existingLegacyAdmin) {
+            if (existingLegacyAdmin.role !== 'admin') {
+                existingLegacyAdmin.role = 'admin';
+                await existingLegacyAdmin.save();
+                console.log(`[initAdmin] ✅ Updated existing legacy user to admin: ${existingLegacyAdmin.email || existingLegacyAdmin.phone}`);
             }
-            return;
+        } else {
+            await User.create({
+                username: ADMIN_USERNAME || "Admin User",
+                email: ADMIN_EMAIL,
+                phone: ADMIN_PHONE,
+                password: ADMIN_PASSWORD,
+                role: 'admin',
+                authProvider: 'email',
+                authProviders: ['email']
+            });
+            console.log(`[initAdmin] ✅ Default legacy admin account created successfully in Users collection!`);
         }
 
-        // Create new admin user
-        const adminUser = await User.create({
-            username: ADMIN_USERNAME || "Admin User",
-            email: ADMIN_EMAIL,
-            phone: ADMIN_PHONE,
-            password: ADMIN_PASSWORD,
-            role: 'admin',
-            authProvider: 'email',
-            authProviders: ['email']
+        // --- 2. Initialize Modern Admin in Admin Collection ---
+        const existingAdmin = await Admin.findOne({
+            $or: [
+                { email: ADMIN_EMAIL },
+                { username: ADMIN_USERNAME || "superadmin" }
+            ]
         });
 
-        console.log(`[initAdmin] ✅ Default admin account created successfully!`);
-        console.log(`[initAdmin] Email: ${ADMIN_EMAIL}`);
-        console.log(`[initAdmin] Phone: ${ADMIN_PHONE}`);
-        console.log(`[initAdmin] Password: ${ADMIN_PASSWORD}`);
-        console.log(`[initAdmin] ⚠️  Please change the default password after first login!`);
+        if (!existingAdmin) {
+            await Admin.create({
+                username: ADMIN_USERNAME || "superadmin",
+                email: ADMIN_EMAIL,
+                phone: ADMIN_PHONE,
+                password: ADMIN_PASSWORD,
+                role: 'superadmin'
+            });
+            console.log(`[initAdmin] ✅ Default SUPERADMIN account created successfully in Admins collection!`);
+            console.log(`[initAdmin] Email/Username: ${ADMIN_EMAIL} or ${ADMIN_USERNAME || 'superadmin'}`);
+            console.log(`[initAdmin] Password: ${ADMIN_PASSWORD}`);
+        } else {
+            console.log(`[initAdmin] ✅ Superadmin account already exists in Admins collection: ${existingAdmin.username}`);
+        }
 
     } catch (error) {
         console.error("[initAdmin] ❌ Error initializing admin account:", error.message);
@@ -57,3 +71,4 @@ const initializeAdmin = async () => {
 };
 
 export default initializeAdmin;
+

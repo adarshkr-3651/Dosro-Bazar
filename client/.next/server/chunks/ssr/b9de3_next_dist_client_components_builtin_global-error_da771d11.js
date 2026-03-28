@@ -1,0 +1,3 @@
+module.exports=[66307,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(72547);a.n(d("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},70914,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(72547);a.n(d("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/client/components/builtin/global-error.js"))},51141,a=>{"use strict";a.i(66307);var b=a.i(70914);a.n(b)}];
+
+//# sourceMappingURL=b9de3_next_dist_client_components_builtin_global-error_da771d11.js.map

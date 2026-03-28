@@ -1,10 +1,14 @@
 {
+  "/admin/dashboard/ad-inquiry/page": "app/admin/dashboard/ad-inquiry/page.js",
+  "/admin/dashboard/advertisement/page": "app/admin/dashboard/advertisement/page.js",
+  "/admin/dashboard/items/page": "app/admin/dashboard/items/page.js",
+  "/admin/dashboard/page": "app/admin/dashboard/page.js",
+  "/admin/dashboard/reports/page": "app/admin/dashboard/reports/page.js",
+  "/admin/dashboard/sellers/page": "app/admin/dashboard/sellers/page.js",
+  "/admin/dashboard/settings/page": "app/admin/dashboard/settings/page.js",
+  "/admin/dashboard/users/page": "app/admin/dashboard/users/page.js",
+  "/admin/dashboard/verifications/page": "app/admin/dashboard/verifications/page.js",
+  "/admin/page": "app/admin/page.js",
   "/api/advertisements/route": "app/api/advertisements/route.js",
-  "/login/page": "app/login/page.js",
-  "/messages/page": "app/messages/page.js",
-  "/page": "app/page.js",
-  "/products/[slug]/edit/page": "app/products/[slug]/edit/page.js",
-  "/products/[slug]/page": "app/products/[slug]/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/upload/page": "app/upload/page.js"
+  "/page": "app/page.js"
 }

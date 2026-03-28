@@ -11,17 +11,26 @@ import CustomError from "../Helpers/error/CustomError.js";
 const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
     console.log("getAllUsers function of Controllers admin.js");
 
-    const { page = 1, limit = 10, search = '' } = req.query;
+    const { page = 1, limit = 10, search = '', role, verificationStatus, hasIdProof } = req.query;
     const skip = (page - 1) * limit;
 
     // Build search query
-    const searchQuery = search ? {
-        $or: [
+    const searchQuery = {};
+
+    if (search) {
+        searchQuery.$or = [
             { username: { $regex: search, $options: 'i' } },
             { email: { $regex: search, $options: 'i' } },
             { phone: { $regex: search, $options: 'i' } }
-        ]
-    } : {};
+        ];
+    }
+
+    if (role) searchQuery.role = role;
+    if (verificationStatus) searchQuery.verificationStatus = verificationStatus;
+    // Filter users who have uploaded a non-empty ID proof (handles "", null, undefined)
+    if (hasIdProof === 'true') {
+        searchQuery.idProof = { $exists: true, $nin: ["", null] };
+    }
 
     const users = await User.find(searchQuery)
         .select('-password')
@@ -70,7 +79,7 @@ const updateUser = asyncErrorWrapper(async (req, res, next) => {
     console.log("updateUser function of Controllers admin.js");
 
     const { id } = req.params;
-    const { username, email, phone, role, address } = req.body;
+    const { username, email, phone, role, address, verificationStatus } = req.body;
 
     // Prepare update data
     const updateData = {};
@@ -81,10 +90,19 @@ const updateUser = asyncErrorWrapper(async (req, res, next) => {
 
     // Validate role if provided
     if (role !== undefined) {
-        if (!['buyer', 'admin'].includes(role)) {
-            return next(new CustomError("Invalid role. Must be 'buyer' or 'admin'", 400));
+        if (!['buyer', 'seller', 'admin'].includes(role)) {
+            return next(new CustomError("Invalid role. Must be 'buyer', 'seller', or 'admin'", 400));
         }
         updateData.role = role;
+    }
+
+    // Allow admin to manually update verification status
+    if (verificationStatus !== undefined) {
+        const validStatuses = ['unverified', 'pending', 'verified', 'rejected'];
+        if (!validStatuses.includes(verificationStatus)) {
+            return next(new CustomError("Invalid verification status", 400));
+        }
+        updateData.verificationStatus = verificationStatus;
     }
 
     const user = await User.findByIdAndUpdate(
@@ -251,55 +269,106 @@ const getItemStats = asyncErrorWrapper(async (req, res, next) => {
 // DASHBOARD
 // ========================================
 
-// Get dashboard overview
 const getDashboard = asyncErrorWrapper(async (req, res, next) => {
     console.log("getDashboard function of Controllers admin.js");
 
-    // Get user stats
-    const totalUsers = await User.countDocuments();
-    const adminCount = await User.countDocuments({ role: 'admin' });
-    const buyerCount = await User.countDocuments({ role: 'buyer' });
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now); thirtyDaysAgo.setDate(now.getDate() - 30);
+    const sixtyDaysAgo  = new Date(now); sixtyDaysAgo.setDate(now.getDate() - 60);
 
-    // Get item stats
-    const totalItems = await Item.countDocuments();
+    // ── Counts ──────────────────────────────────────────────────────────────
+    const [
+        totalUsers, totalItems,
+        recentUsers, recentItems,
+        prevUsers,  prevItems,
+        verifiedSellers, pendingSellers,
+        totalBiddable,
+    ] = await Promise.all([
+        User.countDocuments(),
+        Item.countDocuments(),
+        User.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
+        Item.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
+        User.countDocuments({ createdAt: { $gte: sixtyDaysAgo, $lt: thirtyDaysAgo } }),
+        Item.countDocuments({ createdAt: { $gte: sixtyDaysAgo, $lt: thirtyDaysAgo } }),
+        User.countDocuments({ verificationStatus: "verified" }),
+        User.countDocuments({ verificationStatus: "pending" }),
+        Item.countDocuments({ isBiddable: true }),
+    ]);
 
-    // Get recent activity (last 30 days)
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const recentUsers = await User.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
-    const recentItems = await Item.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
+    // Month-over-month % change helper
+    const momChange = (current, previous) => {
+        if (previous === 0) return current > 0 ? "+100%" : "0%";
+        const pct = ((current - previous) / previous) * 100;
+        return (pct >= 0 ? "+" : "") + pct.toFixed(1) + "%";
+    };
 
-    // Get latest users and items
+    // ── Latest users and items ────────────────────────────────────────────
     const latestUsers = await User.find()
-        .select('-password')
-        .sort('-createdAt')
+        .select("username email photo role verificationStatus createdAt")
+        .sort("-createdAt")
         .limit(5);
 
     const latestItems = await Item.find()
-        .populate('author', 'username email')
-        .sort('-createdAt')
+        .populate("author", "username email")
+        .sort("-createdAt")
         .limit(5);
+
+    // ── Recent activity feed (merge users + items, sorted, top 8) ─────────
+    const [activityUsers, activityItems] = await Promise.all([
+        User.find({ createdAt: { $gte: thirtyDaysAgo } })
+            .select("username email role verificationStatus createdAt")
+            .sort("-createdAt").limit(8),
+        Item.find({ createdAt: { $gte: thirtyDaysAgo } })
+            .populate("author", "username")
+            .sort("-createdAt").limit(8),
+    ]);
+
+    const activityFeed = [
+        ...activityUsers.map(u => ({
+            id: u._id,
+            actor: u.username || u.email,
+            action: "registered a new account",
+            target: null,
+            type: u.verificationStatus === "pending" ? "warning" : "completed",
+            time: u.createdAt,
+        })),
+        ...activityItems.map(i => ({
+            id: i._id,
+            actor: i.author?.username || "unknown",
+            action: "listed a new item",
+            target: i.title,
+            type: "completed",
+            time: i.createdAt,
+        })),
+    ]
+        .sort((a, b) => new Date(b.time) - new Date(a.time))
+        .slice(0, 8);
 
     console.log(`[admin.js] getDashboard() - Dashboard data compiled`);
 
     return res.status(200).json({
         success: true,
         data: {
-            users: {
-                total: totalUsers,
-                admins: adminCount,
-                buyers: buyerCount,
-                recent: recentUsers
-            },
-            items: {
-                total: totalItems,
-                recent: recentItems
+            stats: {
+                totalUsers,
+                totalItems,
+                verifiedSellers,
+                pendingSellers,
+                totalBiddable,
+                recentUsers,
+                recentItems,
+                userChange: momChange(recentUsers, prevUsers),
+                itemChange: momChange(recentItems, prevItems),
+                userChangeUp: recentUsers >= prevUsers,
+                itemChangeUp: recentItems >= prevItems,
             },
             latestUsers,
-            latestItems
-        }
+            latestItems,
+            activityFeed,
+        },
     });
 });
+
 
 export {
     // User management

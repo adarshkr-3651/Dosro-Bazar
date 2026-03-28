@@ -1,24 +1,36 @@
 {
   "app": {
-    "[project]/Desktop/remarket-hub-main/client/app/login/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/ad-inquiry/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/client/app/messages/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/client/app/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/items/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/client/app/products/[slug]/edit/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/client/app/products/[slug]/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/reports/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/client/app/profile/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/sellers/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
-    "[project]/Desktop/remarket-hub-main/client/app/upload/page": [
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/settings/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/users/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/verifications/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ]
   },

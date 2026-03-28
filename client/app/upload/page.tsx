@@ -98,7 +98,7 @@ export default function UploadPage() {
     };
 
     const categories = [
-        "Electronics", "Fashion", "Home & Garden", "Sports", "Collectibles", "Vehicles", "Other"
+        "Electronics", "Computers", "Fashion", "Home & Garden", "Health & Beauty", "Books", "Toys & Hobbies", "Sports", "Collectibles", "Vehicles", "Other"
     ];
 
     const conditions = [
@@ -600,7 +600,7 @@ export default function UploadPage() {
                                             {/* Conditional Bid Field - Horizontal with Toggle */}
                                             {formData.isBiddable && (
                                                 <div className={`space-y-2 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
-                                                    <Label htmlFor="minBid" className="text-xs font-semibold">Min. Starting Bid (Rs.)</Label>
+                                                    <Label htmlFor="minBid" className="text-xs font-semibold">Minimum Bid (Rs.)</Label>
                                                     <div className="relative">
                                                         <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                                                         <Input
@@ -619,7 +619,7 @@ export default function UploadPage() {
                                             {/* Expiry Selection */}
                                             <div className="space-y-2">
                                                 <Label htmlFor="expiry" className="text-sm font-semibold flex items-center gap-2">
-                                                    <Clock className="h-4 w-4 text-primary" /> Listing Expiry
+                                                    <Clock className="h-4 w-4 text-primary" /> Listing Expiry  (Optional)
                                                 </Label>
                                                 <div className="flex flex-col gap-2">
                                                     <div className="flex gap-1">
@@ -658,7 +658,7 @@ export default function UploadPage() {
                                             {/* Limited Time Offer Price */}
                                             <div className="space-y-2">
                                                 <Label htmlFor="offerPrice" className="text-sm font-semibold flex items-center gap-2">
-                                                    <Tag className="h-4 w-4 text-primary" /> Limited Time Offer
+                                                    <Tag className="h-4 w-4 text-primary" /> Limited Time Offer  (Optional)
                                                 </Label>
                                                 <div className="grid grid-cols-2 gap-2">
                                                     <Input
@@ -691,18 +691,19 @@ export default function UploadPage() {
                                             {/* Payment Methods */}
                                             <div className="space-y-3">
                                                 <Label className="text-sm font-semibold flex items-center gap-2">
-                                                    <CreditCard className="h-4 w-4 text-primary" /> Accepted Payment Methods
+                                                    <CreditCard className="h-4 w-4 text-primary" /> Accepted Payment Methods  (Optional)
                                                 </Label>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {["eSewa", "Khalti", "Cash", "Cash on Delivery", "Bank Transfer"].map((method) => (
-                                                        <Badge
+                                                    {["Cash", "eSewa", "Khalti", "COD", "Bank"].map((method) => (
+                                                        <Button
                                                             key={method}
+                                                            type="button"
                                                             onClick={() => togglePaymentMethod(method)}
                                                             variant={formData.paymentMethods.includes(method) ? "default" : "outline"}
-                                                            className="cursor-pointer py-1.5 px-3 select-none hover:bg-primary/10 transition-colors"
+                                                            className="flex-1 min-w-[70px] text-[9px] h-7 px-1 uppercase font-bold"
                                                         >
                                                             {method}
-                                                        </Badge>
+                                                        </Button>
                                                     ))}
                                                 </div>
                                             </div>
