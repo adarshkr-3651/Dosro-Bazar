@@ -87,6 +87,12 @@
       "namedRegex": "^/admin/dashboard/advertisement(?:/)?$"
     },
     {
+      "page": "/admin/dashboard/items",
+      "regex": "^/admin/dashboard/items(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/items(?:/)?$"
+    },
+    {
       "page": "/admin/dashboard/reports",
       "regex": "^/admin/dashboard/reports(?:/)?$",
       "routeKeys": {},
@@ -99,10 +105,28 @@
       "namedRegex": "^/admin/dashboard/sellers(?:/)?$"
     },
     {
+      "page": "/admin/dashboard/settings",
+      "regex": "^/admin/dashboard/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/users",
+      "regex": "^/admin/dashboard/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/users(?:/)?$"
+    },
+    {
       "page": "/admin/dashboard/verifications",
       "regex": "^/admin/dashboard/verifications(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/dashboard/verifications(?:/)?$"
+    },
+    {
+      "page": "/adminlogin",
+      "regex": "^/adminlogin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/adminlogin(?:/)?$"
     },
     {
       "page": "/api/advertisements",

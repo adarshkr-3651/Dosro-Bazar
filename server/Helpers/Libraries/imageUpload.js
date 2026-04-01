@@ -2,6 +2,7 @@ import CustomError from "../error/CustomError.js";
 import multer from "multer";
 import cloudinary from "./cloudinaryConfig.js";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import os from "os";
 
 // Configure Cloudinary storage for user photos
 const userPhotoStorage = new CloudinaryStorage({
@@ -10,7 +11,7 @@ const userPhotoStorage = new CloudinaryStorage({
         folder: "dosro-bazar/profiles",
         transformation: [{ width: 500, height: 500, crop: "limit" }],
         public_id: (req, file) => {
-            return `user_${req.user.id}_${Date.now()}`;
+            return `user_${req.user?.id || 'guest'}_${Date.now()}`;
         },
     },
 });
@@ -39,8 +40,6 @@ const storyImageStorage = new CloudinaryStorage({
 
 // File filter to validate image types
 const fileFilter = (req, file, cb) => {
-    // Next.js Server Actions often send files with generic application/octet-stream or application/x-msdownload 
-    // instead of explicit image/ mimetypes. We should allow these and let Cloudinary's deep inspection validate them.
     const isImageSyntax = file.mimetype.startsWith("image/");
     const isGenericBinary = file.mimetype === "application/octet-stream" || file.mimetype === "application/x-msdownload";
 
@@ -51,18 +50,22 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
 };
 
+const limits = {
+    fileSize: 5 * 1024 * 1024 // 5 MB LIMIT
+};
+
 // Create multer upload middleware with dynamic storage based on field name
 const imageUpload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
-            // This won't be used with Cloudinary, but required for multer
-            cb(null, "/tmp");
+            cb(null, os.tmpdir());
         },
         filename: function (req, file, cb) {
-            cb(null, file.originalname);
+            cb(null, `upload_${Date.now()}_${file.originalname}`);
         },
     }),
     fileFilter: fileFilter,
+    limits: limits
 });
 
 // Override with Cloudinary storage
@@ -72,19 +75,21 @@ const cloudinaryUpload = (fieldName) => {
     else if (fieldName === "ad" || fieldName === "image") storage = advertisementStorage;
     else storage = storyImageStorage;
 
-    return multer({ storage, fileFilter });
+    return multer({ storage, fileFilter, limits });
 };
 
 // Export single file upload for backward compatibility
 const singleUpload = multer({
     storage: userPhotoStorage,
     fileFilter: fileFilter,
+    limits: { fileSize: 2 * 1024 * 1024 } // 2MB for profile pics
 });
 
 // Export multi-file upload for profile update
 const profileUpload = multer({
     storage: userPhotoStorage,
     fileFilter: fileFilter,
+    limits: { fileSize: 3 * 1024 * 1024 } // 3MB for ID proofs
 }).fields([
     { name: "photo", maxCount: 1 },
     { name: "idProof", maxCount: 1 }

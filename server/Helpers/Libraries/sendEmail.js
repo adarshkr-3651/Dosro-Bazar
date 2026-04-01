@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 
 const sendEmail = async (mailOptions) => {
-    console.log("sendEmail function of Helpers/Libraries/sendEmail.js");
+    // console.log("sendEmail function of Helpers/Libraries/sendEmail.js");
 
     // Check if email configuration exists
     const { SMTP_HOST, SMTP_PORT, EMAIL_USERNAME, EMAIL_PASSWORD } = process.env;
@@ -31,7 +31,7 @@ const sendEmail = async (mailOptions) => {
         // Send email
         let info = await transporter.sendMail(mailOptions);
 
-        console.log("[sendEmail] Email sent successfully:", info.messageId);
+        // console.log("[sendEmail] Email sent successfully:", info.messageId);
         return info;
     } catch (error) {
         console.error("[sendEmail] Error sending email:", error.message);

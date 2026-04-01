@@ -13,28 +13,7 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { getNotifications } from "../lib/api";
-
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
-
-const resolvePhotoUrl = (photoPath?: string | null) => {
-    if (!photoPath || photoPath === 'user.png') {
-        return null;
-    }
-
-    if (photoPath.startsWith("http://") || photoPath.startsWith("https://")) {
-        return photoPath;
-    }
-
-    const cleanedPath = photoPath
-        .replace(/^public\//, "")
-        .replace(/^\/+/, "");
-
-    const finalPath = cleanedPath.includes("/")
-        ? cleanedPath
-        : `userPhotos/${cleanedPath}`;
-
-    return `${API_BASE_URL}/${finalPath}`;
-};
+import { resolvePhotoUrl } from "../lib/image-utils";
 
 interface HeaderProps {
   isBuyerMode?: boolean;
@@ -55,10 +34,10 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
             setNotifications(response.data);
           }
         } catch (err) {
-          console.error("Failed to fetch notifications in Header", err);
+          // Silent catch to prevent error overlays when session expires
         }
       };
-      
+
       fetchNotifications();
       // Poll for new notifications every minute
       const interval = setInterval(fetchNotifications, 60000);
@@ -132,17 +111,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
   };
 
   const userProfile = () => {
+    if (!user) return null;
     router.push('/profile');
-    console.log(user)
   }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center gap-4">
+        <div className="flex h-16 items-center gap-0">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src={logo} alt="Dosro Bazar" width={100} height={100} className="h-18 w-auto cursor-pointer" />
+            <Image src={logo} alt="Dosro Bazar" width={60} height={60} className="h-12 w-auto cursor-pointer" />
           </Link>
 
           {/* Search Bar - Hidden on mobile */}
@@ -238,7 +217,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                     <MessageCircle className="h-5 w-5" />
                   </Link>
                 </Button>
-                
+
                 <Button variant="ghost" size="icon" className="relative" asChild>
                   <Link href="/notifications">
                     <Bell className="h-5 w-5" />
@@ -256,13 +235,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
             {user ? (
               <>
                 <Button onClick={() => userProfile()} variant="ghost" size="sm" className="gap-2">
-                  {user.photo && resolvePhotoUrl(user.photo) ? (
+                  {user.photo && resolvePhotoUrl(user.photo, true) ? (
                     <div className="relative h-6 w-6 rounded-full overflow-hidden border">
-                      <Image 
-                        src={resolvePhotoUrl(user.photo)!} 
-                        alt="Profile" 
-                        fill 
-                        className="object-cover" 
+                      <Image
+                        src={resolvePhotoUrl(user.photo, true)!}
+                        alt="Profile"
+                        fill
+                        className="object-cover"
                         unoptimized={resolvePhotoUrl(user.photo)?.startsWith('http')}
                       />
                     </div>

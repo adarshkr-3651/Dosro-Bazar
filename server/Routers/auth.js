@@ -1,6 +1,6 @@
 import express from "express";
 
-import { register, login, adminLogin, forgotpassword, resetpassword, getPrivateData, refreshAccessToken, logout, googleLogin, facebookLogin, completeOAuthRegistration, verifyEmail, resendVerificationCode } from "../Controllers/auth.js";
+import { register, login, adminLogin, forgotpassword, resetpassword, getPrivateData, refreshAccessToken, logout, googleLogin, facebookLogin, completeOAuthRegistration, verifyEmail, resendVerificationCode, verifyResetOTP } from "../Controllers/auth.js";
 
 import { getAccessToRoute } from "../Middlewares/Authorization/auth.js";
 
@@ -24,6 +24,7 @@ router.post("/resend-verification", resendVerificationCode)
 router.post("/logout", getAccessToRoute, logout)
 
 router.post("/forgotpassword", forgotpassword)
+router.post("/verify-reset-otp", verifyResetOTP)
 
 router.put("/resetpassword", resetpassword)
 

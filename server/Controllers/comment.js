@@ -24,7 +24,7 @@ const addNewCommentToItem = asyncErrorWrapper(async (req, res, next) => {
 
     await item.save();
 
-    console.log("addNewCommentToItem function of Controllers comment.js")
+    // console.log("addNewCommentToItem function of Controllers comment.js")
 
     return res.status(200).json({
         success: true,
@@ -47,7 +47,7 @@ const getAllCommentByItem = asyncErrorWrapper(async (req, res, next) => {
         select: "username photo"
     }).sort("-createdAt")
 
-    console.log("getAllCommentByItem function of Controllers comment.js")
+    // console.log("getAllCommentByItem function of Controllers comment.js")
 
     return res.status(200)
         .json({
@@ -63,7 +63,7 @@ const commentLike = asyncErrorWrapper(async (req, res, next) => {
     const { activeUser } = req.body
     const { comment_id } = req.params
 
-    console.log("commentLike function of Controllers comment.js")
+    // console.log("commentLike function of Controllers comment.js")
 
 
     const comment = await Comment.findById(comment_id)
@@ -103,7 +103,7 @@ const getCommentLikeStatus = asyncErrorWrapper(async (req, res, next) => {
     const comment = await Comment.findById(comment_id)
     const likeStatus = comment.likes.includes(activeUser._id)
 
-    console.log("getCommentLikeStatus function of Controllers comment.js")
+    // console.log("getCommentLikeStatus function of Controllers comment.js")
 
     return res.status(200)
         .json({

@@ -5,7 +5,7 @@
 
 import mongoose from "mongoose";
 
-console.log("RefreshToken model module loaded");
+// console.log("RefreshToken model module loaded");
 
 // ========================================
 // REFRESH TOKEN SCHEMA DEFINITION
@@ -168,7 +168,7 @@ RefreshTokenSchema.statics.cleanupExpired = async function () {
     const result = await this.deleteMany({
         expiresAt: { $lt: new Date() }
     });
-    console.log(`Cleaned up ${result.deletedCount} expired refresh tokens`);
+    // console.log(`Cleaned up ${result.deletedCount} expired refresh tokens`);
     return result.deletedCount;
 };
 

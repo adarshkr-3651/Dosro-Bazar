@@ -1,13 +1,13 @@
 __turbopack_load_page_chunks__("/_app", [
-  "static/chunks/b9de3_next_dist_compiled_b6682b07._.js",
-  "static/chunks/b9de3_next_dist_shared_lib_d427191d._.js",
-  "static/chunks/b9de3_next_dist_client_649e58e0._.js",
-  "static/chunks/b9de3_next_dist_1287b89e._.js",
-  "static/chunks/b9de3_next_app_84b6c28e.js",
-  "static/chunks/[next]_entry_page-loader_ts_45ff8fe2._.js",
-  "static/chunks/b9de3_react-dom_e4e27be4._.js",
-  "static/chunks/b9de3_6c5d3093._.js",
-  "static/chunks/[root-of-the-server]__aeb1701d._.js",
-  "static/chunks/Desktop_Dosro Bazar - Main_client_pages__app_2da965e7._.js",
-  "static/chunks/turbopack-Desktop_Dosro Bazar - Main_client_pages__app_bd049bc7._.js"
+  "static/chunks/3ed8f_next_dist_compiled_f74eae43._.js",
+  "static/chunks/3ed8f_next_dist_shared_lib_3e3cc56e._.js",
+  "static/chunks/3ed8f_next_dist_client_fe3a04a0._.js",
+  "static/chunks/3ed8f_next_dist_fe5b41bd._.js",
+  "static/chunks/3ed8f_next_app_0c3bfc8a.js",
+  "static/chunks/[next]_entry_page-loader_ts_a0915bea._.js",
+  "static/chunks/3ed8f_react-dom_0d094c8f._.js",
+  "static/chunks/3ed8f_69c403d0._.js",
+  "static/chunks/[root-of-the-server]__a61fbfc9._.js",
+  "static/chunks/Desktop_Dosro Bazar_client_pages__app_2da965e7._.js",
+  "static/chunks/turbopack-Desktop_Dosro Bazar_client_pages__app_8872b873._.js"
 ])

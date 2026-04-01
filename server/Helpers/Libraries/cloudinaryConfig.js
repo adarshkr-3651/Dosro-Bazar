@@ -20,7 +20,7 @@ for (const envPath of envPaths) {
     const result = dotenv.config({ path: envPath });
     if (!result.error) {
         envLoaded = true;
-        console.log(`Environment variables loaded from: ${envPath}`);
+        // console.log(`Environment variables loaded from: ${envPath}`);
         break;
     }
 }
@@ -41,10 +41,6 @@ const cloudinaryConfig = {
 cloudinary.config(cloudinaryConfig);
 
 // Log configuration status
-console.log("Cloudinary Config Loaded:");
-console.log("- Cloud Name:", cloudinaryConfig.cloud_name || "MISSING");
-console.log("- API Key:", cloudinaryConfig.api_key ? "Present" : "MISSING");
-console.log("- API Secret:", cloudinaryConfig.api_secret ? "Present" : "MISSING");
 
 // Verify configuration
 if (!cloudinaryConfig.cloud_name || !cloudinaryConfig.api_key || !cloudinaryConfig.api_secret) {
@@ -58,7 +54,7 @@ if (!cloudinaryConfig.cloud_name || !cloudinaryConfig.api_key || !cloudinaryConf
     console.error("  - CLOUDINARY_API_KEY:", process.env.CLOUDINARY_API_KEY ? "Set" : "Not set");
     console.error("  - CLOUDINARY_API_SECRET:", process.env.CLOUDINARY_API_SECRET ? "Set" : "Not set");
 } else {
-    console.log("✓ Cloudinary configuration is valid");
+    // console.log("✓ Cloudinary configuration is valid");
 }
 
 export default cloudinary;

@@ -17,7 +17,7 @@ const getChatResponse = asyncErrorWrapper(async (req, res) => {
         return res.status(500).json({ success: false, message: "Gemini API key not configured" });
     }
 
-    console.log(`[Chat] Received: "${message}" | History turns: ${history.length}`);
+    // console.log(`[Chat] Received: "${message}" | History turns: ${history.length}`);
 
     // ─── Step 1: Generate embedding for the user's message ───────────────────
     let queryEmbeddings = [];
@@ -66,7 +66,7 @@ const getChatResponse = asyncErrorWrapper(async (req, res) => {
             productContext = `RELEVANT MARKETPLACE LISTINGS:\n${items
                 .map(i => `- ${i.title} | Rs. ${i.price} | ${i.category} | Condition: ${i.condition}`)
                 .join("\n")}`;
-            console.log(`[Chat] Found ${items.length} relevant products.`);
+            // console.log(`[Chat] Found ${items.length} relevant products.`);
         } else {
             if (productResults.status === "rejected") {
                 console.warn("[Chat] Product vector search failed (index may be missing):", productResults.reason?.message);
@@ -77,7 +77,7 @@ const getChatResponse = asyncErrorWrapper(async (req, res) => {
         if (knowledgeResults.status === "fulfilled" && knowledgeResults.value.length > 0) {
             const chunks = knowledgeResults.value;
             knowledgeContext = `WEBSITE KNOWLEDGE BASE:\n${chunks.map(c => c.content).join("\n\n")}`;
-            console.log(`[Chat] Found ${chunks.length} relevant knowledge chunks.`);
+            // console.log(`[Chat] Found ${chunks.length} relevant knowledge chunks.`);
         } else {
             if (knowledgeResults.status === "rejected") {
                 console.warn("[Chat] Knowledge vector search failed (index may be missing):", knowledgeResults.reason?.message);
@@ -125,7 +125,7 @@ ASSISTANT:`;
         const result = await model.generateContent(systemPrompt);
         const responseText = result.response.text().trim();
 
-        console.log(`[Chat] Response: "${responseText.substring(0, 80)}..."`);
+        // console.log(`[Chat] Response: "${responseText.substring(0, 80)}..."`);
 
         return res.status(200).json({ success: true, data: responseText });
     } catch (error) {

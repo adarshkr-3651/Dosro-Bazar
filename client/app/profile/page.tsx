@@ -221,22 +221,18 @@ export default function ProfilePage() {
             }
 
             const response = await updateProfile(data);
-            console.log("[ProfilePage] Received response:", response);
+            if (response.success) {
+                if (response.data) {
+                    setUser(response.data);
+                } else {
+                    await checkAuthStatus();
+                }
 
-            // Use immediate user update from response if available
-            if (response.data) {
-                setUser(response.data);
-                console.log("[ProfilePage] Local user state updated from response data");
-            } else {
-                await checkAuthStatus(); // Fallback to refresh user data
-                console.log("[ProfilePage] Auth status refreshed via fallback");
+                setMessage({
+                    type: response.data?.verificationStatus === 'rejected' ? 'error' : 'success',
+                    text: response.message || 'Profile updated successfully!'
+                });
             }
-
-            setMessage({
-                type: response.data?.verificationStatus === 'rejected' ? 'error' : 'success',
-                text: response.message || 'Profile updated successfully!'
-            });
-            console.log("[ProfilePage] Message set to:", response.message);
         } catch (error: any) {
             setMessage({ type: 'error', text: error.message || 'Failed to update profile' });
         } finally {

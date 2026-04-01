@@ -11,7 +11,7 @@ const initializeAdmin = async () => {
 
         // Check if admin credentials are configured
         if (!ADMIN_EMAIL || !ADMIN_PHONE || !ADMIN_PASSWORD) {
-            console.log("[initAdmin] Admin credentials not configured in environment variables");
+            // console.log("[initAdmin] Admin credentials not configured in environment variables");
             return;
         }
 
@@ -27,7 +27,7 @@ const initializeAdmin = async () => {
             if (existingLegacyAdmin.role !== 'admin') {
                 existingLegacyAdmin.role = 'admin';
                 await existingLegacyAdmin.save();
-                console.log(`[initAdmin] ✅ Updated existing legacy user to admin: ${existingLegacyAdmin.email || existingLegacyAdmin.phone}`);
+                // console.log(`[initAdmin] ✅ Updated existing legacy user to admin: ${existingLegacyAdmin.email || existingLegacyAdmin.phone}`);
             }
         } else {
             await User.create({
@@ -39,7 +39,7 @@ const initializeAdmin = async () => {
                 authProvider: 'email',
                 authProviders: ['email']
             });
-            console.log(`[initAdmin] ✅ Default legacy admin account created successfully in Users collection!`);
+            // console.log(`[initAdmin] ✅ Default legacy admin account created successfully in Users collection!`);
         }
 
         // --- 2. Initialize Modern Admin in Admin Collection ---
@@ -58,11 +58,13 @@ const initializeAdmin = async () => {
                 password: ADMIN_PASSWORD,
                 role: 'superadmin'
             });
+            /*
             console.log(`[initAdmin] ✅ Default SUPERADMIN account created successfully in Admins collection!`);
             console.log(`[initAdmin] Email/Username: ${ADMIN_EMAIL} or ${ADMIN_USERNAME || 'superadmin'}`);
             console.log(`[initAdmin] Password: ${ADMIN_PASSWORD}`);
+            */
         } else {
-            console.log(`[initAdmin] ✅ Superadmin account already exists in Admins collection: ${existingAdmin.username}`);
+            // console.log(`[initAdmin] ✅ Superadmin account already exists in Admins collection: ${existingAdmin.username}`);
         }
 
     } catch (error) {

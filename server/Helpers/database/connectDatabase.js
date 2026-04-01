@@ -7,8 +7,6 @@ const connectDatabase = async () => {
         useUnifiedTopology: true
     })
 
-    console.log("MongoDB Connection Successfully")
-
 }
 
 export default connectDatabase;

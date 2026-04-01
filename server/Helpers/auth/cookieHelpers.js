@@ -21,20 +21,29 @@ const isPotentialJwt = (token) => {
 
 /**
  * Get access token candidates from cookies or header
- * Returns an array of potential tokens to try
+ * Returns an array of potential tokens to try, intelligently ordered by context.
  */
 const getAccessToken = (req) => {
     const candidates = [];
+    
+    // Check if the request is destined for an administrative route
+    // We check both the current path and the original URL for context
+    const urlToCheck = req.originalUrl || req.url || '';
+    const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth");
 
     // 1. Check cookies (httpOnly)
     if (req.cookies) {
-        // Standard user token
-        if (req.cookies.accessToken && isPotentialJwt(req.cookies.accessToken)) {
-            candidates.push(req.cookies.accessToken);
-        }
-        // Admin token
-        if (req.cookies.admin_access_token && isPotentialJwt(req.cookies.admin_access_token)) {
-            candidates.push(req.cookies.admin_access_token);
+        const userToken = req.cookies.accessToken;
+        const adminToken = req.cookies.admin_access_token;
+
+        if (isAdminRoute) {
+            // Context: Admin page. Prioritize administrative token.
+            if (adminToken && isPotentialJwt(adminToken)) candidates.push(adminToken);
+            if (userToken && isPotentialJwt(userToken)) candidates.push(userToken);
+        } else {
+            // Context: Normal user page. Prioritize standard user token.
+            if (userToken && isPotentialJwt(userToken)) candidates.push(userToken);
+            if (adminToken && isPotentialJwt(adminToken)) candidates.push(adminToken);
         }
     }
 
@@ -87,6 +96,14 @@ const clearAuthCookies = (res) => {
         secure: isProduction,
         sameSite: isProduction ? 'strict' : 'lax',
         path: '/' // Explicitly set path
+    });
+
+    // Clear admin access token cookie
+    res.clearCookie('admin_access_token', {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? 'strict' : 'lax',
+        path: '/'
     });
 };
 

@@ -77,7 +77,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/admin": {
+    "/adminlogin": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -90,8 +90,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/admin",
-      "dataRoute": "/admin.rsc",
+      "srcRoute": "/adminlogin",
+      "dataRoute": "/adminlogin.rsc",
       "prefetchDataRoute": null,
       "allowHeader": [
         "host",

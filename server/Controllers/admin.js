@@ -9,7 +9,7 @@ import CustomError from "../Helpers/error/CustomError.js";
 
 // Get all users with pagination and search
 const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getAllUsers function of Controllers admin.js");
+    // console.log("getAllUsers function of Controllers admin.js");
 
     const { page = 1, limit = 10, search = '', role, verificationStatus, hasIdProof } = req.query;
     const skip = (page - 1) * limit;
@@ -40,7 +40,7 @@ const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
 
     const total = await User.countDocuments(searchQuery);
 
-    console.log(`[admin.js] getAllUsers() - Retrieved ${users.length} users out of ${total} total`);
+    // console.log(`[admin.js] getAllUsers() - Retrieved ${users.length} users out of ${total} total`);
 
     return res.status(200).json({
         success: true,
@@ -56,7 +56,7 @@ const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
 
 // Get single user by ID
 const getUserById = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getUserById function of Controllers admin.js");
+    // console.log("getUserById function of Controllers admin.js");
 
     const { id } = req.params;
 
@@ -66,7 +66,7 @@ const getUserById = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError("User not found", 404));
     }
 
-    console.log(`[admin.js] getUserById() - Retrieved user: ${user.email}`);
+    // console.log(`[admin.js] getUserById() - Retrieved user: ${user.email}`);
 
     return res.status(200).json({
         success: true,
@@ -76,7 +76,7 @@ const getUserById = asyncErrorWrapper(async (req, res, next) => {
 
 // Update user (including role changes)
 const updateUser = asyncErrorWrapper(async (req, res, next) => {
-    console.log("updateUser function of Controllers admin.js");
+    // console.log("updateUser function of Controllers admin.js");
 
     const { id } = req.params;
     const { username, email, phone, role, address, verificationStatus } = req.body;
@@ -115,7 +115,7 @@ const updateUser = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError("User not found", 404));
     }
 
-    console.log(`[admin.js] updateUser() - Updated user: ${user.email}`);
+    // console.log(`[admin.js] updateUser() - Updated user: ${user.email}`);
 
     return res.status(200).json({
         success: true,
@@ -126,7 +126,7 @@ const updateUser = asyncErrorWrapper(async (req, res, next) => {
 
 // Delete user
 const deleteUser = asyncErrorWrapper(async (req, res, next) => {
-    console.log("deleteUser function of Controllers admin.js");
+    // console.log("deleteUser function of Controllers admin.js");
 
     const { id } = req.params;
 
@@ -141,7 +141,7 @@ const deleteUser = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError("User not found", 404));
     }
 
-    console.log(`[admin.js] deleteUser() - Deleted user: ${user.email}`);
+    // console.log(`[admin.js] deleteUser() - Deleted user: ${user.email}`);
 
     return res.status(200).json({
         success: true,
@@ -151,7 +151,7 @@ const deleteUser = asyncErrorWrapper(async (req, res, next) => {
 
 // Get user statistics
 const getUserStats = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getUserStats function of Controllers admin.js");
+    // console.log("getUserStats function of Controllers admin.js");
 
     const totalUsers = await User.countDocuments();
     const adminCount = await User.countDocuments({ role: 'admin' });
@@ -162,7 +162,7 @@ const getUserStats = asyncErrorWrapper(async (req, res, next) => {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const recentUsers = await User.countDocuments({ createdAt: { $gte: thirtyDaysAgo } });
 
-    console.log(`[admin.js] getUserStats() - Total users: ${totalUsers}`);
+    // console.log(`[admin.js] getUserStats() - Total users: ${totalUsers}`);
 
     return res.status(200).json({
         success: true,
@@ -181,7 +181,7 @@ const getUserStats = asyncErrorWrapper(async (req, res, next) => {
 
 // Get all items with pagination and search
 const getAllItemsAdmin = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getAllItemsAdmin function of Controllers admin.js");
+    // console.log("getAllItemsAdmin function of Controllers admin.js");
 
     const { page = 1, limit = 10, search = '' } = req.query;
     const skip = (page - 1) * limit;
@@ -202,7 +202,7 @@ const getAllItemsAdmin = asyncErrorWrapper(async (req, res, next) => {
 
     const total = await Item.countDocuments(searchQuery);
 
-    console.log(`[admin.js] getAllItemsAdmin() - Retrieved ${items.length} items out of ${total} total`);
+    // console.log(`[admin.js] getAllItemsAdmin() - Retrieved ${items.length} items out of ${total} total`);
 
     return res.status(200).json({
         success: true,
@@ -218,7 +218,7 @@ const getAllItemsAdmin = asyncErrorWrapper(async (req, res, next) => {
 
 // Delete item (admin can delete any item)
 const deleteItemAdmin = asyncErrorWrapper(async (req, res, next) => {
-    console.log("deleteItemAdmin function of Controllers admin.js");
+    // console.log("deleteItemAdmin function of Controllers admin.js");
 
     const { id } = req.params;
 
@@ -228,7 +228,7 @@ const deleteItemAdmin = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError("Item not found", 404));
     }
 
-    console.log(`[admin.js] deleteItemAdmin() - Deleted item: ${item.title}`);
+    // console.log(`[admin.js] deleteItemAdmin() - Deleted item: ${item.title}`);
 
     return res.status(200).json({
         success: true,
@@ -238,7 +238,7 @@ const deleteItemAdmin = asyncErrorWrapper(async (req, res, next) => {
 
 // Get item statistics
 const getItemStats = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getItemStats function of Controllers admin.js");
+    // console.log("getItemStats function of Controllers admin.js");
 
     const totalItems = await Item.countDocuments();
 
@@ -252,7 +252,7 @@ const getItemStats = asyncErrorWrapper(async (req, res, next) => {
     const totalLikes = items.reduce((sum, item) => sum + item.likeCount, 0);
     const totalComments = items.reduce((sum, item) => sum + item.commentCount, 0);
 
-    console.log(`[admin.js] getItemStats() - Total items: ${totalItems}`);
+    // console.log(`[admin.js] getItemStats() - Total items: ${totalItems}`);
 
     return res.status(200).json({
         success: true,
@@ -270,7 +270,7 @@ const getItemStats = asyncErrorWrapper(async (req, res, next) => {
 // ========================================
 
 const getDashboard = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getDashboard function of Controllers admin.js");
+    // console.log("getDashboard function of Controllers admin.js");
 
     const now = new Date();
     const thirtyDaysAgo = new Date(now); thirtyDaysAgo.setDate(now.getDate() - 30);
@@ -344,7 +344,7 @@ const getDashboard = asyncErrorWrapper(async (req, res, next) => {
         .sort((a, b) => new Date(b.time) - new Date(a.time))
         .slice(0, 8);
 
-    console.log(`[admin.js] getDashboard() - Dashboard data compiled`);
+    // console.log(`[admin.js] getDashboard() - Dashboard data compiled`);
 
     return res.status(200).json({
         success: true,

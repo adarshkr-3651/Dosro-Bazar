@@ -18,9 +18,13 @@ interface Product {
     title: string;
     price: number;
     image: string;
+    images?: string[];
     location: string;
     createdAt: string;
     isBiddable: boolean;
+    category?: string;
+    offerPrice?: number;
+    offerExpiresAt?: string;
 }
 
 export default function FavoritesPage() {
@@ -82,12 +86,8 @@ export default function FavoritesPage() {
                                 key={product._id}
                                 id={product._id}
                                 slug={product.slug}
-                                title={product.title}
-                                price={product.price}
-                                image={product.image}
-                                location={product.location}
+                                {...product}
                                 timePosted={formatTime(product.createdAt)}
-                                isBiddable={product.isBiddable}
                                 isFavorite={isBuyerMode}
                                 onFavoriteToggle={fetchFavorites} // Refresh list on toggle (remove)
                             />

@@ -18,7 +18,7 @@ const getEmbeddings = async (text) => {
 
     for (const modelId of modelIds) {
         try {
-            console.log(`[Embeddings] Trying model "${modelId}" for: "${text.substring(0, 60)}..."`);
+            // console.log(`[Embeddings] Trying model "${modelId}" for: "${text.substring(0, 60)}..."`);
             const model = genAI.getGenerativeModel({ model: modelId });
             const result = await model.embedContent({
                 content: { role: 'user', parts: [{ text }] }, 
@@ -26,7 +26,7 @@ const getEmbeddings = async (text) => {
                 outputDimensionality: 768
             });
             const values = result.embedding.values;
-            console.log(`[Embeddings] ✅ ${modelId} → ${values.length}-dim vector.`);
+            // console.log(`[Embeddings] ✅ ${modelId} → ${values.length}-dim vector.`);
             return values;
         } catch (error) {
             console.warn(`[Embeddings] ⚠️ Model "${modelId}" failed: ${error.message}`);

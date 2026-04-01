@@ -26,10 +26,8 @@ function SearchResults() {
 
             setLoading(true);
             try {
-                console.log(`[Search] Fetching results for: "${query}"`);
                 const data = await searchSemantic(query);
                 if (data.success) {
-                    console.log(`[Search] Success! Received ${data.data?.length || 0} items for query: "${query}"`);
                     setResults(data.data);
                 }
             } catch (error) {

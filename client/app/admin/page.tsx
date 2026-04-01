@@ -42,58 +42,58 @@ export default function AdminLoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-950 p-6 selection:bg-emerald-500/30 overflow-hidden relative">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6 selection:bg-emerald-500/30 overflow-hidden relative">
             {/* Background Decorative Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/20 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full" />
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full" />
             </div>
 
             <div className="w-full max-w-md space-y-10 relative z-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        <div className="relative p-5 bg-zinc-900 rounded-3xl border border-zinc-800 shadow-2xl">
-                            <ShieldCheck className="w-12 h-12 text-emerald-500 transition-transform group-hover:scale-110 duration-500" />
+                        <div className="relative p-5 bg-white rounded-3xl border border-slate-200 shadow-xl">
+                            <ShieldCheck className="w-12 h-12 text-emerald-600 transition-transform group-hover:scale-110 duration-500" />
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <h1 className="text-4xl font-black tracking-tighter text-white mt-4">
-                            DOSRO <span className="text-emerald-500">BAZAR</span>
+                        <h1 className="text-4xl font-black tracking-tighter text-slate-900 mt-4">
+                            DOSRO <span className="text-emerald-600">BAZAR</span>
                         </h1>
-                        <p className="text-zinc-500 font-medium uppercase tracking-[0.2em] text-[10px]">Administrative Access Node</p>
+                        <p className="text-slate-500 font-medium uppercase tracking-[0.2em] text-[10px]">Administrative Access Node</p>
                     </div>
                 </div>
 
-                <Card className="border-zinc-800 bg-zinc-900/40 backdrop-blur-2xl shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border-t-zinc-700/50">
+                <Card className="border-slate-200 bg-white backdrop-blur-2xl shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border-t-white">
                     <CardHeader className="space-y-2 pb-8">
-                        <CardTitle className="text-xl text-white font-bold">Secure Authentication</CardTitle>
-                        <CardDescription className="text-zinc-500 text-sm leading-relaxed">
+                        <CardTitle className="text-xl text-slate-900 font-bold">Secure Authentication</CardTitle>
+                        <CardDescription className="text-slate-500 text-sm leading-relaxed">
                             Personnel only. Please establish a secure session using authorized credentials.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-2.5">
-                                <Label htmlFor="username" className="text-zinc-400 text-xs font-bold uppercase tracking-wider ml-1">Identity Identifier</Label>
+                                <Label htmlFor="username" className="text-slate-500 text-xs font-bold uppercase tracking-wider ml-1">Identity Identifier</Label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <User className="w-4 h-4 text-zinc-600 transition-colors group-focus-within:text-emerald-500" />
+                                        <User className="w-4 h-4 text-slate-400 transition-colors group-focus-within:text-emerald-600" />
                                     </div>
                                     <Input
                                         id="username"
                                         name="username"
                                         placeholder="Enter your UID"
                                         required
-                                        className="pl-12 py-6 bg-zinc-950/50 border-zinc-800 text-white placeholder:text-zinc-700 focus:ring-0 focus:border-emerald-500/50 rounded-2xl transition-all"
+                                        className="pl-12 py-6 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:ring-0 focus:border-emerald-500/50 rounded-2xl transition-all"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2.5">
-                                <Label htmlFor="password" className="text-zinc-400 text-xs font-bold uppercase tracking-wider ml-1">Cryptographic Key</Label>
+                                <Label htmlFor="password" className="text-slate-500 text-xs font-bold uppercase tracking-wider ml-1">Cryptographic Key</Label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <Lock className="w-4 h-4 text-zinc-600 transition-colors group-focus-within:text-emerald-500" />
+                                        <Lock className="w-4 h-4 text-slate-400 transition-colors group-focus-within:text-emerald-600" />
                                     </div>
                                     <Input
                                         id="password"
@@ -101,7 +101,7 @@ export default function AdminLoginPage() {
                                         type="password"
                                         placeholder="••••••••"
                                         required
-                                        className="pl-12 py-6 bg-zinc-950/50 border-zinc-800 text-white placeholder:text-zinc-700 focus:ring-0 focus:border-emerald-500/50 rounded-2xl transition-all"
+                                        className="pl-12 py-6 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:ring-0 focus:border-emerald-500/50 rounded-2xl transition-all"
                                     />
                                 </div>
                             </div>
@@ -129,19 +129,19 @@ export default function AdminLoginPage() {
                 </Card>
 
                 <div className="flex flex-col items-center gap-6">
-                    <div className="flex items-center gap-4 text-zinc-700">
-                        <div className="h-px w-8 bg-zinc-900" />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Network Integrity Active</span>
-                        <div className="h-px w-8 bg-zinc-900" />
+                    <div className="flex items-center gap-4 text-slate-300">
+                        <div className="h-px w-8 bg-slate-200" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Network Integrity Active</span>
+                        <div className="h-px w-8 bg-slate-200" />
                     </div>
                     
-                    <p className="text-center text-[10px] text-zinc-600 font-medium leading-relaxed max-w-[280px]">
+                    <p className="text-center text-[10px] text-slate-400 font-medium leading-relaxed max-w-[280px]">
                         Authorized access only. Session activity is monitored, logged, and audited in compliance with internal security directives.
                     </p>
                     
-                    <div className="flex items-center gap-6 text-zinc-500">
-                        <Globe className="w-4 h-4 hover:text-emerald-500 transition-colors cursor-pointer" />
-                        <Github className="w-4 h-4 hover:text-white transition-colors cursor-pointer" />
+                    <div className="flex items-center gap-6 text-slate-400">
+                        <Globe className="w-4 h-4 hover:text-emerald-600 transition-colors cursor-pointer" />
+                        <Github className="w-4 h-4 hover:text-slate-900 transition-colors cursor-pointer" />
                     </div>
                 </div>
             </div>

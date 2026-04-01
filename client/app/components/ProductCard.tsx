@@ -9,6 +9,8 @@ import { toggleFavorite } from "../lib/api";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
 
+import { resolvePhotoUrl } from "../lib/image-utils";
+
 interface ProductCardProps {
   id?: string | number;
   slug?: string;
@@ -52,7 +54,8 @@ const ProductCard = ({
   const { user, isBuyerMode } = useAuth();
   const [timeLeft, setTimeLeft] = useState<string>("");
 
-  const allImages = (images && images.length > 0 ? images : (image ? [image] : [])).filter(img => img && img !== "");
+  const rawImages = (images && images.length > 0 ? images : (image ? [image] : [])).filter(img => img && img !== "");
+  const allImages = rawImages.map(img => resolvePhotoUrl(img)).filter(Boolean) as string[];
   const hasMultipleImages = allImages.length > 1;
 
   // Auto-slide effect

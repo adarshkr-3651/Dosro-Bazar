@@ -116,14 +116,13 @@ export default function NotificationsPage() {
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
 
-            <main className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
+            <main className="flex-1 container mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div className="space-y-1">
                         <h1 className="text-3xl font-black tracking-tight flex items-center gap-3">
                             <Bell className="h-8 w-8 text-primary" />
                             Notifications
                         </h1>
-                        <p className="text-muted-foreground font-medium italic opacity-70">Stay updated with your bids and activities</p>
                     </div>
                     
                     <div className="flex items-center gap-2">
@@ -170,14 +169,14 @@ export default function NotificationsPage() {
                                     <div className="flex gap-4 md:gap-6">
                                         {/* Item Thumbnail */}
                                         {notification.relatedItem && (
-                                            <div className="relative h-20 w-20 rounded-2xl overflow-hidden flex-shrink-0 bg-muted border-2 border-primary/5">
+                                            <Link href={`/product/${notification.relatedItem.slug}`} className="relative h-20 w-20 rounded-2xl overflow-hidden flex-shrink-0 bg-muted border-2 border-primary/5 transition-transform hover:scale-105 active:scale-95">
                                                 <Image 
                                                     src={notification.relatedItem.images?.[0] || "/placeholder.jpg"} 
                                                     alt={notification.relatedItem.title}
                                                     fill
                                                     className="object-cover"
                                                 />
-                                            </div>
+                                            </Link>
                                         )}
 
                                         <div className="flex-1 space-y-3">

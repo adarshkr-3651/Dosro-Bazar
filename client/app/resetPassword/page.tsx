@@ -9,7 +9,8 @@ import { Eye, EyeOff, Lock, CheckCircle } from 'lucide-react';
 function ResetPasswordContent(): JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const [token, setToken] = useState<string | null>(null);
+    const [email, setEmail] = useState('');
+    const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -20,11 +21,9 @@ function ResetPasswordContent(): JSX.Element {
     const [passwordWarning, setPasswordWarning] = useState<string | null>(null);
 
     useEffect(() => {
-        const resetToken = searchParams.get('resetPasswordToken');
-        if (!resetToken) {
-            setError('Invalid or missing reset token. Please request a new password reset link.');
-        } else {
-            setToken(resetToken);
+        const emailParam = searchParams.get('email');
+        if (emailParam) {
+            setEmail(emailParam);
         }
     }, [searchParams]);
 
@@ -48,8 +47,13 @@ function ResetPasswordContent(): JSX.Element {
         setError(null);
 
         // Validation
-        if (!newPassword || !confirmPassword) {
+        if (!email || !otp || !newPassword || !confirmPassword) {
             setError('Please fill in all fields');
+            return;
+        }
+
+        if (otp.length !== 6) {
+            setError('OTP must be exactly 6 digits');
             return;
         }
 
@@ -63,14 +67,9 @@ function ResetPasswordContent(): JSX.Element {
             return;
         }
 
-        if (!token) {
-            setError('Invalid reset token. Please request a new password reset link.');
-            return;
-        }
-
         setLoading(true);
         try {
-            const result = await resetPassword(token, newPassword);
+            const result = await resetPassword(email, otp, newPassword);
             if (result.success) {
                 setSuccess(true);
                 // Redirect to login after 3 seconds
@@ -81,7 +80,7 @@ function ResetPasswordContent(): JSX.Element {
                 setError(result.message || 'Failed to reset password');
             }
         } catch (err: any) {
-            setError(err?.message || 'Failed to reset password. The link may have expired.');
+            setError(err?.message || 'Failed to reset password. The code may have expired.');
         } finally {
             setLoading(false);
         }
@@ -112,12 +111,43 @@ function ResetPasswordContent(): JSX.Element {
                         </div>
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">Reset Password</h1>
                         <p className="text-gray-600 text-sm">
-                            Enter your new password below
+                            Verify your identity with the OTP sent to your email
                         </p>
                     </div>
 
                     {!success ? (
                         <>
+                            {/* Email Field (ReadOnly if provided) */}
+                            <div className="flex flex-col mb-4">
+                                <label className="text-gray-800 font-semibold mb-2" htmlFor="email">
+                                    Email Address
+                                </label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Enter your email"
+                                    className="border border-gray-200 rounded-lg h-12 px-3 outline-none focus:border-purple-500 transition text-gray-700"
+                                />
+                            </div>
+
+                            {/* OTP Field */}
+                            <div className="flex flex-col mb-4">
+                                <label className="text-gray-800 font-semibold mb-2" htmlFor="otp">
+                                    6-Digit OTP Code
+                                </label>
+                                <input
+                                    id="otp"
+                                    type="text"
+                                    maxLength={6}
+                                    value={otp}
+                                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))} // Numeric only
+                                    placeholder="Enter 6-digit code"
+                                    className="border border-gray-200 rounded-lg h-12 px-3 text-center text-xl font-bold tracking-[0.5em] outline-none focus:border-purple-500 transition text-purple-700"
+                                />
+                            </div>
+
                             {/* New Password Field */}
                             <div className="flex flex-col mb-4">
                                 <label className="text-gray-800 font-semibold mb-2" htmlFor="newPassword">
@@ -209,7 +239,7 @@ function ResetPasswordContent(): JSX.Element {
 
                             {/* Submit Button */}
                             <button
-                                disabled={loading || !token}
+                                disabled={loading || !otp}
                                 type="submit"
                                 className="w-full bg-purple-600 text-white py-3 rounded-lg font-medium hover:bg-purple-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
                             >

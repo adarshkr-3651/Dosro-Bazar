@@ -10,7 +10,7 @@ import keyManager from '../Helpers/auth/keyManager.js';
  * Public endpoint for clients to discover public keys
  */
 const getJWKS = (req, res) => {
-    console.log("[jwks.js] getJWKS() - Serving JWKS endpoint");
+    // console.log("[jwks.js] getJWKS() - Serving JWKS endpoint");
 
     try {
         const jwks = keyManager.getJWKS();

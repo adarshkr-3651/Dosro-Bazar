@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log("Key Manager module loaded");
+// console.log("Key Manager module loaded");
 
 class KeyManager {
     constructor() {
@@ -39,8 +39,6 @@ class KeyManager {
             // Generate key ID (fingerprint of public key)
             this.keyId = this.generateKeyId(this.publicKey);
 
-            console.log('✅ RSA keys loaded successfully');
-            console.log('Key ID:', this.keyId);
         } catch (error) {
             console.error('❌ Failed to load RSA keys:', error.message);
             console.error('Please run: node keys/generateKeys.js');

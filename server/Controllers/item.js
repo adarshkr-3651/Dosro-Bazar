@@ -5,8 +5,8 @@ import { searchHelper, paginateHelper } from "../Helpers/query/queryHelpers.js";
 import getEmbeddings from "../Helpers/Libraries/embeddings.js";
 
 const addItem = asyncErrorWrapper(async (req, res, next) => {
-    console.log("addItem function of Controllers item.js")
-    console.log("[item.js] addItem() - User:", req.user ? req.user.email : "No user")
+    // console.log("addItem function of Controllers item.js")
+    // console.log("[item.js] addItem() - User:", req.user ? req.user.email : "No user")
 
     const { title, price, location, category, condition, expiry, expiryDuration, expiryUnit, offerPrice, offerDuration, offerUnit, deliveryAvailable, paymentMethods } = req.body;
     let { content } = req.body;
@@ -23,13 +23,13 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
         return next(new Error("Price or Bid Price cannot be negative"));
     }
 
-    console.log("[item.js] addItem() - Item data:", { title, contentLength: content.length, price: listedPrice });
+    // console.log("[item.js] addItem() - Item data:", { title, contentLength: content.length, price: listedPrice });
 
     const wordCount = content.trim().split(/\s+/).length;
     const readtime = Math.max(1, Math.floor(wordCount / 200));
 
     try {
-        console.log("[item.js] addItem() - Generating embeddings...");
+        // console.log("[item.js] addItem() - Generating embeddings...");
         const embeddings = await getEmbeddings(`${title} ${content.substring(0, 500)}`);
 
         let offerExpiresAt = null;
@@ -43,7 +43,7 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
             }
         }
 
-        console.log("[item.js] addItem() - Creating item in database...");
+        // console.log("[item.js] addItem() - Creating item in database...");
         const newItem = await Item.create({
             title,
             content,
@@ -68,10 +68,12 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
             embeddings: embeddings
         });
 
+        /*
         console.log("[item.js] addItem() - Item created successfully with embeddings:", {
             title: newItem.title,
             embeddingCount: newItem.embeddings?.length || 0
         })
+        */
         return res.status(200).json({
             success: true,
             message: "add item successfully ",
@@ -80,7 +82,7 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
     }
 
     catch (error) {
-        console.log("[item.js] addItem() - Item creation failed:", error.message)
+        // console.log("[item.js] addItem() - Item creation failed:", error.message)
         deleteImageFile(req)
         return next(error)
     }
@@ -88,25 +90,31 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const getAllItems = asyncErrorWrapper(async (req, res, next) => {
-    console.log("getAllItems function of Controllers item.js")
-    console.log("[item.js] getAllItems() - Query params:", req.query)
+    // console.log("getAllItems function of Controllers item.js")
+    // console.log("[item.js] getAllItems() - Query params:", req.query)
 
-    let query = Item.find();
-    console.log("[item.js] getAllItems() - Initial query created")
+    let filter = {};
+    if (req.user) {
+        // Exclude user's own items from general listing if they are logged in
+        filter.author = { $ne: req.user._id };
+    }
+
+    let query = Item.find(filter);
+    // console.log("[item.js] getAllItems() - Initial query created")
 
     query = searchHelper("title", query, req)
-    console.log("[item.js] getAllItems() - Search helper applied")
+    // console.log("[item.js] getAllItems() - Search helper applied")
 
     const paginationResult = await paginateHelper(Item, query, req)
-    console.log("[item.js] getAllItems() - Pagination result:", paginationResult)
+    // console.log("[item.js] getAllItems() - Pagination result:", paginationResult)
 
     query = paginationResult.query;
 
     query = query.sort("-likeCount -commentCount -createdAt")
-    console.log("[item.js] getAllItems() - Query sorted by popularity")
+    // console.log("[item.js] getAllItems() - Query sorted by popularity")
 
     const items = await query
-    console.log("[item.js] getAllItems() - Items retrieved:", items.length, "items")
+    // console.log("[item.js] getAllItems() - Items retrieved:", items.length, "items")
 
     return res.status(200).json(
         {
@@ -138,6 +146,10 @@ const detailItem = asyncErrorWrapper(async (req, res, next) => {
         likeStatus = itemLikeUserIds.includes(req.user._id.toString())
     }
 
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
+    }
+
     return res.status(200).
         json({
             success: true,
@@ -149,27 +161,29 @@ const detailItem = asyncErrorWrapper(async (req, res, next) => {
 
 const likeItem = asyncErrorWrapper(async (req, res, next) => {
 
-    const { activeUser } = req.body
     const { slug } = req.params;
 
-    const item = await Item.findOne({
-        slug: slug
-    }).populate("author likes")
-
-    const itemLikeUserIds = item.likes.map(json => json._id.toString())
-
-    if (!itemLikeUserIds.includes(activeUser._id)) {
-
-        item.likes.push(activeUser)
-        item.likeCount = item.likes.length
-        await item.save();
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
     }
-    else {
 
-        const index = itemLikeUserIds.indexOf(activeUser._id)
-        item.likes.splice(index, 1)
-        item.likeCount = item.likes.length
+    const item = await Item.findOne({ slug }).populate("author likes");
 
+    if (!item) {
+        return next(new CustomError("Item not found", 404));
+    }
+
+    const activeUser = req.user;
+    const itemLikeUserIds = item.likes.map(json => json._id.toString());
+
+    if (!itemLikeUserIds.includes(activeUser._id.toString())) {
+        item.likes.push(activeUser._id);
+        item.likeCount = item.likes.length;
+        await item.save();
+    } else {
+        const index = itemLikeUserIds.indexOf(activeUser._id.toString());
+        item.likes.splice(index, 1);
+        item.likeCount = item.likes.length;
         await item.save();
     }
 
@@ -198,19 +212,26 @@ const editItemPage = asyncErrorWrapper(async (req, res, next) => {
 
 
 const editItem = asyncErrorWrapper(async (req, res, next) => {
-    const { slug } = req.params;
-    const { title, content, price, bidPrice, isBiddable, offerPrice, offerDuration, offerUnit, expiry, expiryDuration, expiryUnit, deliveryAvailable, paymentMethods } = req.body;
-
-    if (price < 0 || (bidPrice && bidPrice < 0)) {
-        return next(new Error("Price or Bid Price cannot be negative"));
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
     }
 
-    const item = await Item.findOne({ slug: slug })
+    let parsedPrice = parseFloat(price);
+    let parsedBidPrice = parseFloat(bidPrice);
+
+    if (isNaN(parsedPrice) || parsedPrice < 0 || (!isNaN(parsedBidPrice) && parsedBidPrice < 0)) {
+        return next(new CustomError("Invalid price or bid price values", 400));
+    }
+
+    const item = await Item.findOne({ slug: slug });
+
+    if (!item) {
+        return next(new CustomError("Item not found", 404));
+    }
 
     if (item.title !== title || item.content !== content) {
-        console.log("[item.js] editItem() - Title or context changed. Regenerating embeddings...");
-        item.embeddings = await getEmbeddings(`${title} ${content.substring(0, 500)}`);
-        console.log("[item.js] editItem() - New embeddings generated:", item.embeddings?.length || 0);
+        // console.log("[item.js] editItem() - Title or context changed. Regenerating embeddings...");
+        // console.log("[item.js] editItem() - New embeddings generated:", item.embeddings?.length || 0);
     }
 
     item.title = title;
@@ -256,11 +277,18 @@ const editItem = asyncErrorWrapper(async (req, res, next) => {
     item.deliveryAvailable = deliveryAvailable === 'true' || deliveryAvailable === true;
     
     if (paymentMethods) {
-        item.paymentMethods = typeof paymentMethods === 'string' ? JSON.parse(paymentMethods) : paymentMethods;
+        try {
+            item.paymentMethods = typeof paymentMethods === 'string' ? JSON.parse(paymentMethods) : paymentMethods;
+            if (!Array.isArray(item.paymentMethods)) {
+                item.paymentMethods = [];
+            }
+        } catch (e) {
+            item.paymentMethods = [];
+        }
     }
 
     await item.save();
-    console.log("[item.js] editItem() - Item saved successfully to database.");
+    // console.log("[item.js] editItem() - Item saved successfully to database.");
 
     return res.status(200).
         json({
@@ -274,9 +302,18 @@ const deleteItem = asyncErrorWrapper(async (req, res, next) => {
 
     const { slug } = req.params;
 
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
+    }
+
     const item = await Item.findOne({ slug: slug })
 
-    deleteImageFile(req, item.image);
+    // Delete all images from Cloudinary
+    if (item.images && item.images.length > 0) {
+        for (const imageUrl of item.images) {
+            await deleteImageFile(req, imageUrl);
+        }
+    }
 
     await item.remove()
 
@@ -306,7 +343,7 @@ const searchSemantic = asyncErrorWrapper(async (req, res, next) => {
         return next(new Error("Please provide a search query"));
     }
 
-    console.log(`[Search] Performing semantic search for query: "${query}"`);
+    // console.log(`[Search] Performing semantic search for query: "${query}"`);
     const embeddings = await getEmbeddings(query);
 
     if (embeddings.length === 0) {
@@ -316,7 +353,7 @@ const searchSemantic = asyncErrorWrapper(async (req, res, next) => {
         return getAllItems(req, res, next);
     }
 
-    console.log(`[Search] Vector search index: "vector_index", Path: "embeddings", QueryVector length: ${embeddings.length}`);
+    // console.log(`[Search] Vector search index: "vector_index", Path: "embeddings", QueryVector length: ${embeddings.length}`);
 
     const items = await Item.aggregate([
         {
@@ -345,6 +382,9 @@ const searchSemantic = asyncErrorWrapper(async (req, res, next) => {
 
 const getSimilarItems = asyncErrorWrapper(async (req, res, next) => {
     const { slug } = req.params;
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
+    }
     const item = await Item.findOne({ slug });
 
     if (!item || !item.embeddings || item.embeddings.length === 0) {
@@ -386,8 +426,11 @@ const getRecommendedItems = asyncErrorWrapper(async (req, res, next) => {
 
     let query = {};
     if (req.user) {
-        // Exclude items already liked by user
-        query = { likes: { $ne: req.user._id } };
+        // Exclude items already liked by user and user's own items
+        query = { 
+            likes: { $ne: req.user._id },
+            author: { $ne: req.user._id }
+        };
     }
 
     const items = await Item.find(query)

@@ -311,8 +311,8 @@
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\adars\\Desktop\\Dosro Bazar - Main\\client",
-  "relativeAppDir": "Desktop\\Dosro Bazar - Main\\client",
+  "appDir": "C:\\Users\\adars\\Desktop\\Dosro Bazar\\client",
+  "relativeAppDir": "Desktop\\Dosro Bazar\\client",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",

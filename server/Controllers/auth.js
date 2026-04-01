@@ -1,14 +1,16 @@
 import asyncErrorWrapper from "express-async-handler";
 import User from "../Models/user.js";
 import RefreshToken from "../Models/refreshToken.js";
+import PasswordResetRecord from "../Models/PasswordResetRecord.js";
 import CustomError from "../Helpers/error/CustomError.js";
 import { sendTokens, verifyAndRotateRefreshToken } from "../Helpers/auth/tokenHelpers.js";
 import { getRefreshToken, clearAuthCookies } from "../Helpers/auth/cookieHelpers.js";
 import sendEmail from "../Helpers/Libraries/sendEmail.js";
-import { passwordResetTemplate, loginNotificationTemplate, verificationCodeTemplate, welcomeTemplate } from "../Helpers/Libraries/emailTemplates.js";
+import { passwordResetTemplate, loginNotificationTemplate, verificationCodeTemplate, welcomeTemplate, signupWelcomeTemplate } from "../Helpers/Libraries/emailTemplates.js";
 import { validateUserInput, comparePassword } from "../Helpers/input/inputHelpers.js";
 import { OAuth2Client } from 'google-auth-library';
 import crypto from 'crypto';
+import axios from 'axios';
 
 const client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
@@ -61,10 +63,6 @@ const trackDevice = async (user, req) => {
 };
 
 const getPrivateData = asyncErrorWrapper((req, res, next) => {
-    console.log("getPrivateData function of Controllers auth.js")
-    console.log("[auth.js] getPrivateData() - User from middleware:", req.user ? req.user.email : "No user")
-
-    console.log("[auth.js] getPrivateData() - Token validation successful")
     return res.status(200).json({
         success: true,
         message: "You got access to the private data in this route ",
@@ -73,17 +71,35 @@ const getPrivateData = asyncErrorWrapper((req, res, next) => {
 })
 
 const register = asyncErrorWrapper(async (req, res, next) => {
-    console.log("register function of Controllers auth.js")
-
     const { username, email, password, phone } = req.body;
-    console.log("[auth.js] register() - Registration data:", { username, email, phone, passwordLength: password?.length })
 
     // Validate that phone is provided
     if (!phone) {
         return next(new CustomError("Phone number is required", 400))
     }
 
-    console.log("[auth.js] register() - Creating new user in database...")
+    // Ensure phone string
+    if (typeof phone !== 'string') {
+        return next(new CustomError("Invalid phone format", 400));
+    }
+
+    // Check if phone or email already exists to prevent duplicate account login issues
+    const existingUser = await User.findOne({ 
+        $or: [
+            { phone }, 
+            ...(email ? [{ email }] : [])
+        ] 
+    });
+
+    if (existingUser) {
+        if (existingUser.phone === phone) {
+            return next(new CustomError("An account with this phone number already exists. Please log in.", 400));
+        }
+        if (email && existingUser.email === email) {
+            return next(new CustomError("An account with this email already exists", 400));
+        }
+    }
+
     const newUser = await User.create({
         username,
         email: email || undefined, // Make email optional
@@ -93,47 +109,35 @@ const register = asyncErrorWrapper(async (req, res, next) => {
         authProviders: ['email']
     })
 
-    console.log("[auth.js] register() - User created successfully:", newUser.phone)
-
     // Generate Verification Code
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
     newUser.verificationCode = verificationCode;
     newUser.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     await newUser.save();
 
-    console.log("[auth.js] register() - Verification code generated:", verificationCode);
-
-    // Send Verification Email
+    // Send Welcome Email
     if (email) {
         try {
             await sendEmail({
                 from: process.env.EMAIL_USERNAME,
                 to: email,
-                subject: '🛡️ Verify Your Email - Dosro Bazar',
-                html: verificationCodeTemplate(verificationCode, username)
+                subject: '🚀 Welcome to Dosro Bazar!',
+                html: signupWelcomeTemplate(username)
             });
-            console.log("[auth.js] register() - Verification email sent to:", email);
         } catch (error) {
-            console.error('[auth.js] register() - Failed to send verification email:', error.message);
-            // We don't return error here because the user is created, 
-            // but they might need to use 'resend' later if email fails.
+            console.error('[auth.js] register() - Failed to send welcome email:', error.message);
         }
     }
 
-    return res.status(201).json({
-        success: true,
-        message: email
-            ? "Registration successful! Please check your email for verification code."
-            : "Registration successful! (No email provided for verification)",
-        email: email
-    });
+    // Log the user in directly after registration
+    return await sendTokens(newUser, 201, res, req);
 })
 
 const verifyEmail = asyncErrorWrapper(async (req, res, next) => {
     const { email, code } = req.body;
 
-    if (!email || !code) {
-        return next(new CustomError("Please provide email and verification code", 400));
+    if (!email || !code || typeof email !== 'string' || typeof code !== 'string') {
+        return next(new CustomError("Please provide a valid email and verification code", 400));
     }
 
     const user = await User.findOne({
@@ -152,8 +156,6 @@ const verifyEmail = asyncErrorWrapper(async (req, res, next) => {
     user.verificationCodeExpire = undefined;
     await user.save();
 
-    console.log("[auth.js] verifyEmail() - User verified successfully:", email);
-
     // Send Welcome Email
     sendEmail({
         from: process.env.EMAIL_USERNAME,
@@ -169,8 +171,8 @@ const verifyEmail = asyncErrorWrapper(async (req, res, next) => {
 const resendVerificationCode = asyncErrorWrapper(async (req, res, next) => {
     const { email } = req.body;
 
-    if (!email) {
-        return next(new CustomError("Please provide an email address", 400));
+    if (!email || typeof email !== 'string') {
+        return next(new CustomError("Please provide a valid email address", 400));
     }
 
     const user = await User.findOne({ email });
@@ -188,8 +190,6 @@ const resendVerificationCode = asyncErrorWrapper(async (req, res, next) => {
     user.verificationCode = verificationCode;
     user.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
-
-    console.log("[auth.js] resendVerificationCode() - New code generated for:", email, code = verificationCode);
 
     try {
         await sendEmail({
@@ -209,25 +209,22 @@ const resendVerificationCode = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const login = asyncErrorWrapper(async (req, res, next) => {
-    console.log("login function of Controllers auth.js")
-
     const { identifier, password } = req.body; // identifier can be email or phone
-    console.log("[auth.js] login() - Login attempt with identifier:", identifier)
 
     if (!identifier || !password) {
-        console.log("[auth.js] login() - Input validation failed")
         return next(new CustomError("Please provide phone/email and password", 400))
     }
-    console.log("[auth.js] login() - Input validation passed")
 
-    console.log("[auth.js] login() - Searching for user in database...")
+    if (typeof identifier !== 'string' || typeof password !== 'string') {
+        return next(new CustomError("Invalid credentials format", 400));
+    }
+
     // Search by either email or phone
     const user = await User.findOne({
         $or: [{ email: identifier }, { phone: identifier }]
     }).select("+password")
 
     if (!user) {
-        console.log("[auth.js] login() - User not found:", identifier)
         // Be specific about what wasn't found
         const isEmail = identifier.includes('@');
         return next(new CustomError(
@@ -237,18 +234,14 @@ const login = asyncErrorWrapper(async (req, res, next) => {
             404
         ))
     }
-    console.log("[auth.js] login() - User found:", user.email || user.phone)
 
-    console.log("[auth.js] login() - Comparing passwords...")
     if (!comparePassword(password, user.password)) {
-        console.log("[auth.js] login() - Password comparison failed")
         return next(new CustomError("Incorrect password. Please try again.", 401))
     }
-    console.log("[auth.js] login() - Password comparison successful")
 
     // CHECK EMAIL VERIFICATION (New Logic)
     if (user.authProvider === 'email' && !user.isVerified) {
-        console.log("[auth.js] login() - User email not verified. Sending new code...")
+        // console.log("[auth.js] login() - User email not verified. Sending new code...")
 
         // Generate new verification code
         const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -264,7 +257,7 @@ const login = asyncErrorWrapper(async (req, res, next) => {
                 subject: '🛡️ Verify Your Email - Dosro Bazar',
                 html: verificationCodeTemplate(verificationCode, user.username)
             });
-            console.log("[auth.js] login() - Verification email sent to:", user.email);
+            // console.log("[auth.js] login() - Verification email sent to:", user.email);
         } catch (error) {
             console.error('[auth.js] login() - Failed to send verification email:', error.message);
             // Even if email fails, we block login. User can try again to resend.
@@ -278,10 +271,10 @@ const login = asyncErrorWrapper(async (req, res, next) => {
         });
     }
 
-    console.log("[auth.js] login() - Generating access and refresh tokens...")
+    // console.log("[auth.js] login() - Generating access and refresh tokens...")
     await trackDevice(user, req);
     await sendTokens(user, 200, res, req);
-    console.log("[auth.js] login() - Login completed successfully")
+    // console.log("[auth.js] login() - Login completed successfully")
 
     // Send login notification email (non-blocking)
     // Only if verified and logged in
@@ -310,16 +303,78 @@ const login = asyncErrorWrapper(async (req, res, next) => {
 
     // Only send email if user has an email address
     if (user.email) {
-        // Don't await - send email in background to not block response
-        sendEmail({
-            from: process.env.EMAIL_USERNAME,
-            to: user.email,
-            subject: '🔐 New Login to Your Account',
-            html: loginNotificationTemplate(user.username, user.email, loginTime, ipAddress)
-        }).catch(error => {
-            console.error('[auth.js] login() - Failed to send login notification email:', error.message);
-            // Don't throw error - email failure shouldn't prevent login
-        });
+        // Fetch location in background so as not to block login response
+        (async () => {
+            let location = 'Unknown Location';
+            const cleanIp = ipAddress.split(' ')[0]; // Handle cases like "127.0.0.1 (Localhost)"
+
+            if (cleanIp !== '127.0.0.1' && cleanIp !== 'Unknown' && !cleanIp.startsWith('192.168.') && !cleanIp.startsWith('10.')) {
+                try {
+                    const response = await axios.get(`http://ip-api.com/json/${cleanIp}`);
+                    if (response.data && response.data.status === 'success') {
+                        const { city, regionName, country, lat, lon } = response.data;
+                        location = `${city}, ${regionName}, ${country}`; // Initial fallback
+
+                        // Apply the location feature application idea
+                        if (lat && lon) {
+                            try {
+                                const geoRes = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`, {
+                                    headers: { 'User-Agent': 'DosroBazar-Backend/1.0' }
+                                });
+                                if (geoRes.data && geoRes.data.address) {
+                                    const addr = geoRes.data.address;
+                                    const parts = [];
+
+                                    if (addr.hospital) parts.push(addr.hospital);
+                                    if (addr.amenity && addr.amenity !== addr.hospital) parts.push(addr.amenity);
+                                    if (addr.building) parts.push(addr.building);
+                                    if (addr.landmark) parts.push(addr.landmark);
+                                    if (addr.road) parts.push(addr.road);
+                                    
+                                    if (addr.suburb) parts.push(addr.suburb);
+                                    else if (addr.neighbourhood) parts.push(addr.neighbourhood);
+                                    else if (addr.hamlet) parts.push(addr.hamlet);
+                                    else if (addr.village) parts.push(addr.village);
+                                    
+                                    if (addr.city) parts.push(addr.city);
+                                    else if (addr.town) parts.push(addr.town);
+                                    
+                                    if (addr.district) parts.push(addr.district);
+                                    else if (addr.county) parts.push(addr.county);
+                                    
+                                    if (addr.state) parts.push(addr.state);
+                                    
+                                    if (addr.country && !parts.includes(addr.country)) {
+                                        parts.push(addr.country);
+                                    } else if (!parts.includes(country)) {
+                                        parts.push(country);
+                                    }
+
+                                    if (parts.length > 0) {
+                                        location = parts.join(", ");
+                                    }
+                                }
+                            } catch (geoErr) {
+                                console.error('[auth.js] login() - Detailed location fetch failed:', geoErr.message);
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error('[auth.js] login() - Failed to fetch IP location:', err.message);
+                }
+            }
+
+            console.log(`[auth.js] login() - IP: ${cleanIp} | Fetched Location: ${location}`);
+
+            sendEmail({
+                from: process.env.EMAIL_USERNAME,
+                to: user.email,
+                subject: '🔐 New Login to Your Account',
+                html: loginNotificationTemplate(user.username, user.email, loginTime, ipAddress, location)
+            }).catch(error => {
+                console.error('[auth.js] login() - Failed to send login notification email:', error.message);
+            });
+        })();
     }
 })
 
@@ -328,7 +383,7 @@ const login = asyncErrorWrapper(async (req, res, next) => {
 
 
 const adminLogin = asyncErrorWrapper(async (req, res, next) => {
-    console.log("adminLogin function of Controllers auth.js")
+    // console.log("adminLogin function of Controllers auth.js")
 
     const { identifier, password } = req.body;
 
@@ -344,11 +399,11 @@ const adminLogin = asyncErrorWrapper(async (req, res, next) => {
     const isPasswordMatch = (password === ADMIN_PASSWORD);
 
     if (!isIdentifierMatch || !isPasswordMatch) {
-        console.log("[auth.js] adminLogin() - Invalid admin credentials provided");
+        // console.log("[auth.js] adminLogin() - Invalid admin credentials provided");
         return next(new CustomError("Invalid admin credentials", 401));
     }
 
-    console.log("[auth.js] adminLogin() - Env credentials validated. Completing login...");
+    // console.log("[auth.js] adminLogin() - Env credentials validated. Completing login...");
 
     // 3. Find the user in DB to get the _id for the token
     const adminUser = await User.findOne({
@@ -356,20 +411,24 @@ const adminLogin = asyncErrorWrapper(async (req, res, next) => {
     });
 
     if (!adminUser) {
-        console.log("[auth.js] adminLogin() - Admin user not found in DB despite Env match.");
+        // console.log("[auth.js] adminLogin() - Admin user not found in DB despite Env match.");
         return next(new CustomError("Admin account setup incomplete. Please restart server.", 500));
     }
 
     // 4. Generate Tokens
     await trackDevice(adminUser, req);
     await sendTokens(adminUser, 200, res, req);
-    console.log("[auth.js] adminLogin() - Admin login successful");
+    // console.log("[auth.js] adminLogin() - Admin login successful");
 });
 
 const forgotpassword = asyncErrorWrapper(async (req, res, next) => {
     const { URI, EMAIL_USERNAME } = process.env;
-    console.log("forgotpassword function of Controllers auth.js")
+    // console.log("forgotpassword function of Controllers auth.js")
     const resetEmail = req.body.email;
+
+    if (!resetEmail || typeof resetEmail !== 'string') {
+        return next(new CustomError("Please provide a valid email address", 400));
+    }
 
     const user = await User.findOne({ email: resetEmail })
 
@@ -377,34 +436,60 @@ const forgotpassword = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError("There is no user with that email", 400))
     }
 
-    const resetPasswordToken = user.getResetPasswordTokenFromUser();
+    // Rate Limiting Logic:
+    // 1. Check for 1 minute cooldown
+    const lastAttempt = await PasswordResetRecord.findOne({ email: resetEmail }).sort({ createdAt: -1 });
+    if (lastAttempt) {
+        const timeSinceLastAttempt = Date.now() - new Date(lastAttempt.createdAt).getTime();
+        if (timeSinceLastAttempt < 60000) { // 1 minute = 60000 ms
+            const secondsLeft = Math.ceil((60000 - timeSinceLastAttempt) / 1000);
+            return next(new CustomError(`Please wait ${secondsLeft} seconds before requesting another reset link.`, 429));
+        }
+    }
+
+    // 2. Check for monthly limit (5 attempts per 30 days)
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const recentAttemptsCount = await PasswordResetRecord.countDocuments({
+        email: resetEmail,
+        createdAt: { $gte: thirtyDaysAgo }
+    });
+
+    if (recentAttemptsCount >= 5) {
+        return next(new CustomError("You have reached the limit of 5 password reset requests per month. Please contact support or try again later.", 429));
+    }
+
+    // If allowed, generate OTP and log this attempt
+    await PasswordResetRecord.create({ email: resetEmail });
+
+    const otp = user.getResetPasswordOTPFromUser();
 
     await user.save();
 
-    const resetPasswordUrl = `${URI}/resetPassword?resetPasswordToken=${resetPasswordToken}`
+    // console.log("[auth.js] forgotpassword() - Sending OTP to:", resetEmail);
 
     try {
         await sendEmail({
             from: EMAIL_USERNAME,
             to: resetEmail,
-            subject: "🔐 Reset Your Password",
-            html: passwordResetTemplate(resetPasswordUrl, user.username)
+            subject: "🔐 Reset Your Password - OTP",
+            html: passwordResetTemplate(otp, user.username)
         })
 
-        console.log("[auth.js] forgotpassword() - Password reset email sent successfully")
+        // console.log("[auth.js] forgotpassword() - Password reset OTP sent successfully")
 
         return res.status(200)
             .json({
                 success: true,
-                message: "Password reset email sent successfully. Please check your inbox."
+                message: "A 6-digit OTP has been sent to your email. Please check your inbox.",
+                email: resetEmail
             })
 
     }
     catch (error) {
         console.error("[auth.js] forgotpassword() - Error sending email:", error.message)
 
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpire = undefined;
+        user.resetPasswordOTP = undefined;
+        user.resetPasswordOTPExpire = undefined;
 
         await user.save();
 
@@ -414,46 +499,137 @@ const forgotpassword = asyncErrorWrapper(async (req, res, next) => {
 
 
 const resetpassword = asyncErrorWrapper(async (req, res, next) => {
+    // console.log("resetpassword function of Controllers auth.js")
+    const { email, otp, newPassword, password } = req.body;
+    const finalPassword = newPassword || password;
 
-    console.log("resetpassword function of Controllers auth.js")
-    const newPassword = req.body.newPassword || req.body.password
-
-    const { resetPasswordToken } = req.query
-
-    if (!resetPasswordToken) {
-
-        return next(new CustomError("Please provide a valid token ", 400))
+    if (!email || !otp || !finalPassword) {
+        return next(new CustomError("Please provide email, OTP, and your new password.", 400))
     }
 
-    const user = await User.findOne({
+    if (typeof email !== 'string' || typeof otp !== 'string' || typeof finalPassword !== 'string') {
+        return next(new CustomError("Invalid input format", 400));
+    }
 
-        resetPasswordToken: resetPasswordToken,
-        resetPasswordExpire: { $gt: Date.now() }
-
-    })
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-        return next(new CustomError("Invalid token or Session Expired", 400))
+        return next(new CustomError("No user found with this email", 404))
     }
 
+    // Check if OTP has expired or doesn't exist
+    if (!user.resetPasswordOTP || user.resetPasswordOTPExpire < Date.now()) {
+        return next(new CustomError("Invalid or expired OTP. Please request a new one.", 400))
+    }
 
-    user.password = newPassword;
+    // Check for Lockout (3 failed attempts)
+    if (user.resetPasswordOTPFails >= 3) {
+        // Clear OTP for security
+        user.resetPasswordOTP = undefined;
+        user.resetPasswordOTPExpire = undefined;
+        user.resetPasswordOTPFails = 0;
+        await user.save();
+        return next(new CustomError("Too many failed attempts. This OTP is now locked. Please request a new one.", 403));
+    }
 
-    user.resetPasswordToken = undefined
-    user.resetPasswordExpire = undefined
+    // Verify OTP
+    if (user.resetPasswordOTP !== otp) {
+        user.resetPasswordOTPFails += 1;
+        await user.save();
+
+        const attemptsLeft = 3 - user.resetPasswordOTPFails;
+        if (attemptsLeft <= 0) {
+            user.resetPasswordOTP = undefined;
+            user.resetPasswordOTPExpire = undefined;
+            user.resetPasswordOTPFails = 0;
+            await user.save();
+            return next(new CustomError("Too many failed attempts. This OTP is now locked.", 403));
+        }
+
+        return next(new CustomError(`Invalid OTP code. You have ${attemptsLeft} attempts remaining.`, 401));
+    }
+
+    // Success! Update password and clear fields
+    user.password = finalPassword;
+    user.resetPasswordOTP = undefined;
+    user.resetPasswordOTPExpire = undefined;
+    user.resetPasswordOTPFails = 0;
 
     await user.save();
 
+    // Reset password successfully: Restart count from 1 (delete all tracking records for this user)
+    await PasswordResetRecord.deleteMany({ email: user.email });
+
     return res.status(200).json({
         success: true,
-        message: "Reset Password access successfull"
+        message: "Password reset successful! You can now log in with your new password."
     })
-
 })
+
+/**
+ * Verify Password Reset OTP
+ * (Step 2 of the 3-step reset wizard)
+ */
+const verifyResetOTP = asyncErrorWrapper(async (req, res, next) => {
+    console.log("verifyResetOTP function of Controllers auth.js")
+    const { email, otp } = req.body;
+
+    if (!email || !otp || typeof email !== 'string' || typeof otp !== 'string') {
+        return next(new CustomError("Please provide a valid email and OTP", 400));
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return next(new CustomError("No user found with this email", 404));
+    }
+
+    // Check if OTP has expired or doesn't exist
+    if (!user.resetPasswordOTP || user.resetPasswordOTPExpire < Date.now()) {
+        return next(new CustomError("Invalid or expired OTP. Please request a new one.", 400));
+    }
+
+    // Check for Lockout
+    if (user.resetPasswordOTPFails >= 3) {
+        // Clear OTP for security
+        user.resetPasswordOTP = undefined;
+        user.resetPasswordOTPExpire = undefined;
+        user.resetPasswordOTPFails = 0;
+        await user.save();
+        return next(new CustomError("Too many failed attempts. This OTP is now locked. Please request a new code.", 403));
+    }
+
+    // Verify OTP
+    if (user.resetPasswordOTP !== otp) {
+        user.resetPasswordOTPFails += 1;
+        await user.save();
+
+        const attemptsLeft = 3 - user.resetPasswordOTPFails;
+        if (attemptsLeft <= 0) {
+            user.resetPasswordOTP = undefined;
+            user.resetPasswordOTPExpire = undefined;
+            user.resetPasswordOTPFails = 0;
+            await user.save();
+            return next(new CustomError("Too many failed attempts. This OTP is now locked.", 403));
+        }
+
+        return next(new CustomError(`Invalid OTP code. You have ${attemptsLeft} attempts remaining.`, 401));
+    }
+
+    // Success! Verification successful.
+    // We DON'T clear the OTP yet, because it will be needed for the final resetpassword call
+    // to actually authorize the password change securely.
+    
+    return res.status(200).json({
+        success: true,
+        message: "OTP verified! You can now reset your password.",
+        email: email
+    });
+});
 
 // Refresh access token using refresh token
 const refreshAccessToken = asyncErrorWrapper(async (req, res, next) => {
-    console.log("refreshAccessToken function of Controllers auth.js")
+    // console.log("refreshAccessToken function of Controllers auth.js")
 
     // Get refresh token from cookie or body
     const refreshToken = getRefreshToken(req);
@@ -467,7 +643,7 @@ const refreshAccessToken = asyncErrorWrapper(async (req, res, next) => {
         const { user, accessToken, refreshToken: newRefreshToken } =
             await verifyAndRotateRefreshToken(refreshToken, req);
 
-        console.log("[auth.js] refreshAccessToken() - Tokens refreshed successfully")
+        // console.log("[auth.js] refreshAccessToken() - Tokens refreshed successfully")
 
         // Check if using cookies
         const useCookies = process.env.USE_HTTP_ONLY_COOKIES?.trim() === 'true';
@@ -508,14 +684,14 @@ const refreshAccessToken = asyncErrorWrapper(async (req, res, next) => {
             })
         }
     } catch (error) {
-        console.log("[auth.js] refreshAccessToken() - Error:", error.message)
+        // console.log("[auth.js] refreshAccessToken() - Error:", error.message)
         return next(new CustomError(error.message, 401))
     }
 })
 
 // Logout user (revoke refresh tokens)
 const logout = asyncErrorWrapper(async (req, res, next) => {
-    console.log("logout function of Controllers auth.js")
+    // console.log("logout function of Controllers auth.js")
 
     const userId = req.user._id;
 
@@ -527,7 +703,7 @@ const logout = asyncErrorWrapper(async (req, res, next) => {
         clearAuthCookies(res);
     }
 
-    console.log("[auth.js] logout() - All refresh tokens revoked for user:", req.user.email)
+    // console.log("[auth.js] logout() - All refresh tokens revoked for user:", req.user.email)
 
     return res.status(200).json({
         success: true,
@@ -543,7 +719,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
     try {
         if (idToken) {
             // Handle ID token directly (Google One Tap, recommended)
-            console.log('[auth.js] googleLogin() - Verifying ID token');
+            // console.log('[auth.js] googleLogin() - Verifying ID token');
             const ticket = await client.verifyIdToken({
                 idToken: idToken,
                 audience: process.env.GOOGLE_CLIENT_ID,
@@ -556,7 +732,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
             googleId = payload.sub;
         } else if (code) {
             // Exchange authorization code for tokens (requires client secret)
-            console.log('[auth.js] googleLogin() - Exchanging authorization code for tokens');
+            // console.log('[auth.js] googleLogin() - Exchanging authorization code for tokens');
 
             if (!process.env.GOOGLE_CLIENT_SECRET) {
                 return next(new CustomError('Google Client Secret not configured. Please use Google One Tap login.', 500));
@@ -579,7 +755,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
             return next(new CustomError('No valid Google credentials provided', 400));
         }
 
-        console.log('[auth.js] googleLogin() - User authenticated:', email);
+        // console.log('[auth.js] googleLogin() - User authenticated:', email);
 
         let user = await User.findOne({ $or: [{ googleId }, { email }] });
         let isNewUser = false;
@@ -590,7 +766,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
                 user.googleId = googleId;
                 await user.save();
             }
-            console.log('[auth.js] googleLogin() - Existing user found');
+            // console.log('[auth.js] googleLogin() - Existing user found');
 
             // Existing user - proceed with login
         } else {
@@ -608,7 +784,7 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
                 authProvider: 'google',
                 authProviders: ['google']
             });
-            console.log('[auth.js] googleLogin() - New user created');
+            // console.log('[auth.js] googleLogin() - New user created');
             isNewUser = true;
         }
 
@@ -650,7 +826,7 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
         }
 
         const { id: facebookId, name, email, picture } = fbData;
-        console.log('[auth.js] facebookLogin() - User authenticated:', email || facebookId);
+        // console.log('[auth.js] facebookLogin() - User authenticated:', email || facebookId);
 
         let user = await User.findOne({ $or: [{ facebookId }, { email: email || undefined }].filter(Boolean) });
 
@@ -660,7 +836,7 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
                 user.facebookId = facebookId;
                 await user.save();
             }
-            console.log('[auth.js] facebookLogin() - Existing user found');
+            // console.log('[auth.js] facebookLogin() - Existing user found');
         } else {
             // Create new user
             const randomPassword = crypto.randomBytes(16).toString('hex');
@@ -678,7 +854,7 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
                 authProvider: 'facebook',
                 authProviders: ['facebook']
             });
-            console.log('[auth.js] facebookLogin() - New user created');
+            // console.log('[auth.js] facebookLogin() - New user created');
         }
 
         // Add facebook to authProviders if not present
@@ -700,7 +876,7 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
 
 // Complete OAuth registration by adding phone number
 const completeOAuthRegistration = asyncErrorWrapper(async (req, res, next) => {
-    console.log("completeOAuthRegistration function of Controllers auth.js");
+    // console.log("completeOAuthRegistration function of Controllers auth.js");
 
     const { tempUserId, phone } = req.body;
 
@@ -714,7 +890,7 @@ const completeOAuthRegistration = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError('Phone number must be exactly 10 digits', 400));
     }
 
-    console.log('[auth.js] completeOAuthRegistration() - Updating phone for user:', tempUserId);
+    // console.log('[auth.js] completeOAuthRegistration() - Updating phone for user:', tempUserId);
 
     try {
         // Check if phone already exists for another user
@@ -736,7 +912,7 @@ const completeOAuthRegistration = asyncErrorWrapper(async (req, res, next) => {
 
         await user.save();
 
-        console.log('[auth.js] completeOAuthRegistration() - Phone updated successfully');
+        // console.log('[auth.js] completeOAuthRegistration() - Phone updated successfully');
 
         // Send authentication tokens
         await trackDevice(user, req);
@@ -761,5 +937,6 @@ export {
     facebookLogin,
     completeOAuthRegistration,
     verifyEmail,
-    resendVerificationCode
+    resendVerificationCode,
+    verifyResetOTP
 };

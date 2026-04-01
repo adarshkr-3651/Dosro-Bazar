@@ -9,7 +9,7 @@ import verifyIdProof from "../Helpers/Libraries/idVerification.js";
 
 const profile = asyncErrorWrapper(async (req, res, next) => {
 
-    console.log("profile function of Controllers user.js")
+
     return res.status(200).json({
         success: true,
         data: req.user
@@ -20,7 +20,7 @@ const profile = asyncErrorWrapper(async (req, res, next) => {
 
 const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
-    console.log("editProfile function of Controllers user.js")
+
 
     const { email, username, theme, phone, address, idProofType } = req.body
 
@@ -65,8 +65,7 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
             user.idProof = req.files.idProof[0].path;
 
             // Start verification process if idProof is uploaded
-            console.log(`[editProfile] Starting verification for user ${user.id} with ID Type: ${user.idProofType}`);
-            console.log(`[editProfile] ID Proof Path/URL: ${user.idProof}`);
+
 
             // Set pending status initially
             user.verificationStatus = 'pending';
@@ -79,8 +78,7 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
                 user.verificationStatus = verificationResult.status;
                 user.verificationFeedback = verificationResult.feedback;
 
-                console.log(`[editProfile] Verification finished for user ${user.id}: ${user.verificationStatus}`);
-                console.log(`[editProfile] Feedback: ${user.verificationFeedback}`);
+
             } catch (vError) {
                 console.error(`[editProfile] Verification failed for user ${user.id}:`, vError);
                 user.verificationStatus = 'pending';
@@ -96,7 +94,7 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
     let responseMessage = "Profile updated successfully!";
     if (req.files && req.files.idProof) {
-        console.log(`[editProfile] ID Proof uploaded, current status: ${user.verificationStatus}`);
+
         if (user.verificationStatus === 'verified') {
             responseMessage = "Profile updated and identity verified successfully! ✅";
         } else if (user.verificationStatus === 'rejected') {
@@ -106,7 +104,7 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
         }
     }
 
-    console.log(`[editProfile] Final response message: "${responseMessage}"`);
+
 
     return res.status(200).json({
         success: true,
@@ -119,7 +117,7 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
 const changePassword = asyncErrorWrapper(async (req, res, next) => {
 
-    console.log("changePassword function of Controllers user.js")
+
 
     const { newPassword, oldPassword } = req.body
 
@@ -168,28 +166,32 @@ const changePassword = asyncErrorWrapper(async (req, res, next) => {
 
 const addItemToReadList = asyncErrorWrapper(async (req, res, next) => {
 
-    const { slug } = req.params
-    const { activeUser } = req.body;
+    const { slug } = req.params;
 
-    const item = await Item.findOne({ slug })
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
+    }
 
-    const user = await User.findById(activeUser._id)
+    const item = await Item.findOne({ slug });
 
-    if (!user.readList.includes(item.id)) {
+    if (!item) {
+        return next(new CustomError("Item not found", 404));
+    }
 
-        user.readList.push(item.id)
-        user.readListLength = user.readList.length
+    const user = await User.findById(req.user.id);
+
+    if (!user.readList.includes(item._id)) {
+        user.readList.push(item._id);
+        user.readListLength = user.readList.length;
+        await user.save();
+    } else {
+        const index = user.readList.indexOf(item._id);
+        user.readList.splice(index, 1);
+        user.readListLength = user.readList.length;
         await user.save();
     }
 
-    else {
-        const index = user.readList.indexOf(item.id)
-        user.readList.splice(index, 1)
-        user.readListLength = user.readList.length
-        await user.save();
-    }
-
-    const status = user.readList.includes(item.id)
+    const status = user.readList.includes(item._id);
 
     return res.status(200).json({
         success: true,
@@ -202,7 +204,7 @@ const addItemToReadList = asyncErrorWrapper(async (req, res, next) => {
 
 const readListPage = asyncErrorWrapper(async (req, res, next) => {
 
-    console.log("readListPage function of Controllers user.js")
+
 
     const user = await User.findById(req.user.id)
     const readList = []
@@ -227,6 +229,9 @@ const toggleFavorite = asyncErrorWrapper(async (req, res, next) => {
     const { slug } = req.params;
 
     // Find the item
+    if (typeof slug !== 'string') {
+        return next(new CustomError("Invalid slug format", 400));
+    }
     const item = await Item.findOne({ slug });
     if (!item) {
         return next(new CustomError("Item not found", 404));
@@ -266,10 +271,14 @@ const getFavorites = asyncErrorWrapper(async (req, res, next) => {
         populate: { path: "author", select: "username photo" } // Populate author details just in case
     });
 
+    if (!user) {
+        return next(new CustomError("No user found with this ID", 404));
+    }
+
     return res.status(200).json({
         success: true,
-        count: user.favorites.length,
-        data: user.favorites
+        count: user.favorites ? user.favorites.length : 0,
+        data: user.favorites || []
     });
 });
 

@@ -5,17 +5,20 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
-import { getConversations, getMessages, sendChatMessage, deleteChatMessage } from "@/app/lib/api";
+import { getConversations, getMessages, sendChatMessage, deleteChatMessage, deleteConversation } from "@/app/lib/api";
 import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
 import { Send, ArrowLeft, MoreVertical, Package, MapPin, Loader2, MessageSquare, Image as ImageIcon, X, Eye, EyeOff, Trash2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { resolvePhotoUrl } from "../lib/image-utils";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Card } from "@/app/components/ui/card";
 import { Switch } from "@/app/components/ui/switch";
 import { Label } from "@/app/components/ui/label";
 import { uploadChatImage, toggleOnlineStatus } from "@/app/lib/api";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 
 export default function MessagesPage() {
     const { user, loading: authLoading } = useAuth();
@@ -30,6 +33,8 @@ export default function MessagesPage() {
     const [loadingMessages, setLoadingMessages] = useState(false);
     const [showChatOptions, setShowChatOptions] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     
     // Full Flex Enhancements State
     const [isOnline, setIsOnline] = useState(true);
@@ -68,7 +73,6 @@ export default function MessagesPage() {
             });
 
             socketRef.current.on("connect", () => {
-                console.log("Connected to chat server");
                 socketRef.current?.emit("joinUserRoom", user._id);
             });
 
@@ -251,6 +255,31 @@ export default function MessagesPage() {
         }
     };
 
+    const handleDeleteConversation = () => {
+        if (!selectedConv) return;
+        setIsDeleteModalOpen(true);
+        setShowChatOptions(false);
+    };
+
+    const confirmDelete = async () => {
+        if (!selectedConv) return;
+        
+        setIsDeleting(true);
+        try {
+            await deleteConversation(selectedConv._id);
+            setConversations(prev => prev.filter(c => c._id !== selectedConv._id));
+            setSelectedConv(null);
+            setMessages([]);
+            toast.success("Conversation deleted successfully");
+            setIsDeleteModalOpen(false);
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || "Failed to delete conversation");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     if (authLoading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>;
 
     return (
@@ -353,30 +382,34 @@ export default function MessagesPage() {
                                     <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setSelectedConv(null)}>
                                         <ArrowLeft className="h-5 w-5" />
                                     </Button>
-
-                                    {selectedConv.item?.images?.[0] && (
-                                        <div className="relative h-12 w-12 rounded-md overflow-hidden bg-muted flex-shrink-0 border">
-                                            <Image
-                                                src={selectedConv.item.images[0].startsWith('http') ? selectedConv.item.images[0] : `/uploads/${selectedConv.item.images[0]}`}
-                                                alt="item"
-                                                fill
-                                                className="object-cover"
-                                            />
+                                    <Link 
+                                        href={`/products/${selectedConv.item?.slug}`} 
+                                        className="flex items-center gap-4 group flex-1 min-w-0"
+                                    >
+                                        {selectedConv.item?.images?.[0] && (
+                                            <div className="relative h-12 w-12 rounded-md overflow-hidden bg-muted flex-shrink-0 border transition-transform group-hover:scale-105 active:scale-95 duration-200 shadow-sm">
+                                                <Image
+                                                    src={resolvePhotoUrl(selectedConv.item.images[0]) || "/placeholder.png"}
+                                                    alt="item"
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-bold truncate leading-tight flex items-center gap-2 group-hover:text-primary transition-colors">
+                                                {selectedConv.item?.title}
+                                                {selectedConv.participants.find((p: any) => p._id !== user?._id)?.isOnline && (
+                                                    <span className="h-2 w-2 rounded-full bg-green-500 flex-shrink-0 shadow-sm" title="Online now"></span>
+                                                )}
+                                            </h3>
+                                            <div className="flex items-center gap-2 text-xs text-muted-foreground group-hover:opacity-80 transition-opacity">
+                                                <span className="font-semibold text-primary">Rs. {selectedConv.item?.price}</span>
+                                                <span>•</span>
+                                                <span className="truncate whitespace-nowrap overflow-hidden">with {selectedConv.participants.find((p: any) => p._id !== user?._id)?.username}</span>
+                                            </div>
                                         </div>
-                                    )}
-                                    <div className="flex-1 min-w-0">
-                                        <h3 className="font-bold truncate leading-tight flex items-center gap-2">
-                                            {selectedConv.item?.title}
-                                            {selectedConv.participants.find((p: any) => p._id !== user?._id)?.isOnline && (
-                                                <span className="h-2 w-2 rounded-full bg-green-500 flex-shrink-0 shadow-sm" title="Online now"></span>
-                                            )}
-                                        </h3>
-                                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                            <span className="font-semibold text-primary">Rs. {selectedConv.item?.price}</span>
-                                            <span>•</span>
-                                            <span className="truncate">with {selectedConv.participants.find((p: any) => p._id !== user?._id)?.username}</span>
-                                        </div>
-                                    </div>
+                                    </Link>
                                     <div className="flex items-center gap-1 sm:gap-2">
                                         <Button 
                                             variant="outline" 
@@ -416,10 +449,7 @@ export default function MessagesPage() {
                                                     </button>
                                                     <button 
                                                         className="w-full text-left px-4 py-2 hover:bg-destructive/10 text-destructive text-sm font-medium transition-colors" 
-                                                        onClick={() => {
-                                                            toast.info('Conversation marked for deletion'); 
-                                                            setShowChatOptions(false);
-                                                        }}
+                                                        onClick={handleDeleteConversation}
                                                     >
                                                         Delete Conversation
                                                     </button>
@@ -469,10 +499,10 @@ export default function MessagesPage() {
                                                         >
                                                             {msg.image && (
                                                                 <div 
-                                                                    className="relative w-full max-w-[400px] sm:max-w-[800px] h-80 sm:h-[600px] rounded-xl overflow-hidden mb-1 cursor-pointer group/img bg-black/5 flex items-center justify-center"
+                                                                    className="relative w-[280px] sm:w-[400px] h-48 sm:h-72 rounded-xl overflow-hidden mb-1 cursor-pointer group/img bg-black/5"
                                                                     onClick={() => setPreviewImage(msg.image)}
                                                                 >
-                                                                    <Image src={msg.image} alt="Chat Attachment" fill className="object-contain group-hover/img:scale-[1.02] transition-transform" />
+                                                                    <Image src={msg.image} alt="Chat Attachment" fill className="object-cover group-hover/img:scale-[1.05] transition-transform duration-500" />
                                                                 </div>
                                                             )}
                                                         {msg.location && (
@@ -576,6 +606,15 @@ export default function MessagesPage() {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmationModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                isLoading={isDeleting}
+                title="Delete Conversation"
+                description="Are you sure you want to delete this conversation? This will permanently remove all messages for both participants. This action cannot be undone."
+            />
         </div>
     );
 }

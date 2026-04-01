@@ -1,3 +1,0 @@
-module.exports=[25073,a=>{"use strict";var b=a.i(34523);a.s([],45489),a.i(45489),a.s(["001823ba3add74e3ee4686020d52e31e5fec7bafde",()=>b.logoutAdmin,"002e00a5e062fba169a8a8554b68beb678354c6b1c",()=>b.getAdminProfile,"00811f31f3f20d6f7b770c160ec15e89238c0e9af5",()=>b.isAdminAuthenticated,"4063107694d5798aa42438b4ae5ec4b73d82902a42",()=>b.createAdmin,"40f235d61389b0760210980dba3b442ed2ab0f4e88",()=>b.loginAdmin],25073)}];
-
-//# sourceMappingURL=2b6e1_client__next-internal_server_app_admin_dashboard_sellers_page_actions_c43a0483.js.map

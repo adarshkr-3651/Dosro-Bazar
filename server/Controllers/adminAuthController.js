@@ -10,6 +10,10 @@ const login = asyncErrorWrapper(async (req, res, next) => {
         return next(new CustomError("Please provide both username/email and password", 400));
     }
 
+    if (typeof username !== 'string' || typeof password !== 'string') {
+        return next(new CustomError("Invalid credentials format", 400));
+    }
+
     // Check if admin exists in the dedicated collection (search by username OR email)
     const admin = await Admin.findOne({ 
         $or: [{ username }, { email: username }] 

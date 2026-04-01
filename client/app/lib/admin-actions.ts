@@ -138,3 +138,30 @@ export async function isAdminAuthenticated() {
     const cookieStore = await cookies();
     return cookieStore.get("admin_session")?.value === "authenticated";
 }
+
+export async function getAdBookings() {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+    const userToken = cookieStore.get("accessToken")?.value;
+
+    const cookiesToPass = [];
+    if (adminToken) cookiesToPass.push(`admin_access_token=${adminToken}`);
+    if (userToken) cookiesToPass.push(`accessToken=${userToken}`);
+    const cookieHeader = cookiesToPass.join("; ");
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/bookings/all`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": cookieHeader
+            },
+        });
+
+        const data = await response.json();
+        return data.success ? data.bookings : [];
+    } catch (error) {
+        console.error("Get Ad Bookings Error:", error);
+        return [];
+    }
+}

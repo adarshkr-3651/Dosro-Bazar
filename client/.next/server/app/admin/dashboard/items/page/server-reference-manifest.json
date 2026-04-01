@@ -1,0 +1,125 @@
+{
+  "node": {
+    "000cc812a39ab0c3b580730c2aa81d93b9e801120e": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "logoutAdmin",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "logoutAdmin",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+    },
+    "002c782d53fcf404712558b67e9bb545be9b9b9539": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "getAdminProfile",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "rsc"
+      },
+      "exportedName": "getAdminProfile",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+    },
+    "00edd826e9ef824a1dfec567d2de598a0a0b54e403": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "isAdminAuthenticated",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "rsc"
+      },
+      "exportedName": "isAdminAuthenticated",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+    },
+    "40384b9b369ff181f974f3e01c6ca93763454d9a50": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "rsc"
+      },
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+    },
+    "40510ccb468b532cfa537d8b858c8b8d1f751d3735": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "createAdmin",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "rsc"
+      },
+      "exportedName": "createAdmin",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-actions.ts"
+    },
+    "60628b7c8499ebeebfe39536dca9c112a319571ab4": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "getItemsAction",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-data-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "getItemsAction",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-data-actions.ts"
+    },
+    "00a0168b36b39089cd2c36bdaeba8e466489e94c1b": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "getItemStatsAction",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-data-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "getItemStatsAction",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-data-actions.ts"
+    },
+    "4054063150b1265aa2a813e62a13547635c7e0ea52": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": 94261,
+          "async": false,
+          "exportedName": "deleteItemAction",
+          "filename": "Desktop/Dosro Bazar/client/app/lib/admin-data-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "deleteItemAction",
+      "filename": "Desktop/Dosro Bazar/client/app/lib/admin-data-actions.ts"
+    }
+  },
+  "edge": {}
+}

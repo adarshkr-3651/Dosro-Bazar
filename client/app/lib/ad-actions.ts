@@ -155,3 +155,116 @@ export async function editAdAction(id: string, formData: FormData) {
         return { success: false, error: "Failed to connect to ad server for editing." };
     }
 }
+export async function submitAdminAdInquiryAction(enquiryData: { name: string, email: string, phone: string, message: string }) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/inquiry/admin`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(enquiryData),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Submit Admin Inquiry Error:", error);
+        return { success: false, error: "Failed to connect to server" };
+    }
+}
+
+export async function getAdminAdInquiriesAction() {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/inquiries/all`, {
+            method: "GET",
+            headers: {
+                "Cookie": `admin_access_token=${adminToken}`
+            },
+            cache: "no-store"
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Get Ad Inquiries Error:", error);
+        return { success: false, data: [] };
+    }
+}
+
+export async function updateAdInquiryStatusAction(id: string, status: string) {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/inquiries/${id}/status`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `admin_access_token=${adminToken}`
+            },
+            body: JSON.stringify({ status }),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Update Inquiry Status Error:", error);
+        return { success: false, error: "Failed to update status" };
+    }
+}
+
+export async function deleteAdInquiryAction(id: string) {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/inquiries/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Cookie": `admin_access_token=${adminToken}`
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Delete Inquiry Error:", error);
+        return { success: false, error: "Failed to delete inquiry" };
+    }
+}
+
+export async function initiateAdBookingAction(formData: FormData) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/book`, {
+            method: "POST",
+            body: formData, // Send FormData directly for multer to handle image
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Initiate Ad Booking Error:", error);
+        return { success: false, error: "Failed to connect to server" };
+    }
+}
+
+export async function verifyKhaltiPaymentAction(pidx: string, amount: number, purchase_order_id: string) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/payment/khalti/verify`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ pidx, amount, purchase_order_id }),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Verify Khalti Error:", error);
+        return { success: false, error: "Failed to verify Khalti payment" };
+    }
+}

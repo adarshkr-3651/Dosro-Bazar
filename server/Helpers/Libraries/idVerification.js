@@ -41,7 +41,7 @@ const verifyIdProof = async (filePath, idType) => {
 
         // 0. Handle URLs if Cloudinary is used
         if (typeof filePath === 'string' && filePath.startsWith('http')) {
-            console.log(`[OCR] Fetching image from URL: ${filePath}`);
+            // console.log(`[OCR] Fetching image from URL: ${filePath}`);
             imageInput = await getBufferFromUrl(filePath);
         }
 
@@ -74,13 +74,13 @@ const verifyIdProof = async (filePath, idType) => {
             {
                 logger: m => {
                     if (m.status === 'recognizing text' && Math.round(m.progress * 100) % 25 === 0) {
-                        console.log(`[OCR] ${m.status}: ${Math.round(m.progress * 100)}%`);
+                        // console.log(`[OCR] ${m.status}: ${Math.round(m.progress * 100)}%`);
                     }
                 }
             }
         );
 
-        console.log("[OCR] Extracted Text Length:", text.length);
+        // console.log("[OCR] Extracted Text Length:", text.length);
 
         // 3. Keyword validation
         const extractedText = text.toLowerCase();
@@ -102,9 +102,9 @@ const verifyIdProof = async (filePath, idType) => {
             extractedText.includes(keyword.toLowerCase())
         );
 
-        console.log(`[OCR] Matched ${matchedKeywords.length}/${expectedKeywords.length} keywords for ${idType}`);
+        // console.log(`[OCR] Matched ${matchedKeywords.length}/${expectedKeywords.length} keywords for ${idType}`);
         if (matchedKeywords.length > 0) {
-            console.log(`[OCR] Matched Keywords: ${matchedKeywords.join(', ')}`);
+            // console.log(`[OCR] Matched Keywords: ${matchedKeywords.join(', ')}`);
         }
 
         // 4. Verification Logic

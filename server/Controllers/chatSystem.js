@@ -156,6 +156,32 @@ export const deleteMessage = asyncErrorWrapper(async (req, res, next) => {
     });
 });
 
+export const deleteConversation = asyncErrorWrapper(async (req, res, next) => {
+    const { conversationId } = req.params;
+    const userId = req.user._id;
+
+    const conversation = await Conversation.findById(conversationId);
+    if (!conversation) {
+        return next(new CustomError("Conversation not found", 404));
+    }
+
+    // Check if the requester is a participant
+    if (!conversation.participants.includes(userId)) {
+        return next(new CustomError("You are not part of this conversation", 403));
+    }
+
+    // Delete all messages in this conversation
+    await Message.deleteMany({ conversationId });
+
+    // Delete the conversation itself
+    await conversation.deleteOne();
+
+    return res.status(200).json({
+        success: true,
+        message: "Conversation deleted successfully"
+    });
+});
+
 export const uploadChatImage = asyncErrorWrapper(async (req, res, next) => {
     if (!req.file) {
         return next(new CustomError("Please provide an image", 400));

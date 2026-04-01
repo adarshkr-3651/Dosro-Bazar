@@ -23,7 +23,7 @@ const getAccessTokenFromHeader = (req) => {
  * Supports both httpOnly cookies (more secure) and JSON response
  */
 const sendTokens = async (user, statusCode, res, req) => {
-    console.log("[tokenHelpers] sendTokens() - Generating tokens for user:", user.email);
+    // console.log("[tokenHelpers] sendTokens() - Generating tokens for user:", user.email);
 
     // Generate access token (short-lived)
     const accessToken = user.generateAccessToken();
@@ -54,7 +54,7 @@ const sendTokens = async (user, statusCode, res, req) => {
         userAgent: req.get('user-agent')
     });
 
-    console.log("[tokenHelpers] sendTokens() - Tokens generated and stored successfully");
+    // console.log("[tokenHelpers] sendTokens() - Tokens generated and stored successfully");
 
     // Check if client prefers cookies (from environment or request header)
     const useCookies = process.env.USE_HTTP_ONLY_COOKIES?.trim() === 'true';
@@ -63,12 +63,12 @@ const sendTokens = async (user, statusCode, res, req) => {
         // Send tokens as httpOnly cookies (more secure for web apps)
         const isProduction = process.env.NODE_ENV === 'production';
 
-        // Set access token cookie (15 minutes)
+        // Set access token cookie (matching ACCESS_TOKEN_EXPIRE or default 10 hours)
         res.cookie('accessToken', accessToken, {
             httpOnly: true,  // Prevents JavaScript access (XSS protection)
             secure: isProduction,  // HTTPS only in production
             sameSite: isProduction ? 'strict' : 'lax',  // CSRF protection
-            maxAge: 15 * 60 * 1000, // 15 minutes in milliseconds
+            maxAge: 10 * 60 * 60 * 1000, // 10 hours in milliseconds (matches 600m in config.env)
             path: '/' // Make cookie available everywhere
         });
 
@@ -81,12 +81,12 @@ const sendTokens = async (user, statusCode, res, req) => {
             path: '/' // Make cookie available everywhere
         });
 
-        console.log("[tokenHelpers] Tokens sent as httpOnly cookies");
+        // console.log("[tokenHelpers] Tokens sent as httpOnly cookies");
 
         return res.status(statusCode).json({
             success: true,
             message: 'Authentication successful',
-            expiresIn: 900, // 15 minutes in seconds
+            expiresIn: 36000, // 10 hours in seconds
             tokenType: 'Bearer'
         });
     } else {
@@ -95,7 +95,7 @@ const sendTokens = async (user, statusCode, res, req) => {
             success: true,
             accessToken,
             refreshToken,
-            expiresIn: 900, // 15 minutes in seconds
+            expiresIn: 36000, // 10 hours in seconds
             tokenType: 'Bearer'
         });
     }
@@ -113,7 +113,7 @@ const sendToken = async (user, statusCode, res, req) => {
  * Verify and rotate refresh token
  */
 const verifyAndRotateRefreshToken = async (refreshToken, req) => {
-    console.log("[tokenHelpers] verifyAndRotateRefreshToken() - Verifying refresh token");
+    // console.log("[tokenHelpers] verifyAndRotateRefreshToken() - Verifying refresh token");
 
     // Hash the provided refresh token
     const hashedToken = crypto
@@ -125,13 +125,13 @@ const verifyAndRotateRefreshToken = async (refreshToken, req) => {
     const tokenDoc = await RefreshToken.findValidToken(hashedToken);
 
     if (!tokenDoc) {
-        console.log(`[tokenHelpers] Token not found or invalid for hashed token: ${hashedToken.substring(0, 10)}...`);
+        // console.log(`[tokenHelpers] Token not found or invalid for hashed token: ${hashedToken.substring(0, 10)}...`);
         throw new Error('Invalid or expired refresh token');
     }
 
     // Check if token was already used (potential attack)
     if (tokenDoc.used) {
-        console.log(`[tokenHelpers] ⚠️ Token reuse detected for family ${tokenDoc.family}! Revoking entire family`);
+        // console.log(`[tokenHelpers] ⚠️ Token reuse detected for family ${tokenDoc.family}! Revoking entire family`);
         // Revoke all tokens in this family (security measure)
         await RefreshToken.revokeFamily(tokenDoc.family, 'Token reuse detected - potential attack');
         throw new Error('Token reuse detected. All tokens revoked for security.');
@@ -165,7 +165,7 @@ const verifyAndRotateRefreshToken = async (refreshToken, req) => {
         userAgent: req.get('user-agent')
     });
 
-    console.log("[tokenHelpers] Refresh token rotated successfully");
+    // console.log("[tokenHelpers] Refresh token rotated successfully");
 
     return {
         user,

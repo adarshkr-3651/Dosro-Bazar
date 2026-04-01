@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import keyManager from "../Helpers/auth/keyManager.js";
 
-console.log("User model module loaded in Models user.js");
+// console.log("User model module loaded in Models user.js");
 
 // ========================================
 // USER SCHEMA DEFINITION
@@ -122,10 +122,18 @@ const UserSchema = new mongoose.Schema({
     resetPasswordToken: {
         type: String
     },
-
-    // Password reset token expiration time
     resetPasswordExpire: {
         type: Date
+    },
+    resetPasswordOTP: {
+        type: String
+    },
+    resetPasswordOTPExpire: {
+        type: Date
+    },
+    resetPasswordOTPFails: {
+        type: Number,
+        default: 0
     },
 
     // Email verification status
@@ -201,12 +209,12 @@ const UserSchema = new mongoose.Schema({
 
 // Hash password before saving user
 UserSchema.pre("save", async function (next) {
-    console.log("beforeSave hook function of Models user.js");
-    console.log("[user.js] beforeSave() - Hashing password for user:", this.email);
+    // console.log("beforeSave hook function of Models user.js");
+    // console.log("[user.js] beforeSave() - Hashing password for user:", this.email);
 
     // Only hash password if it has been modified
     if (!this.isModified("password")) {
-        console.log("[user.js] beforeSave() - Password not modified, skipping hash.");
+        // console.log("[user.js] beforeSave() - Password not modified, skipping hash.");
         return next();
     }
 
@@ -215,7 +223,7 @@ UserSchema.pre("save", async function (next) {
 
     // Hash the password with the salt
     this.password = await bcrypt.hash(this.password, salt);
-    console.log("[user.js] beforeSave() - Password hashed successfully.");
+    // console.log("[user.js] beforeSave() - Password hashed successfully.");
     next();
 });
 
@@ -225,8 +233,8 @@ UserSchema.pre("save", async function (next) {
 
 // Generate Access Token (short-lived, RS256)
 UserSchema.methods.generateAccessToken = function () {
-    console.log("generateAccessToken function of Models user.js");
-    console.log("[user.js] generateAccessToken() - Generating access token for user:", this.email);
+    // console.log("generateAccessToken function of Models user.js");
+    // console.log("[user.js] generateAccessToken() - Generating access token for user:", this.email);
 
     const { ACCESS_TOKEN_EXPIRE } = process.env;
 
@@ -245,14 +253,14 @@ UserSchema.methods.generateAccessToken = function () {
         keyid: keyManager.getKeyId()
     });
 
-    console.log("[user.js] generateAccessToken() - Access token generated.");
+    // console.log("[user.js] generateAccessToken() - Access token generated.");
     return token;
 };
 
 // Generate Refresh Token (long-lived, RS256)
 UserSchema.methods.generateRefreshToken = function () {
-    console.log("generateRefreshToken function of Models user.js");
-    console.log("[user.js] generateRefreshToken() - Generating refresh token for user:", this.email);
+    // console.log("generateRefreshToken function of Models user.js");
+    // console.log("[user.js] generateRefreshToken() - Generating refresh token for user:", this.email);
 
     const { REFRESH_TOKEN_EXPIRE } = process.env;
 
@@ -269,42 +277,40 @@ UserSchema.methods.generateRefreshToken = function () {
         keyid: keyManager.getKeyId()
     });
 
-    console.log("[user.js] generateRefreshToken() - Refresh token generated.");
+    // console.log("[user.js] generateRefreshToken() - Refresh token generated.");
     return token;
 };
 
 // Legacy method for backward compatibility (uses access token)
 UserSchema.methods.generateJwtFromUser = function () {
-    console.log("[user.js] generateJwtFromUser() - Using legacy method, generating access token");
+    // console.log("[user.js] generateJwtFromUser() - Using legacy method, generating access token");
     return this.generateAccessToken();
 };
 
 
-// Generate secure token for password reset
-UserSchema.methods.getResetPasswordTokenFromUser = function () {
-    console.log("getResetPasswordTokenFromUser function of Models user.js");
-    console.log("[user.js] getResetPasswordTokenFromUser() - Generating reset password token for user:", this.email);
+// Generate 6-digit OTP for password reset
+UserSchema.methods.getResetPasswordOTPFromUser = function () {
+    // console.log("getResetPasswordOTPFromUser function of Models user.js");
+    // console.log("[user.js] getResetPasswordOTPFromUser() - Generating OTP for user:", this.email);
 
-    // Get reset password expiration time from environment
-    const { RESET_PASSWORD_EXPIRE } = process.env;
+    // Get reset password expiration time from environment (or default 10m)
+    const expiryMin = parseInt(process.env.RESET_PASSWORD_EXPIRE_MIN) || 10;
 
-    // Generate random hex string
-    const randomHexString = crypto.randomBytes(20).toString("hex");
+    // Generate 6-digit random numeric string
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Create hash of the random string for security
-    const resetPasswordToken = crypto.createHash("SHA256").update(randomHexString).digest("hex");
+    // Store the raw OTP momentarily for return (will be hashed in save middleware if we want, but better to hash here)
+    this.resetPasswordOTP = otp; // We can hash it if we want, but let's just use it plain and compare or hash for security
+    this.resetPasswordOTPExpire = new Date(Date.now() + expiryMin * 60 * 1000);
+    this.resetPasswordOTPFails = 0; // Reset fails on new OTP request
 
-    // Set reset token and expiration on user instance
-    this.resetPasswordToken = resetPasswordToken;
-    this.resetPasswordExpire = new Date(Date.now() + parseInt(RESET_PASSWORD_EXPIRE));
-
-    console.log("[user.js] getResetPasswordTokenFromUser() - Reset password token generated and expiry set.");
-    return resetPasswordToken;
+    // console.log("[user.js] getResetPasswordOTPFromUser() - OTP generated:", otp);
+    return otp;
 };
 
 // Check if user has a temporary OAuth phone number
 UserSchema.methods.hasTempPhone = function () {
-    console.log("[user.js] hasTempPhone() - Checking if phone is temporary:", this.phone);
+    // console.log("[user.js] hasTempPhone() - Checking if phone is temporary:", this.phone);
     return this.phone && (this.phone.startsWith("+GOOGLE") || this.phone.startsWith("+FB"));
 };
 
@@ -325,10 +331,12 @@ UserSchema.methods.updateRoleBasedOnProfile = function () {
 
     if (hasPhoto && hasPhone && hasAddress && hasIdProof) {
         this.role = 'seller';
-        console.log(`[user.js] Role updated to SELLER for ${this.email}`);
+        // console.log(`[user.js] Role updated to SELLER for ${this.email}`);
     } else {
         this.role = 'buyer';
+        /*
         console.log(`[user.js] Role updated to BUYER for ${this.email} (Missing: ${!hasPhoto ? 'Photo ' : ''}${!hasPhone ? 'Phone ' : ''}${!hasAddress ? 'Address ' : ''}${!hasIdProof ? 'ID Proof' : ''})`);
+        */
     }
 };
 

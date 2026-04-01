@@ -61,23 +61,22 @@ export default function Home() {
     ? filteredListings.slice(0, 25) 
     : filteredListings.slice(0, 10);
 
-  // Fetch recommendations
+  // Fetch recommendations only for logged-in users
   useEffect(() => {
     const fetchRecommendations = async () => {
+      if (!user) return; // Don't fetch for guests
       try {
-        console.log("[Home] Fetching recommendations...");
         const data = await getRecommendations();
         if (data.success) {
-          console.log(`[Home] Successfully loaded ${data.data?.length || 0} recommendations.`);
           setRecommendedItems(data.data);
         }
       } catch (error) {
-        console.error("[Home] Error loading recommendations:", error);
+        console.error("Error loading recommendations:", error);
       }
     };
 
     fetchRecommendations();
-  }, []);
+  }, [user]);
 
   // Fetch user's items for Seller Mode
   useEffect(() => {
@@ -184,38 +183,40 @@ export default function Home() {
                 )}
               </section>
 
-              {/* Recommended Items Section */}
-              <section>
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h2 className="text-3xl font-bold mb-2">Recommended for You</h2>
-                    <p className="text-muted-foreground">
-                      {selectedCategory !== "All" 
-                        ? `Recommendations in ${selectedCategory}` 
-                        : "Handpicked based on your interests"}
-                    </p>
+              {/* Recommended Items Section - Only for logged-in users */}
+              {user && (
+                <section>
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-3xl font-bold mb-2">Recommended for You</h2>
+                      <p className="text-muted-foreground">
+                        {selectedCategory !== "All" 
+                          ? `Recommendations in ${selectedCategory}` 
+                          : "Handpicked based on your interests"}
+                      </p>
+                    </div>
+                    <Button variant="outline">View All</Button>
                   </div>
-                  <Button variant="outline">View All</Button>
-                </div>
-                {filteredRecommended.length > 0 ? (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
-                    {filteredRecommended.map((product: any) => (
-                      <ProductCard
-                        key={product._id}
-                        id={product._id}
-                        slug={product.slug}
-                        {...product}
-                        isFavorite={favoriteIds.has(product._id)}
-                        onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 bg-muted/20 rounded-xl border-2 border-dashed">
-                    <p className="text-muted-foreground">No recommendations found in this category.</p>
-                  </div>
-                )}
-              </section>
+                  {filteredRecommended.length > 0 ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
+                      {filteredRecommended.map((product: any) => (
+                        <ProductCard
+                          key={product._id}
+                          id={product._id}
+                          slug={product.slug}
+                          {...product}
+                          isFavorite={favoriteIds.has(product._id)}
+                          onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 bg-muted/20 rounded-xl border-2 border-dashed">
+                      <p className="text-muted-foreground">No recommendations found in this category.</p>
+                    </div>
+                  )}
+                </section>
+              )}
             </>
           ) : (
             <>
