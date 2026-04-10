@@ -1,0 +1,20 @@
+{
+  "node": {
+    "7091e7ca5b1c5001ef8afbbe0ceab23cbe8db07af8": {
+      "workers": {
+        "app/payment-verify/khalti/page": {
+          "moduleId": 89014,
+          "async": false,
+          "exportedName": "verifyKhaltiPaymentAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+        }
+      },
+      "layer": {
+        "app/payment-verify/khalti/page": "action-browser"
+      },
+      "exportedName": "verifyKhaltiPaymentAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+    }
+  },
+  "edge": {}
+}

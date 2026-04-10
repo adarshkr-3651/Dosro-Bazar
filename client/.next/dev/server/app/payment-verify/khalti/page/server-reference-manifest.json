@@ -1,0 +1,20 @@
+{
+  "node": {
+    "707758faf8806755f653909220e2e1ae815c41d3d0": {
+      "workers": {
+        "app/payment-verify/khalti/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/payment-verify/khalti/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "verifyKhaltiPaymentAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+        }
+      },
+      "layer": {
+        "app/payment-verify/khalti/page": "action-browser"
+      },
+      "exportedName": "verifyKhaltiPaymentAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+    }
+  },
+  "edge": {}
+}

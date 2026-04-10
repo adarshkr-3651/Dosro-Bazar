@@ -1,0 +1,1502 @@
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([typeof document === "object" ? document.currentScript : undefined,
+"[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/input.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Input",
+    ()=>Input
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/utils.ts [app-client] (ecmascript)");
+;
+;
+;
+const Input = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c = ({ className, type, ...props }, ref)=>{
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+        type: type,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
+        ref: ref,
+        suppressHydrationWarning: true,
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/input.tsx",
+        lineNumber: 8,
+        columnNumber: 7
+    }, ("TURBOPACK compile-time value", void 0));
+});
+_c1 = Input;
+Input.displayName = "Input";
+;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "Input$React.forwardRef");
+__turbopack_context__.k.register(_c1, "Input");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/label.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Label",
+    ()=>Label
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$label$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/@radix-ui/react-label/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$class$2d$variance$2d$authority$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/class-variance-authority/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/utils.ts [app-client] (ecmascript)");
+;
+;
+;
+;
+;
+const labelVariants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$class$2d$variance$2d$authority$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cva"])("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
+const Label = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$label$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"], {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])(labelVariants(), className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/label.tsx",
+        lineNumber: 13,
+        columnNumber: 3
+    }, ("TURBOPACK compile-time value", void 0)));
+_c1 = Label;
+Label.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f40$radix$2d$ui$2f$react$2d$label$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"].displayName;
+;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "Label$React.forwardRef");
+__turbopack_context__.k.register(_c1, "Label");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Card",
+    ()=>Card,
+    "CardContent",
+    ()=>CardContent,
+    "CardDescription",
+    ()=>CardDescription,
+    "CardFooter",
+    ()=>CardFooter,
+    "CardHeader",
+    ()=>CardHeader,
+    "CardTitle",
+    ()=>CardTitle
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/utils.ts [app-client] (ecmascript)");
+;
+;
+;
+const Card = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("rounded-lg border bg-card text-card-foreground shadow-sm", className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx",
+        lineNumber: 6,
+        columnNumber: 3
+    }, ("TURBOPACK compile-time value", void 0)));
+_c1 = Card;
+Card.displayName = "Card";
+const CardHeader = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c2 = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex flex-col space-y-1.5 p-6", className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx",
+        lineNumber: 12,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0)));
+_c3 = CardHeader;
+CardHeader.displayName = "CardHeader";
+const CardTitle = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c4 = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("text-2xl font-semibold leading-none tracking-tight", className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx",
+        lineNumber: 19,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0)));
+_c5 = CardTitle;
+CardTitle.displayName = "CardTitle";
+const CardDescription = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c6 = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("text-sm text-muted-foreground", className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx",
+        lineNumber: 26,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0)));
+_c7 = CardDescription;
+CardDescription.displayName = "CardDescription";
+const CardContent = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c8 = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-6 pt-0", className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx",
+        lineNumber: 32,
+        columnNumber: 37
+    }, ("TURBOPACK compile-time value", void 0)));
+_c9 = CardContent;
+CardContent.displayName = "CardContent";
+const CardFooter = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c10 = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex items-center p-6 pt-0", className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx",
+        lineNumber: 38,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0)));
+_c11 = CardFooter;
+CardFooter.displayName = "CardFooter";
+;
+var _c, _c1, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10, _c11;
+__turbopack_context__.k.register(_c, "Card$React.forwardRef");
+__turbopack_context__.k.register(_c1, "Card");
+__turbopack_context__.k.register(_c2, "CardHeader$React.forwardRef");
+__turbopack_context__.k.register(_c3, "CardHeader");
+__turbopack_context__.k.register(_c4, "CardTitle$React.forwardRef");
+__turbopack_context__.k.register(_c5, "CardTitle");
+__turbopack_context__.k.register(_c6, "CardDescription$React.forwardRef");
+__turbopack_context__.k.register(_c7, "CardDescription");
+__turbopack_context__.k.register(_c8, "CardContent$React.forwardRef");
+__turbopack_context__.k.register(_c9, "CardContent");
+__turbopack_context__.k.register(_c10, "CardFooter$React.forwardRef");
+__turbopack_context__.k.register(_c11, "CardFooter");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:2d4f13 [app-client] (ecmascript) <text/javascript>", ((__turbopack_context__) => {
+"use strict";
+
+/* __next_internal_action_entry_do_not_use__ [{"00c26984806d28f5736fe0049636f04d8a2a6e0dae":"getAllAdsAction"},"Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts",""] */ __turbopack_context__.s([
+    "getAllAdsAction",
+    ()=>getAllAdsAction
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-client-wrapper.js [app-client] (ecmascript)");
+"use turbopack no side effects";
+;
+var getAllAdsAction = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createServerReference"])("00c26984806d28f5736fe0049636f04d8a2a6e0dae", __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["callServer"], void 0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["findSourceMapURL"], "getAllAdsAction"); //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4vYWQtYWN0aW9ucy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBzZXJ2ZXJcIjtcblxuaW1wb3J0IHsgY29va2llcyB9IGZyb20gXCJuZXh0L2hlYWRlcnNcIjtcblxuY29uc3QgQkFDS0VORF9VUkwgPSBwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQUNLRU5EX1VSTCB8fCBcImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMFwiO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gY3JlYXRlQWRBY3Rpb24oZm9ybURhdGE6IEZvcm1EYXRhKSB7XG4gICAgY29uc3QgY29va2llU3RvcmUgPSBhd2FpdCBjb29raWVzKCk7XG4gICAgY29uc3QgYWRtaW5Ub2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFkbWluX2FjY2Vzc190b2tlblwiKT8udmFsdWU7XG4gICAgY29uc3QgdXNlclRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWNjZXNzVG9rZW5cIik/LnZhbHVlO1xuXG4gICAgY29uc3QgY29va2llc1RvUGFzcyA9IFtdO1xuICAgIGlmIChhZG1pblRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFkbWluX2FjY2Vzc190b2tlbj0ke2FkbWluVG9rZW59YCk7XG4gICAgaWYgKHVzZXJUb2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhY2Nlc3NUb2tlbj0ke3VzZXJUb2tlbn1gKTtcbiAgICBjb25zdCBjb29raWVIZWFkZXIgPSBjb29raWVzVG9QYXNzLmpvaW4oXCI7IFwiKTtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzL2NyZWF0ZWAsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJQT1NUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJDcmVhdGUgQWQgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBjb25uZWN0IHRvIGFkIHNlcnZlclwiIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0QWxsQWRzQWN0aW9uKCkge1xuICAgIGNvbnN0IGNvb2tpZVN0b3JlID0gYXdhaXQgY29va2llcygpO1xuICAgIGNvbnN0IGFkbWluVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhZG1pbl9hY2Nlc3NfdG9rZW5cIik/LnZhbHVlO1xuICAgIGNvbnN0IHVzZXJUb2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFjY2Vzc1Rva2VuXCIpPy52YWx1ZTtcblxuICAgIGNvbnN0IGNvb2tpZXNUb1Bhc3MgPSBbXTtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufWApO1xuICAgIGlmICh1c2VyVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWNjZXNzVG9rZW49JHt1c2VyVG9rZW59YCk7XG4gICAgY29uc3QgY29va2llSGVhZGVyID0gY29va2llc1RvUGFzcy5qb2luKFwiOyBcIik7XG5cbiAgICB0cnkge1xuICAgICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGAke0JBQ0tFTkRfVVJMfS9hZHZlcnRpc2VtZW50c2AsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJHRVRcIixcbiAgICAgICAgICAgIGhlYWRlcnM6IHtcbiAgICAgICAgICAgICAgICBcIkNvb2tpZVwiOiBjb29raWVIZWFkZXJcbiAgICAgICAgICAgIH0sXG4gICAgICAgICAgICBjYWNoZTogXCJuby1zdG9yZVwiXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJHZXQgQWRzIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBhZHM6IFtdIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gdXBkYXRlQWRTdGF0dXNBY3Rpb24oaWQ6IHN0cmluZywgc3RhdHVzOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH0vc3RhdHVzYCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIlBVVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiLFxuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHsgc3RhdHVzIH0pLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiVXBkYXRlIFN0YXR1cyBFcnJvcjpcIiwgZXJyb3IpO1xuICAgICAgICByZXR1cm4geyBzdWNjZXNzOiBmYWxzZSwgZXJyb3I6IFwiRmFpbGVkIHRvIHVwZGF0ZSBhZCBzdGF0dXNcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGRlbGV0ZUFkQWN0aW9uKGlkOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBsZXQgY29va2llSGVhZGVyID0gXCJcIjtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llSGVhZGVyICs9IGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufTsgYDtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVIZWFkZXIgKz0gYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufTsgYDtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9YCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIkRFTEVURVwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfVxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiRGVsZXRlIEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gZGVsZXRlIGFkdmVydGlzZW1lbnRcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN1Ym1pdEFkRW5xdWlyeUFjdGlvbihpZDogc3RyaW5nLCBlbnF1aXJ5RGF0YTogeyBuYW1lPzogc3RyaW5nLCBlbWFpbD86IHN0cmluZywgcGhvbmU/OiBzdHJpbmcsIG1lc3NhZ2U/OiBzdHJpbmcgfSkge1xuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9L2VucXVpcmVgLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUE9TVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoZW5xdWlyeURhdGEpLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiU3VibWl0IEVucXVpcnkgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBzdWJtaXQgaW5xdWlyeSB0byBzZXJ2ZXJcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGVkaXRBZEFjdGlvbihpZDogc3RyaW5nLCBmb3JtRGF0YTogRm9ybURhdGEpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH1gLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUFVUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJFZGl0IEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gY29ubmVjdCB0byBhZCBzZXJ2ZXIgZm9yIGVkaXRpbmcuXCIgfTtcbiAgICB9XG59XG4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6ImdVQWlDc0IifQ==
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:e702a8 [app-client] (ecmascript) <text/javascript>", ((__turbopack_context__) => {
+"use strict";
+
+/* __next_internal_action_entry_do_not_use__ [{"40c84ff3daa0b19ee0a47664a2df73d056ff764f54":"createAdAction"},"Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts",""] */ __turbopack_context__.s([
+    "createAdAction",
+    ()=>createAdAction
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-client-wrapper.js [app-client] (ecmascript)");
+"use turbopack no side effects";
+;
+var createAdAction = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createServerReference"])("40c84ff3daa0b19ee0a47664a2df73d056ff764f54", __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["callServer"], void 0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["findSourceMapURL"], "createAdAction"); //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4vYWQtYWN0aW9ucy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBzZXJ2ZXJcIjtcblxuaW1wb3J0IHsgY29va2llcyB9IGZyb20gXCJuZXh0L2hlYWRlcnNcIjtcblxuY29uc3QgQkFDS0VORF9VUkwgPSBwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQUNLRU5EX1VSTCB8fCBcImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMFwiO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gY3JlYXRlQWRBY3Rpb24oZm9ybURhdGE6IEZvcm1EYXRhKSB7XG4gICAgY29uc3QgY29va2llU3RvcmUgPSBhd2FpdCBjb29raWVzKCk7XG4gICAgY29uc3QgYWRtaW5Ub2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFkbWluX2FjY2Vzc190b2tlblwiKT8udmFsdWU7XG4gICAgY29uc3QgdXNlclRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWNjZXNzVG9rZW5cIik/LnZhbHVlO1xuXG4gICAgY29uc3QgY29va2llc1RvUGFzcyA9IFtdO1xuICAgIGlmIChhZG1pblRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFkbWluX2FjY2Vzc190b2tlbj0ke2FkbWluVG9rZW59YCk7XG4gICAgaWYgKHVzZXJUb2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhY2Nlc3NUb2tlbj0ke3VzZXJUb2tlbn1gKTtcbiAgICBjb25zdCBjb29raWVIZWFkZXIgPSBjb29raWVzVG9QYXNzLmpvaW4oXCI7IFwiKTtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzL2NyZWF0ZWAsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJQT1NUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJDcmVhdGUgQWQgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBjb25uZWN0IHRvIGFkIHNlcnZlclwiIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0QWxsQWRzQWN0aW9uKCkge1xuICAgIGNvbnN0IGNvb2tpZVN0b3JlID0gYXdhaXQgY29va2llcygpO1xuICAgIGNvbnN0IGFkbWluVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhZG1pbl9hY2Nlc3NfdG9rZW5cIik/LnZhbHVlO1xuICAgIGNvbnN0IHVzZXJUb2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFjY2Vzc1Rva2VuXCIpPy52YWx1ZTtcblxuICAgIGNvbnN0IGNvb2tpZXNUb1Bhc3MgPSBbXTtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufWApO1xuICAgIGlmICh1c2VyVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWNjZXNzVG9rZW49JHt1c2VyVG9rZW59YCk7XG4gICAgY29uc3QgY29va2llSGVhZGVyID0gY29va2llc1RvUGFzcy5qb2luKFwiOyBcIik7XG5cbiAgICB0cnkge1xuICAgICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGAke0JBQ0tFTkRfVVJMfS9hZHZlcnRpc2VtZW50c2AsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJHRVRcIixcbiAgICAgICAgICAgIGhlYWRlcnM6IHtcbiAgICAgICAgICAgICAgICBcIkNvb2tpZVwiOiBjb29raWVIZWFkZXJcbiAgICAgICAgICAgIH0sXG4gICAgICAgICAgICBjYWNoZTogXCJuby1zdG9yZVwiXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJHZXQgQWRzIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBhZHM6IFtdIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gdXBkYXRlQWRTdGF0dXNBY3Rpb24oaWQ6IHN0cmluZywgc3RhdHVzOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH0vc3RhdHVzYCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIlBVVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiLFxuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHsgc3RhdHVzIH0pLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiVXBkYXRlIFN0YXR1cyBFcnJvcjpcIiwgZXJyb3IpO1xuICAgICAgICByZXR1cm4geyBzdWNjZXNzOiBmYWxzZSwgZXJyb3I6IFwiRmFpbGVkIHRvIHVwZGF0ZSBhZCBzdGF0dXNcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGRlbGV0ZUFkQWN0aW9uKGlkOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBsZXQgY29va2llSGVhZGVyID0gXCJcIjtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llSGVhZGVyICs9IGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufTsgYDtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVIZWFkZXIgKz0gYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufTsgYDtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9YCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIkRFTEVURVwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfVxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiRGVsZXRlIEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gZGVsZXRlIGFkdmVydGlzZW1lbnRcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN1Ym1pdEFkRW5xdWlyeUFjdGlvbihpZDogc3RyaW5nLCBlbnF1aXJ5RGF0YTogeyBuYW1lPzogc3RyaW5nLCBlbWFpbD86IHN0cmluZywgcGhvbmU/OiBzdHJpbmcsIG1lc3NhZ2U/OiBzdHJpbmcgfSkge1xuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9L2VucXVpcmVgLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUE9TVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoZW5xdWlyeURhdGEpLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiU3VibWl0IEVucXVpcnkgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBzdWJtaXQgaW5xdWlyeSB0byBzZXJ2ZXJcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGVkaXRBZEFjdGlvbihpZDogc3RyaW5nLCBmb3JtRGF0YTogRm9ybURhdGEpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH1gLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUFVUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJFZGl0IEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gY29ubmVjdCB0byBhZCBzZXJ2ZXIgZm9yIGVkaXRpbmcuXCIgfTtcbiAgICB9XG59XG4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IitUQU1zQiJ9
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:24f822 [app-client] (ecmascript) <text/javascript>", ((__turbopack_context__) => {
+"use strict";
+
+/* __next_internal_action_entry_do_not_use__ [{"404d14c53ac157373c0f085eb45caf26d41dd021f1":"deleteAdAction"},"Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts",""] */ __turbopack_context__.s([
+    "deleteAdAction",
+    ()=>deleteAdAction
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-client-wrapper.js [app-client] (ecmascript)");
+"use turbopack no side effects";
+;
+var deleteAdAction = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createServerReference"])("404d14c53ac157373c0f085eb45caf26d41dd021f1", __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["callServer"], void 0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["findSourceMapURL"], "deleteAdAction"); //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4vYWQtYWN0aW9ucy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBzZXJ2ZXJcIjtcblxuaW1wb3J0IHsgY29va2llcyB9IGZyb20gXCJuZXh0L2hlYWRlcnNcIjtcblxuY29uc3QgQkFDS0VORF9VUkwgPSBwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQUNLRU5EX1VSTCB8fCBcImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMFwiO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gY3JlYXRlQWRBY3Rpb24oZm9ybURhdGE6IEZvcm1EYXRhKSB7XG4gICAgY29uc3QgY29va2llU3RvcmUgPSBhd2FpdCBjb29raWVzKCk7XG4gICAgY29uc3QgYWRtaW5Ub2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFkbWluX2FjY2Vzc190b2tlblwiKT8udmFsdWU7XG4gICAgY29uc3QgdXNlclRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWNjZXNzVG9rZW5cIik/LnZhbHVlO1xuXG4gICAgY29uc3QgY29va2llc1RvUGFzcyA9IFtdO1xuICAgIGlmIChhZG1pblRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFkbWluX2FjY2Vzc190b2tlbj0ke2FkbWluVG9rZW59YCk7XG4gICAgaWYgKHVzZXJUb2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhY2Nlc3NUb2tlbj0ke3VzZXJUb2tlbn1gKTtcbiAgICBjb25zdCBjb29raWVIZWFkZXIgPSBjb29raWVzVG9QYXNzLmpvaW4oXCI7IFwiKTtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzL2NyZWF0ZWAsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJQT1NUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJDcmVhdGUgQWQgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBjb25uZWN0IHRvIGFkIHNlcnZlclwiIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0QWxsQWRzQWN0aW9uKCkge1xuICAgIGNvbnN0IGNvb2tpZVN0b3JlID0gYXdhaXQgY29va2llcygpO1xuICAgIGNvbnN0IGFkbWluVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhZG1pbl9hY2Nlc3NfdG9rZW5cIik/LnZhbHVlO1xuICAgIGNvbnN0IHVzZXJUb2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFjY2Vzc1Rva2VuXCIpPy52YWx1ZTtcblxuICAgIGNvbnN0IGNvb2tpZXNUb1Bhc3MgPSBbXTtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufWApO1xuICAgIGlmICh1c2VyVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWNjZXNzVG9rZW49JHt1c2VyVG9rZW59YCk7XG4gICAgY29uc3QgY29va2llSGVhZGVyID0gY29va2llc1RvUGFzcy5qb2luKFwiOyBcIik7XG5cbiAgICB0cnkge1xuICAgICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGAke0JBQ0tFTkRfVVJMfS9hZHZlcnRpc2VtZW50c2AsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJHRVRcIixcbiAgICAgICAgICAgIGhlYWRlcnM6IHtcbiAgICAgICAgICAgICAgICBcIkNvb2tpZVwiOiBjb29raWVIZWFkZXJcbiAgICAgICAgICAgIH0sXG4gICAgICAgICAgICBjYWNoZTogXCJuby1zdG9yZVwiXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJHZXQgQWRzIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBhZHM6IFtdIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gdXBkYXRlQWRTdGF0dXNBY3Rpb24oaWQ6IHN0cmluZywgc3RhdHVzOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH0vc3RhdHVzYCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIlBVVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiLFxuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHsgc3RhdHVzIH0pLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiVXBkYXRlIFN0YXR1cyBFcnJvcjpcIiwgZXJyb3IpO1xuICAgICAgICByZXR1cm4geyBzdWNjZXNzOiBmYWxzZSwgZXJyb3I6IFwiRmFpbGVkIHRvIHVwZGF0ZSBhZCBzdGF0dXNcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGRlbGV0ZUFkQWN0aW9uKGlkOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBsZXQgY29va2llSGVhZGVyID0gXCJcIjtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llSGVhZGVyICs9IGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufTsgYDtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVIZWFkZXIgKz0gYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufTsgYDtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9YCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIkRFTEVURVwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfVxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiRGVsZXRlIEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gZGVsZXRlIGFkdmVydGlzZW1lbnRcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN1Ym1pdEFkRW5xdWlyeUFjdGlvbihpZDogc3RyaW5nLCBlbnF1aXJ5RGF0YTogeyBuYW1lPzogc3RyaW5nLCBlbWFpbD86IHN0cmluZywgcGhvbmU/OiBzdHJpbmcsIG1lc3NhZ2U/OiBzdHJpbmcgfSkge1xuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9L2VucXVpcmVgLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUE9TVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoZW5xdWlyeURhdGEpLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiU3VibWl0IEVucXVpcnkgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBzdWJtaXQgaW5xdWlyeSB0byBzZXJ2ZXJcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGVkaXRBZEFjdGlvbihpZDogc3RyaW5nLCBmb3JtRGF0YTogRm9ybURhdGEpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH1gLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUFVUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJFZGl0IEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gY29ubmVjdCB0byBhZCBzZXJ2ZXIgZm9yIGVkaXRpbmcuXCIgfTtcbiAgICB9XG59XG4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IitUQXdGc0IifQ==
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:4ea4aa [app-client] (ecmascript) <text/javascript>", ((__turbopack_context__) => {
+"use strict";
+
+/* __next_internal_action_entry_do_not_use__ [{"60c7093d1c17f11527c14fbebac9d1b865b7820fb2":"updateAdStatusAction"},"Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts",""] */ __turbopack_context__.s([
+    "updateAdStatusAction",
+    ()=>updateAdStatusAction
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-client-wrapper.js [app-client] (ecmascript)");
+"use turbopack no side effects";
+;
+var updateAdStatusAction = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createServerReference"])("60c7093d1c17f11527c14fbebac9d1b865b7820fb2", __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["callServer"], void 0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$client$2d$wrapper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["findSourceMapURL"], "updateAdStatusAction"); //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4vYWQtYWN0aW9ucy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBzZXJ2ZXJcIjtcblxuaW1wb3J0IHsgY29va2llcyB9IGZyb20gXCJuZXh0L2hlYWRlcnNcIjtcblxuY29uc3QgQkFDS0VORF9VUkwgPSBwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQUNLRU5EX1VSTCB8fCBcImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMFwiO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gY3JlYXRlQWRBY3Rpb24oZm9ybURhdGE6IEZvcm1EYXRhKSB7XG4gICAgY29uc3QgY29va2llU3RvcmUgPSBhd2FpdCBjb29raWVzKCk7XG4gICAgY29uc3QgYWRtaW5Ub2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFkbWluX2FjY2Vzc190b2tlblwiKT8udmFsdWU7XG4gICAgY29uc3QgdXNlclRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWNjZXNzVG9rZW5cIik/LnZhbHVlO1xuXG4gICAgY29uc3QgY29va2llc1RvUGFzcyA9IFtdO1xuICAgIGlmIChhZG1pblRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFkbWluX2FjY2Vzc190b2tlbj0ke2FkbWluVG9rZW59YCk7XG4gICAgaWYgKHVzZXJUb2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhY2Nlc3NUb2tlbj0ke3VzZXJUb2tlbn1gKTtcbiAgICBjb25zdCBjb29raWVIZWFkZXIgPSBjb29raWVzVG9QYXNzLmpvaW4oXCI7IFwiKTtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzL2NyZWF0ZWAsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJQT1NUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJDcmVhdGUgQWQgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBjb25uZWN0IHRvIGFkIHNlcnZlclwiIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0QWxsQWRzQWN0aW9uKCkge1xuICAgIGNvbnN0IGNvb2tpZVN0b3JlID0gYXdhaXQgY29va2llcygpO1xuICAgIGNvbnN0IGFkbWluVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhZG1pbl9hY2Nlc3NfdG9rZW5cIik/LnZhbHVlO1xuICAgIGNvbnN0IHVzZXJUb2tlbiA9IGNvb2tpZVN0b3JlLmdldChcImFjY2Vzc1Rva2VuXCIpPy52YWx1ZTtcblxuICAgIGNvbnN0IGNvb2tpZXNUb1Bhc3MgPSBbXTtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llc1RvUGFzcy5wdXNoKGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufWApO1xuICAgIGlmICh1c2VyVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWNjZXNzVG9rZW49JHt1c2VyVG9rZW59YCk7XG4gICAgY29uc3QgY29va2llSGVhZGVyID0gY29va2llc1RvUGFzcy5qb2luKFwiOyBcIik7XG5cbiAgICB0cnkge1xuICAgICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGAke0JBQ0tFTkRfVVJMfS9hZHZlcnRpc2VtZW50c2AsIHtcbiAgICAgICAgICAgIG1ldGhvZDogXCJHRVRcIixcbiAgICAgICAgICAgIGhlYWRlcnM6IHtcbiAgICAgICAgICAgICAgICBcIkNvb2tpZVwiOiBjb29raWVIZWFkZXJcbiAgICAgICAgICAgIH0sXG4gICAgICAgICAgICBjYWNoZTogXCJuby1zdG9yZVwiXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJHZXQgQWRzIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBhZHM6IFtdIH07XG4gICAgfVxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gdXBkYXRlQWRTdGF0dXNBY3Rpb24oaWQ6IHN0cmluZywgc3RhdHVzOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH0vc3RhdHVzYCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIlBVVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiLFxuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfSxcbiAgICAgICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHsgc3RhdHVzIH0pLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiVXBkYXRlIFN0YXR1cyBFcnJvcjpcIiwgZXJyb3IpO1xuICAgICAgICByZXR1cm4geyBzdWNjZXNzOiBmYWxzZSwgZXJyb3I6IFwiRmFpbGVkIHRvIHVwZGF0ZSBhZCBzdGF0dXNcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGRlbGV0ZUFkQWN0aW9uKGlkOiBzdHJpbmcpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBsZXQgY29va2llSGVhZGVyID0gXCJcIjtcbiAgICBpZiAoYWRtaW5Ub2tlbikgY29va2llSGVhZGVyICs9IGBhZG1pbl9hY2Nlc3NfdG9rZW49JHthZG1pblRva2VufTsgYDtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVIZWFkZXIgKz0gYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufTsgYDtcblxuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9YCwge1xuICAgICAgICAgICAgbWV0aG9kOiBcIkRFTEVURVwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29va2llXCI6IGNvb2tpZUhlYWRlclxuICAgICAgICAgICAgfVxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiRGVsZXRlIEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gZGVsZXRlIGFkdmVydGlzZW1lbnRcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN1Ym1pdEFkRW5xdWlyeUFjdGlvbihpZDogc3RyaW5nLCBlbnF1aXJ5RGF0YTogeyBuYW1lPzogc3RyaW5nLCBlbWFpbD86IHN0cmluZywgcGhvbmU/OiBzdHJpbmcsIG1lc3NhZ2U/OiBzdHJpbmcgfSkge1xuICAgIHRyeSB7XG4gICAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goYCR7QkFDS0VORF9VUkx9L2FkdmVydGlzZW1lbnRzLyR7aWR9L2VucXVpcmVgLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUE9TVFwiLFxuICAgICAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICAgICAgIFwiQ29udGVudC1UeXBlXCI6IFwiYXBwbGljYXRpb24vanNvblwiXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoZW5xdWlyeURhdGEpLFxuICAgICAgICB9KTtcblxuICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpO1xuICAgICAgICByZXR1cm4gZGF0YTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKFwiU3VibWl0IEVucXVpcnkgRXJyb3I6XCIsIGVycm9yKTtcbiAgICAgICAgcmV0dXJuIHsgc3VjY2VzczogZmFsc2UsIGVycm9yOiBcIkZhaWxlZCB0byBzdWJtaXQgaW5xdWlyeSB0byBzZXJ2ZXJcIiB9O1xuICAgIH1cbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIGVkaXRBZEFjdGlvbihpZDogc3RyaW5nLCBmb3JtRGF0YTogRm9ybURhdGEpIHtcbiAgICBjb25zdCBjb29raWVTdG9yZSA9IGF3YWl0IGNvb2tpZXMoKTtcbiAgICBjb25zdCBhZG1pblRva2VuID0gY29va2llU3RvcmUuZ2V0KFwiYWRtaW5fYWNjZXNzX3Rva2VuXCIpPy52YWx1ZTtcbiAgICBjb25zdCB1c2VyVG9rZW4gPSBjb29raWVTdG9yZS5nZXQoXCJhY2Nlc3NUb2tlblwiKT8udmFsdWU7XG5cbiAgICBjb25zdCBjb29raWVzVG9QYXNzID0gW107XG4gICAgaWYgKGFkbWluVG9rZW4pIGNvb2tpZXNUb1Bhc3MucHVzaChgYWRtaW5fYWNjZXNzX3Rva2VuPSR7YWRtaW5Ub2tlbn1gKTtcbiAgICBpZiAodXNlclRva2VuKSBjb29raWVzVG9QYXNzLnB1c2goYGFjY2Vzc1Rva2VuPSR7dXNlclRva2VufWApO1xuICAgIGNvbnN0IGNvb2tpZUhlYWRlciA9IGNvb2tpZXNUb1Bhc3Muam9pbihcIjsgXCIpO1xuXG4gICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaChgJHtCQUNLRU5EX1VSTH0vYWR2ZXJ0aXNlbWVudHMvJHtpZH1gLCB7XG4gICAgICAgICAgICBtZXRob2Q6IFwiUFVUXCIsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgXCJDb29raWVcIjogY29va2llSGVhZGVyXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogZm9ybURhdGEsXG4gICAgICAgIH0pO1xuXG4gICAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5qc29uKCk7XG4gICAgICAgIHJldHVybiBkYXRhO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUuZXJyb3IoXCJFZGl0IEFkIEVycm9yOlwiLCBlcnJvcik7XG4gICAgICAgIHJldHVybiB7IHN1Y2Nlc3M6IGZhbHNlLCBlcnJvcjogXCJGYWlsZWQgdG8gY29ubmVjdCB0byBhZCBzZXJ2ZXIgZm9yIGVkaXRpbmcuXCIgfTtcbiAgICB9XG59XG4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6InFVQTREc0IifQ==
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>AdvertisementPage
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/plus.js [app-client] (ecmascript) <export default as Plus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-client] (ecmascript) <export default as Trash2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/calendar.js [app-client] (ecmascript) <export default as Calendar>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panels$2d$top$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Layout$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/panels-top-left.js [app-client] (ecmascript) <export default as Layout>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/mail.js [app-client] (ecmascript) <export default as Mail>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Building2$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/building-2.js [app-client] (ecmascript) <export default as Building2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/external-link.js [app-client] (ecmascript) <export default as ExternalLink>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/camera.js [app-client] (ecmascript) <export default as Camera>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/tag.js [app-client] (ecmascript) <export default as Tag>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/button.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/input.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/label.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/components/ui/card.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/sonner/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/image.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$2d4f13__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:2d4f13 [app-client] (ecmascript) <text/javascript>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$e702a8__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:e702a8 [app-client] (ecmascript) <text/javascript>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$24f822__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:24f822 [app-client] (ecmascript) <text/javascript>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$4ea4aa__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/data:4ea4aa [app-client] (ecmascript) <text/javascript>");
+;
+var _s = __turbopack_context__.k.signature();
+"use client";
+;
+;
+;
+;
+;
+;
+;
+;
+;
+function AdvertisementPage() {
+    _s();
+    const [ads, setAds] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [isModalOpen, setIsModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isEditMode, setIsEditMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false); // New: track edit vs create
+    const [selectedAd, setSelectedAd] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null); // New: track active ad for editing
+    const [formLoading, setFormLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [previewImage, setPreviewImage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "AdvertisementPage.useEffect": ()=>{
+            fetchAds();
+        }
+    }["AdvertisementPage.useEffect"], []);
+    const fetchAds = async ()=>{
+        setLoading(true);
+        try {
+            const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$2d4f13__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["getAllAdsAction"])();
+            if (data.success) {
+                setAds(data.ads || []);
+            }
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Failed to fetch advertisements");
+        } finally{
+            setLoading(false);
+        }
+    };
+    const handleImageChange = (e)=>{
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = ()=>setPreviewImage(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        setFormLoading(true);
+        const formData = new FormData(e.currentTarget);
+        try {
+            const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$e702a8__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["createAdAction"])(formData);
+            if (res.success) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Advertisement created successfully!");
+                setIsModalOpen(false);
+                setPreviewImage(null);
+                fetchAds();
+            } else {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(res.error || "Failed to create advertisement");
+            }
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Server connection error");
+        } finally{
+            setFormLoading(false);
+        }
+    };
+    const handleDelete = async (id)=>{
+        if (!confirm("Are you sure you want to remove this advertisement?")) return;
+        try {
+            const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$24f822__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["deleteAdAction"])(id);
+            if (res.success) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Ad removed successfully");
+                fetchAds();
+            } else {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(res.error || "Failed to delete");
+            }
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("An error occurred");
+        }
+    };
+    const handleEdit = (ad)=>{
+        setSelectedAd(ad);
+        setIsEditMode(true);
+        setPreviewImage(ad.imageUrl);
+        setIsModalOpen(true);
+    };
+    const toggleStatus = async (id, currentStatus)=>{
+        // Check if the ad is expired or has a past date when trying to run it
+        const ad = ads.find((a)=>a._id === id);
+        const isPastDate = ad && new Date(ad.expiryDate) < new Date();
+        if (currentStatus !== "running" && isPastDate) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].warning("Please change the expiry due date", {
+                description: "Re-activating an expired ad requires a future manually-set date.",
+                duration: 5000
+            });
+            // Automatically open edit mode for the user
+            handleEdit(ad);
+            return;
+        }
+        const newStatus = currentStatus === "running" ? "stopped" : "running";
+        try {
+            const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$4ea4aa__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["updateAdStatusAction"])(id, newStatus);
+            if (res.success) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success(`Status updated to ${newStatus}`);
+                fetchAds();
+            }
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Failed to update status");
+        }
+    };
+    const closeModal = ()=>{
+        setIsModalOpen(false);
+        setIsEditMode(false);
+        setSelectedAd(null);
+        setPreviewImage(null);
+    };
+    const handleFormSubmit = async (e)=>{
+        e.preventDefault();
+        setFormLoading(true);
+        const formData = new FormData(e.currentTarget);
+        try {
+            let res;
+            if (isEditMode && selectedAd) {
+                const { editAdAction } = await __turbopack_context__.A("[project]/Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts [app-client] (ecmascript, async loader)");
+                res = await editAdAction(selectedAd._id, formData);
+            } else {
+                res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$data$3a$e702a8__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["createAdAction"])(formData);
+            }
+            if (res.success) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success(isEditMode ? "Advertisement updated!" : "Advertisement created!");
+                closeModal();
+                fetchAds();
+            } else {
+                __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(res.error || "Failed to process advertisement");
+            }
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Server connection error");
+        } finally{
+            setFormLoading(false);
+        }
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex flex-col md:flex-row md:items-center justify-between gap-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-1",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "text-4xl font-extrabold tracking-tight text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-500",
+                                children: "Ad Management"
+                            }, void 0, false, {
+                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                lineNumber: 168,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-slate-500 text-lg flex items-center gap-2 font-medium",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panels$2d$top$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Layout$3e$__["Layout"], {
+                                        className: "w-4 h-4 text-emerald-600"
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 172,
+                                        columnNumber: 13
+                                    }, this),
+                                    "Provision and monitor platform placements"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                lineNumber: 171,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                        lineNumber: 167,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                        onClick: ()=>setIsModalOpen(true),
+                        className: "bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-6 rounded-2xl flex items-center gap-2 shadow-xl transition-all hover:scale-105",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                className: "w-5 h-5"
+                            }, void 0, false, {
+                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                lineNumber: 180,
+                                columnNumber: 11
+                            }, this),
+                            " Deploy New Ad"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                        lineNumber: 176,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                lineNumber: 166,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "grid grid-cols-1 xl:grid-cols-3 gap-8",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "xl:col-span-2 space-y-6",
+                        children: loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-dashed border-slate-200",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                    className: "w-12 h-12 text-slate-300 animate-spin mb-4"
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 190,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-slate-400 font-bold uppercase tracking-widest text-xs",
+                                    children: "Syncing Ad Network..."
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 191,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                            lineNumber: 189,
+                            columnNumber: 13
+                        }, this) : ads.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-dashed border-slate-200 text-center px-8",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__["Tag"], {
+                                        className: "w-10 h-10 text-slate-300"
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 196,
+                                        columnNumber: 17
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 195,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                    className: "text-slate-900 text-xl font-bold mb-2",
+                                    children: "No Active Deployments"
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 198,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-slate-500 max-w-sm mb-8",
+                                    children: "Deploy your first advertisement to see it on the platform banners."
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 199,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                    variant: "outline",
+                                    onClick: ()=>setIsModalOpen(true),
+                                    className: "rounded-xl border-slate-200",
+                                    children: "Deploy Now"
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 200,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                            lineNumber: 194,
+                            columnNumber: 13
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+                            children: ads.map((ad)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                                    className: "bg-white border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all group rounded-2xl",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "relative h-48 w-full overflow-hidden",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                    src: ad.imageUrl,
+                                                    alt: ad.companyName,
+                                                    fill: true,
+                                                    className: "object-cover group-hover:scale-105 transition-transform duration-500"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 209,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute top-4 right-4",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: `px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg ${ad.status === 'running' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'}`,
+                                                        children: ad.status
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 216,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 215,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 208,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                            className: "p-6",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between items-start mb-4",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                className: "font-bold text-slate-900 flex items-center gap-2",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Building2$3e$__["Building2"], {
+                                                                        className: "w-4 h-4 text-slate-400"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                        lineNumber: 229,
+                                                                        columnNumber: 27
+                                                                    }, this),
+                                                                    " ",
+                                                                    ad.companyName
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 228,
+                                                                columnNumber: 25
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-slate-500 flex items-center gap-1.5 mt-1 font-medium",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
+                                                                        className: "w-3 h-3"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                        lineNumber: 232,
+                                                                        columnNumber: 27
+                                                                    }, this),
+                                                                    " ",
+                                                                    ad.companyEmail
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 231,
+                                                                columnNumber: 25
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 227,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 226,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "grid grid-cols-2 gap-4 mb-6",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "p-3 bg-slate-50 rounded-xl border border-slate-100",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1",
+                                                                    children: "Placement"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 239,
+                                                                    columnNumber: 25
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-xs font-black text-slate-700 uppercase flex items-center gap-2",
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panels$2d$top$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Layout$3e$__["Layout"], {
+                                                                            className: "w-3 h-3 text-emerald-600"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                            lineNumber: 241,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        " ",
+                                                                        ad.placement.replace('_', ' ')
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 240,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 238,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "p-3 bg-slate-50 rounded-xl border border-slate-100",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1",
+                                                                    children: "Expiry"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 245,
+                                                                    columnNumber: 25
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-xs font-black text-slate-700 flex items-center gap-2",
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
+                                                                            className: "w-3 h-3 text-blue-500"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                            lineNumber: 247,
+                                                                            columnNumber: 27
+                                                                        }, this),
+                                                                        " ",
+                                                                        new Date(ad.expiryDate).toLocaleDateString()
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 246,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 244,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 237,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex gap-2",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            onClick: ()=>handleEdit(ad),
+                                                            variant: "ghost",
+                                                            size: "sm",
+                                                            className: "rounded-xl border-slate-200",
+                                                            children: "Edit"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 253,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            onClick: ()=>toggleStatus(ad._id, ad.status),
+                                                            variant: "outline",
+                                                            size: "sm",
+                                                            className: `flex-1 rounded-xl font-bold text-[10px] uppercase tracking-widest ${ad.status === 'running' ? 'hover:bg-rose-50 hover:text-rose-600' : 'hover:bg-emerald-50 hover:text-emerald-600'}`,
+                                                            children: ad.status === 'running' ? 'Stop' : 'Run'
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 261,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            variant: "outline",
+                                                            size: "sm",
+                                                            className: "rounded-xl border-slate-200",
+                                                            asChild: true,
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                                href: ad.imageUrl,
+                                                                target: "_blank",
+                                                                rel: "noopener noreferrer",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$external$2d$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ExternalLink$3e$__["ExternalLink"], {
+                                                                    className: "w-4 h-4 text-slate-400"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 278,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 277,
+                                                                columnNumber: 26
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 271,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            onClick: ()=>handleDelete(ad._id),
+                                                            variant: "outline",
+                                                            size: "sm",
+                                                            className: "rounded-xl bg-rose-50 border-rose-100 text-rose-500 hover:bg-rose-500 hover:text-white",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                                                                className: "w-4 h-4"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 287,
+                                                                columnNumber: 25
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 281,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 252,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 225,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, ad._id, true, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 207,
+                                    columnNumber: 17
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                            lineNumber: 205,
+                            columnNumber: 13
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                        lineNumber: 187,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-6",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                                className: "bg-white border-slate-200 shadow-sm overflow-hidden rounded-3xl",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                        className: "bg-slate-50/50 border-b border-slate-100 pb-5",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                            className: "text-sm font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__["Activity"], {
+                                                    className: "w-4 h-4 text-emerald-600"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 302,
+                                                    columnNumber: 17
+                                                }, this),
+                                                " Ad Network Health"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 301,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 300,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                        className: "pt-6 space-y-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center justify-between",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-slate-500 font-medium",
+                                                        children: "Total Provisioned"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 307,
+                                                        columnNumber: 17
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-xl font-black text-slate-900",
+                                                        children: ads.length
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 308,
+                                                        columnNumber: 17
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 306,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center justify-between",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-slate-500 font-medium",
+                                                        children: "Running Nodes"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 311,
+                                                        columnNumber: 17
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-lg font-black text-emerald-600",
+                                                        children: ads.filter((a)=>a.status === 'running').length
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 312,
+                                                        columnNumber: 17
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 310,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center justify-between",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm text-slate-500 font-medium",
+                                                        children: "Coming Expiries"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 317,
+                                                        columnNumber: 17
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-lg font-black text-amber-500",
+                                                        children: ads.filter((a)=>{
+                                                            const days = (new Date(a.expiryDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24);
+                                                            return days < 7 && days > 0;
+                                                        }).length
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 318,
+                                                        columnNumber: 17
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 316,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "pt-4 border-t border-slate-100",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-3",
+                                                        children: "Live Placements"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 326,
+                                                        columnNumber: 17
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex flex-wrap gap-2",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "px-2 py-1 bg-slate-100 rounded-md text-[9px] font-black uppercase tracking-tighter text-slate-600",
+                                                                children: "Main Banner (2/3)"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 328,
+                                                                columnNumber: 19
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "px-2 py-1 bg-slate-100 rounded-md text-[9px] font-black uppercase tracking-tighter text-slate-600",
+                                                                children: "Sidebar (1/3)"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 329,
+                                                                columnNumber: 19
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 327,
+                                                        columnNumber: 17
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 325,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 305,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                lineNumber: 299,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                                className: "bg-gradient-to-br from-slate-900 to-slate-800 text-white border-none shadow-xl rounded-3xl overflow-hidden relative",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute top-0 right-0 p-8 opacity-10",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$panels$2d$top$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Layout$3e$__["Layout"], {
+                                            className: "w-32 h-32"
+                                        }, void 0, false, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 337,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 336,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                            className: "text-sm font-bold opacity-60 uppercase tracking-widest",
+                                            children: "Revenue Projections"
+                                        }, void 0, false, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 340,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 339,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "text-4xl font-black mb-2",
+                                                children: [
+                                                    "Rs. ",
+                                                    (ads.filter((a)=>a.status === 'running').length * 99).toLocaleString()
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 343,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs opacity-60 font-medium italic",
+                                                children: "Estimated daily ecosystem yield at Rs. 99/day rate"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 344,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 342,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                lineNumber: 335,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                        lineNumber: 298,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                lineNumber: 185,
+                columnNumber: 7
+            }, this),
+            isModalOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                    className: "w-full max-w-lg bg-white border-slate-200 shadow-2xl relative overflow-hidden rounded-3xl",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-500 to-blue-500"
+                        }, void 0, false, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                            lineNumber: 354,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                            className: "flex flex-row items-center justify-between pb-6",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-1",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                            className: "text-xl font-black text-slate-900 flex items-center gap-3",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__["Activity"], {
+                                                    className: "w-5 h-5 text-emerald-600"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 358,
+                                                    columnNumber: 19
+                                                }, this),
+                                                " ",
+                                                isEditMode ? "Revised Advertisement" : "Provision Advertisement"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 357,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
+                                            className: "font-medium",
+                                            children: isEditMode ? "Updating active placement details" : "Setup new automated ad placement"
+                                        }, void 0, false, {
+                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                            lineNumber: 360,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 356,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    onClick: closeModal,
+                                    className: "p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-900 transition-colors",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                        className: "w-5 h-5"
+                                    }, void 0, false, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 368,
+                                        columnNumber: 17
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                    lineNumber: 364,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                            lineNumber: 355,
+                            columnNumber: 13
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                                onSubmit: handleFormSubmit,
+                                className: "space-y-5",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-2 gap-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                        className: "text-xs font-black text-slate-400 uppercase tracking-widest",
+                                                        children: "Company Name"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 375,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                        name: "companyName",
+                                                        required: true,
+                                                        defaultValue: selectedAd?.companyName,
+                                                        placeholder: "e.g. Acme Corp",
+                                                        className: "h-12 rounded-xl bg-emerald-50/30 border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500/20 font-bold transition-all"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 376,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 374,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                        className: "text-xs font-black text-slate-400 uppercase tracking-widest",
+                                                        children: "Contact Email"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 385,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                        name: "companyEmail",
+                                                        type: "email",
+                                                        required: true,
+                                                        defaultValue: selectedAd?.companyEmail,
+                                                        placeholder: "ad@acme.com",
+                                                        className: "h-12 rounded-xl bg-emerald-50/30 border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500/20 font-bold transition-all"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 386,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 384,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 373,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-2 gap-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                        className: "text-xs font-black text-slate-400 uppercase tracking-widest",
+                                                        children: "Placement Zone"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 399,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                                        name: "placement",
+                                                        defaultValue: selectedAd?.placement || "main_banner",
+                                                        className: "w-full h-12 px-3 bg-emerald-50/30 border border-emerald-100 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                value: "main_banner",
+                                                                children: "Main Banner (2/3)"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 405,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                value: "sidebar",
+                                                                children: "Sidebar (1/3)"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 406,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 400,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 398,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "space-y-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                        className: "text-xs font-black text-slate-400 uppercase tracking-widest",
+                                                        children: "Expiry Date"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 410,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                        name: "expiryDate",
+                                                        type: "date",
+                                                        required: true,
+                                                        defaultValue: selectedAd?.expiryDate ? new Date(selectedAd.expiryDate).toISOString().split('T')[0] : "",
+                                                        className: "h-12 rounded-xl bg-emerald-50/30 border-emerald-100 focus:border-emerald-500 focus:ring-emerald-500/20 font-bold transition-all"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 411,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 409,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 397,
+                                        columnNumber: 17
+                                    }, this),
+                                    isEditMode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                className: "text-xs font-black text-slate-400 uppercase tracking-widest",
+                                                children: "Reactivate Status"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 423,
+                                                columnNumber: 21
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                                name: "status",
+                                                defaultValue: selectedAd?.status || "running",
+                                                className: "w-full h-12 px-3 bg-emerald-50/30 border border-emerald-100 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all font-black uppercase tracking-widest",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                        value: "running",
+                                                        children: "Running"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 429,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                        value: "stopped",
+                                                        children: "Stopped"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 430,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                        value: "expired",
+                                                        children: "Expired"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 431,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 424,
+                                                columnNumber: 21
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 422,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                className: "text-xs font-black text-slate-400 uppercase tracking-widest",
+                                                children: "Ad Asset (Image)"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 437,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "relative group",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                        type: "file",
+                                                        name: "image",
+                                                        accept: "image/*",
+                                                        required: !isEditMode,
+                                                        onChange: handleImageChange,
+                                                        className: "absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 439,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "h-32 border-2 border-dashed border-emerald-100 rounded-2xl flex flex-col items-center justify-center bg-emerald-50/20 group-hover:bg-emerald-50 transition-all",
+                                                        children: previewImage ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "relative w-full h-full p-2",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                                src: previewImage,
+                                                                alt: "Preview",
+                                                                fill: true,
+                                                                className: "object-contain rounded-xl"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                lineNumber: 450,
+                                                                columnNumber: 27
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                            lineNumber: 449,
+                                                            columnNumber: 25
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__["Camera"], {
+                                                                    className: "w-8 h-8 text-emerald-300 mb-2"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 454,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-xs font-bold text-emerald-400 uppercase tracking-widest",
+                                                                    children: "Select Banner Graphics"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                                    lineNumber: 455,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                        lineNumber: 447,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 438,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-[10px] text-slate-400 font-medium italic",
+                                                children: "Recommended: 1200x600 for Banner, 400x600 for Sidebar"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 460,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 436,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex gap-4 pt-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                type: "button",
+                                                variant: "ghost",
+                                                onClick: closeModal,
+                                                className: "flex-1 rounded-2xl font-bold uppercase tracking-widest text-xs h-12",
+                                                children: "Cancel"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 464,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                type: "submit",
+                                                disabled: formLoading,
+                                                className: "flex-1 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-black uppercase tracking-widest text-xs h-12 shadow-xl",
+                                                children: formLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                    className: "w-4 h-4 animate-spin"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                    lineNumber: 477,
+                                                    columnNumber: 36
+                                                }, this) : isEditMode ? "Update Asset" : "Deploy Now"
+                                            }, void 0, false, {
+                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                                lineNumber: 472,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                        lineNumber: 463,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                                lineNumber: 372,
+                                columnNumber: 15
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                            lineNumber: 371,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                    lineNumber: 353,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+                lineNumber: 352,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page.tsx",
+        lineNumber: 164,
+        columnNumber: 5
+    }, this);
+}
+_s(AdvertisementPage, "Gexrbr3NHbhP30Q2WRoO6rHHfE8=");
+_c = AdvertisementPage;
+var _c;
+__turbopack_context__.k.register(_c, "AdvertisementPage");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+]);
+
+//# sourceMappingURL=Desktop_Dosro%20Bazar%20-%20Main_client_app_a80878d3._.js.map
