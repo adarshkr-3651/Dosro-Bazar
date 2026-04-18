@@ -40,6 +40,10 @@ export default function UploadPage() {
         offerUnit: "h",
         paymentMethods: [] as string[],
         deliveryAvailable: false,
+        shippingPartners: [] as string[],
+        aiWordCount: 150,
+        deliveryChargeType: "buyer_pays" as "manual" | "buyer_pays",
+        deliveryChargeAmount: "",
         expiryUnit: "d",
         expiryDuration: "",
     });
@@ -53,6 +57,8 @@ export default function UploadPage() {
                 setFormData(prev => ({
                     ...prev,
                     ...parsed,
+                    deliveryChargeType: parsed.deliveryChargeType || "buyer_pays",
+                    deliveryChargeAmount: parsed.deliveryChargeAmount || "",
                     images: [] // Images cannot be stored in localStorage easily
                 }));
             } catch (e) {
@@ -85,6 +91,10 @@ export default function UploadPage() {
             offerUnit: "h",
             paymentMethods: [],
             deliveryAvailable: false,
+            shippingPartners: [],
+            deliveryChargeType: "buyer_pays",
+            deliveryChargeAmount: "",
+            aiWordCount: 150,
             expiryUnit: "d",
             expiryDuration: "",
         });
@@ -196,7 +206,8 @@ export default function UploadPage() {
                 formData.title,
                 formData.category,
                 formData.condition,
-                formData.price
+                formData.price,
+                formData.aiWordCount
             );
 
             if (result.success) {
@@ -228,15 +239,6 @@ export default function UploadPage() {
 
     const handleMinBidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.replace(/[^0-9]/g, "");
-        const listedPrice = parseFloat(formData.price) || 0;
-        const maxAllowedBid = listedPrice * 0.85;
-
-        if (parseFloat(value) > maxAllowedBid) {
-            toast.error("Starting Bid Too High", {
-                description: `Please place a minimum starting bid of 85% or less of the current product price (Max: रु ${Math.floor(maxAllowedBid).toLocaleString()})`
-            });
-            return;
-        }
         setFormData({ ...formData, minBid: value });
     };
 
@@ -302,6 +304,27 @@ export default function UploadPage() {
             return;
         }
 
+        const listedPrice = parseFloat(formData.price) || 0;
+        const minBidValue = parseFloat(formData.minBid) || 0;
+        if (formData.isBiddable && formData.minBid) {
+            let maxAllowed;
+            if (listedPrice < 50000) maxAllowed = listedPrice * 0.95;
+            else if (listedPrice <= 100000) maxAllowed = listedPrice * 0.98;
+            else maxAllowed = listedPrice * 0.99;
+
+            if (minBidValue > maxAllowed) {
+                toast.error("Invalid Minimum Bid", { 
+                    description: `Starting bid must be at least ${listedPrice < 50000 ? '5%' : listedPrice <= 100000 ? '2%' : '1%'} lower than the quoted price (Max: रु ${Math.floor(maxAllowed).toLocaleString()}).` 
+                });
+                return;
+            }
+        }
+
+        if (formData.deliveryAvailable && formData.shippingPartners.length === 0) {
+            toast.error("Shipping Partners Required", { description: "Please select at least one shipping partner" });
+            return;
+        }
+
         if (formData.images.length === 0) {
             toast.error("Image Required", { description: "Please upload at least one image" });
             return;
@@ -341,6 +364,16 @@ export default function UploadPage() {
             }
 
             data.append("deliveryAvailable", String(formData.deliveryAvailable));
+            if (formData.deliveryAvailable) {
+                if (formData.shippingPartners.length > 0) {
+                    data.append("shippingPartners", JSON.stringify(formData.shippingPartners));
+                }
+                data.append("deliveryChargeType", formData.deliveryChargeType);
+                if (formData.deliveryChargeType === "manual") {
+                    data.append("deliveryChargeAmount", formData.deliveryChargeAmount);
+                }
+            }
+            data.append("aiWordCount", String(formData.aiWordCount));
 
             formData.images.forEach(image => {
                 data.append("images", image);
@@ -365,6 +398,10 @@ export default function UploadPage() {
                 offerUnit: "h",
                 paymentMethods: [],
                 deliveryAvailable: false,
+                shippingPartners: [],
+                deliveryChargeType: "buyer_pays",
+                deliveryChargeAmount: "",
+                aiWordCount: 150,
                 expiryUnit: "d",
                 expiryDuration: "",
             });
@@ -379,6 +416,23 @@ export default function UploadPage() {
     };
 
     const isPriceSet = Number(formData.price) > 0;
+
+    // Calculate mock expiry for preview
+    const getPreviewOfferExpiresAt = () => {
+        if (!formData.offerPrice || !formData.offerDuration) return undefined;
+        const duration = parseFloat(formData.offerDuration);
+        if (isNaN(duration)) return undefined;
+
+        const now = new Date();
+        if (formData.offerUnit === "h") {
+            now.setHours(now.getHours() + duration);
+        } else if (formData.offerUnit === "d") {
+            now.setDate(now.getDate() + duration);
+        }
+        return now.toISOString();
+    };
+
+    const previewOfferExpiresAt = getPreviewOfferExpiresAt();
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
@@ -504,7 +558,26 @@ export default function UploadPage() {
                                                     </Button>
                                                 )}
                                             </div>
-                                            <div className="absolute right-2 bottom-2">
+                                            <div className="absolute right-2 bottom-2 flex items-center gap-2">
+                                                <div className="flex items-center gap-1 bg-secondary/10 border border-secondary/20 rounded-md px-2 h-7 group-hover:border-primary transition-colors">
+                                                    <span className="text-[9px] font-bold text-muted-foreground uppercase">Words:</span>
+                                                    <input 
+                                                        type="number" 
+                                                        min="1" 
+                                                        max="999"
+                                                        value={formData.aiWordCount}
+                                                        onChange={(e) => {
+                                                            const val = parseInt(e.target.value);
+                                                            if (val > 999) {
+                                                                toast.warning("Word count capped at 999");
+                                                                setFormData({ ...formData, aiWordCount: 999 });
+                                                            } else {
+                                                                setFormData({ ...formData, aiWordCount: isNaN(val) ? 0 : val });
+                                                            }
+                                                        }}
+                                                        className="w-10 bg-transparent border-none text-[10px] font-bold focus:ring-0 text-center p-0"
+                                                    />
+                                                </div>
                                                 <Button
                                                     type="button"
                                                     variant="outline"
@@ -600,7 +673,24 @@ export default function UploadPage() {
                                             {/* Conditional Bid Field - Horizontal with Toggle */}
                                             {formData.isBiddable && (
                                                 <div className={`space-y-2 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
-                                                    <Label htmlFor="minBid" className="text-xs font-semibold">Minimum Bid (Rs.)</Label>
+                                                    <div className="flex items-center justify-between">
+                                                        <Label htmlFor="minBid" className="text-xs font-semibold">Minimum Bid (Rs.)</Label>
+                                                        {isPriceSet && (
+                                                            <span className={`text-[9px] font-bold uppercase transition-all duration-300 ${
+                                                                formData.minBid && parseFloat(formData.minBid) > (
+                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                    parseFloat(formData.price) * 0.99
+                                                                ) ? 'text-red-500 animate-pulse' : 'text-muted-foreground opacity-50'
+                                                            }`}>
+                                                                (Max: रु {Math.floor(
+                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                    parseFloat(formData.price) * 0.99
+                                                                ).toLocaleString()})
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <div className="relative">
                                                         <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                                                         <Input
@@ -708,8 +798,8 @@ export default function UploadPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Delivery Toggle */}
-                                            <div className="space-y-6">
+                                            {/* Delivery Toggle & Form */}
+                                            <div className="space-y-3">
                                                 <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20 h-[50px]">
                                                     <div className="space-y-0.5">
                                                         <span className="text-sm font-medium">Delivery Available</span>
@@ -720,10 +810,95 @@ export default function UploadPage() {
                                                         onCheckedChange={(checked) => setFormData({ ...formData, deliveryAvailable: checked })}
                                                     />
                                                 </div>
+
+                                                {formData.deliveryAvailable && (
+                                                    <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                                        <div className="p-4 border rounded-lg bg-primary/5 border-primary/20 space-y-3">
+                                                            <Label className="text-xs font-bold uppercase tracking-wider text-primary">Select Shipping Partners</Label>
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                {["Pathao", "Indrive", "Upaya", "Nepal Post", "Aramex", "Other"].map((partner) => (
+                                                                    <label key={partner} className="flex items-center gap-2 p-2 rounded-md border bg-background hover:bg-primary/5 cursor-pointer transition-all">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={formData.shippingPartners.includes(partner)}
+                                                                            onChange={(e) => {
+                                                                                const updated = e.target.checked
+                                                                                    ? [...formData.shippingPartners, partner]
+                                                                                    : formData.shippingPartners.filter(p => p !== partner);
+                                                                                setFormData({ ...formData, shippingPartners: updated });
+                                                                            }}
+                                                                            className="w-3.5 h-3.5 rounded border-primary/30 text-primary focus:ring-primary/20"
+                                                                        />
+                                                                        <span className="text-[11px] font-medium">{partner}</span>
+                                                                    </label>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {formData.shippingPartners.length > 0 && (
+                                                            <div className="p-4 border rounded-lg bg-secondary/5 border-secondary/20 space-y-4 animate-in zoom-in-95 duration-300">
+                                                                <div className="space-y-1">
+                                                                    <Label className="text-xs font-bold uppercase tracking-wider text-secondary">Should buyer pay extra amount for delivery and how much?</Label>
+                                                                    <p className="text-[10px] text-muted-foreground italic">Choose how the delivery fee is handled.</p>
+                                                                </div>
+
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                                                                    <div 
+                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "manual" })}
+                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                                                    >
+                                                                        <div className="space-y-0.5">
+                                                                            <span className="text-[11px] font-bold">Manual Entry</span>
+                                                                            <p className="text-[9px] text-muted-foreground">Set a fixed amount.</p>
+                                                                        </div>
+                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                                            {formData.deliveryChargeType === 'manual' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div 
+                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "buyer_pays" })}
+                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                                                    >
+                                                                        <div className="space-y-0.5">
+                                                                            <span className="text-[11px] font-bold">Buyer Pays Directly</span>
+                                                                            <p className="text-[9px] text-muted-foreground">Adjust with partner.</p>
+                                                                        </div>
+                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                                            {formData.deliveryChargeType === 'buyer_pays' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                {formData.deliveryChargeType === "manual" && (
+                                                                    <div className="pt-2 animate-in fade-in slide-in-from-left-2 duration-300">
+                                                                        <div className="relative">
+                                                                            <Tag className="absolute left-3 top-2.5 h-3.5 w-3.5 text-secondary" />
+                                                                            <Input 
+                                                                                type="number"
+                                                                                placeholder="Enter manual delivery amount (Rs.)"
+                                                                                value={formData.deliveryChargeAmount}
+                                                                                onChange={(e) => setFormData({ ...formData, deliveryChargeAmount: e.target.value })}
+                                                                                className="pl-9 h-9 text-xs border-secondary/30 focus-visible:ring-secondary/20"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
+                                                                {formData.deliveryChargeType === "buyer_pays" && (
+                                                                    <div className="p-3 bg-secondary/5 rounded-md border border-secondary/10 animate-in fade-in slide-in-from-right-2 duration-300">
+                                                                        <p className="text-[10px] text-secondary font-medium leading-relaxed italic">
+                                                                            * Buyer will pay delivery charge shown to deliver that item, adjust with yourself.
+                                                                        </p>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-
 
                                 </form>
                             </Card>
@@ -741,18 +916,19 @@ export default function UploadPage() {
                                 </div>
 
                                 <div className="max-w-sm mx-auto w-full">
-                                    <ProductCard
-                                        title={formData.title || "Item Title"}
-                                        price={Number(formData.price) || 0}
-                                        images={imagePreviews}
-                                        location={formData.location || "Location"}
-                                        timePosted="Just now"
-                                        isBiddable={formData.isBiddable}
-                                        showEdit={false}
-                                        offerPrice={Number(formData.offerPrice) || 0}
-                                        offerDuration={formData.offerDuration}
-                                        offerUnit={formData.offerUnit}
-                                    />
+                                        <ProductCard
+                                            title={formData.title || "Item Title"}
+                                            price={Number(formData.price) || 0}
+                                            images={imagePreviews}
+                                            location={formData.location || "Location"}
+                                            timePosted="Just now"
+                                            isBiddable={formData.isBiddable}
+                                            showEdit={false}
+                                            offerPrice={Number(formData.offerPrice) || 0}
+                                            offerExpiresAt={previewOfferExpiresAt}
+                                            offerDuration={formData.offerDuration}
+                                            offerUnit={formData.offerUnit}
+                                        />
                                 </div>
 
                                 <Card className="p-4 bg-muted/30 border-dashed space-y-4">

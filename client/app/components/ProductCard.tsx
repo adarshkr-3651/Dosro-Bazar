@@ -88,28 +88,40 @@ const ProductCard = ({
     }
 
     const calculateTimeLeft = () => {
-      const difference = +new Date(offerExpiresAt) - +new Date();
-      if (difference <= 0) return "Expired";
+      const expiryDate = new Date(offerExpiresAt);
+      const now = new Date();
+      const difference = expiryDate.getTime() - now.getTime();
+      
+      if (difference <= 0) {
+        return "Expired";
+      }
 
       const hours = Math.floor(difference / (1000 * 60 * 60));
       const minutes = Math.floor((difference / 1000 / 60) % 60);
       const seconds = Math.floor((difference / 1000) % 60);
 
-      const parts = [];
-      if (hours > 0) parts.push(`${hours}h`);
-      if (minutes > 0 || hours > 0) parts.push(`${minutes}m`);
-      parts.push(`${seconds}s`);
-
-      return parts.join(" ");
+      if (hours > 0) {
+        return `${hours}h ${minutes}m`;
+      } else {
+        return `${minutes}m ${seconds}s`;
+      }
     };
 
-    const updateTimer = () => {
+    // Initial update
+    const initial = calculateTimeLeft();
+    setTimeLeft(initial);
+
+    // If already expired, no need for interval
+    if (initial === "Expired") return;
+
+    const timer = setInterval(() => {
       const remaining = calculateTimeLeft();
       setTimeLeft(remaining);
-    };
-
-    updateTimer();
-    const timer = setInterval(updateTimer, 1000);
+      
+      if (remaining === "Expired") {
+        clearInterval(timer);
+      }
+    }, 1000);
 
     return () => clearInterval(timer);
   }, [offerExpiresAt, offerPrice]);

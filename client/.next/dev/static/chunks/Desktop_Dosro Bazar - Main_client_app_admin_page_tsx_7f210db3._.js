@@ -1,7 +1,7 @@
 (globalThis.TURBOPACK_CHUNK_LISTS || (globalThis.TURBOPACK_CHUNK_LISTS = [])).push({
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
-  "static/chunks/Desktop_Dosro Bazar - Main_client_0060911a._.js"
+  "static/chunks/Desktop_Dosro Bazar - Main_client_f3c201cd._.js"
 ],
     source: "dynamic"
 });

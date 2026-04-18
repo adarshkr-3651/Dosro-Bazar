@@ -4,11 +4,24 @@ import deleteImageFile from "../Helpers/Libraries/deleteImageFile.js";
 import { searchHelper, paginateHelper } from "../Helpers/query/queryHelpers.js";
 import getEmbeddings from "../Helpers/Libraries/embeddings.js";
 
+const maskExpiredOffer = (item) => {
+    // If it's a Mongoose document, convert to object first to safely modify without saving
+    const itemObj = (typeof item.toObject === 'function') ? item.toObject() : item;
+    
+    if (itemObj.offerExpiresAt && new Date(itemObj.offerExpiresAt) < new Date()) {
+        itemObj.offerPrice = 0;
+        itemObj.offerExpiresAt = null;
+        itemObj.offerDuration = "";
+        itemObj.offerUnit = "";
+    }
+    return itemObj;
+};
+
 const addItem = asyncErrorWrapper(async (req, res, next) => {
     // console.log("addItem function of Controllers item.js")
     // console.log("[item.js] addItem() - User:", req.user ? req.user.email : "No user")
 
-    const { title, price, location, category, condition, expiry, expiryDuration, expiryUnit, offerPrice, offerDuration, offerUnit, deliveryAvailable, paymentMethods } = req.body;
+    const { title, price, location, category, condition, expiry, expiryDuration, expiryUnit, offerPrice, offerDuration, offerUnit, deliveryAvailable, shippingPartners, deliveryChargeType, deliveryChargeAmount, paymentMethods } = req.body;
     let { content } = req.body;
 
     // Safety check for content
@@ -64,6 +77,9 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
             expiryDuration: expiryDuration || "",
             expiryUnit: expiryUnit || "d",
             deliveryAvailable: deliveryAvailable === 'true',
+            shippingPartners: shippingPartners ? (typeof shippingPartners === 'string' ? JSON.parse(shippingPartners) : shippingPartners) : [],
+            deliveryChargeType: deliveryChargeType || "buyer_pays",
+            deliveryChargeAmount: parseFloat(deliveryChargeAmount) || 0,
             paymentMethods: paymentMethods ? (typeof paymentMethods === 'string' ? JSON.parse(paymentMethods) : paymentMethods) : [],
             embeddings: embeddings
         });
@@ -116,11 +132,14 @@ const getAllItems = asyncErrorWrapper(async (req, res, next) => {
     const items = await query
     // console.log("[item.js] getAllItems() - Items retrieved:", items.length, "items")
 
+    // Mask expired offers before sending to client
+    const cleanedItems = items.map(item => maskExpiredOffer(item));
+
     return res.status(200).json(
         {
             success: true,
-            count: items.length,
-            data: items,
+            count: cleanedItems.length,
+            data: cleanedItems,
             page: paginationResult.page,
             pages: paginationResult.pages
         })
@@ -153,7 +172,7 @@ const detailItem = asyncErrorWrapper(async (req, res, next) => {
     return res.status(200).
         json({
             success: true,
-            data: item,
+            data: maskExpiredOffer(item),
             likeStatus: likeStatus
         })
 
@@ -212,21 +231,25 @@ const editItemPage = asyncErrorWrapper(async (req, res, next) => {
 
 
 const editItem = asyncErrorWrapper(async (req, res, next) => {
-    if (typeof slug !== 'string') {
-        return next(new CustomError("Invalid slug format", 400));
-    }
+    const { slug } = req.params;
+    const { title, content, price, bidPrice, isBiddable, offerPrice, offerDuration, offerUnit, expiry, expiryDuration, expiryUnit, deliveryAvailable, shippingPartners, deliveryChargeType, deliveryChargeAmount, paymentMethods } = req.body;
 
     let parsedPrice = parseFloat(price);
     let parsedBidPrice = parseFloat(bidPrice);
 
     if (isNaN(parsedPrice) || parsedPrice < 0 || (!isNaN(parsedBidPrice) && parsedBidPrice < 0)) {
-        return next(new CustomError("Invalid price or bid price values", 400));
+        return next(new Error("Invalid price or bid price values"));
     }
 
     const item = await Item.findOne({ slug: slug });
 
     if (!item) {
-        return next(new CustomError("Item not found", 404));
+        return next(new Error("Item not found"));
+    }
+
+    // Ownership check: only the author can edit their own product
+    if (item.author.toString() !== req.user._id.toString()) {
+        return next(new Error("You are not authorized to edit this product"));
     }
 
     if (item.title !== title || item.content !== content) {
@@ -275,6 +298,19 @@ const editItem = asyncErrorWrapper(async (req, res, next) => {
     item.expiryDuration = expiryDuration || item.expiryDuration;
     item.expiryUnit = expiryUnit || item.expiryUnit;
     item.deliveryAvailable = deliveryAvailable === 'true' || deliveryAvailable === true;
+    item.deliveryChargeType = deliveryChargeType || item.deliveryChargeType;
+    item.deliveryChargeAmount = !isNaN(parseFloat(deliveryChargeAmount)) ? parseFloat(deliveryChargeAmount) : item.deliveryChargeAmount;
+
+    if (shippingPartners) {
+        try {
+            item.shippingPartners = typeof shippingPartners === 'string' ? JSON.parse(shippingPartners) : shippingPartners;
+            if (!Array.isArray(item.shippingPartners)) {
+                item.shippingPartners = [];
+            }
+        } catch (e) {
+            item.shippingPartners = [];
+        }
+    }
     
     if (paymentMethods) {
         try {
@@ -376,7 +412,7 @@ const searchSemantic = asyncErrorWrapper(async (req, res, next) => {
     return res.status(200).json({
         success: true,
         count: items.length,
-        data: items
+        data: items.map(item => maskExpiredOffer(item))
     });
 });
 
@@ -416,7 +452,7 @@ const getSimilarItems = asyncErrorWrapper(async (req, res, next) => {
 
     return res.status(200).json({
         success: true,
-        data: items
+        data: items.map(item => maskExpiredOffer(item))
     });
 });
 
@@ -439,7 +475,7 @@ const getRecommendedItems = asyncErrorWrapper(async (req, res, next) => {
 
     return res.status(200).json({
         success: true,
-        data: items
+        data: items.map(item => maskExpiredOffer(item))
     });
 });
 

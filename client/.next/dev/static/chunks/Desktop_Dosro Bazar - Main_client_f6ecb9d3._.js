@@ -1784,6 +1784,8 @@ function UploadPage() {
         deliveryAvailable: false,
         shippingPartners: [],
         aiWordCount: 150,
+        deliveryChargeType: "buyer_pays",
+        deliveryChargeAmount: "",
         expiryUnit: "d",
         expiryDuration: ""
     });
@@ -1798,6 +1800,8 @@ function UploadPage() {
                         "UploadPage.useEffect": (prev)=>({
                                 ...prev,
                                 ...parsed,
+                                deliveryChargeType: parsed.deliveryChargeType || "buyer_pays",
+                                deliveryChargeAmount: parsed.deliveryChargeAmount || "",
                                 images: [] // Images cannot be stored in localStorage easily
                             })
                     }["UploadPage.useEffect"]);
@@ -1837,6 +1841,8 @@ function UploadPage() {
             paymentMethods: [],
             deliveryAvailable: false,
             shippingPartners: [],
+            deliveryChargeType: "buyer_pays",
+            deliveryChargeAmount: "",
             aiWordCount: 150,
             expiryUnit: "d",
             expiryDuration: ""
@@ -2134,9 +2140,16 @@ function UploadPage() {
                 data.append("paymentMethods", JSON.stringify(formData.paymentMethods));
             }
             data.append("deliveryAvailable", String(formData.deliveryAvailable));
-            if (formData.deliveryAvailable && formData.shippingPartners.length > 0) {
-                data.append("shippingPartners", JSON.stringify(formData.shippingPartners));
+            if (formData.deliveryAvailable) {
+                if (formData.shippingPartners.length > 0) {
+                    data.append("shippingPartners", JSON.stringify(formData.shippingPartners));
+                }
+                data.append("deliveryChargeType", formData.deliveryChargeType);
+                if (formData.deliveryChargeType === "manual") {
+                    data.append("deliveryChargeAmount", formData.deliveryChargeAmount);
+                }
             }
+            data.append("aiWordCount", String(formData.aiWordCount));
             formData.images.forEach((image)=>{
                 data.append("images", image);
             });
@@ -2161,6 +2174,8 @@ function UploadPage() {
                 paymentMethods: [],
                 deliveryAvailable: false,
                 shippingPartners: [],
+                deliveryChargeType: "buyer_pays",
+                deliveryChargeAmount: "",
                 aiWordCount: 150,
                 expiryUnit: "d",
                 expiryDuration: ""
@@ -2196,7 +2211,7 @@ function UploadPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                lineNumber: 424,
+                lineNumber: 439,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -2230,13 +2245,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 436,
+                                                                        lineNumber: 451,
                                                                         columnNumber: 113
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 436,
+                                                                lineNumber: 451,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2250,13 +2265,13 @@ function UploadPage() {
                                                                 required: true
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 437,
+                                                                lineNumber: 452,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 435,
+                                                        lineNumber: 450,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2269,23 +2284,23 @@ function UploadPage() {
                                                                 className: "h-4 w-4 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 451,
+                                                                lineNumber: 466,
                                                                 columnNumber: 60
                                                             }, this) : "Publish"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                            lineNumber: 446,
+                                                            lineNumber: 461,
                                                             columnNumber: 45
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 445,
+                                                        lineNumber: 460,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                lineNumber: 434,
+                                                lineNumber: 449,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2304,13 +2319,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 459,
+                                                                        lineNumber: 474,
                                                                         columnNumber: 114
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 459,
+                                                                lineNumber: 474,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2320,7 +2335,7 @@ function UploadPage() {
                                                                         className: "absolute left-3 top-2.5 h-4 w-4 text-muted-foreground"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 461,
+                                                                        lineNumber: 476,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2332,19 +2347,19 @@ function UploadPage() {
                                                                         required: true
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 462,
+                                                                        lineNumber: 477,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 460,
+                                                                lineNumber: 475,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 458,
+                                                        lineNumber: 473,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2363,13 +2378,13 @@ function UploadPage() {
                                                                                 children: "*"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 475,
+                                                                                lineNumber: 490,
                                                                                 columnNumber: 118
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 475,
+                                                                        lineNumber: 490,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2383,7 +2398,7 @@ function UploadPage() {
                                                                                 className: "w-3 h-3 rounded border-secondary/30 text-secondary focus:ring-secondary/20 cursor-pointer"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 477,
+                                                                                lineNumber: 492,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2392,19 +2407,19 @@ function UploadPage() {
                                                                                 children: "Fill from Profile"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 484,
+                                                                                lineNumber: 499,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 476,
+                                                                        lineNumber: 491,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 474,
+                                                                lineNumber: 489,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2419,12 +2434,12 @@ function UploadPage() {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                            lineNumber: 496,
+                                                                            lineNumber: 511,
                                                                             columnNumber: 53
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 490,
+                                                                        lineNumber: 505,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2442,25 +2457,25 @@ function UploadPage() {
                                                                         required: true
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 498,
+                                                                        lineNumber: 513,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 489,
+                                                                lineNumber: 504,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 473,
+                                                        lineNumber: 488,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                lineNumber: 456,
+                                                lineNumber: 471,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2479,13 +2494,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 514,
+                                                                        lineNumber: 529,
                                                                         columnNumber: 116
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 514,
+                                                                lineNumber: 529,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2496,13 +2511,13 @@ function UploadPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 515,
+                                                                lineNumber: 530,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 513,
+                                                        lineNumber: 528,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2525,7 +2540,7 @@ function UploadPage() {
                                                                 required: true
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 520,
+                                                                lineNumber: 535,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2542,12 +2557,12 @@ function UploadPage() {
                                                                     children: "Clear"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                    lineNumber: 535,
+                                                                    lineNumber: 550,
                                                                     columnNumber: 53
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 533,
+                                                                lineNumber: 548,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2561,7 +2576,7 @@ function UploadPage() {
                                                                                 children: "Words:"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 548,
+                                                                                lineNumber: 563,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2587,13 +2602,13 @@ function UploadPage() {
                                                                                 className: "w-10 bg-transparent border-none text-[10px] font-bold focus:ring-0 text-center p-0"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 549,
+                                                                                lineNumber: 564,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 547,
+                                                                        lineNumber: 562,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2608,7 +2623,7 @@ function UploadPage() {
                                                                                 className: "h-3 w-3 text-primary animate-pulse"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 574,
+                                                                                lineNumber: 589,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2616,31 +2631,31 @@ function UploadPage() {
                                                                                 children: "Generate"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 575,
+                                                                                lineNumber: 590,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 566,
+                                                                        lineNumber: 581,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 546,
+                                                                lineNumber: 561,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 519,
+                                                        lineNumber: 534,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                lineNumber: 512,
+                                                lineNumber: 527,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2658,13 +2673,13 @@ function UploadPage() {
                                                                         children: "*"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 585,
+                                                                        lineNumber: 600,
                                                                         columnNumber: 99
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 585,
+                                                                lineNumber: 600,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2683,7 +2698,7 @@ function UploadPage() {
                                                                                     className: "object-cover"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 594,
+                                                                                    lineNumber: 609,
                                                                                     columnNumber: 57
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2694,18 +2709,18 @@ function UploadPage() {
                                                                                         className: "h-3 w-3"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 599,
+                                                                                        lineNumber: 614,
                                                                                         columnNumber: 61
                                                                                     }, this)
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 595,
+                                                                                    lineNumber: 610,
                                                                                     columnNumber: 57
                                                                                 }, this)
                                                                             ]
                                                                         }, index, true, {
                                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                            lineNumber: 593,
+                                                                            lineNumber: 608,
                                                                             columnNumber: 53
                                                                         }, this)),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -2719,7 +2734,7 @@ function UploadPage() {
                                                                                 className: "hidden"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 604,
+                                                                                lineNumber: 619,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2729,7 +2744,7 @@ function UploadPage() {
                                                                                         className: `h-5 w-5 ${isDragging ? 'text-primary' : 'text-muted-foreground/60'}`
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 606,
+                                                                                        lineNumber: 621,
                                                                                         columnNumber: 57
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2737,31 +2752,31 @@ function UploadPage() {
                                                                                         children: isDragging ? 'DROP' : 'ADD'
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 607,
+                                                                                        lineNumber: 622,
                                                                                         columnNumber: 57
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 605,
+                                                                                lineNumber: 620,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 603,
+                                                                        lineNumber: 618,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 586,
+                                                                lineNumber: 601,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 584,
+                                                        lineNumber: 599,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2776,7 +2791,7 @@ function UploadPage() {
                                                                         children: "Category (Optional)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 619,
+                                                                        lineNumber: 634,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2793,7 +2808,7 @@ function UploadPage() {
                                                                                 children: "Select category"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 625,
+                                                                                lineNumber: 640,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             categories.map((cat)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2801,19 +2816,19 @@ function UploadPage() {
                                                                                     children: cat
                                                                                 }, cat, false, {
                                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 626,
+                                                                                    lineNumber: 641,
                                                                                     columnNumber: 78
                                                                                 }, this))
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 620,
+                                                                        lineNumber: 635,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 618,
+                                                                lineNumber: 633,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2825,7 +2840,7 @@ function UploadPage() {
                                                                         children: "Condition (Optional)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 631,
+                                                                        lineNumber: 646,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -2842,7 +2857,7 @@ function UploadPage() {
                                                                                 children: "Select condition"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 637,
+                                                                                lineNumber: 652,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             conditions.map((cond)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -2850,31 +2865,31 @@ function UploadPage() {
                                                                                     children: cond
                                                                                 }, cond, false, {
                                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                    lineNumber: 638,
+                                                                                    lineNumber: 653,
                                                                                     columnNumber: 79
                                                                                 }, this))
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 632,
+                                                                        lineNumber: 647,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 630,
+                                                                lineNumber: 645,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 617,
+                                                        lineNumber: 632,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                lineNumber: 582,
+                                                lineNumber: 597,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2895,7 +2910,7 @@ function UploadPage() {
                                                                                 children: "Allow Bidding"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 649,
+                                                                                lineNumber: 664,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2903,13 +2918,13 @@ function UploadPage() {
                                                                                 children: "Let users offer prices."
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 650,
+                                                                                lineNumber: 665,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 648,
+                                                                        lineNumber: 663,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2921,13 +2936,13 @@ function UploadPage() {
                                                                             })
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 652,
+                                                                        lineNumber: 667,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 647,
+                                                                lineNumber: 662,
                                                                 columnNumber: 45
                                                             }, this),
                                                             formData.isBiddable && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2942,7 +2957,7 @@ function UploadPage() {
                                                                                 children: "Minimum Bid (Rs.)"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 662,
+                                                                                lineNumber: 677,
                                                                                 columnNumber: 57
                                                                             }, this),
                                                                             isPriceSet && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2954,13 +2969,13 @@ function UploadPage() {
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 664,
+                                                                                lineNumber: 679,
                                                                                 columnNumber: 61
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 661,
+                                                                        lineNumber: 676,
                                                                         columnNumber: 53
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2970,7 +2985,7 @@ function UploadPage() {
                                                                                 className: "absolute left-3 top-2.5 h-4 w-4 text-muted-foreground"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 680,
+                                                                                lineNumber: 695,
                                                                                 columnNumber: 57
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2982,25 +2997,25 @@ function UploadPage() {
                                                                                 className: "pl-10 h-10"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 681,
+                                                                                lineNumber: 696,
                                                                                 columnNumber: 57
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 679,
+                                                                        lineNumber: 694,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 660,
+                                                                lineNumber: 675,
                                                                 columnNumber: 49
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 646,
+                                                        lineNumber: 661,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3017,14 +3032,14 @@ function UploadPage() {
                                                                                 className: "h-4 w-4 text-primary"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 697,
+                                                                                lineNumber: 712,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             " Listing Expiry  (Optional)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 696,
+                                                                        lineNumber: 711,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3050,12 +3065,12 @@ function UploadPage() {
                                                                                         children: opt
                                                                                     }, opt, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 702,
+                                                                                        lineNumber: 717,
                                                                                         columnNumber: 61
                                                                                     }, this))
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 700,
+                                                                                lineNumber: 715,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             formData.expiry === "Custom" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3072,7 +3087,7 @@ function UploadPage() {
                                                                                         className: "h-8 text-[11px] flex-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 713,
+                                                                                        lineNumber: 728,
                                                                                         columnNumber: 61
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -3088,7 +3103,7 @@ function UploadPage() {
                                                                                                 children: "Hrs"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 724,
+                                                                                                lineNumber: 739,
                                                                                                 columnNumber: 65
                                                                                             }, this),
                                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3096,7 +3111,7 @@ function UploadPage() {
                                                                                                 children: "Days"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 725,
+                                                                                                lineNumber: 740,
                                                                                                 columnNumber: 65
                                                                                             }, this),
                                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3104,31 +3119,31 @@ function UploadPage() {
                                                                                                 children: "Mo"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 726,
+                                                                                                lineNumber: 741,
                                                                                                 columnNumber: 65
                                                                                             }, this)
                                                                                         ]
                                                                                     }, void 0, true, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 719,
+                                                                                        lineNumber: 734,
                                                                                         columnNumber: 61
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 712,
+                                                                                lineNumber: 727,
                                                                                 columnNumber: 57
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 699,
+                                                                        lineNumber: 714,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 695,
+                                                                lineNumber: 710,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3142,14 +3157,14 @@ function UploadPage() {
                                                                                 className: "h-4 w-4 text-primary"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 736,
+                                                                                lineNumber: 751,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             " Limited Time Offer  (Optional)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 735,
+                                                                        lineNumber: 750,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3167,7 +3182,7 @@ function UploadPage() {
                                                                                 className: "h-8 text-[11px]"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 739,
+                                                                                lineNumber: 754,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3184,7 +3199,7 @@ function UploadPage() {
                                                                                         className: "h-8 text-[11px] flex-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 746,
+                                                                                        lineNumber: 761,
                                                                                         columnNumber: 57
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -3200,7 +3215,7 @@ function UploadPage() {
                                                                                                 children: "Hrs"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 757,
+                                                                                                lineNumber: 772,
                                                                                                 columnNumber: 61
                                                                                             }, this),
                                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -3208,37 +3223,37 @@ function UploadPage() {
                                                                                                 children: "Days"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 758,
+                                                                                                lineNumber: 773,
                                                                                                 columnNumber: 61
                                                                                             }, this)
                                                                                         ]
                                                                                     }, void 0, true, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 752,
+                                                                                        lineNumber: 767,
                                                                                         columnNumber: 57
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 745,
+                                                                                lineNumber: 760,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 738,
+                                                                        lineNumber: 753,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 734,
+                                                                lineNumber: 749,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 693,
+                                                        lineNumber: 708,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3254,14 +3269,14 @@ function UploadPage() {
                                                                                 className: "h-4 w-4 text-primary"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 769,
+                                                                                lineNumber: 784,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             " Accepted Payment Methods  (Optional)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 768,
+                                                                        lineNumber: 783,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3280,18 +3295,18 @@ function UploadPage() {
                                                                                 children: method
                                                                             }, method, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 773,
+                                                                                lineNumber: 788,
                                                                                 columnNumber: 57
                                                                             }, this))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 771,
+                                                                        lineNumber: 786,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 767,
+                                                                lineNumber: 782,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3308,7 +3323,7 @@ function UploadPage() {
                                                                                         children: "Delivery Available"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 790,
+                                                                                        lineNumber: 805,
                                                                                         columnNumber: 57
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3316,13 +3331,13 @@ function UploadPage() {
                                                                                         children: "Can you ship this item?"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 791,
+                                                                                        lineNumber: 806,
                                                                                         columnNumber: 57
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 789,
+                                                                                lineNumber: 804,
                                                                                 columnNumber: 53
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3333,129 +3348,322 @@ function UploadPage() {
                                                                                     })
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 793,
+                                                                                lineNumber: 808,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 788,
+                                                                        lineNumber: 803,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     formData.deliveryAvailable && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "p-4 border rounded-md bg-secondary/5 border-secondary/20 animate-in fade-in zoom-in duration-300",
+                                                                        className: "space-y-4 animate-in fade-in slide-in-from-top-2 duration-300",
                                                                         children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                                className: "text-xs font-bold mb-3 block uppercase tracking-wider text-secondary",
-                                                                                children: "Select Shipping Partners"
-                                                                            }, void 0, false, {
+                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                className: "p-4 border rounded-lg bg-primary/5 border-primary/20 space-y-3",
+                                                                                children: [
+                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                                        className: "text-xs font-bold uppercase tracking-wider text-primary",
+                                                                                        children: "Select Shipping Partners"
+                                                                                    }, void 0, false, {
+                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                        lineNumber: 817,
+                                                                                        columnNumber: 61
+                                                                                    }, this),
+                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                        className: "grid grid-cols-2 gap-2",
+                                                                                        children: [
+                                                                                            "Pathao",
+                                                                                            "Indrive",
+                                                                                            "Upaya",
+                                                                                            "Nepal Post",
+                                                                                            "Aramex",
+                                                                                            "Other"
+                                                                                        ].map((partner)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                                                                className: "flex items-center gap-2 p-2 rounded-md border bg-background hover:bg-primary/5 cursor-pointer transition-all",
+                                                                                                children: [
+                                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                                                                        type: "checkbox",
+                                                                                                        checked: formData.shippingPartners.includes(partner),
+                                                                                                        onChange: (e)=>{
+                                                                                                            const updated = e.target.checked ? [
+                                                                                                                ...formData.shippingPartners,
+                                                                                                                partner
+                                                                                                            ] : formData.shippingPartners.filter((p)=>p !== partner);
+                                                                                                            setFormData({
+                                                                                                                ...formData,
+                                                                                                                shippingPartners: updated
+                                                                                                            });
+                                                                                                        },
+                                                                                                        className: "w-3.5 h-3.5 rounded border-primary/30 text-primary focus:ring-primary/20"
+                                                                                                    }, void 0, false, {
+                                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                        lineNumber: 821,
+                                                                                                        columnNumber: 73
+                                                                                                    }, this),
+                                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                                        className: "text-[11px] font-medium",
+                                                                                                        children: partner
+                                                                                                    }, void 0, false, {
+                                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                        lineNumber: 832,
+                                                                                                        columnNumber: 73
+                                                                                                    }, this)
+                                                                                                ]
+                                                                                            }, partner, true, {
+                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                lineNumber: 820,
+                                                                                                columnNumber: 69
+                                                                                            }, this))
+                                                                                    }, void 0, false, {
+                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                        lineNumber: 818,
+                                                                                        columnNumber: 61
+                                                                                    }, this)
+                                                                                ]
+                                                                            }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 801,
+                                                                                lineNumber: 816,
                                                                                 columnNumber: 57
                                                                             }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "grid grid-cols-2 gap-2",
+                                                                            formData.shippingPartners.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                className: "p-4 border rounded-lg bg-secondary/5 border-secondary/20 space-y-4 animate-in zoom-in-95 duration-300",
                                                                                 children: [
-                                                                                    "Pathao",
-                                                                                    "Indrive",
-                                                                                    "Upaya",
-                                                                                    "Nepal Post",
-                                                                                    "Aramex",
-                                                                                    "Other"
-                                                                                ].map((partner)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                        onClick: ()=>{
-                                                                                            const current = formData.shippingPartners;
-                                                                                            const updated = current.includes(partner) ? current.filter((p)=>p !== partner) : [
-                                                                                                ...current,
-                                                                                                partner
-                                                                                            ];
-                                                                                            setFormData({
-                                                                                                ...formData,
-                                                                                                shippingPartners: updated
-                                                                                            });
-                                                                                        },
-                                                                                        className: `flex items-center gap-2 p-2 rounded-md border cursor-pointer transition-all duration-200 ${formData.shippingPartners.includes(partner) ? 'bg-secondary/10 border-secondary shadow-sm' : 'bg-background hover:border-secondary/50 border-input'}`,
+                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                        className: "space-y-1",
                                                                                         children: [
-                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                                className: `w-3 h-3 rounded-full border flex items-center justify-center ${formData.shippingPartners.includes(partner) ? 'bg-secondary border-secondary' : 'border-muted-foreground/30'}`,
-                                                                                                children: formData.shippingPartners.includes(partner) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
-                                                                                                    className: "h-2 w-2 text-white",
-                                                                                                    strokeWidth: 4
-                                                                                                }, void 0, false, {
-                                                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                    lineNumber: 822,
-                                                                                                    columnNumber: 121
-                                                                                                }, this)
+                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                                                className: "text-xs font-bold uppercase tracking-wider text-secondary",
+                                                                                                children: "Should buyer pay extra amount for delivery and how much?"
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 819,
+                                                                                                lineNumber: 841,
                                                                                                 columnNumber: 69
                                                                                             }, this),
-                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                                className: "text-[11px] font-medium",
-                                                                                                children: partner
+                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                                                className: "text-[10px] text-muted-foreground italic",
+                                                                                                children: "Choose how the delivery fee is handled."
                                                                                             }, void 0, false, {
                                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                                lineNumber: 824,
+                                                                                                lineNumber: 842,
                                                                                                 columnNumber: 69
                                                                                             }, this)
                                                                                         ]
-                                                                                    }, partner, true, {
+                                                                                    }, void 0, true, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                        lineNumber: 804,
+                                                                                        lineNumber: 840,
                                                                                         columnNumber: 65
-                                                                                    }, this))
-                                                                            }, void 0, false, {
+                                                                                    }, this),
+                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                        className: "grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2",
+                                                                                        children: [
+                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                onClick: ()=>setFormData({
+                                                                                                        ...formData,
+                                                                                                        deliveryChargeType: "manual"
+                                                                                                    }),
+                                                                                                className: `flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`,
+                                                                                                children: [
+                                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                        className: "space-y-0.5",
+                                                                                                        children: [
+                                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                                                className: "text-[11px] font-bold",
+                                                                                                                children: "Manual Entry"
+                                                                                                            }, void 0, false, {
+                                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                                lineNumber: 851,
+                                                                                                                columnNumber: 77
+                                                                                                            }, this),
+                                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                                                                className: "text-[9px] text-muted-foreground",
+                                                                                                                children: "Set a fixed amount."
+                                                                                                            }, void 0, false, {
+                                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                                lineNumber: 852,
+                                                                                                                columnNumber: 77
+                                                                                                            }, this)
+                                                                                                        ]
+                                                                                                    }, void 0, true, {
+                                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                        lineNumber: 850,
+                                                                                                        columnNumber: 73
+                                                                                                    }, this),
+                                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                        className: `w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`,
+                                                                                                        children: formData.deliveryChargeType === 'manual' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                            className: "w-1.5 h-1.5 bg-secondary rounded-full"
+                                                                                                        }, void 0, false, {
+                                                                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                            lineNumber: 855,
+                                                                                                            columnNumber: 122
+                                                                                                        }, this)
+                                                                                                    }, void 0, false, {
+                                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                        lineNumber: 854,
+                                                                                                        columnNumber: 73
+                                                                                                    }, this)
+                                                                                                ]
+                                                                                            }, void 0, true, {
+                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                lineNumber: 846,
+                                                                                                columnNumber: 69
+                                                                                            }, this),
+                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                onClick: ()=>setFormData({
+                                                                                                        ...formData,
+                                                                                                        deliveryChargeType: "buyer_pays"
+                                                                                                    }),
+                                                                                                className: `flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`,
+                                                                                                children: [
+                                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                        className: "space-y-0.5",
+                                                                                                        children: [
+                                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                                                className: "text-[11px] font-bold",
+                                                                                                                children: "Buyer Pays Directly"
+                                                                                                            }, void 0, false, {
+                                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                                lineNumber: 864,
+                                                                                                                columnNumber: 77
+                                                                                                            }, this),
+                                                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                                                                className: "text-[9px] text-muted-foreground",
+                                                                                                                children: "Adjust with partner."
+                                                                                                            }, void 0, false, {
+                                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                                lineNumber: 865,
+                                                                                                                columnNumber: 77
+                                                                                                            }, this)
+                                                                                                        ]
+                                                                                                    }, void 0, true, {
+                                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                        lineNumber: 863,
+                                                                                                        columnNumber: 73
+                                                                                                    }, this),
+                                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                        className: `w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`,
+                                                                                                        children: formData.deliveryChargeType === 'buyer_pays' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                                            className: "w-1.5 h-1.5 bg-secondary rounded-full"
+                                                                                                        }, void 0, false, {
+                                                                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                            lineNumber: 868,
+                                                                                                            columnNumber: 126
+                                                                                                        }, this)
+                                                                                                    }, void 0, false, {
+                                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                        lineNumber: 867,
+                                                                                                        columnNumber: 73
+                                                                                                    }, this)
+                                                                                                ]
+                                                                                            }, void 0, true, {
+                                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                lineNumber: 859,
+                                                                                                columnNumber: 69
+                                                                                            }, this)
+                                                                                        ]
+                                                                                    }, void 0, true, {
+                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                        lineNumber: 845,
+                                                                                        columnNumber: 65
+                                                                                    }, this),
+                                                                                    formData.deliveryChargeType === "manual" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                        className: "pt-2 animate-in fade-in slide-in-from-left-2 duration-300",
+                                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                            className: "relative",
+                                                                                            children: [
+                                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__["Tag"], {
+                                                                                                    className: "absolute left-3 top-2.5 h-3.5 w-3.5 text-secondary"
+                                                                                                }, void 0, false, {
+                                                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                    lineNumber: 876,
+                                                                                                    columnNumber: 77
+                                                                                                }, this),
+                                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                                                    type: "number",
+                                                                                                    placeholder: "Enter manual delivery amount (Rs.)",
+                                                                                                    value: formData.deliveryChargeAmount,
+                                                                                                    onChange: (e)=>setFormData({
+                                                                                                            ...formData,
+                                                                                                            deliveryChargeAmount: e.target.value
+                                                                                                        }),
+                                                                                                    className: "pl-9 h-9 text-xs border-secondary/30 focus-visible:ring-secondary/20"
+                                                                                                }, void 0, false, {
+                                                                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                                    lineNumber: 877,
+                                                                                                    columnNumber: 77
+                                                                                                }, this)
+                                                                                            ]
+                                                                                        }, void 0, true, {
+                                                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                            lineNumber: 875,
+                                                                                            columnNumber: 73
+                                                                                        }, this)
+                                                                                    }, void 0, false, {
+                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                        lineNumber: 874,
+                                                                                        columnNumber: 69
+                                                                                    }, this),
+                                                                                    formData.deliveryChargeType === "buyer_pays" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                                        className: "p-3 bg-secondary/5 rounded-md border border-secondary/10 animate-in fade-in slide-in-from-right-2 duration-300",
+                                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                                            className: "text-[10px] text-secondary font-medium leading-relaxed italic",
+                                                                                            children: "* Buyer will pay delivery charge shown to deliver that item, adjust with yourself."
+                                                                                        }, void 0, false, {
+                                                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                            lineNumber: 890,
+                                                                                            columnNumber: 73
+                                                                                        }, this)
+                                                                                    }, void 0, false, {
+                                                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
+                                                                                        lineNumber: 889,
+                                                                                        columnNumber: 69
+                                                                                    }, this)
+                                                                                ]
+                                                                            }, void 0, true, {
                                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 802,
-                                                                                columnNumber: 57
-                                                                            }, this),
-                                                                            formData.shippingPartners.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                className: "text-[9px] text-red-500 mt-2 font-medium italic",
-                                                                                children: "* At least one partner required"
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                                lineNumber: 829,
+                                                                                lineNumber: 839,
                                                                                 columnNumber: 61
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                        lineNumber: 800,
+                                                                        lineNumber: 815,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                                lineNumber: 787,
+                                                                lineNumber: 802,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                        lineNumber: 765,
+                                                        lineNumber: 780,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                lineNumber: 645,
+                                                lineNumber: 660,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                        lineNumber: 432,
+                                        lineNumber: 447,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                    lineNumber: 431,
+                                    lineNumber: 446,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                lineNumber: 430,
+                                lineNumber: 445,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3473,14 +3681,14 @@ function UploadPage() {
                                                             className: "h-5 w-5 text-primary"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                            lineNumber: 846,
+                                                            lineNumber: 912,
                                                             columnNumber: 41
                                                         }, this),
                                                         "Preview"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                    lineNumber: 845,
+                                                    lineNumber: 911,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3489,13 +3697,13 @@ function UploadPage() {
                                                     children: "Buyer View"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                    lineNumber: 849,
+                                                    lineNumber: 915,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                            lineNumber: 844,
+                                            lineNumber: 910,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3514,12 +3722,12 @@ function UploadPage() {
                                                 offerUnit: formData.offerUnit
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                lineNumber: 853,
+                                                lineNumber: 919,
                                                 columnNumber: 41
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                            lineNumber: 852,
+                                            lineNumber: 918,
                                             columnNumber: 33
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -3530,7 +3738,7 @@ function UploadPage() {
                                                     children: "This is exactly how your item will appear to buyers. Detailed locations build more trust."
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                    lineNumber: 869,
+                                                    lineNumber: 935,
                                                     columnNumber: 37
                                                 }, this),
                                                 !isFormEmpty() && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3541,55 +3749,55 @@ function UploadPage() {
                                                     children: "Clear Form"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                                    lineNumber: 873,
+                                                    lineNumber: 939,
                                                     columnNumber: 41
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                            lineNumber: 868,
+                                            lineNumber: 934,
                                             columnNumber: 33
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                    lineNumber: 843,
+                                    lineNumber: 909,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                                lineNumber: 842,
+                                lineNumber: 908,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                        lineNumber: 428,
+                        lineNumber: 443,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                    lineNumber: 427,
+                    lineNumber: 442,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                lineNumber: 426,
+                lineNumber: 441,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$Footer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-                lineNumber: 889,
+                lineNumber: 955,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/upload/page.tsx",
-        lineNumber: 423,
+        lineNumber: 438,
         columnNumber: 9
     }, this);
 }
-_s(UploadPage, "gWH09lnax2cRJAaNEOtj+kRE/IE=", false, function() {
+_s(UploadPage, "JrDzQDlEqqyDxhIq48rjtom2F0s=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]

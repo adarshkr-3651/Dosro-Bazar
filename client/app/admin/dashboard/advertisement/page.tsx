@@ -133,9 +133,27 @@ export default function AdvertisementPage() {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const status = formData.get("status") as string;
+    const expiryDate = formData.get("expiryDate") as string;
+
+    if (isEditMode && status === "running" && expiryDate) {
+      if (new Date(expiryDate) < new Date()) {
+        toast.error("Invalid Expiry Date", { 
+            description: "Cannot set status to 'Running' with an expired date. Please select a future date." 
+        });
+        return;
+      }
+    }
+
+    setFormLoading(true);
+    
+    // Remove empty file object if no new image was selected to prevent "Empty file" error
+    const imageFile = formData.get("image") as File;
+    if (imageFile && imageFile.size === 0) {
+      formData.delete("image");
+    }
     
     try {
       let res;
@@ -262,8 +280,10 @@ export default function AdvertisementPage() {
                         onClick={() => toggleStatus(ad._id, ad.status)}
                         variant="outline" 
                         size="sm"
-                        className={`flex-1 rounded-xl font-bold text-[10px] uppercase tracking-widest ${
-                          ad.status === 'running' ? 'hover:bg-rose-50 hover:text-rose-600' : 'hover:bg-emerald-50 hover:text-emerald-600'
+                        className={`flex-1 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-colors ${
+                          ad.status === 'running' 
+                            ? 'bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-500 hover:text-white' 
+                            : 'bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-500 hover:text-white'
                         }`}
                       >
                         {ad.status === 'running' ? 'Stop' : 'Run'}

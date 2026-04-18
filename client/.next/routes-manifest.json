@@ -16,7 +16,13 @@
   "headers": [],
   "rewrites": {
     "beforeFiles": [],
-    "afterFiles": [],
+    "afterFiles": [
+      {
+        "source": "/backend-api/:path*",
+        "destination": "http://localhost:5000/:path*",
+        "regex": "^/backend-api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      }
+    ],
     "fallback": []
   },
   "dynamicRoutes": [
@@ -87,6 +93,12 @@
       "namedRegex": "^/admin/dashboard/advertisement(?:/)?$"
     },
     {
+      "page": "/admin/dashboard/invoices",
+      "regex": "^/admin/dashboard/invoices(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/invoices(?:/)?$"
+    },
+    {
       "page": "/admin/dashboard/items",
       "regex": "^/admin/dashboard/items(?:/)?$",
       "routeKeys": {},
@@ -123,12 +135,6 @@
       "namedRegex": "^/admin/dashboard/verifications(?:/)?$"
     },
     {
-      "page": "/adminlogin",
-      "regex": "^/adminlogin(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/adminlogin(?:/)?$"
-    },
-    {
       "page": "/api/advertisements",
       "regex": "^/api/advertisements(?:/)?$",
       "routeKeys": {},
@@ -163,6 +169,12 @@
       "regex": "^/notifications(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/notifications(?:/)?$"
+    },
+    {
+      "page": "/payment-verify/khalti",
+      "regex": "^/payment\\-verify/khalti(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-verify/khalti(?:/)?$"
     },
     {
       "page": "/profile",

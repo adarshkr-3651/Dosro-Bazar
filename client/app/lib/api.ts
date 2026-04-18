@@ -1,14 +1,25 @@
 import axios from 'axios';
 
+// When the client runs on HTTPS (dev-https), direct calls to http://localhost:5000
+// are blocked as mixed content. Use Next.js rewrites proxy instead.
+const getBaseURL = () => {
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+    return '/backend-api';
+  }
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+  baseURL: getBaseURL(),
   withCredentials: true, // Important for HttpOnly cookies
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const BASE_URL = typeof window !== 'undefined' && window.location.protocol === 'https:'
+  ? '/backend-api'
+  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000');
 
 export async function loginUser(identifier: string, password: string) {
   try {
@@ -346,9 +357,9 @@ api.interceptors.response.use(
 );
 
 
-export async function getAllItems() {
+export async function getAllItems(page: number = 1, limit: number = 10) {
   try {
-    const response = await api.get('/item/getAllItems');
+    const response = await api.get(`/item/getAllItems?page=${page}&limit=${limit}`);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -459,9 +470,9 @@ export async function chatWithAI(
   }
 }
 
-export async function generateItemDescription(title: string, category?: string, condition?: string, price?: string) {
+export async function generateItemDescription(title: string, category?: string, condition?: string, price?: string, wordCount: number = 150) {
   try {
-    const response = await api.post('/describe', { title, category, condition, price });
+    const response = await api.post('/describe', { title, category, condition, price, wordCount });
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -585,6 +596,33 @@ export async function markNotificationsAsRead() {
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
+    }
+}
+
+export async function markNotificationAsRead(id: string) {
+    try {
+        const response = await api.put(`/notification/${id}/read`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notification as read');
+    }
+}
+
+export async function getSellerStats() {
+    try {
+        const response = await api.get('/bid/stats');
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch seller stats');
+    }
+}
+
+export async function getItemBids(itemId: string) {
+    try {
+        const response = await api.get(`/bid/item/${itemId}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch item bids');
     }
 }
 

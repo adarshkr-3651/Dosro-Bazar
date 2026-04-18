@@ -3050,7 +3050,7 @@ class Container extends _react.default.Component {
         // - if it is a client-side skeleton (fallback render)
         // - if middleware matches the current page (may have rewrite params)
         // - if rewrites in next.config.js match (may have rewrite params)
-        if (router.isSsr && (initialData.isFallback || initialData.nextExport && ((0, _isdynamic.isDynamicRoute)(router.pathname) || location.search || ("TURBOPACK compile-time value", false) || initialMatchesMiddleware) || initialData.props && initialData.props.__N_SSG && (location.search || ("TURBOPACK compile-time value", false) || initialMatchesMiddleware))) {
+        if (router.isSsr && (initialData.isFallback || initialData.nextExport && ((0, _isdynamic.isDynamicRoute)(router.pathname) || location.search || ("TURBOPACK compile-time value", true) || initialMatchesMiddleware) || initialData.props && initialData.props.__N_SSG && (location.search || ("TURBOPACK compile-time value", true) || initialMatchesMiddleware))) {
             // update query on mount for exported pages
             router.replace(router.pathname + '?' + String((0, _querystring.assign)((0, _querystring.urlQueryToSearchParams)(router.query), new URLSearchParams(location.search))), asPath, {
                 // @ts-ignore
@@ -3184,57 +3184,7 @@ function AppContainer({ children }) {
                                             ("TURBOPACK compile-time value", 384)
                                         ]),
                                         "qualities": ("TURBOPACK compile-time value", [
-                                            ("TURBOPACK compile-time value", 75),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70),
-                                            ("TURBOPACK compile-time value", 70)
+                                            ("TURBOPACK compile-time value", 75)
                                         ]),
                                         "path": ("TURBOPACK compile-time value", "/_next/image"),
                                         "loader": ("TURBOPACK compile-time value", "default"),

@@ -4,9 +4,9 @@ import Notification from "../Models/Notification.js";
 export const getNotifications = asyncErrorWrapper(async (req, res, next) => {
     // Determine the mode: buyer or seller (defaults to showing all if mode is not provided or invalid)
     const { mode } = req.query;
-    
+
     let query = { recipient: req.user.id };
-    
+
     // Filter based on mode if provided
     if (mode === 'buyer') {
         // Buyers see when their bids are accepted or rejected
@@ -37,5 +37,19 @@ export const markAsRead = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: "All notifications marked as read"
+    });
+});
+
+export const markSingleAsRead = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params;
+    
+    await Notification.findOneAndUpdate(
+        { _id: id, recipient: req.user.id },
+        { isRead: true }
+    );
+
+    res.status(200).json({
+        success: true,
+        message: "Notification marked as read"
     });
 });

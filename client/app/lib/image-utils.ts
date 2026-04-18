@@ -13,7 +13,7 @@ export const resolvePhotoUrl = (path?: string | null, isProfile: boolean = false
         return null;
     }
 
-    if (path.startsWith("http://") || path.startsWith("https://")) {
+    if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) {
         return path;
     }
 

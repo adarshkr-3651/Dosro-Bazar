@@ -2,12 +2,13 @@ import asyncErrorWrapper from "express-async-handler";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const generateDescription = asyncErrorWrapper(async (req, res) => {
-    const { title, category, condition, price } = req.body;
+    const { title, category, condition, price, wordCount } = req.body;
 
     if (!title) {
         return res.status(400).json({ success: false, message: "Item title is required" });
     }
 
+    const requestedWordCount = parseInt(wordCount) || 150;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
     if (!GEMINI_API_KEY) {
@@ -33,7 +34,7 @@ Requirements:
 - Detail: Be specific and informative. Highlight the condition.
 - Emojis: Include emojis to make it visually appealing.
 - Currency: Mention the price (Rs./रु) if provided in the details above.
-- Length: Keep the entire output between 100-200 words.
+- Length: Keep the entire output around ${requestedWordCount} words.
 - Accuracy: Do NOT make up specific technical specs unless they are well-known global defaults for the provided specific product model.
 - Output ONLY the generated listing text without any conversational filler or title tags.`;
 

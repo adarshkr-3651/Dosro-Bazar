@@ -25,16 +25,8 @@ const paginateHelper = async (model, query, req, searchKey = "title") => {
     const pageSize = parseInt(req.query.limit) || 6;
     const skip = (page - 1) * pageSize;
 
-    let total;
-    if (req.query.search && typeof req.query.search === 'string') {
-        const sanitizedSearch = escapeRegex(req.query.search);
-        const regex = new RegExp(sanitizedSearch, "i");
-        const searchObject = {};
-        searchObject[searchKey] = regex;
-        total = await model.countDocuments(searchObject);
-    } else {
-        total = await model.countDocuments();
-    }
+    // Use the current filters from the query object to get an accurate count
+    const total = await model.countDocuments(query.getFilter());
 
     const pages = Math.ceil(total / pageSize);
     query = query.skip(skip).limit(pageSize);

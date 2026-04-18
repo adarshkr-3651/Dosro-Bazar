@@ -45,6 +45,10 @@ export default function EditProductPage() {
         offerUnit: "h",
         paymentMethods: [] as string[],
         deliveryAvailable: false,
+        shippingPartners: [] as string[],
+        aiWordCount: 150,
+        deliveryChargeType: "buyer_pays" as "manual" | "buyer_pays",
+        deliveryChargeAmount: "",
         expiryUnit: "d",
         expiryDuration: "",
     });
@@ -89,6 +93,11 @@ export default function EditProductPage() {
                         offerUnit: item.offerUnit || "h",
                         paymentMethods: item.paymentMethods ? (Array.isArray(item.paymentMethods) ? item.paymentMethods : JSON.parse(item.paymentMethods)) : [],
                         deliveryAvailable: item.deliveryAvailable || false,
+                        shippingPartners: item.shippingPartners ? 
+                            (typeof item.shippingPartners === 'string' ? JSON.parse(item.shippingPartners) : item.shippingPartners) : [],
+                        deliveryChargeType: item.deliveryChargeType || "buyer_pays",
+                        deliveryChargeAmount: item.deliveryChargeAmount?.toString() || "",
+                        aiWordCount: 150,
                         expiryUnit: item.expiryUnit || "d",
                         expiryDuration: item.expiryDuration || "",
                     });
@@ -186,54 +195,38 @@ export default function EditProductPage() {
 
     const handleGenerateDescription = async () => {
         if (!formData.title) return;
-
         setLoading(true);
         toast.loading("Generating professional description...", { id: "gen" });
+        try {
+            const { generateItemDescription } = await import("@/app/lib/api");
+            const result = await generateItemDescription(
+                formData.title,
+                formData.category,
+                formData.condition,
+                formData.price,
+                formData.aiWordCount
+            );
 
-        await new Promise(resolve => setTimeout(resolve, 1500));
+            if (result.success) {
+                setFormData(prev => ({ ...prev, content: result.data }));
+                toast.success("AI description generated!", { id: "gen" });
 
-        const title = formData.title.toLowerCase();
-        const condition = formData.condition || "Excellent";
-        const category = formData.category || "Item";
-
-        let specs = "";
-        if (title.includes("iphone") || title.includes("samsung") || title.includes("pixel") || title.includes("phone")) {
-            const isLatest = title.includes("15") || title.includes("16") || title.includes("s24") || title.includes("s23");
-            specs = `\n\n✨ TECHNICAL SPECIFICATIONS:\n` +
-                `- Display: ${isLatest ? 'Super Retina XDR / Dynamic AMOLED 2X' : 'High Resolution OLED/LCD'}\n` +
-                `- RAM: ${isLatest ? '8GB / 12GB' : '6GB / 8GB'} for smooth multitasking\n` +
-                `- Storage (ROM): 128GB / 256GB / 512GB\n` +
-                `- Camera: Advanced Multi-lens System with Night Mode & Pro Video\n` +
-                `- Battery: Long-lasting ${isLatest ? '5000mAh' : '4500mAh'} equivalent with Fast Charging`;
-        } else if (title.includes("laptop") || title.includes("macbook") || title.includes("dell") || title.includes("hp")) {
-            specs = `\n\n💻 TECHNICAL SPECIFICATIONS:\n` +
-                `- Processor: High-Performance Multi-core Chip\n` +
-                `- RAM: 16GB / 32GB High Speed Memory\n` +
-                `- Storage: 512GB / 1TB NVMe SSD\n` +
-                `- Display: Crystal Clear Anti-glare Screen\n` +
-                `- Graphics: Integrated/Dedicated GPU for seamless visuals`;
-        }
-
-        const templates = [
-            `🚀 **FOR SALE: ${formData.title}** 🚀\n\nAre you looking for a premium ${category} that delivers top-tier performance? Look no further! This ${formData.title} is in ${condition} condition and has been meticulously cared for. Whether you're a professional or a casual user, this device will exceed your expectations.\n\n🌟 KEY HIGHLIGHTS:\n- Exceptional Performance & Speed\n- Sleek and Modern Design\n- 100% Fully Functional & Tested\n- Great Value for Price${specs}\n\n✅ CONDITION DETAILS:\n- Overall Condition: ${condition}\n- No hidden defects or issues\n- Screen/Body: Well preserved\n\nDon't miss out on this fantastic opportunity! This ${formData.title} is priced to sell quickly. Direct message me now to grab it before someone else does!`,
-            `🔥 **GREAT DEAL: ${formData.title}** 🔥\n\nLooking to upgrade? I'm selling my ${formData.title} which is in ${condition} condition. This ${category} offers a perfect blend of style and utility, making it an essential addition to your daily tech lineup. Carefully used and ready for its new owner!${specs}\n\n💎 WHY BUY THIS?\n- Verified Quality & Reliability\n- Premium Build Materials\n- Excellent Battery Efficiency\n- Optimized Software Experience\n\n📦 WHAT'S INCLUDED:\n- ${formData.title}\n- Original/Standard Essentials\n\nPrice is negotiable for serious buyers. First come, first served!`,
-            `✨ **PREMIUM ${formData.title.toUpperCase()} FOR SALE** ✨\n\nOwn this incredible ${formData.title} today! Known for its reliability and industry-leading features, this ${category} is currently in ${condition} state and performs like a charm. Perfect for anyone who wants a high-quality device without paying full retail price.${specs}\n\n🏆 SPECIAL FEATURES:\n- Immersive Display & Audio\n- Powerful Processing Capabilities\n- Clean and Maintained Aesthetics\n- Future-proof Technology\n\nEverything works perfectly as expected. I am selling this because I've recently upgraded. Feel free to ask any questions!`
-        ];
-
-        const description = templates[Math.floor(Math.random() * templates.length)];
-
-        setFormData(prev => ({ ...prev, content: description }));
-        toast.success("Professional description created!", { id: "gen" });
-        setLoading(false);
-
-        // Auto-adjust height of textarea
-        setTimeout(() => {
-            const textarea = document.getElementById("content") as HTMLTextAreaElement;
-            if (textarea) {
-                textarea.style.height = "auto";
-                textarea.style.height = `${textarea.scrollHeight}px`;
+                // Auto-adjust textarea height
+                setTimeout(() => {
+                    const textarea = document.getElementById("content") as HTMLTextAreaElement;
+                    if (textarea) {
+                        textarea.style.height = "auto";
+                        textarea.style.height = `${textarea.scrollHeight}px`;
+                    }
+                }, 100);
+            } else {
+                toast.error("Failed to generate description", { id: "gen" });
             }
-        }, 100);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to generate description", { id: "gen" });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -243,15 +236,6 @@ export default function EditProductPage() {
 
     const handleMinBidChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.replace(/[^0-9]/g, "");
-        const listedPrice = parseFloat(formData.price) || 0;
-        const maxAllowedBid = listedPrice * 0.85;
-
-        if (parseFloat(value) > maxAllowedBid) {
-            toast.error("Starting Bid Too High", {
-                description: `Please place a minimum starting bid of 85% or less of the current product price (Max: रु ${Math.floor(maxAllowedBid).toLocaleString()})`
-            });
-            return;
-        }
         setFormData({ ...formData, minBid: value });
     };
 
@@ -325,8 +309,24 @@ export default function EditProductPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (getWordCount(formData.content) > 999) {
-            toast.error("Description too long", { description: "Maximum 999 words allowed" });
+        const listedPrice = parseFloat(formData.price) || 0;
+        const minBidValue = parseFloat(formData.minBid) || 0;
+        if (formData.isBiddable && formData.minBid) {
+            let maxAllowed;
+            if (listedPrice < 50000) maxAllowed = listedPrice * 0.95;
+            else if (listedPrice <= 100000) maxAllowed = listedPrice * 0.98;
+            else maxAllowed = listedPrice * 0.99;
+
+            if (minBidValue > maxAllowed) {
+                toast.error("Invalid Minimum Bid", { 
+                    description: `Starting bid must be at least ${listedPrice < 50000 ? '5%' : listedPrice <= 100000 ? '2%' : '1%'} lower than the quoted price (Max: रु ${Math.floor(maxAllowed).toLocaleString()}).` 
+                });
+                return;
+            }
+        }
+
+        if (formData.deliveryAvailable && formData.shippingPartners.length === 0) {
+            toast.error("Shipping Partners Required", { description: "Please select at least one shipping partner" });
             return;
         }
 
@@ -369,6 +369,9 @@ export default function EditProductPage() {
             }
 
             data.append("deliveryAvailable", String(formData.deliveryAvailable));
+            if (formData.deliveryAvailable && formData.shippingPartners.length > 0) {
+                data.append("shippingPartners", JSON.stringify(formData.shippingPartners));
+            }
 
             // Send existing images that were kept
             data.append("existingImages", JSON.stringify(existingImages));
@@ -522,17 +525,27 @@ export default function EditProductPage() {
                                                     </Button>
                                                 )}
                                             </div>
-                                            <div className="absolute right-2 bottom-2">
+                                            <div className="absolute right-2 bottom-2 flex items-center gap-2">
+                                                <div className="flex items-center bg-background/80 backdrop-blur-sm border rounded-md px-2 h-7 gap-1">
+                                                    <span className="text-[10px] font-semibold text-muted-foreground whitespace-nowrap">Words:</span>
+                                                    <input 
+                                                        type="number"
+                                                        value={formData.aiWordCount}
+                                                        onChange={(e) => setFormData({ ...formData, aiWordCount: Number(e.target.value) })}
+                                                        className="w-10 bg-transparent text-[10px] font-bold text-primary focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                        max={999}
+                                                    />
+                                                </div>
                                                 <Button
                                                     type="button"
                                                     variant="outline"
                                                     size="sm"
                                                     onClick={handleGenerateDescription}
-                                                    disabled={!formData.title || submitting}
+                                                    disabled={!formData.title || loading}
                                                     className={`h-7 gap-2 bg-background/80 backdrop-blur-sm border-primary/20 hover:border-primary transition-all duration-300 ${!formData.title ? 'opacity-20 pointer-events-none' : 'opacity-100'}`}
                                                 >
-                                                    <Sparkles className="h-3 w-3 text-primary animate-pulse" />
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider">Generate</span>
+                                                    <Sparkles className={`h-3 w-3 text-primary ${loading ? 'animate-spin' : 'animate-pulse'}`} />
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider">{loading ? "Generating..." : "Generate"}</span>
                                                 </Button>
                                             </div>
                                         </div>
@@ -616,7 +629,24 @@ export default function EditProductPage() {
 
                                             {formData.isBiddable && (
                                                 <div className={`space-y-2 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
-                                                    <Label htmlFor="minBid" className="text-xs font-semibold">Min. Starting Bid (Rs.)</Label>
+                                                    <div className="flex items-center justify-between">
+                                                        <Label htmlFor="minBid" className="text-xs font-semibold">Min. Starting Bid (Rs.)</Label>
+                                                        {isPriceSet && (
+                                                            <span className={`text-[9px] font-bold uppercase transition-all duration-300 ${
+                                                                formData.minBid && parseFloat(formData.minBid) > (
+                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                    parseFloat(formData.price) * 0.99
+                                                                ) ? 'text-red-500 animate-pulse' : 'text-muted-foreground opacity-50'
+                                                            }`}>
+                                                                (Max: रु {Math.floor(
+                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                    parseFloat(formData.price) * 0.99
+                                                                ).toLocaleString()})
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <div className="relative">
                                                         <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                                                         <Input
@@ -723,8 +753,8 @@ export default function EditProductPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Delivery Toggle */}
-                                            <div className="space-y-6">
+                                            {/* Delivery Toggle & Partners */}
+                                            <div className="space-y-4">
                                                 <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20 h-[50px]">
                                                     <div className="space-y-0.5">
                                                         <span className="text-sm font-medium">Delivery Available</span>
@@ -735,6 +765,92 @@ export default function EditProductPage() {
                                                         onCheckedChange={(checked) => setFormData({ ...formData, deliveryAvailable: checked })}
                                                     />
                                                 </div>
+
+                                                {formData.deliveryAvailable && (
+                                                    <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                                        <div className="p-4 border rounded-lg bg-primary/5 border-primary/20 space-y-3">
+                                                            <Label className="text-xs font-bold uppercase tracking-wider text-primary">Select Shipping Partners</Label>
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                {["Pathao", "Indrive", "Upaya", "Nepal Post", "Aramex", "Other"].map((partner) => (
+                                                                    <label key={partner} className="flex items-center gap-2 p-2 rounded-md border bg-background hover:bg-primary/5 cursor-pointer transition-all">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={formData.shippingPartners.includes(partner)}
+                                                                            onChange={(e) => {
+                                                                                const updated = e.target.checked
+                                                                                    ? [...formData.shippingPartners, partner]
+                                                                                    : formData.shippingPartners.filter(p => p !== partner);
+                                                                                setFormData({ ...formData, shippingPartners: updated });
+                                                                            }}
+                                                                            className="w-3.5 h-3.5 rounded border-primary/30 text-primary focus:ring-primary/20"
+                                                                        />
+                                                                        <span className="text-[11px] font-medium">{partner}</span>
+                                                                    </label>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {formData.shippingPartners.length > 0 && (
+                                                            <div className="p-4 border rounded-lg bg-secondary/5 border-secondary/20 space-y-4 animate-in zoom-in-95 duration-300">
+                                                                <div className="space-y-1">
+                                                                    <Label className="text-xs font-bold uppercase tracking-wider text-secondary">Should buyer pay extra amount for delivery and how much?</Label>
+                                                                    <p className="text-[10px] text-muted-foreground italic">Choose how the delivery fee is handled.</p>
+                                                                </div>
+
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                                                                    <div 
+                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "manual" })}
+                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                                                    >
+                                                                        <div className="space-y-0.5">
+                                                                            <span className="text-[11px] font-bold">Manual Entry</span>
+                                                                            <p className="text-[9px] text-muted-foreground">Set a fixed amount.</p>
+                                                                        </div>
+                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                                            {formData.deliveryChargeType === 'manual' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div 
+                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "buyer_pays" })}
+                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                                                    >
+                                                                        <div className="space-y-0.5">
+                                                                            <span className="text-[11px] font-bold">Buyer Pays Directly</span>
+                                                                            <p className="text-[9px] text-muted-foreground">Adjust with partner.</p>
+                                                                        </div>
+                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                                            {formData.deliveryChargeType === 'buyer_pays' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                {formData.deliveryChargeType === "manual" && (
+                                                                    <div className="pt-2 animate-in fade-in slide-in-from-left-2 duration-300">
+                                                                        <div className="relative">
+                                                                            <Tag className="absolute left-3 top-2.5 h-3.5 w-3.5 text-secondary" />
+                                                                            <Input 
+                                                                                type="number"
+                                                                                placeholder="Enter manual delivery amount (Rs.)"
+                                                                                value={formData.deliveryChargeAmount}
+                                                                                onChange={(e) => setFormData({ ...formData, deliveryChargeAmount: e.target.value })}
+                                                                                className="pl-9 h-9 text-xs border-secondary/30 focus-visible:ring-secondary/20"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
+                                                                {formData.deliveryChargeType === "buyer_pays" && (
+                                                                    <div className="p-3 bg-secondary/5 rounded-md border border-secondary/10 animate-in fade-in slide-in-from-right-2 duration-300">
+                                                                        <p className="text-[10px] text-secondary font-medium leading-relaxed italic">
+                                                                            * Buyer will pay delivery charge shown to deliver that item, adjust with yourself.
+                                                                        </p>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

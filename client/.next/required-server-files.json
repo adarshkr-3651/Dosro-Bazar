@@ -309,10 +309,20 @@
     "turbopack": {
       "root": "C:\\Users\\adars"
     },
-    "distDirRoot": ".next"
+    "distDirRoot": ".next",
+    "_originalRewrites": {
+      "beforeFiles": [],
+      "afterFiles": [
+        {
+          "source": "/backend-api/:path*",
+          "destination": "http://localhost:5000/:path*"
+        }
+      ],
+      "fallback": []
+    }
   },
-  "appDir": "C:\\Users\\adars\\Desktop\\Dosro Bazar\\client",
-  "relativeAppDir": "Desktop\\Dosro Bazar\\client",
+  "appDir": "C:\\Users\\adars\\Desktop\\Dosro Bazar - Main\\client",
+  "relativeAppDir": "Desktop\\Dosro Bazar - Main\\client",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",

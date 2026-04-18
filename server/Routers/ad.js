@@ -1,6 +1,6 @@
 import express from "express";
-import { 
-    createAd, getAds, updateAdStatus, deleteAd, submitEnquiry, editAd, 
+import {
+    createAd, getAds, updateAdStatus, deleteAd, submitEnquiry, editAd,
     submitAdminEnquiry, getAdInquiries, updateInquiryStatus, deleteInquiry,
     initiateAdBooking, verifyEsewaPayment, verifyKhaltiPayment, getAdBookings
 } from "../Controllers/adController.js";

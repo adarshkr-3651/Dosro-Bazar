@@ -91,8 +91,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
 
             // Backend sets HttpOnly cookies automatically
-            const userData = await getProfile();
-            setUser(userData);
+            if (data.user) {
+                // Use user data returned directly from login for immediate state update
+                setUser(data.user);
+            } else {
+                // Fallback: Fetch profile after login if not returned
+                const userData = await getProfile();
+                setUser(userData);
+            }
             // Clear local favorites on successful login
             localStorage.removeItem("local_favorites");
             return { success: true };
@@ -159,8 +165,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
 
             // Normal login flow - phone already exists
-            const userData = await getProfile();
-            setUser(userData);
+            if (response.user) {
+                // Use user data returned directly from google login for immediate state update
+                setUser(response.user);
+            } else {
+                // Fallback: Fetch profile after login if not returned
+                const userData = await getProfile();
+                setUser(userData);
+            }
             return { success: true };
         } catch (error: any) {
             console.warn('Google login failed:', error.message);
@@ -170,9 +182,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const completeOAuthWithPhone = async (tempUserId: string, phone: string) => {
         try {
-            await completeOAuthRegistration(tempUserId, phone);
-            const userData = await getProfile();
-            setUser(userData);
+            const data = await completeOAuthRegistration(tempUserId, phone);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await getProfile();
+                setUser(userData);
+            }
             return { success: true };
         } catch (error: any) {
             console.warn('OAuth completion failed:', error.message);
@@ -182,9 +198,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const loginWithFacebook = async (accessToken: string, userID: string) => {
         try {
-            await facebookLogin(accessToken, userID);
-            const userData = await getProfile();
-            setUser(userData);
+            const data = await facebookLogin(accessToken, userID);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await getProfile();
+                setUser(userData);
+            }
             return { success: true };
         } catch (error: any) {
             console.warn('Facebook login failed:', error.message);

@@ -25,7 +25,7 @@ const isPotentialJwt = (token) => {
  */
 const getAccessToken = (req) => {
     const candidates = [];
-    
+
     // Check if the request is destined for an administrative route
     // We check both the current path and the original URL for context
     const urlToCheck = req.originalUrl || req.url || '';

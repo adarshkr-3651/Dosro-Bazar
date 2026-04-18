@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { getAllItems, getMyListings, getFavorites, getRecommendations } from "@/app/lib/api";
 import Header from "@/app/components/Header";
@@ -10,6 +10,30 @@ import ProductCard from "@/app/components/ProductCard";
 import Footer from "@/app/components/Footer";
 import Link from "next/link";
 import { Button } from "@/app/components/ui/button";
+import { Tag, TrendingUp, Activity, ShoppingCart, Loader2 } from "lucide-react";
+import { getSellerStats } from "@/app/lib/api";
+
+function StatCard({ title, value, icon, gradient, borderColor, link }: any) {
+  const content = (
+    <div className={`relative overflow-hidden rounded-2xl border ${borderColor} bg-card p-6 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 group`}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-50`} />
+      <div className="relative flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
+          <h3 className="text-2xl font-black tracking-tight">{value}</h3>
+        </div>
+        <div className="p-3 rounded-xl bg-background/50 border border-white/10 shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+          {icon}
+        </div>
+      </div>
+    </div>
+  );
+
+  if (link) {
+    return <Link href={link} className="block">{content}</Link>;
+  }
+  return content;
+}
 
 export default function Home() {
   const [recentListings, setRecentListings] = useState<any[]>([]);
@@ -21,6 +45,12 @@ export default function Home() {
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [showAllRecent, setShowAllRecent] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [sellerStats, setSellerStats] = useState({ pendingBidsCount: 0, totalSales: 0 });
+  const [loadingStats, setLoadingStats] = useState(false);
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   // Initialize from mount
   useEffect(() => {
@@ -30,10 +60,15 @@ export default function Home() {
   // Fetch all items for Buyer Mode
   useEffect(() => {
     const fetchItems = async () => {
+      setLoading(true);
       try {
-        const data = await getAllItems();
+        const initialLimit = user ? 15 : 10; // 3 rows for logged-in users, 2 rows initially for guests
+        const data = await getAllItems(1, initialLimit);
         if (data.success) {
+          console.log("[InfiniteScroll] Initial items fetched:", data.data.length, "Total pages:", data.pages);
           setRecentListings(data.data);
+          setHasMore(1 < data.pages);
+          setPage(1);
         }
       } catch (error) {
         console.error("Failed to fetch items:", error);
@@ -43,7 +78,46 @@ export default function Home() {
     };
 
     fetchItems();
-  }, []);
+  }, [user]); // Re-fetch when user login status changes
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore || !isBuyerMode || user) return;
+
+    setLoadingMore(true);
+    try {
+      const nextPage = page + 1;
+      const data = await getAllItems(nextPage, 10);
+      if (data.success) {
+        console.log("[InfiniteScroll] More items fetched. Page:", nextPage, "New items count:", data.data.length);
+        setRecentListings(prev => [...prev, ...data.data]);
+        setPage(nextPage);
+        setHasMore(nextPage < data.pages);
+      }
+    } catch (error) {
+      console.error("Failed to fetch more items:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  // Infinite scroll observer for guests
+  useEffect(() => {
+    if (!mounted || user || !hasMore || !isBuyerMode || !observerTarget.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loadingMore) {
+          console.log("[InfiniteScroll] Trigger intersected!");
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+
+    observer.observe(observerTarget.current);
+
+    return () => observer.disconnect();
+  }, [mounted, user, hasMore, isBuyerMode, page, loadingMore]);
 
   // Filter listings based on selected category
   const filteredListings = selectedCategory === "All" 
@@ -55,11 +129,11 @@ export default function Home() {
     : recommendedItems.filter((item: any) => item.category === selectedCategory);
 
   // Limit listings for Recently Added section
-  // 2 rows = 10 items (assuming 5 cols)
-  // 5 rows = 25 items
-  const displayedRecent = showAllRecent 
-    ? filteredListings.slice(0, 25) 
-    : filteredListings.slice(0, 10);
+  // Guest mode: show all accumulated items via infinite scroll
+  // Logged-in mode: show at least 15 items (3 rows)
+  const displayedRecent = user 
+    ? (showAllRecent ? filteredListings : filteredListings.slice(0, 15)) 
+    : filteredListings;
 
   // Fetch recommendations only for logged-in users
   useEffect(() => {
@@ -94,6 +168,27 @@ export default function Home() {
     };
 
     fetchSellerItems();
+  }, [isBuyerMode, user]);
+
+  // Fetch seller stats
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (!isBuyerMode && user) {
+        setLoadingStats(true);
+        try {
+          const response = await getSellerStats();
+          if (response.success) {
+            setSellerStats(response.data);
+          }
+        } catch (error) {
+          console.error("Failed to fetch seller stats:", error);
+        } finally {
+          setLoadingStats(false);
+        }
+      }
+    };
+
+    fetchStats();
   }, [isBuyerMode, user]);
 
   // Fetch favorites when user is logged in
@@ -134,7 +229,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <CategoryNav selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />
+      {isBuyerMode && <CategoryNav selectedCategory={selectedCategory} onCategorySelect={setSelectedCategory} />}
 
       <main className="flex-1">
         <div className="container mx-auto px-4 py-6 space-y-12">
@@ -154,7 +249,7 @@ export default function Home() {
                         : "Fresh items just added to the marketplace"}
                     </p>
                   </div>
-                  {filteredListings.length > 10 && (
+                  {user && filteredListings.length > 15 && (
                     <Button 
                       variant="outline" 
                       onClick={() => setShowAllRecent(!showAllRecent)}
@@ -164,18 +259,37 @@ export default function Home() {
                   )}
                 </div>
                 {displayedRecent.length > 0 ? (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
-                    {displayedRecent.map((product) => (
-                      <ProductCard
-                        key={product._id}
-                        id={product._id}
-                        slug={product.slug}
-                        {...product}
-                        isFavorite={favoriteIds.has(product._id)}
-                        onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
-                      />
-                    ))}
-                  </div>
+                  <>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
+                      {displayedRecent.map((product) => (
+                        <ProductCard
+                          key={product._id}
+                          id={product._id}
+                          slug={product.slug}
+                          {...product}
+                          isFavorite={favoriteIds.has(product._id)}
+                          onFavoriteToggle={() => handleFavoriteToggle(product._id, !favoriteIds.has(product._id))}
+                        />
+                      ))}
+                    </div>
+                    
+                    {/* Infinite Scroll Trigger for Guest Users */}
+                    {!user && hasMore && (
+                      <div 
+                        ref={observerTarget}
+                        id="infinite-scroll-trigger" 
+                        className="h-20 flex items-center justify-center mt-8"
+                      >
+                        {loadingMore && (
+                          <div className="flex gap-2">
+                            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+                            <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:0.2s]" />
+                            <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:0.4s]" />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="text-center py-12 bg-muted/20 rounded-xl border-2 border-dashed">
                     <p className="text-muted-foreground">No items found in this category.</p>
@@ -221,21 +335,29 @@ export default function Home() {
           ) : (
             <>
               {/* Stats Section */}
-              <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Link href="/active-listings" className="block transition-transform hover:scale-[1.02]">
-                  <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl py-3 px-6 text-white shadow-sm">
-                    <h3 className="text-sm font-semibold mb-0.5 opacity-90">Active Listings</h3>
-                    <p className="text-3xl font-bold">{sellerListings.length}</p>
-                  </div>
-                </Link>
-                <div className="bg-gradient-to-br from-secondary to-secondary/80 rounded-xl py-3 px-6 text-white shadow-sm">
-                  <h3 className="text-sm font-semibold mb-0.5 opacity-90">Total Sales</h3>
-                  <p className="text-3xl font-bold">Rs. 4,250</p>
-                </div>
-                <div className="bg-gradient-to-br from-primary/80 to-secondary/80 rounded-xl py-3 px-6 text-white shadow-sm">
-                  <h3 className="text-sm font-semibold mb-0.5 opacity-90">Pending Bids</h3>
-                  <p className="text-3xl font-bold">8</p>
-                </div>
+              <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <StatCard 
+                  title="Active Listings" 
+                  value={sellerListings.length} 
+                  icon={<Tag className="h-5 w-5 text-emerald-500" />}
+                  gradient="from-emerald-500/10 to-transparent"
+                  borderColor="border-emerald-500/20"
+                />
+                <StatCard 
+                  title="Total Sales" 
+                  value={`Rs. ${sellerStats.totalSales.toLocaleString()}`} 
+                  icon={<TrendingUp className="h-5 w-5 text-blue-500" />}
+                  gradient="from-blue-500/10 to-transparent"
+                  borderColor="border-blue-500/20"
+                />
+                <StatCard 
+                  title="Pending Bids" 
+                  value={sellerStats.pendingBidsCount} 
+                  icon={<Activity className="h-5 w-5 text-orange-500" />}
+                  gradient="from-orange-500/10 to-transparent"
+                  borderColor="border-orange-500/20"
+                  link="/notifications"
+                />
               </section>
 
               {/* Seller Mode View */}

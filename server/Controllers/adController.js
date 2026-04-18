@@ -8,6 +8,7 @@ import invoiceTemplate from "../Helpers/Libraries/invoiceTemplate.js";
 import sendEmail from "../Helpers/Libraries/sendEmail.js";
 import crypto from "crypto";
 import axios from "axios";
+import deleteImageFile from "../Helpers/Libraries/deleteImageFile.js";
 
 const createAd = asyncErrorWrapper(async (req, res, next) => {
     const { companyName, companyEmail, plan, expiryDate, placement } = req.body;
@@ -369,6 +370,8 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
 
     // Handle eSewa specific parameters (Signature generation)
     let paymentParameters = {};
+    let payment_url = null;
+
     if (booking.paymentMethod === 'esewa') {
         const secretKey = (process.env.ESEWA_SECRET_KEY || "8gBm/:&EnhH.1/q").replace(/"/g, ''); // Ensure no extra quotes
         const productCode = (process.env.ESEWA_PRODUCT_CODE || "EPAYTEST").replace(/"/g, '');
@@ -399,6 +402,27 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
             signed_field_names: "total_amount,transaction_uuid,product_code",
             signature: hash
         };
+    } else if (booking.paymentMethod === 'khalti') {
+        const khaltiSecretKey = (process.env.KHALTI_SECRET_KEY || "key 123456789").replace(/"/g, '').trim(); 
+        try {
+            const khaltiInit = await axios.post('https://a.khalti.com/api/v2/epayment/initiate/', {
+                return_url: `${process.env.URI}/payment-verify/khalti`,
+                website_url: process.env.URI || 'http://localhost:3000',
+                amount: Math.round(totalAmount * 100), // Convert to Paisa
+                purchase_order_id: transactionUuid,
+                purchase_order_name: `Ad Booking - ${plan}`,
+                customer_info: {
+                    name: companyName,
+                    email: companyEmail,
+                    phone: phone || "9800000000"
+                }
+            }, {
+                headers: { 'Authorization': `Key ${khaltiSecretKey}` }
+            });
+            payment_url = khaltiInit.data.payment_url;
+        } catch (error) {
+            console.error("Khalti Init Error:", error.response?.data || error.message);
+        }
     }
 
     res.status(200).json({
@@ -406,7 +430,8 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
         bookingId: booking._id,
         totalAmount,
         paymentMethod: booking.paymentMethod,
-        parameters: paymentParameters
+        parameters: paymentParameters,
+        payment_url
     });
 });
 
@@ -467,10 +492,10 @@ const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
     const { pidx, amount, purchase_order_id } = req.body;
 
     // Khalti server-side verification request
-    const khaltiSecretKey = process.env.KHALTI_SECRET_KEY || "key 123456789"; 
+    const khaltiSecretKey = (process.env.KHALTI_SECRET_KEY || "key 123456789").replace(/"/g, '').trim(); 
     
     try {
-        const khaltiResponse = await axios.post('https://khalti.com/api/v2/epayment/lookup/', 
+        const khaltiResponse = await axios.post('https://a.khalti.com/api/v2/epayment/lookup/', 
             { pidx }, 
             { headers: { 'Authorization': `Key ${khaltiSecretKey}` } }
         );
@@ -478,7 +503,11 @@ const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
         if (khaltiResponse.data.status === 'Completed' || khaltiResponse.data.status === 'Paid') {
             const booking = await AdBooking.findOne({ transactionUuid: purchase_order_id });
             
-            if (booking && booking.paymentStatus !== 'completed') {
+            if (!booking) {
+                return res.status(400).json({ success: false, message: "Booking record not found for this transaction ID." });
+            }
+
+            if (booking.paymentStatus !== 'completed') {
                 booking.paymentStatus = 'completed';
                 booking.gatewayRef = pidx;
                 await booking.save();
@@ -506,13 +535,16 @@ const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
                     message: "Payment verified and Ad activated",
                     expiry: new Date(booking.expiryDate).toLocaleDateString()
                 });
+            } else {
+                return res.status(400).json({ success: false, message: "Payment was already verified and completed." });
             }
+        } else {
+            return res.status(400).json({ success: false, message: `Khalti status is ${khaltiResponse.data.status}` });
         }
     } catch (error) {
         console.error("Khalti Verification Error:", error.response?.data || error.message);
+        return res.status(400).json({ success: false, message: error.response?.data?.detail || "Gateway verification failed" });
     }
-    
-    res.status(400).json({ success: false, message: "Payment verification failed" });
 });
 
 /**

@@ -9,11 +9,13 @@ const ItemSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    slug: String,
+    slug: {
+        type: String,
+        unique: true
+    },
     title: {
         type: String,
         required: [true, "Please provide a title"],
-        unique: true,
         minlength: [4, "Please provide a title least 4 characters "],
     },
     content: {
@@ -103,6 +105,19 @@ const ItemSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    shippingPartners: {
+        type: [String],
+        default: []
+    },
+    deliveryChargeType: {
+        type: String,
+        enum: ["manual", "buyer_pays"],
+        default: "buyer_pays"
+    },
+    deliveryChargeAmount: {
+        type: Number,
+        default: 0
+    },
     paymentMethods: {
         type: [String],
         default: []
@@ -139,7 +154,7 @@ ItemSchema.pre("remove", async function (next) {
 })
 
 ItemSchema.methods.makeSlug = function () {
-    return slugify(this.title, {
+    const baseSlug = slugify(this.title, {
         replacement: '-',
         remove: /[*+~.()'"!:@/?]/g,
         lower: true,
@@ -147,6 +162,10 @@ ItemSchema.methods.makeSlug = function () {
         locale: 'tr',
         trim: true
     })
+
+    // Append last 6 characters of _id to ensure uniqueness
+    const suffix = this._id.toString().substring(18);
+    return `${baseSlug}-${suffix}`;
 
 }
 

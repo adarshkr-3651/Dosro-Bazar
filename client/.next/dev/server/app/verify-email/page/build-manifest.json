@@ -2,20 +2,20 @@
   "devFiles": [],
   "ampDevFiles": [],
   "polyfillFiles": [
-    "static/chunks/57466_next_dist_build_polyfills_polyfill-nomodule.js"
+    "static/chunks/b9de3_next_dist_build_polyfills_polyfill-nomodule.js"
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_83ab475c._.js",
-    "static/chunks/57466_next_dist_compiled_react-dom_ce1d42b8._.js",
-    "static/chunks/57466_next_dist_compiled_react-server-dom-turbopack_1283685a._.js",
-    "static/chunks/57466_next_dist_compiled_next-devtools_index_b5975b37.js",
-    "static/chunks/57466_next_dist_compiled_4bbf6d21._.js",
-    "static/chunks/57466_next_dist_client_0bf1163f._.js",
-    "static/chunks/57466_next_dist_b8f15d07._.js",
-    "static/chunks/c0f17_@swc_helpers_cjs_c740418d._.js",
-    "static/chunks/Desktop_remarket-hub-main_client_a0ff3932._.js",
-    "static/chunks/turbopack-Desktop_remarket-hub-main_client_5ac58eda._.js"
+    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_36c53b93._.js",
+    "static/chunks/b9de3_next_dist_compiled_react-dom_e6f8329e._.js",
+    "static/chunks/b9de3_next_dist_compiled_react-server-dom-turbopack_30cd8f2d._.js",
+    "static/chunks/b9de3_next_dist_compiled_next-devtools_index_670ab1ab.js",
+    "static/chunks/b9de3_next_dist_compiled_9dad511e._.js",
+    "static/chunks/b9de3_next_dist_client_f7ab8002._.js",
+    "static/chunks/b9de3_next_dist_6eece2d2._.js",
+    "static/chunks/b1bf2_@swc_helpers_cjs_bd873013._.js",
+    "static/chunks/Desktop_Dosro Bazar - Main_client_a0ff3932._.js",
+    "static/chunks/turbopack-Desktop_Dosro Bazar - Main_client_9ec98ab1._.js"
   ],
   "pages": {},
   "ampFirstPages": []

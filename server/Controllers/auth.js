@@ -840,13 +840,11 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
         } else {
             // Create new user
             const randomPassword = crypto.randomBytes(16).toString('hex');
-            // Generate a temporary phone number for OAuth users
-            const tempPhone = `+FB${facebookId.substring(0, 12)}`;
 
             user = await User.create({
                 username: name,
                 email: email || undefined,
-                phone: tempPhone, // Temporary phone for OAuth users
+                phone: '', // Empty phone for Facebook OAuth users (same as Google)
                 photo: picture?.data?.url || 'user.png',
                 password: randomPassword,
                 facebookId,

@@ -1,5 +1,20 @@
 {
   "node": {
+    "001176be324642905056eac38dab1b114e5623cb2e": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/items/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getAdBookings",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "rsc"
+      },
+      "exportedName": "getAdBookings",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+    },
     "002a968cbb897e18ed7420cf4c091b5cf87eb87193": {
       "workers": {
         "app/admin/dashboard/items/page": {

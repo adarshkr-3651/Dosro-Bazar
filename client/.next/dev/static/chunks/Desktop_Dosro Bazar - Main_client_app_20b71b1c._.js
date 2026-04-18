@@ -15,8 +15,8 @@ __turbopack_context__.s([
     ()=>__TURBOPACK__default__export__,
     "deleteChatMessage",
     ()=>deleteChatMessage,
-    "endpoints",
-    ()=>endpoints,
+    "deleteConversation",
+    ()=>deleteConversation,
     "facebookLogin",
     ()=>facebookLogin,
     "forgotPassword",
@@ -31,6 +31,8 @@ __turbopack_context__.s([
     ()=>getEditItemData,
     "getFavorites",
     ()=>getFavorites,
+    "getItemBids",
+    ()=>getItemBids,
     "getMessages",
     ()=>getMessages,
     "getMyListings",
@@ -43,6 +45,8 @@ __turbopack_context__.s([
     ()=>getProfile,
     "getRecommendations",
     ()=>getRecommendations,
+    "getSellerStats",
+    ()=>getSellerStats,
     "getSimilarItems",
     ()=>getSimilarItems,
     "googleLogin",
@@ -51,6 +55,8 @@ __turbopack_context__.s([
     ()=>loginUser,
     "logoutUser",
     ()=>logoutUser,
+    "markNotificationAsRead",
+    ()=>markNotificationAsRead,
     "markNotificationsAsRead",
     ()=>markNotificationsAsRead,
     "placeBid",
@@ -78,19 +84,29 @@ __turbopack_context__.s([
     "uploadChatImage",
     ()=>uploadChatImage,
     "verifyEmail",
-    ()=>verifyEmail
+    ()=>verifyEmail,
+    "verifyResetOTP",
+    ()=>verifyResetOTP
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
 ;
+// When the client runs on HTTPS (dev-https), direct calls to http://localhost:5000
+// are blocked as mixed content. Use Next.js rewrites proxy instead.
+const getBaseURL = ()=>{
+    if (("TURBOPACK compile-time value", "object") !== 'undefined' && window.location.protocol === 'https:') {
+        return '/backend-api';
+    }
+    return ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
+};
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].create({
-    baseURL: ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000',
+    baseURL: getBaseURL(),
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
 });
-const BASE_URL = ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
+const BASE_URL = ("TURBOPACK compile-time value", "object") !== 'undefined' && window.location.protocol === 'https:' ? '/backend-api' : ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
 async function loginUser(identifier, password) {
     try {
         const response = await api.post('/auth/login', {
@@ -101,7 +117,7 @@ async function loginUser(identifier, password) {
     } catch (error) {
         if (error.response) {
             // Backend returns errors in 'error' field, not 'message'
-            const err = new Error(error.response.data.error || error.response.data.message || 'Login failed');
+            const err = new Error(error.response.data?.error || error.response.data?.message || 'Login failed');
             err.response = error.response;
             throw err;
         } else {
@@ -121,7 +137,7 @@ async function signUpUser(username, phone, password, email) {
     } catch (error) {
         if (error.response) {
             // Backend returns errors in 'error' field, not 'message'
-            throw new Error(error.response.data.error || error.response.data.message || 'Registration failed');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Registration failed');
         } else {
             throw new Error(error.message || 'Registration failed');
         }
@@ -136,7 +152,7 @@ async function verifyEmail(email, code) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Verification failed');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Verification failed');
         } else {
             throw new Error(error.message || 'Verification failed');
         }
@@ -150,7 +166,7 @@ async function resendVerificationCode(email) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to resend code');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to resend code');
         } else {
             throw new Error(error.message || 'Failed to resend code');
         }
@@ -162,7 +178,7 @@ async function getProfile() {
         return response.data.data; // Controller returns { success: true, data: user }
     } catch (error) {
         if (error.response) {
-            const err = new Error(error.response.data.message || 'Failed to fetch profile');
+            const err = new Error(error.response.data?.message || 'Failed to fetch profile');
             err.status = error.response.status;
             throw err;
         } else {
@@ -180,7 +196,7 @@ async function updateProfile(data) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to update profile');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update profile');
         } else {
             throw new Error(error.message || 'Failed to update profile');
         }
@@ -195,7 +211,7 @@ async function changePassword(oldPassword, newPassword) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to change password');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to change password');
         } else {
             throw new Error(error.message || 'Failed to change password');
         }
@@ -207,7 +223,8 @@ async function getFavorites() {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch favorites');
+            const errorMsg = error.response.data?.error || error.response.data?.message || 'Failed to fetch favorites';
+            throw new Error(errorMsg);
         } else {
             throw new Error(error.message || 'Failed to fetch favorites');
         }
@@ -219,7 +236,7 @@ async function toggleFavorite(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to update favorite');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update favorite');
         } else {
             throw new Error(error.message || 'Failed to update favorite');
         }
@@ -231,7 +248,7 @@ async function getProductBySlug(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch product');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch product');
         } else {
             throw new Error(error.message || 'Failed to fetch product');
         }
@@ -247,7 +264,7 @@ async function addItem(data) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to create item');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to create item');
         } else {
             throw new Error(error.message || 'Failed to create item');
         }
@@ -279,21 +296,38 @@ async function forgotPassword(email) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to send reset email');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to send reset email');
         } else {
             throw new Error(error.message || 'Failed to send reset email');
         }
     }
 }
-async function resetPassword(resetPasswordToken, newPassword) {
+async function verifyResetOTP(email, otp) {
     try {
-        const response = await api.put(`/auth/resetpassword?resetPasswordToken=${resetPasswordToken}`, {
+        const response = await api.post('/auth/verify-reset-otp', {
+            email,
+            otp
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Verification failed');
+        } else {
+            throw new Error(error.message || 'Verification failed');
+        }
+    }
+}
+async function resetPassword(email, otp, newPassword) {
+    try {
+        const response = await api.put('/auth/resetpassword', {
+            email,
+            otp,
             newPassword
         });
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to reset password');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to reset password');
         } else {
             throw new Error(error.message || 'Failed to reset password');
         }
@@ -310,7 +344,7 @@ async function googleLogin(tokenOrCode, isCode = false) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Google login failed');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Google login failed');
         } else {
             throw new Error(error.message || 'Google login failed');
         }
@@ -325,7 +359,7 @@ async function facebookLogin(accessToken, userID) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Facebook login failed');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Facebook login failed');
         } else {
             throw new Error(error.message || 'Facebook login failed');
         }
@@ -340,7 +374,7 @@ async function completeOAuthRegistration(tempUserId, phone) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to complete registration');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to complete registration');
         } else {
             throw new Error(error.message || 'Failed to complete registration');
         }
@@ -414,13 +448,13 @@ api.interceptors.response.use((response)=>response, async (error)=>{
     }
     return Promise.reject(error);
 });
-async function getAllItems() {
+async function getAllItems(page = 1, limit = 10) {
     try {
-        const response = await api.get('/item/getAllItems');
+        const response = await api.get(`/item/getAllItems?page=${page}&limit=${limit}`);
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch items');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch items');
         } else {
             throw new Error(error.message || 'Failed to fetch items');
         }
@@ -432,7 +466,7 @@ async function getMyListings() {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch your listings');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch your listings');
         } else {
             throw new Error(error.message || 'Failed to fetch your listings');
         }
@@ -444,7 +478,7 @@ async function getEditItemData(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch item details');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch item details');
         } else {
             throw new Error(error.message || 'Failed to fetch item details');
         }
@@ -460,7 +494,7 @@ async function updateItem(slug, data) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to update item');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update item');
         } else {
             throw new Error(error.message || 'Failed to update item');
         }
@@ -468,17 +502,12 @@ async function updateItem(slug, data) {
 }
 async function searchSemantic(query) {
     try {
-        console.log(`[API] searchSemantic called with query: "${query}"`);
         const response = await api.get(`/item/search/semantic?query=${encodeURIComponent(query)}`);
-        console.log(`[API] searchSemantic success:`, {
-            count: response.data?.data?.length || 0,
-            firstItem: response.data?.data?.[0]?.title
-        });
         return response.data;
     } catch (error) {
         console.error(`[API] searchSemantic failed:`, error.message);
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to perform semantic search');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to perform semantic search');
         } else {
             throw new Error(error.message || 'Failed to perform semantic search');
         }
@@ -490,7 +519,7 @@ async function getSimilarItems(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch similar items');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch similar items');
         } else {
             throw new Error(error.message || 'Failed to fetch similar items');
         }
@@ -498,16 +527,12 @@ async function getSimilarItems(slug) {
 }
 async function getRecommendations() {
     try {
-        console.log(`[API] getRecommendations called`);
         const response = await api.get('/item/recommendations/all');
-        console.log(`[API] getRecommendations success:`, {
-            count: response.data?.data?.length || 0
-        });
         return response.data;
     } catch (error) {
         console.error(`[API] getRecommendations failed:`, error.message);
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch recommendations');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch recommendations');
         } else {
             throw new Error(error.message || 'Failed to fetch recommendations');
         }
@@ -522,24 +547,25 @@ async function chatWithAI(message, history = []) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to get AI response');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to get AI response');
         } else {
             throw new Error(error.message || 'Failed to get AI response');
         }
     }
 }
-async function generateItemDescription(title, category, condition, price) {
+async function generateItemDescription(title, category, condition, price, wordCount = 150) {
     try {
         const response = await api.post('/describe', {
             title,
             category,
             condition,
-            price
+            price,
+            wordCount
         });
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data.error || error.response.data.message || 'Failed to generate description');
+            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to generate description');
         } else {
             throw new Error(error.message || 'Failed to generate description');
         }
@@ -608,6 +634,14 @@ async function deleteChatMessage(messageId) {
         throw new Error(error.response?.data?.message || 'Failed to delete message');
     }
 }
+async function deleteConversation(conversationId) {
+    try {
+        const response = await api.delete(`/chat-system/conversation/${conversationId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to delete conversation');
+    }
+}
 async function placeBid(itemId, amount) {
     try {
         const response = await api.post('/bid/place', {
@@ -621,15 +655,9 @@ async function placeBid(itemId, amount) {
 }
 async function getNotifications() {
     try {
-        console.log("[api.ts] getNotifications() - Fetching notifications...");
         const response = await api.get('/notification/all');
-        console.log("[api.ts] getNotifications() - Success:", {
-            count: response.data?.data?.length || 0,
-            success: response.data?.success
-        });
         return response.data;
     } catch (error) {
-        console.error("[api.ts] getNotifications() - Error:", error.message);
         const errorMessage = error.response?.data?.error || error.response?.data?.message || (typeof error.response?.data === 'string' ? error.response.data : null) || error.message || 'Failed to fetch notifications';
         throw new Error(errorMessage);
     }
@@ -653,20 +681,30 @@ async function markNotificationsAsRead() {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
     }
 }
-const endpoints = {
-    auth: {
-        login: '/auth/login',
-        register: '/auth/register',
-        logout: '/auth/logout'
-    },
-    products: {
-        list: '/products',
-        detail: (id)=>`/products/${id}`,
-        create: '/products',
-        update: (id)=>`/products/${id}`,
-        delete: (id)=>`/products/${id}`
+async function markNotificationAsRead(id) {
+    try {
+        const response = await api.put(`/notification/${id}/read`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notification as read');
     }
-};
+}
+async function getSellerStats() {
+    try {
+        const response = await api.get('/bid/stats');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch seller stats');
+    }
+}
+async function getItemBids(itemId) {
+    try {
+        const response = await api.get(`/bid/item/${itemId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch item bids');
+    }
+}
 const __TURBOPACK__default__export__ = api;
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
@@ -752,8 +790,14 @@ function AuthProvider({ children }) {
                 };
             }
             // Backend sets HttpOnly cookies automatically
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            if (data.user) {
+                // Use user data returned directly from login for immediate state update
+                setUser(data.user);
+            } else {
+                // Fallback: Fetch profile after login if not returned
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             // Clear local favorites on successful login
             localStorage.removeItem("local_favorites");
             return {
@@ -834,8 +878,14 @@ function AuthProvider({ children }) {
                 };
             }
             // Normal login flow - phone already exists
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            if (response.user) {
+                // Use user data returned directly from google login for immediate state update
+                setUser(response.user);
+            } else {
+                // Fallback: Fetch profile after login if not returned
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             return {
                 success: true
             };
@@ -849,9 +899,13 @@ function AuthProvider({ children }) {
     };
     const completeOAuthWithPhone = async (tempUserId, phone)=>{
         try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["completeOAuthRegistration"])(tempUserId, phone);
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["completeOAuthRegistration"])(tempUserId, phone);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             return {
                 success: true
             };
@@ -862,9 +916,13 @@ function AuthProvider({ children }) {
     };
     const loginWithFacebook = async (accessToken, userID)=>{
         try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["facebookLogin"])(accessToken, userID);
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["facebookLogin"])(accessToken, userID);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             return {
                 success: true
             };
@@ -899,7 +957,7 @@ function AuthProvider({ children }) {
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f40$react$2d$oauth$2f$google$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["GoogleOAuthProvider"], {
-        clientId: ("TURBOPACK compile-time value", "897967608865-6u164i9eer47pj48oor5q46maf522pli.apps.googleusercontent.com") || '',
+        clientId: ("TURBOPACK compile-time value", "897967608865-v5blm2hljpf50972i3osmgsvk15bcbqu.apps.googleusercontent.com") || '',
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(AuthContext.Provider, {
             value: {
                 user,
@@ -920,12 +978,12 @@ function AuthProvider({ children }) {
             children: children
         }, void 0, false, {
             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/context/AuthContext.tsx",
-            lineNumber: 220,
+            lineNumber: 240,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/context/AuthContext.tsx",
-        lineNumber: 219,
+        lineNumber: 239,
         columnNumber: 9
     }, this);
 }
@@ -1011,7 +1069,8 @@ function ThemeSync() {
                     lastUserIdRef.current = currentUserId;
                 }
             } else if (!user) {
-                // User logged out - reset sync flag
+                // User logged out - force light theme and reset sync flag
+                setTheme('light');
                 hasSyncedRef.current = false;
                 lastUserIdRef.current = null;
             }

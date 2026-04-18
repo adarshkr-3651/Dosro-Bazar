@@ -86,6 +86,16 @@ const sendTokens = async (user, statusCode, res, req) => {
         return res.status(statusCode).json({
             success: true,
             message: 'Authentication successful',
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                photo: user.photo,
+                phone: user.phone,
+                address: user.address,
+                verificationStatus: user.verificationStatus
+            },
             expiresIn: 36000, // 10 hours in seconds
             tokenType: 'Bearer'
         });
@@ -93,6 +103,16 @@ const sendTokens = async (user, statusCode, res, req) => {
         // Send tokens in JSON response (for mobile apps, SPAs)
         return res.status(statusCode).json({
             success: true,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                photo: user.photo,
+                phone: user.phone,
+                address: user.address,
+                verificationStatus: user.verificationStatus
+            },
             accessToken,
             refreshToken,
             expiresIn: 36000, // 10 hours in seconds

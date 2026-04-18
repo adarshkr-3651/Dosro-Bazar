@@ -27,7 +27,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
 
   useEffect(() => {
     if (user) {
-      const fetchNotifications = async () => {
+      const fetchNotificationsData = async () => {
         try {
           const response = await getNotifications();
           if (response.success) {
@@ -38,10 +38,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
         }
       };
 
-      fetchNotifications();
-      // Poll for new notifications every minute
-      const interval = setInterval(fetchNotifications, 60000);
-      return () => clearInterval(interval);
+      fetchNotificationsData();
+
+      // Listen for manual update events
+      window.addEventListener('notificationsUpdated', fetchNotificationsData);
+
+      // Poll for new notifications every 15 seconds for a "live" feel
+      const interval = setInterval(fetchNotificationsData, 15000);
+      
+      return () => {
+        clearInterval(interval);
+        window.removeEventListener('notificationsUpdated', fetchNotificationsData);
+      };
     }
   }, [user]);
 

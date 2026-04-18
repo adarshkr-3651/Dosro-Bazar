@@ -73,7 +73,7 @@ const io = new Server(httpServer, {
     cors: {
         origin: process.env.NODE_ENV === 'production'
             ? ['https://your-production-domain.com']
-            : ['http://localhost:3000'],
+            : ['http://localhost:3000', 'https://localhost:3000'],
         credentials: true
     }
 });
@@ -129,7 +129,7 @@ app.use(helmet())
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // Time window: 15 minutes
-    max: 100, // Maximum 100 requests per IP per window
+    max: 10000, // Maximum 10000 requests per IP per window (increased for development)
     message: {
         error: 'Too many requests from this IP, please try again later.'
     }
@@ -163,7 +163,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 app.use(cors({
     origin: process.env.NODE_ENV === 'production'
         ? ['https://your-production-domain.com']  // Production: specific domain
-        : ['http://localhost:3000'],              // Development: React dev server
+        : ['http://localhost:3000', 'https://localhost:3000'],              // Development: React dev server
     credentials: true,                            // Allow cookies/credentials
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization']     // Allowed headers

@@ -195,6 +195,31 @@ export default function ProfilePage() {
         }
     };
 
+    const handleThemeChange = async (checked: boolean) => {
+        const newTheme = checked ? "dark" : "light";
+        setTheme(newTheme);
+
+        if (!user) return;
+
+        try {
+            const data = new FormData();
+            data.append("username", formData.username);
+            data.append("email", formData.email);
+            data.append("phone", formData.phone);
+            data.append("address", formData.address);
+            data.append("idProofType", formData.idProofType);
+            data.append("theme", newTheme);
+
+            const response = await updateProfile(data);
+            if (response.success && response.data) {
+                setUser(response.data);
+                toast.success('Theme preference saved automatically', { id: "theme" });
+            }
+        } catch (error: any) {
+            toast.error(error.message || 'Failed to save theme preference', { id: "theme" });
+        }
+    };
+
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setPasswordData((prev) => ({ ...prev, [name]: value }));
@@ -374,7 +399,7 @@ export default function ProfilePage() {
                                     </div>
                                     <Switch
                                         checked={mounted && resolvedTheme === "dark"}
-                                        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+                                        onCheckedChange={handleThemeChange}
                                     />
                                 </div>
                             </CardContent>

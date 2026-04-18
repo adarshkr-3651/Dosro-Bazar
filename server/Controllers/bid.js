@@ -3,6 +3,7 @@ import Bid from "../Models/Bid.js";
 import Item from "../Models/item.js";
 import Notification from "../Models/Notification.js";
 import CustomError from "../Helpers/error/CustomError.js";
+import mongoose from "mongoose";
 
 export const placeBid = asyncErrorWrapper(async (req, res, next) => {
     const { amount, itemId } = req.body;
@@ -118,5 +119,59 @@ export const updateBidStatus = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: `Bid ${status}`
+    });
+});
+
+export const getSellerStats = asyncErrorWrapper(async (req, res, next) => {
+    const sellerId = req.user.id;
+
+    // 1. Count pending bids for the seller's items
+    const pendingBidsCount = await Bid.countDocuments({
+        seller: sellerId,
+        status: "pending"
+    });
+
+    // 2. Sum up total sales (accepted bids)
+    const salesData = await Bid.aggregate([
+        {
+            $match: {
+                seller: new mongoose.Types.ObjectId(sellerId),
+                status: "accepted"
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalAmount: { $sum: "$amount" }
+            }
+        }
+    ]);
+
+    const totalSales = salesData.length > 0 ? salesData[0].totalAmount : 0;
+
+    res.status(200).json({
+        success: true,
+        data: {
+            pendingBidsCount,
+            totalSales
+        }
+    });
+});
+
+export const getItemBids = asyncErrorWrapper(async (req, res, next) => {
+    const { itemId } = req.params;
+
+    if (!itemId) {
+        return next(new CustomError("Item ID is required", 400));
+    }
+
+    const bids = await Bid.find({ 
+        item: itemId,
+        status: { $in: ["pending", "accepted"] }
+    }).select("amount status");
+
+    res.status(200).json({
+        success: true,
+        data: bids
     });
 });

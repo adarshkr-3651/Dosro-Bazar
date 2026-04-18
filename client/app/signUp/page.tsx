@@ -25,6 +25,7 @@ export default function SignUpPage(): JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fbReady, setFbReady] = useState(false);
   const [phoneWarning, setPhoneWarning] = useState<string | null>(null);
   const [emailWarning, setEmailWarning] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -152,6 +153,16 @@ export default function SignUpPage(): JSX.Element {
   };
 
   const handleFacebookLogin = () => {
+    if (typeof window !== 'undefined' && window.location.protocol === 'http:') {
+      setError('Facebook Login requires an HTTPS connection. Please use https://localhost:3000 or a secure tunnel.');
+      return;
+    }
+
+    if (!fbReady) {
+      setError('Facebook SDK is still loading. Please try again in a moment.');
+      return;
+    }
+
     if (typeof window !== 'undefined' && (window as any).FB) {
       (window as any).FB.login((response: any) => {
         if (response.authResponse) {
@@ -176,7 +187,7 @@ export default function SignUpPage(): JSX.Element {
         } else {
           setError('Facebook signup cancelled');
         }
-      }, { scope: 'public_profile,email' });
+      }, { scope: 'public_profile' });
     } else {
       setError('Facebook SDK not loaded');
     }
@@ -185,13 +196,20 @@ export default function SignUpPage(): JSX.Element {
   // Load Facebook SDK
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const fbAppId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
+      if (!fbAppId || fbAppId === 'your_facebook_app_id_here') {
+        console.warn('Facebook App ID is not configured. Set NEXT_PUBLIC_FACEBOOK_APP_ID in .env');
+        return;
+      }
+
       (window as any).fbAsyncInit = function () {
         (window as any).FB.init({
-          appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
+          appId: fbAppId,
           cookie: true,
           xfbml: true,
           version: 'v18.0'
         });
+        setFbReady(true);
       };
 
       (function (d, s, id) {

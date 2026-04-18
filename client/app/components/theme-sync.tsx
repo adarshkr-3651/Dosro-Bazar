@@ -26,7 +26,8 @@ export function ThemeSync() {
         lastUserIdRef.current = currentUserId
       }
     } else if (!user) {
-      // User logged out - reset sync flag
+      // User logged out - force light theme and reset sync flag
+      setTheme('light')
       hasSyncedRef.current = false
       lastUserIdRef.current = null
     }
