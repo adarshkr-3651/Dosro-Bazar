@@ -113,6 +113,8 @@ __turbopack_context__.s([
     ()=>forgotPassword,
     "generateItemDescription",
     ()=>generateItemDescription,
+    "getAcceptedBidders",
+    ()=>getAcceptedBidders,
     "getAllItems",
     ()=>getAllItems,
     "getConversations",
@@ -121,8 +123,14 @@ __turbopack_context__.s([
     ()=>getEditItemData,
     "getFavorites",
     ()=>getFavorites,
+    "getInvoiceDetail",
+    ()=>getInvoiceDetail,
+    "getItemBids",
+    ()=>getItemBids,
     "getMessages",
     ()=>getMessages,
+    "getMyInvoices",
+    ()=>getMyInvoices,
     "getMyListings",
     ()=>getMyListings,
     "getNotifications",
@@ -133,6 +141,10 @@ __turbopack_context__.s([
     ()=>getProfile,
     "getRecommendations",
     ()=>getRecommendations,
+    "getRecycleBin",
+    ()=>getRecycleBin,
+    "getSellerStats",
+    ()=>getSellerStats,
     "getSimilarItems",
     ()=>getSimilarItems,
     "googleLogin",
@@ -141,14 +153,26 @@ __turbopack_context__.s([
     ()=>loginUser,
     "logoutUser",
     ()=>logoutUser,
+    "markNotificationAsRead",
+    ()=>markNotificationAsRead,
     "markNotificationsAsRead",
     ()=>markNotificationsAsRead,
+    "markProductAsSold",
+    ()=>markProductAsSold,
+    "moveToRecycleBin",
+    ()=>moveToRecycleBin,
+    "permanentDeleteProduct",
+    ()=>permanentDeleteProduct,
     "placeBid",
     ()=>placeBid,
     "resendVerificationCode",
     ()=>resendVerificationCode,
     "resetPassword",
     ()=>resetPassword,
+    "respondToBidAction",
+    ()=>respondToBidAction,
+    "restoreProduct",
+    ()=>restoreProduct,
     "searchSemantic",
     ()=>searchSemantic,
     "sendChatMessage",
@@ -174,14 +198,21 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 ;
+// When the client runs on HTTPS (dev-https), direct calls to http://localhost:5000
+// are blocked as mixed content. Use Next.js rewrites proxy instead.
+const getBaseURL = ()=>{
+    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
+    ;
+    return ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
+};
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].create({
-    baseURL: ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000',
+    baseURL: getBaseURL(),
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
 });
-const BASE_URL = ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
+const BASE_URL = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
 async function loginUser(identifier, password) {
     try {
         const response = await api.post('/auth/login', {
@@ -523,9 +554,9 @@ api.interceptors.response.use((response)=>response, async (error)=>{
     }
     return Promise.reject(error);
 });
-async function getAllItems() {
+async function getAllItems(page = 1, limit = 10) {
     try {
-        const response = await api.get('/item/getAllItems');
+        const response = await api.get(`/item/getAllItems?page=${page}&limit=${limit}`);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -628,13 +659,14 @@ async function chatWithAI(message, history = []) {
         }
     }
 }
-async function generateItemDescription(title, category, condition, price) {
+async function generateItemDescription(title, category, condition, price, wordCount = 150) {
     try {
         const response = await api.post('/describe', {
             title,
             category,
             condition,
-            price
+            price,
+            wordCount
         });
         return response.data;
     } catch (error) {
@@ -727,24 +759,39 @@ async function placeBid(itemId, amount) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to place bid');
     }
 }
-async function getNotifications() {
+async function getNotifications(mode) {
     try {
-        const response = await api.get('/notification/all');
+        const url = mode ? `/notification/all?mode=${mode}` : '/notification/all';
+        const response = await api.get(url);
         return response.data;
     } catch (error) {
         const errorMessage = error.response?.data?.error || error.response?.data?.message || (typeof error.response?.data === 'string' ? error.response.data : null) || error.message || 'Failed to fetch notifications';
         throw new Error(errorMessage);
     }
 }
-async function updateBidStatus(bidId, status) {
+async function updateBidStatus(bidId, status, followUp, metadata) {
     try {
         const response = await api.post('/bid/status', {
             bidId,
-            status
+            status,
+            followUp,
+            metadata
         });
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to update bid status');
+    }
+}
+async function respondToBidAction(bidId, action, metadata) {
+    try {
+        const response = await api.post('/bid/respond', {
+            bidId,
+            action,
+            metadata
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to send response');
     }
 }
 async function markNotificationsAsRead() {
@@ -752,7 +799,98 @@ async function markNotificationsAsRead() {
         const response = await api.post('/notification/read-all');
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark all as read');
+    }
+}
+async function getAcceptedBidders(productId) {
+    try {
+        const response = await api.get(`/item/${productId}/accepted-bidders`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch bidders');
+    }
+}
+async function markProductAsSold(productId, buyerId, soldPrice) {
+    try {
+        const response = await api.post(`/item/${productId}/mark-sold`, {
+            buyerId,
+            soldPrice
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark product as sold');
+    }
+}
+async function moveToRecycleBin(productId) {
+    try {
+        const response = await api.post(`/item/${productId}/recycle`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to move to recycle bin');
+    }
+}
+async function getRecycleBin() {
+    try {
+        const response = await api.get('/item/recycle-bin/all');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch recycle bin');
+    }
+}
+async function restoreProduct(productId) {
+    try {
+        const response = await api.post(`/item/${productId}/restore`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to restore product');
+    }
+}
+async function permanentDeleteProduct(productId) {
+    try {
+        const response = await api.delete(`/item/${productId}/permanent`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to permanently delete product');
+    }
+}
+async function getMyInvoices() {
+    try {
+        const response = await api.get('/invoice/my-invoices');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch invoices');
+    }
+}
+async function getInvoiceDetail(invoiceId) {
+    try {
+        const response = await api.get(`/invoice/${invoiceId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch invoice detail');
+    }
+}
+async function markNotificationAsRead(notificationId) {
+    try {
+        const response = await api.put(`/notification/${notificationId}/read`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notification as read');
+    }
+}
+async function getSellerStats() {
+    try {
+        const response = await api.get('/bid/stats');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch seller stats');
+    }
+}
+async function getItemBids(itemId) {
+    try {
+        const response = await api.get(`/bid/item/${itemId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch item bids');
     }
 }
 const __TURBOPACK__default__export__ = api;
@@ -828,8 +966,14 @@ function AuthProvider({ children }) {
                 };
             }
             // Backend sets HttpOnly cookies automatically
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            if (data.user) {
+                // Use user data returned directly from login for immediate state update
+                setUser(data.user);
+            } else {
+                // Fallback: Fetch profile after login if not returned
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             // Clear local favorites on successful login
             localStorage.removeItem("local_favorites");
             return {
@@ -910,8 +1054,14 @@ function AuthProvider({ children }) {
                 };
             }
             // Normal login flow - phone already exists
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            if (response.user) {
+                // Use user data returned directly from google login for immediate state update
+                setUser(response.user);
+            } else {
+                // Fallback: Fetch profile after login if not returned
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             return {
                 success: true
             };
@@ -925,9 +1075,13 @@ function AuthProvider({ children }) {
     };
     const completeOAuthWithPhone = async (tempUserId, phone)=>{
         try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["completeOAuthRegistration"])(tempUserId, phone);
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["completeOAuthRegistration"])(tempUserId, phone);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             return {
                 success: true
             };
@@ -938,9 +1092,13 @@ function AuthProvider({ children }) {
     };
     const loginWithFacebook = async (accessToken, userID)=>{
         try {
-            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["facebookLogin"])(accessToken, userID);
-            const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
-            setUser(userData);
+            const data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["facebookLogin"])(accessToken, userID);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getProfile"])();
+                setUser(userData);
+            }
             return {
                 success: true
             };
@@ -975,7 +1133,7 @@ function AuthProvider({ children }) {
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f40$react$2d$oauth$2f$google$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["GoogleOAuthProvider"], {
-        clientId: ("TURBOPACK compile-time value", "897967608865-6u164i9eer47pj48oor5q46maf522pli.apps.googleusercontent.com") || '',
+        clientId: ("TURBOPACK compile-time value", "897967608865-v5blm2hljpf50972i3osmgsvk15bcbqu.apps.googleusercontent.com") || '',
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(AuthContext.Provider, {
             value: {
                 user,
@@ -996,12 +1154,12 @@ function AuthProvider({ children }) {
             children: children
         }, void 0, false, {
             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/context/AuthContext.tsx",
-            lineNumber: 220,
+            lineNumber: 240,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/context/AuthContext.tsx",
-        lineNumber: 219,
+        lineNumber: 239,
         columnNumber: 9
     }, this);
 }
@@ -1069,7 +1227,8 @@ function ThemeSync() {
                 lastUserIdRef.current = currentUserId;
             }
         } else if (!user) {
-            // User logged out - reset sync flag
+            // User logged out - force light theme and reset sync flag
+            setTheme('light');
             hasSyncedRef.current = false;
             lastUserIdRef.current = null;
         }

@@ -125,6 +125,28 @@ const ItemSchema = new mongoose.Schema({
     embeddings: {
         type: [Number],
         default: []
+    },
+    status: {
+        type: String,
+        enum: ["active", "sold"],
+        default: "active"
+    },
+    soldTo: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User"
+    },
+    soldPrice: {
+        type: Number
+    },
+    soldAt: {
+        type: Date
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Date
     }
 
 

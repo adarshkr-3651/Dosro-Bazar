@@ -15,6 +15,7 @@ import adminAuthRoute from "./adminAuth.js";
 import bidRoute from "./bid.js";
 import notificationRoute from "./notification.js";
 import advertisementRoute from "./ad.js";
+import invoiceRoute from "./invoice.js";
 
 // Mount JWKS route first (public endpoint)
 router.use("/", jwksRoute)
@@ -31,5 +32,6 @@ router.use("/chat-system", chatSystemRoute)
 router.use("/bid", bidRoute)
 router.use("/notification", notificationRoute)
 router.use("/advertisements", advertisementRoute)
+router.use("/invoice", invoiceRoute)
 
 export default router;

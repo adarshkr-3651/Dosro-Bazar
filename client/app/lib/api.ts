@@ -357,9 +357,12 @@ api.interceptors.response.use(
 );
 
 
-export async function getAllItems(page: number = 1, limit: number = 10) {
+export async function getAllItems(page: number = 1, limit: number = 10, authorId?: string) {
   try {
-    const response = await api.get(`/item/getAllItems?page=${page}&limit=${limit}`);
+    const url = authorId 
+      ? `/item/getAllItems?page=${page}&limit=${limit}&author=${authorId}`
+      : `/item/getAllItems?page=${page}&limit=${limit}`;
+    const response = await api.get(url);
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -488,7 +491,7 @@ export async function getConversations() {
     const response = await api.get('/chat-system/conversations');
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch conversations');
+    throw new Error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to fetch conversations');
   }
 }
 
@@ -497,7 +500,7 @@ export async function getMessages(conversationId: string) {
     const response = await api.get(`/chat-system/${conversationId}/messages`);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch messages');
+    throw new Error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to fetch messages');
   }
 }
 
@@ -567,9 +570,10 @@ export async function placeBid(itemId: string, amount: number) {
     }
 }
 
-export async function getNotifications() {
+export async function getNotifications(mode?: 'buyer' | 'seller') {
     try {
-        const response = await api.get('/notification/all');
+        const url = mode ? `/notification/all?mode=${mode}` : '/notification/all';
+        const response = await api.get(url);
         return response.data;
     } catch (error: any) {
         const errorMessage = error.response?.data?.error || 
@@ -581,12 +585,21 @@ export async function getNotifications() {
     }
 }
 
-export async function updateBidStatus(bidId: string, status: 'accepted' | 'rejected') {
+export async function updateBidStatus(bidId: string, status: 'accepted' | 'rejected', followUp?: string, metadata?: any) {
     try {
-        const response = await api.post('/bid/status', { bidId, status });
+        const response = await api.post('/bid/status', { bidId, status, followUp, metadata });
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to update bid status');
+    }
+}
+
+export async function respondToBidAction(bidId: string, action: string, metadata?: any) {
+    try {
+        const response = await api.post('/bid/respond', { bidId, action, metadata });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to send response');
     }
 }
 
@@ -595,13 +608,85 @@ export async function markNotificationsAsRead() {
         const response = await api.post('/notification/read-all');
         return response.data;
     } catch (error: any) {
-        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark all as read');
     }
 }
 
-export async function markNotificationAsRead(id: string) {
+export async function getAcceptedBidders(productId: string) {
     try {
-        const response = await api.put(`/notification/${id}/read`);
+        const response = await api.get(`/item/${productId}/accepted-bidders`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch bidders');
+    }
+}
+
+export async function markProductAsSold(productId: string, buyerId: string, soldPrice: number) {
+    try {
+        const response = await api.post(`/item/${productId}/mark-sold`, { buyerId, soldPrice });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark product as sold');
+    }
+}
+
+export async function moveToRecycleBin(productId: string) {
+    try {
+        const response = await api.post(`/item/${productId}/recycle`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to move to recycle bin');
+    }
+}
+
+export async function getRecycleBin() {
+    try {
+        const response = await api.get('/item/recycle-bin/all');
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch recycle bin');
+    }
+}
+
+export async function restoreProduct(productId: string) {
+    try {
+        const response = await api.post(`/item/${productId}/restore`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to restore product');
+    }
+}
+
+export async function permanentDeleteProduct(productId: string) {
+    try {
+        const response = await api.delete(`/item/${productId}/permanent`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to permanently delete product');
+    }
+}
+
+export async function getMyInvoices() {
+    try {
+        const response = await api.get('/invoice/my-invoices');
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch invoices');
+    }
+}
+
+export async function getInvoiceDetail(invoiceId: string) {
+    try {
+        const response = await api.get(`/invoice/${invoiceId}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch invoice detail');
+    }
+}
+
+export async function markNotificationAsRead(notificationId: string) {
+    try {
+        const response = await api.put(`/notification/${notificationId}/read`);
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notification as read');

@@ -10,7 +10,7 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X } from "lucide-react";
+import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Trash2, Receipt } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Switch } from "@/app/components/ui/switch";
@@ -428,6 +428,19 @@ export default function ProfilePage() {
                             </CardContent>
                         </Card>
 
+                        {/* Invoices Card */}
+                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={() => router.push('/invoices')}>
+                            <CardContent className="p-4 flex items-center gap-3">
+                                <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                    <Receipt className="h-5 w-5" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-bold text-sm">My Invoices</p>
+                                    <p className="text-[10px] text-muted-foreground">View your transaction history</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
                         {/* Recent Devices Card (Moved to Sidebar) */}
                         <Card>
                             <CardHeader>
@@ -482,6 +495,19 @@ export default function ProfilePage() {
                                         <p className="text-sm">No recent devices.</p>
                                     </div>
                                 )}
+                            </CardContent>
+                        </Card>
+
+                        {/* Recycle Bin Card */}
+                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer border-dashed border-red-200 dark:border-red-900/50" onClick={() => router.push('/recycle-bin')}>
+                            <CardContent className="p-4 flex items-center gap-3">
+                                <div className="p-2 bg-red-100 dark:bg-red-950/30 rounded-lg text-red-600">
+                                    <Trash2 className="h-5 w-5" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-bold text-sm">Recycle Bin</p>
+                                    <p className="text-[10px] text-muted-foreground text-red-600/60">Recently deleted items</p>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>

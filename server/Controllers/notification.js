@@ -9,11 +9,15 @@ export const getNotifications = asyncErrorWrapper(async (req, res, next) => {
 
     // Filter based on mode if provided
     if (mode === 'buyer') {
-        // Buyers see when their bids are accepted or rejected
-        query.type = { $in: ["bid_accepted", "bid_rejected"] };
+        query.$or = [
+            { recipientRole: 'buyer' },
+            { type: { $in: ["bid_accepted", "bid_rejected"] } } // fallback for old notifications
+        ];
     } else if (mode === 'seller') {
-        // Sellers see when someone places a bid on their items
-        query.type = "bid_placed";
+        query.$or = [
+            { recipientRole: 'seller' },
+            { type: "bid_placed" } // fallback for old notifications
+        ];
     }
 
     const notifications = await Notification.find(query)

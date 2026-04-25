@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import { getConversations, getMessages, sendChatMessage, deleteChatMessage, deleteConversation } from "@/app/lib/api";
 import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
-import { Send, ArrowLeft, MoreVertical, Package, MapPin, Loader2, MessageSquare, Image as ImageIcon, X, Eye, EyeOff, Trash2 } from "lucide-react";
+import { Send, ArrowLeft, MoreVertical, Package, MapPin, Loader2, MessageSquare, Image as ImageIcon, X, Eye, EyeOff, Trash2, User as UserIcon, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { resolvePhotoUrl } from "../lib/image-utils";
@@ -19,11 +19,15 @@ import { Switch } from "@/app/components/ui/switch";
 import { Label } from "@/app/components/ui/label";
 import { uploadChatImage, toggleOnlineStatus } from "@/app/lib/api";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/app/components/ui/dialog";
 
 export default function MessagesPage() {
     const { user, loading: authLoading } = useAuth();
     const isAuthenticated = !!user;
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const itemIdParam = searchParams.get("itemId");
+    const sellerIdParam = searchParams.get("sellerId");
 
     const [conversations, setConversations] = useState<any[]>([]);
     const [selectedConv, setSelectedConv] = useState<any | null>(null);
@@ -35,6 +39,9 @@ export default function MessagesPage() {
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [isSharing, setIsSharing] = useState(false);
+    const [dontAskAgain, setDontAskAgain] = useState(false);
     
     // Full Flex Enhancements State
     const [isOnline, setIsOnline] = useState(true);
@@ -45,6 +52,15 @@ export default function MessagesPage() {
 
     const socketRef = useRef<Socket | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const selectedConvRef = useRef<any>(null);
+    const autoSelectedRef = useRef(false);
+
+    // Sync ref with state
+    useEffect(() => {
+        selectedConvRef.current = selectedConv;
+    }, [selectedConv]);
+
+    const fetchConversationsRef = useRef<any>(null);
 
     // Sync online preference from user object
     useEffect(() => {
@@ -52,6 +68,63 @@ export default function MessagesPage() {
             setIsOnline(user.isOnlineVisible as boolean);
         }
     }, [user]);
+
+    const handleSelectConversation = useCallback(async (conv: any) => {
+        setSelectedConv(conv);
+        setLoadingMessages(true);
+        try {
+            const res: any = await getMessages(conv._id);
+            setMessages(res.data);
+
+            // Join specific conversation room (optional, depending on backend implementation)
+            if (socketRef.current) {
+                socketRef.current.emit("joinConversation", conv._id);
+            }
+
+            // Refresh conversation list to clear unread counts if any
+            fetchConversationsRef.current?.();
+        } catch (error: any) {
+            console.error(error);
+            toast.error("Failed to load messages");
+        } finally {
+            setLoadingMessages(false);
+        }
+    }, []); // Removed fetchConversations from dependencies to avoid circularity
+
+
+    const fetchConversations = useCallback(async () => {
+        if (!isAuthenticated) return;
+        
+        try {
+            const res: any = await getConversations();
+            const convs = res.data;
+            setConversations(convs);
+
+            // Auto-select conversation based on query parameters
+            if (itemIdParam && sellerIdParam && !autoSelectedRef.current) {
+                const targetConv = convs.find((c: any) => 
+                    c.item?._id === itemIdParam && 
+                    c.participants.some((p: any) => p._id === sellerIdParam)
+                );
+                if (targetConv) {
+                    autoSelectedRef.current = true;
+                    handleSelectConversation(targetConv);
+                }
+            }
+        } catch (error: any) {
+            console.error(error);
+            // Don't toast if it's just an auth error, the redirect will handle it
+            if (!error.message.includes("authorized") && !error.message.includes("login")) {
+                toast.error("Failed to load conversations");
+            }
+        } finally {
+            setLoadingConvs(false);
+        }
+    }, [isAuthenticated, itemIdParam, sellerIdParam, handleSelectConversation]);
+
+    useEffect(() => {
+        fetchConversationsRef.current = fetchConversations;
+    }, [fetchConversations]);
 
     // Initial auth check and socket connection
     useEffect(() => {
@@ -84,7 +157,7 @@ export default function MessagesPage() {
                     // Check if it's already in the list
                     if (prev.find(m => m._id === message._id)) return prev;
 
-                    if (selectedConv && selectedConv._id === conversationId) {
+                    if (selectedConvRef.current && selectedConvRef.current._id === conversationId) {
                         return [...prev, message];
                     }
                     return prev;
@@ -105,58 +178,24 @@ export default function MessagesPage() {
             });
 
             socketRef.current.on("messageDeleted", ({ messageId, conversationId }: any) => {
-                if (selectedConv && selectedConv._id === conversationId) {
+                if (selectedConvRef.current && selectedConvRef.current._id === conversationId) {
                     setMessages(prev => prev.filter(m => m._id !== messageId));
                 }
-                fetchConversations();
+                fetchConversationsRef.current?.();
             });
 
             return () => {
-                if (socketRef.current) {
-                    socketRef.current.disconnect();
-                }
-            };
-        }
-    }, [isAuthenticated, user, authLoading, router, selectedConv]);
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+        };
+    }
+}, [isAuthenticated, user, authLoading, router, fetchConversations]);
 
     // Auto-scroll to bottom of messages
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
-
-    const fetchConversations = async () => {
-        try {
-            const res: any = await getConversations();
-            setConversations(res.data);
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to load conversations");
-        } finally {
-            setLoadingConvs(false);
-        }
-    };
-
-    const handleSelectConversation = async (conv: any) => {
-        setSelectedConv(conv);
-        setLoadingMessages(true);
-        try {
-            const res: any = await getMessages(conv._id);
-            setMessages(res.data);
-
-            // Join specific conversation room (optional, depending on backend implementation)
-            if (socketRef.current) {
-                socketRef.current.emit("joinConversation", conv._id);
-            }
-
-            // Refresh conversation list to clear unread counts if any
-            fetchConversations();
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to load messages");
-        } finally {
-            setLoadingMessages(false);
-        }
-    };
 
     const handleToggleOnline = async (checked: boolean) => {
         setIsOnline(checked);
@@ -208,6 +247,45 @@ export default function MessagesPage() {
         }, () => {
             toast.error("Unable to retrieve your location. Please check browser permissions.");
         });
+    };
+
+    const handleShareDetailsClick = () => {
+        // Check localStorage for preference
+        const skipConfirmation = localStorage.getItem("skipShareDetailsConfirm") === "true";
+        if (skipConfirmation) {
+            confirmShareDetails();
+        } else {
+            setIsShareModalOpen(true);
+        }
+    };
+
+    const confirmShareDetails = async () => {
+        if (!selectedConv || !user) return;
+        
+        setIsSharing(true);
+
+        // Save preference if checkbox is ticked
+        if (dontAskAgain) {
+            localStorage.setItem("skipShareDetailsConfirm", "true");
+        }
+
+        const otherParticipant = selectedConv.participants.find((p: any) => p._id !== user?._id);
+        if (!otherParticipant) return;
+
+        const detailsText = `📋 My Contact Details:\nName: ${user.username}\nPhone: ${user.phone || 'N/A'}\nEmail: ${user.email || 'N/A'}`;
+        
+        try {
+            const res: any = await sendChatMessage(otherParticipant._id, selectedConv.item._id, detailsText);
+            setMessages(prev => [...prev, res.data]);
+            fetchConversations();
+            toast.success("Contact details shared!");
+            setIsShareModalOpen(false);
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to share details");
+        } finally {
+            setIsSharing(false);
+        }
     };
 
     const handleSendMessage = async (e?: React.FormEvent) => {
@@ -551,8 +629,11 @@ export default function MessagesPage() {
                                             <Button type="button" variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-foreground" onClick={() => fileInputRef.current?.click()}>
                                                 <ImageIcon className="h-5 w-5" />
                                             </Button>
-                                            <Button type="button" variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-foreground" onClick={handleShareLocation}>
+                                            <Button type="button" variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-foreground" onClick={handleShareLocation} title="Share Location">
                                                 <MapPin className="h-5 w-5" />
+                                            </Button>
+                                            <Button type="button" variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-foreground" onClick={handleShareDetailsClick} title="Share Contact Details">
+                                                <UserIcon className="h-5 w-5" />
                                             </Button>
                                             <Input
                                                 value={input}
@@ -615,6 +696,43 @@ export default function MessagesPage() {
                 title="Delete Conversation"
                 description="Are you sure you want to delete this conversation? This will permanently remove all messages for both participants. This action cannot be undone."
             />
+
+            <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
+                <DialogContent className="sm:max-w-[425px] rounded-2xl">
+                    <DialogHeader className="items-center text-center">
+                        <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                            <ShieldCheck className="h-8 w-8 text-primary" />
+                        </div>
+                        <DialogTitle className="text-2xl font-black italic">Share Details?</DialogTitle>
+                        <DialogDescription className="text-muted-foreground pt-2">
+                            You are going to share your personal details like <span className="font-bold text-foreground">Name, Phone number, and Email</span>.
+                            <br/><br/>
+                            Are you sure you want to proceed?
+                        </DialogDescription>
+                        <div className="flex items-center space-x-2 mt-4 pt-2 w-full justify-start border-t">
+                            <input 
+                                type="checkbox" 
+                                id="dont-ask" 
+                                checked={dontAskAgain} 
+                                onChange={(e) => setDontAskAgain(e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                            />
+                            <label htmlFor="dont-ask" className="text-xs text-muted-foreground cursor-pointer select-none">
+                                Don't ask me again
+                            </label>
+                        </div>
+                    </DialogHeader>
+                    <DialogFooter className="flex-col sm:flex-row gap-2 mt-4">
+                        <Button variant="outline" onClick={() => setIsShareModalOpen(false)} className="w-full sm:w-auto rounded-xl">
+                            Cancel
+                        </Button>
+                        <Button onClick={confirmShareDetails} disabled={isSharing} className="w-full sm:w-auto rounded-xl gap-2">
+                            {isSharing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                            Share Now
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

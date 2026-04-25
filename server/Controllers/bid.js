@@ -2,6 +2,9 @@ import asyncErrorWrapper from "express-async-handler";
 import Bid from "../Models/Bid.js";
 import Item from "../Models/item.js";
 import Notification from "../Models/Notification.js";
+import User from "../Models/user.js";
+import Conversation from "../Models/conversation.js";
+import Message from "../Models/message.js";
 import CustomError from "../Helpers/error/CustomError.js";
 import mongoose from "mongoose";
 
@@ -58,9 +61,25 @@ export const placeBid = asyncErrorWrapper(async (req, res, next) => {
     // Create notification for seller
     await Notification.create({
         recipient: item.author,
+        recipientRole: "seller",
         sender: buyerId,
         type: "bid_placed",
         message: `${buyerUsername} placed a new bid of Rs. ${amount} for your item "${item.title}"`,
+        relatedBid: bid._id,
+        relatedItem: itemId
+    });
+
+    // Create notification for buyer (Confirmation)
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dateStr = now.toLocaleDateString([], { day: 'numeric', month: 'long', year: 'numeric' });
+    
+    await Notification.create({
+        recipient: buyerId,
+        recipientRole: "buyer",
+        sender: item.author,
+        type: "bid_placed_buyer_copy",
+        message: `u placed a bid of rs ${amount} for ${item.title} at ${timeStr} at ${dateStr}`,
         relatedBid: bid._id,
         relatedItem: itemId
     });
@@ -72,7 +91,7 @@ export const placeBid = asyncErrorWrapper(async (req, res, next) => {
 });
 
 export const updateBidStatus = asyncErrorWrapper(async (req, res, next) => {
-    const { bidId, status } = req.body; // status: accepted or rejected
+    const { bidId, status, followUp, metadata } = req.body; // status: accepted or rejected, followUp: share_details, open_chat, wait
     const sellerId = req.user.id;
 
     if (!bidId || typeof bidId !== 'string') {
@@ -102,23 +121,151 @@ export const updateBidStatus = asyncErrorWrapper(async (req, res, next) => {
     );
 
     // Create notification for buyer
-    const type = status === "accepted" ? "bid_accepted" : "bid_rejected";
-    const message = status === "accepted" 
+    let type = status === "accepted" ? "bid_accepted" : "bid_rejected";
+    let message = status === "accepted" 
         ? `${req.user.username} accepted your bid of Rs. ${bid.amount} for "${bid.item.title}"! ✅`
         : `${req.user.username} rejected your bid of Rs. ${bid.amount} for "${bid.item.title}". ❌`;
 
-    await Notification.create({
+    const notificationData = {
         recipient: bid.buyer,
+        recipientRole: "buyer",
         sender: sellerId,
         type,
         message,
         relatedBid: bid._id,
-        relatedItem: bid.item._id
+        relatedItem: bid.item._id,
+        metadata: metadata || {}
+    };
+
+    if (status === "accepted" && followUp) {
+        if (followUp === "share_details") {
+            notificationData.type = "bid_accepted_share_details";
+            notificationData.message = `${req.user.username} accepted your bid of Rs. ${bid.amount} and shared their contact details! 📞`;
+            // Metadata should already contain name, phone, email from frontend or we can fetch here
+            const seller = await User.findById(sellerId);
+            notificationData.metadata = {
+                name: seller.username,
+                phone: seller.phone,
+                email: seller.email,
+                ...metadata
+            };
+        } else if (followUp === "open_chat") {
+            notificationData.type = "bid_accepted_open_chat";
+            notificationData.message = `${req.user.username} accepted your bid of Rs. ${bid.amount} and started a chat! 💬`;
+            
+            // Send automatic message
+            let conversation = await Conversation.findOne({
+                participants: { $all: [sellerId, bid.buyer] },
+                item: bid.item._id
+            });
+
+            if (!conversation) {
+                conversation = await Conversation.create({
+                    participants: [sellerId, bid.buyer],
+                    item: bid.item._id,
+                    unreadCount: {
+                        [sellerId.toString()]: 0,
+                        [bid.buyer.toString()]: 0
+                    }
+                });
+            }
+
+            const autoMessageText = `Seller has requested a chat with you and also has accepted your bid request of Rs. ${bid.amount}. Please proceed further chat here.`;
+            const newMessage = await Message.create({
+                conversationId: conversation._id,
+                sender: sellerId,
+                text: autoMessageText
+            });
+
+            conversation.lastMessage = newMessage._id;
+            const currentUnread = conversation.unreadCount.get(bid.buyer.toString()) || 0;
+            conversation.unreadCount.set(bid.buyer.toString(), currentUnread + 1);
+            await conversation.save();
+
+            // Emit socket event if possible (req.io)
+            if (req.io) {
+                req.io.to(bid.buyer.toString()).emit("newMessage", {
+                    message: newMessage,
+                    conversationId: conversation._id,
+                    itemId: bid.item._id
+                });
+            }
+        } else if (followUp === "wait") {
+            notificationData.type = "bid_accepted_wait";
+            notificationData.message = `${req.user.username} accepted your bid of Rs. ${bid.amount} and is waiting for your response! ⏳`;
+        }
+    }
+
+    await Notification.create(notificationData);
+
+    res.status(200).json({
+        success: true,
+        message: `Bid ${status}`,
+        followUp
+    });
+});
+
+export const respondToBidAction = asyncErrorWrapper(async (req, res, next) => {
+    const { bidId, action, metadata } = req.body; // action: share_details, open_chat, close_deal
+    const buyerId = req.user.id;
+
+    const bid = await Bid.findById(bidId).populate("item");
+    if (!bid) return next(new CustomError("Bid not found", 404));
+
+    if (bid.buyer.toString() !== buyerId) {
+        return next(new CustomError("You are not authorized for this action", 403));
+    }
+
+    let type, message;
+    const buyer = await User.findById(buyerId);
+
+    if (action === "share_details") {
+        type = "buyer_responded_contact_shared";
+        message = `${req.user.username} shared their contact details for "${bid.item.title}". 📞`;
+    } else if (action === "open_chat") {
+        type = "buyer_responded_open_chat";
+        message = `${req.user.username} opened a chat for "${bid.item.title}". 💬`;
+        
+        // Ensure conversation exists
+        let conversation = await Conversation.findOne({
+            participants: { $all: [buyerId, bid.seller] },
+            item: bid.item._id
+        });
+
+        if (!conversation) {
+            conversation = await Conversation.create({
+                participants: [buyerId, bid.seller],
+                item: bid.item._id,
+                unreadCount: {
+                    [buyerId.toString()]: 0,
+                    [bid.seller.toString()]: 0
+                }
+            });
+        }
+    } else if (action === "close_deal") {
+        type = "deal_closed";
+        message = `${req.user.username} wants to close the deal for "${bid.item.title}"! 🎉`;
+    }
+
+    await Notification.create({
+        recipient: bid.seller,
+        recipientRole: "seller",
+        sender: buyerId,
+        type,
+        message,
+        relatedBid: bid._id,
+        relatedItem: bid.item._id,
+        metadata: {
+            name: buyer.username,
+            phone: buyer.phone,
+            email: buyer.email,
+            ...metadata
+        }
     });
 
     res.status(200).json({
         success: true,
-        message: `Bid ${status}`
+        message: `Response sent: ${action}`
     });
 });
 

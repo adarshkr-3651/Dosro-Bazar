@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Upload, Image as ImageIcon, MapPin, FileText, X, Tag, AlertCircle, Eye, Loader2, Crosshair, Sparkles, Clock, CreditCard } from "lucide-react";
+import { Upload, Image as ImageIcon, MapPin, FileText, X, Tag, AlertCircle, Eye, Loader2, Crosshair, Sparkles, Clock, CreditCard, Truck } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
@@ -23,6 +23,7 @@ export default function UploadPage() {
     const [loading, setLoading] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
     const [useProfileLocation, setUseProfileLocation] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
@@ -798,104 +799,34 @@ export default function UploadPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Delivery Toggle & Form */}
+                                            {/* Delivery Toggle */}
                                             <div className="space-y-3">
                                                 <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20 h-[50px]">
                                                     <div className="space-y-0.5">
                                                         <span className="text-sm font-medium">Delivery Available</span>
                                                         <p className="text-[10px] text-muted-foreground line-clamp-1">Can you ship this item?</p>
                                                     </div>
-                                                    <Switch
-                                                        checked={formData.deliveryAvailable}
-                                                        onCheckedChange={(checked) => setFormData({ ...formData, deliveryAvailable: checked })}
-                                                    />
-                                                </div>
-
-                                                {formData.deliveryAvailable && (
-                                                    <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                                                        <div className="p-4 border rounded-lg bg-primary/5 border-primary/20 space-y-3">
-                                                            <Label className="text-xs font-bold uppercase tracking-wider text-primary">Select Shipping Partners</Label>
-                                                            <div className="grid grid-cols-2 gap-2">
-                                                                {["Pathao", "Indrive", "Upaya", "Nepal Post", "Aramex", "Other"].map((partner) => (
-                                                                    <label key={partner} className="flex items-center gap-2 p-2 rounded-md border bg-background hover:bg-primary/5 cursor-pointer transition-all">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            checked={formData.shippingPartners.includes(partner)}
-                                                                            onChange={(e) => {
-                                                                                const updated = e.target.checked
-                                                                                    ? [...formData.shippingPartners, partner]
-                                                                                    : formData.shippingPartners.filter(p => p !== partner);
-                                                                                setFormData({ ...formData, shippingPartners: updated });
-                                                                            }}
-                                                                            className="w-3.5 h-3.5 rounded border-primary/30 text-primary focus:ring-primary/20"
-                                                                        />
-                                                                        <span className="text-[11px] font-medium">{partner}</span>
-                                                                    </label>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-
-                                                        {formData.shippingPartners.length > 0 && (
-                                                            <div className="p-4 border rounded-lg bg-secondary/5 border-secondary/20 space-y-4 animate-in zoom-in-95 duration-300">
-                                                                <div className="space-y-1">
-                                                                    <Label className="text-xs font-bold uppercase tracking-wider text-secondary">Should buyer pay extra amount for delivery and how much?</Label>
-                                                                    <p className="text-[10px] text-muted-foreground italic">Choose how the delivery fee is handled.</p>
-                                                                </div>
-
-                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                                                                    <div 
-                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "manual" })}
-                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
-                                                                    >
-                                                                        <div className="space-y-0.5">
-                                                                            <span className="text-[11px] font-bold">Manual Entry</span>
-                                                                            <p className="text-[9px] text-muted-foreground">Set a fixed amount.</p>
-                                                                        </div>
-                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
-                                                                            {formData.deliveryChargeType === 'manual' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div 
-                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "buyer_pays" })}
-                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
-                                                                    >
-                                                                        <div className="space-y-0.5">
-                                                                            <span className="text-[11px] font-bold">Buyer Pays Directly</span>
-                                                                            <p className="text-[9px] text-muted-foreground">Adjust with partner.</p>
-                                                                        </div>
-                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
-                                                                            {formData.deliveryChargeType === 'buyer_pays' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                {formData.deliveryChargeType === "manual" && (
-                                                                    <div className="pt-2 animate-in fade-in slide-in-from-left-2 duration-300">
-                                                                        <div className="relative">
-                                                                            <Tag className="absolute left-3 top-2.5 h-3.5 w-3.5 text-secondary" />
-                                                                            <Input 
-                                                                                type="number"
-                                                                                placeholder="Enter manual delivery amount (Rs.)"
-                                                                                value={formData.deliveryChargeAmount}
-                                                                                onChange={(e) => setFormData({ ...formData, deliveryChargeAmount: e.target.value })}
-                                                                                className="pl-9 h-9 text-xs border-secondary/30 focus-visible:ring-secondary/20"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-
-                                                                {formData.deliveryChargeType === "buyer_pays" && (
-                                                                    <div className="p-3 bg-secondary/5 rounded-md border border-secondary/10 animate-in fade-in slide-in-from-right-2 duration-300">
-                                                                        <p className="text-[10px] text-secondary font-medium leading-relaxed italic">
-                                                                            * Buyer will pay delivery charge shown to deliver that item, adjust with yourself.
-                                                                        </p>
-                                                                    </div>
-                                                                )}
-                                                            </div>
+                                                    <div className="flex items-center gap-3">
+                                                        {formData.deliveryAvailable && (
+                                                            <Button 
+                                                                type="button"
+                                                                variant="ghost" 
+                                                                size="sm"
+                                                                onClick={() => setShowDeliveryModal(true)}
+                                                                className="h-7 text-[10px] font-bold uppercase tracking-wider text-primary hover:bg-primary/5"
+                                                            >
+                                                                Configure
+                                                            </Button>
                                                         )}
+                                                        <Switch
+                                                            checked={formData.deliveryAvailable}
+                                                            onCheckedChange={(checked) => {
+                                                                setFormData({ ...formData, deliveryAvailable: checked });
+                                                                if (checked) setShowDeliveryModal(true);
+                                                            }}
+                                                        />
                                                     </div>
-                                                )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -953,6 +884,139 @@ export default function UploadPage() {
             </main>
 
             <Footer />
+
+            {/* Delivery Configuration Modal Overlay */}
+            {showDeliveryModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="relative w-full max-w-lg bg-background border shadow-2xl rounded-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                        {/* Modal Header */}
+                        <div className="p-4 border-b flex items-center justify-between bg-muted/5">
+                            <div className="flex items-center gap-2">
+                                <Truck className="h-5 w-5 text-primary" />
+                                <h3 className="font-bold text-lg">Delivery Configuration</h3>
+                            </div>
+                            <Button 
+                                type="button"
+                                variant="ghost" 
+                                size="icon" 
+                                onClick={() => {
+                                    setShowDeliveryModal(false);
+                                    if (formData.shippingPartners.length === 0) {
+                                        setFormData(prev => ({ ...prev, deliveryAvailable: false }));
+                                    }
+                                }}
+                                className="h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive transition-colors"
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        </div>
+                        
+                        {/* Modal Content */}
+                        <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/10">
+                            {/* Shipping Partners */}
+                            <div className="space-y-3">
+                                <Label className="text-xs font-bold uppercase tracking-wider text-primary">Select Shipping Partners</Label>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {["Pathao", "Indrive", "Upaya", "Nepal Post", "Aramex", "Other"].map((partner) => (
+                                        <label key={partner} className={`flex items-center gap-2 p-3 rounded-lg border transition-all cursor-pointer ${formData.shippingPartners.includes(partner) ? 'bg-primary/5 border-primary shadow-sm' : 'bg-background hover:bg-muted/50 border-input'}`}>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.shippingPartners.includes(partner)}
+                                                onChange={(e) => {
+                                                    const updated = e.target.checked
+                                                        ? [...formData.shippingPartners, partner]
+                                                        : formData.shippingPartners.filter(p => p !== partner);
+                                                    setFormData({ ...formData, shippingPartners: updated });
+                                                }}
+                                                className="w-4 h-4 rounded border-primary/30 text-primary focus:ring-primary/20"
+                                            />
+                                            <span className="text-xs font-semibold">{partner}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Delivery Charge Logic */}
+                            {formData.shippingPartners.length > 0 && (
+                                <div className="space-y-4 pt-4 border-t animate-in slide-in-from-bottom-2 duration-300">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs font-bold uppercase tracking-wider text-secondary">Delivery Charge Handling</Label>
+                                        <p className="text-[10px] text-muted-foreground">Who pays for the delivery?</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div 
+                                            onClick={() => setFormData({ ...formData, deliveryChargeType: "manual" })}
+                                            className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                        >
+                                            <div className="space-y-0.5">
+                                                <span className="text-xs font-bold">Manual Entry</span>
+                                                <p className="text-[10px] text-muted-foreground">Set a fixed amount.</p>
+                                            </div>
+                                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                {formData.deliveryChargeType === 'manual' && <div className="w-2 h-2 bg-secondary rounded-full" />}
+                                            </div>
+                                        </div>
+
+                                        <div 
+                                            onClick={() => setFormData({ ...formData, deliveryChargeType: "buyer_pays" })}
+                                            className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                        >
+                                            <div className="space-y-0.5">
+                                                <span className="text-xs font-bold">Buyer Pays Directly</span>
+                                                <p className="text-[10px] text-muted-foreground">Adjust with partner.</p>
+                                            </div>
+                                            <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                {formData.deliveryChargeType === 'buyer_pays' && <div className="w-2 h-2 bg-secondary rounded-full" />}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {formData.deliveryChargeType === "manual" && (
+                                        <div className="pt-2 animate-in fade-in slide-in-from-left-2 duration-300">
+                                            <div className="relative">
+                                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary" />
+                                                <Input 
+                                                    type="number"
+                                                    placeholder="Enter delivery amount (Rs.)"
+                                                    value={formData.deliveryChargeAmount}
+                                                    onChange={(e) => setFormData({ ...formData, deliveryChargeAmount: e.target.value })}
+                                                    className="pl-10 h-11 text-sm border-secondary/30 focus-visible:ring-secondary/20 rounded-lg"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {formData.deliveryChargeType === "buyer_pays" && (
+                                        <div className="p-4 bg-secondary/5 rounded-xl border border-secondary/10 animate-in fade-in slide-in-from-right-2 duration-300">
+                                            <p className="text-[11px] text-secondary font-medium leading-relaxed italic">
+                                                * The buyer will pay the delivery charge directly to the partner. You can adjust this during the handover.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="p-4 bg-muted/5 border-t flex justify-end">
+                            <Button 
+                                type="button"
+                                onClick={() => {
+                                    if (formData.deliveryAvailable && formData.shippingPartners.length === 0) {
+                                        toast.error("Please select at least one shipping partner");
+                                        return;
+                                    }
+                                    setShowDeliveryModal(false);
+                                }}
+                                className="bg-primary hover:bg-primary/90 px-8 rounded-lg font-bold uppercase tracking-widest text-[10px]"
+                            >
+                                Done
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

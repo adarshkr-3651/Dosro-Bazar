@@ -113,6 +113,8 @@ __turbopack_context__.s([
     ()=>forgotPassword,
     "generateItemDescription",
     ()=>generateItemDescription,
+    "getAcceptedBidders",
+    ()=>getAcceptedBidders,
     "getAllItems",
     ()=>getAllItems,
     "getConversations",
@@ -121,10 +123,14 @@ __turbopack_context__.s([
     ()=>getEditItemData,
     "getFavorites",
     ()=>getFavorites,
+    "getInvoiceDetail",
+    ()=>getInvoiceDetail,
     "getItemBids",
     ()=>getItemBids,
     "getMessages",
     ()=>getMessages,
+    "getMyInvoices",
+    ()=>getMyInvoices,
     "getMyListings",
     ()=>getMyListings,
     "getNotifications",
@@ -135,6 +141,8 @@ __turbopack_context__.s([
     ()=>getProfile,
     "getRecommendations",
     ()=>getRecommendations,
+    "getRecycleBin",
+    ()=>getRecycleBin,
     "getSellerStats",
     ()=>getSellerStats,
     "getSimilarItems",
@@ -149,12 +157,22 @@ __turbopack_context__.s([
     ()=>markNotificationAsRead,
     "markNotificationsAsRead",
     ()=>markNotificationsAsRead,
+    "markProductAsSold",
+    ()=>markProductAsSold,
+    "moveToRecycleBin",
+    ()=>moveToRecycleBin,
+    "permanentDeleteProduct",
+    ()=>permanentDeleteProduct,
     "placeBid",
     ()=>placeBid,
     "resendVerificationCode",
     ()=>resendVerificationCode,
     "resetPassword",
     ()=>resetPassword,
+    "respondToBidAction",
+    ()=>respondToBidAction,
+    "restoreProduct",
+    ()=>restoreProduct,
     "searchSemantic",
     ()=>searchSemantic,
     "sendChatMessage",
@@ -536,9 +554,10 @@ api.interceptors.response.use((response)=>response, async (error)=>{
     }
     return Promise.reject(error);
 });
-async function getAllItems(page = 1, limit = 10) {
+async function getAllItems(page = 1, limit = 10, authorId) {
     try {
-        const response = await api.get(`/item/getAllItems?page=${page}&limit=${limit}`);
+        const url = authorId ? `/item/getAllItems?page=${page}&limit=${limit}&author=${authorId}` : `/item/getAllItems?page=${page}&limit=${limit}`;
+        const response = await api.get(url);
         return response.data;
     } catch (error) {
         if (error.response) {
@@ -664,7 +683,7 @@ async function getConversations() {
         const response = await api.get('/chat-system/conversations');
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || 'Failed to fetch conversations');
+        throw new Error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to fetch conversations');
     }
 }
 async function getMessages(conversationId) {
@@ -672,7 +691,7 @@ async function getMessages(conversationId) {
         const response = await api.get(`/chat-system/${conversationId}/messages`);
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.message || 'Failed to fetch messages');
+        throw new Error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to fetch messages');
     }
 }
 async function sendChatMessage(receiverId, itemId, text, image, location) {
@@ -741,24 +760,39 @@ async function placeBid(itemId, amount) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to place bid');
     }
 }
-async function getNotifications() {
+async function getNotifications(mode) {
     try {
-        const response = await api.get('/notification/all');
+        const url = mode ? `/notification/all?mode=${mode}` : '/notification/all';
+        const response = await api.get(url);
         return response.data;
     } catch (error) {
         const errorMessage = error.response?.data?.error || error.response?.data?.message || (typeof error.response?.data === 'string' ? error.response.data : null) || error.message || 'Failed to fetch notifications';
         throw new Error(errorMessage);
     }
 }
-async function updateBidStatus(bidId, status) {
+async function updateBidStatus(bidId, status, followUp, metadata) {
     try {
         const response = await api.post('/bid/status', {
             bidId,
-            status
+            status,
+            followUp,
+            metadata
         });
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to update bid status');
+    }
+}
+async function respondToBidAction(bidId, action, metadata) {
+    try {
+        const response = await api.post('/bid/respond', {
+            bidId,
+            action,
+            metadata
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to send response');
     }
 }
 async function markNotificationsAsRead() {
@@ -766,12 +800,79 @@ async function markNotificationsAsRead() {
         const response = await api.post('/notification/read-all');
         return response.data;
     } catch (error) {
-        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notifications as read');
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark all as read');
     }
 }
-async function markNotificationAsRead(id) {
+async function getAcceptedBidders(productId) {
     try {
-        const response = await api.put(`/notification/${id}/read`);
+        const response = await api.get(`/item/${productId}/accepted-bidders`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch bidders');
+    }
+}
+async function markProductAsSold(productId, buyerId, soldPrice) {
+    try {
+        const response = await api.post(`/item/${productId}/mark-sold`, {
+            buyerId,
+            soldPrice
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark product as sold');
+    }
+}
+async function moveToRecycleBin(productId) {
+    try {
+        const response = await api.post(`/item/${productId}/recycle`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to move to recycle bin');
+    }
+}
+async function getRecycleBin() {
+    try {
+        const response = await api.get('/item/recycle-bin/all');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch recycle bin');
+    }
+}
+async function restoreProduct(productId) {
+    try {
+        const response = await api.post(`/item/${productId}/restore`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to restore product');
+    }
+}
+async function permanentDeleteProduct(productId) {
+    try {
+        const response = await api.delete(`/item/${productId}/permanent`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to permanently delete product');
+    }
+}
+async function getMyInvoices() {
+    try {
+        const response = await api.get('/invoice/my-invoices');
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch invoices');
+    }
+}
+async function getInvoiceDetail(invoiceId) {
+    try {
+        const response = await api.get(`/invoice/${invoiceId}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch invoice detail');
+    }
+}
+async function markNotificationAsRead(notificationId) {
+    try {
+        const response = await api.put(`/notification/${notificationId}/read`);
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notification as read');

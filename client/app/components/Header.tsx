@@ -12,7 +12,7 @@ import logo from "../../public/logo.png"
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
-import { getNotifications } from "../lib/api";
+import { getNotifications, getFavorites } from "../lib/api";
 import { resolvePhotoUrl } from "../lib/image-utils";
 
 interface HeaderProps {
@@ -24,6 +24,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
   const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = useAuth();
   const router = useRouter();
   const [notifications, setNotifications] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<any[]>([]);
 
   useEffect(() => {
     if (user) {
@@ -38,17 +39,34 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
         }
       };
 
+      const fetchFavoritesData = async () => {
+        try {
+          const response = await getFavorites();
+          if (response.success) {
+            setFavorites(response.data);
+          }
+        } catch (err) {
+          // Silent catch
+        }
+      };
+
       fetchNotificationsData();
+      fetchFavoritesData();
 
       // Listen for manual update events
       window.addEventListener('notificationsUpdated', fetchNotificationsData);
+      window.addEventListener('favoritesUpdated', fetchFavoritesData);
 
       // Poll for new notifications every 15 seconds for a "live" feel
-      const interval = setInterval(fetchNotificationsData, 15000);
+      const interval = setInterval(() => {
+        fetchNotificationsData();
+        fetchFavoritesData();
+      }, 15000);
       
       return () => {
         clearInterval(interval);
         window.removeEventListener('notificationsUpdated', fetchNotificationsData);
+        window.removeEventListener('favoritesUpdated', fetchFavoritesData);
       };
     }
   }, [user]);
@@ -178,9 +196,14 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                 </Button>
               ) : (
                 user && (
-                  <Button variant="ghost" size="icon" asChild>
+                  <Button variant="ghost" size="icon" asChild className="relative">
                     <Link href="/favorites">
                       <Heart className="h-5 w-5" />
+                      {favorites.length > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+                          {favorites.length}
+                        </span>
+                      )}
                     </Link>
                   </Button>
                 )
@@ -206,9 +229,14 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                 </Button>
               ) : (
                 user && (
-                  <Button variant="ghost" size="icon" asChild>
+                  <Button variant="ghost" size="icon" asChild className="relative">
                     <Link href="/favorites">
                       <Heart className="h-5 w-5" />
+                      {favorites.length > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+                          {favorites.length}
+                        </span>
+                      )}
                     </Link>
                   </Button>
                 )
@@ -229,9 +257,9 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                 <Button variant="ghost" size="icon" className="relative" asChild>
                   <Link href="/notifications">
                     <Bell className="h-5 w-5" />
-                    {notifications.filter(n => !n.isRead).length > 0 && (
+                    {notifications.filter(n => !n.isRead && n.recipientRole === (currentIsBuyerMode ? "buyer" : "seller")).length > 0 && (
                       <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center">
-                        {notifications.filter(n => !n.isRead).length}
+                        {notifications.filter(n => !n.isRead && n.recipientRole === (currentIsBuyerMode ? "buyer" : "seller")).length}
                       </span>
                     )}
                   </Link>

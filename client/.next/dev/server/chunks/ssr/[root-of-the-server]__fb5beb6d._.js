@@ -1038,6 +1038,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/eye.js [app-ssr] (ecmascript) <export default as Eye>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/eye-off.js [app-ssr] (ecmascript) <export default as EyeOff>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-ssr] (ecmascript) <export default as Trash2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/user.js [app-ssr] (ecmascript) <export default as User>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/image.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$image$2d$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/image-utils.ts [app-ssr] (ecmascript)");
@@ -1247,6 +1248,26 @@ function MessagesPage() {
             __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Unable to retrieve your location. Please check browser permissions.");
         });
     };
+    const handleShareDetails = async ()=>{
+        if (!selectedConv || !user) return;
+        const isConfirmed = window.confirm("You are going to share your personal details like Name, Phone number, and Email. Are you sure?");
+        if (!isConfirmed) return;
+        const otherParticipant = selectedConv.participants.find((p)=>p._id !== user?._id);
+        if (!otherParticipant) return;
+        const detailsText = `📋 My Contact Details:\nName: ${user.username}\nPhone: ${user.phone || 'N/A'}\nEmail: ${user.email || 'N/A'}`;
+        try {
+            const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["sendChatMessage"])(otherParticipant._id, selectedConv.item._id, detailsText);
+            setMessages((prev)=>[
+                    ...prev,
+                    res.data
+                ]);
+            fetchConversations();
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].success("Contact details shared!");
+        } catch (error) {
+            console.error(error);
+            __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Failed to share details");
+        }
+    };
     const handleSendMessage = async (e)=>{
         e?.preventDefault();
         if (!input.trim() && !imageFile || !selectedConv || isUploading) return;
@@ -1317,12 +1338,12 @@ function MessagesPage() {
             className: "animate-spin text-primary"
         }, void 0, false, {
             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-            lineNumber: 283,
+            lineNumber: 305,
             columnNumber: 92
         }, this)
     }, void 0, false, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-        lineNumber: 283,
+        lineNumber: 305,
         columnNumber: 29
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1330,7 +1351,7 @@ function MessagesPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$Header$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                lineNumber: 287,
+                lineNumber: 309,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1349,7 +1370,7 @@ function MessagesPage() {
                                             children: "Messages"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                            lineNumber: 294,
+                                            lineNumber: 316,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1363,13 +1384,13 @@ function MessagesPage() {
                                                             className: "h-3 w-3"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 297,
+                                                            lineNumber: 319,
                                                             columnNumber: 49
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeOff$3e$__["EyeOff"], {
                                                             className: "h-3 w-3"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 297,
+                                                            lineNumber: 319,
                                                             columnNumber: 79
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1377,13 +1398,13 @@ function MessagesPage() {
                                                             children: isOnline ? 'Online' : 'Hidden'
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 298,
+                                                            lineNumber: 320,
                                                             columnNumber: 37
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 296,
+                                                    lineNumber: 318,
                                                     columnNumber: 33
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Switch"], {
@@ -1393,19 +1414,19 @@ function MessagesPage() {
                                                     className: "data-[state=checked]:bg-green-500 scale-75"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 322,
                                                     columnNumber: 33
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                            lineNumber: 295,
+                                            lineNumber: 317,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                    lineNumber: 293,
+                                    lineNumber: 315,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1416,12 +1437,12 @@ function MessagesPage() {
                                             className: "animate-spin text-primary"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                            lineNumber: 310,
+                                            lineNumber: 332,
                                             columnNumber: 74
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 310,
+                                        lineNumber: 332,
                                         columnNumber: 33
                                     }, this) : conversations.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex flex-col items-center justify-center p-8 text-muted-foreground text-center h-full",
@@ -1430,14 +1451,14 @@ function MessagesPage() {
                                                 className: "h-12 w-12 mb-4 opacity-20"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 313,
+                                                lineNumber: 335,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 children: "No messages yet."
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 314,
+                                                lineNumber: 336,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1445,13 +1466,13 @@ function MessagesPage() {
                                                 children: "Start a conversation from an item's page!"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 315,
+                                                lineNumber: 337,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 312,
+                                        lineNumber: 334,
                                         columnNumber: 33
                                     }, this) : conversations.map((conv)=>{
                                         const otherUser = conv.participants.find((p)=>p._id !== user?._id);
@@ -1473,18 +1494,18 @@ function MessagesPage() {
                                                                 className: "object-cover"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 332,
+                                                                lineNumber: 354,
                                                                 columnNumber: 57
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: otherUser?.username?.[0] || "U"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 339,
+                                                                lineNumber: 361,
                                                                 columnNumber: 57
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 330,
+                                                            lineNumber: 352,
                                                             columnNumber: 49
                                                         }, this),
                                                         otherUser?.isOnline && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1492,13 +1513,13 @@ function MessagesPage() {
                                                             title: "Online now"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 343,
+                                                            lineNumber: 365,
                                                             columnNumber: 53
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 329,
+                                                    lineNumber: 351,
                                                     columnNumber: 45
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1512,7 +1533,7 @@ function MessagesPage() {
                                                                     children: otherUser?.username
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 348,
+                                                                    lineNumber: 370,
                                                                     columnNumber: 53
                                                                 }, this),
                                                                 unreadCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1520,13 +1541,13 @@ function MessagesPage() {
                                                                     children: unreadCount
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 350,
+                                                                    lineNumber: 372,
                                                                     columnNumber: 57
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 347,
+                                                            lineNumber: 369,
                                                             columnNumber: 49
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1536,7 +1557,7 @@ function MessagesPage() {
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 356,
+                                                                    lineNumber: 378,
                                                                     columnNumber: 53
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1544,13 +1565,13 @@ function MessagesPage() {
                                                                     children: conv.item?.title
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 357,
+                                                                    lineNumber: 379,
                                                                     columnNumber: 53
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 355,
+                                                            lineNumber: 377,
                                                             columnNumber: 49
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1558,31 +1579,31 @@ function MessagesPage() {
                                                             children: conv.lastMessage?.text || "No messages yet"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 359,
+                                                            lineNumber: 381,
                                                             columnNumber: 49
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 346,
+                                                    lineNumber: 368,
                                                     columnNumber: 45
                                                 }, this)
                                             ]
                                         }, conv._id, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                            lineNumber: 324,
+                                            lineNumber: 346,
                                             columnNumber: 41
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                    lineNumber: 308,
+                                    lineNumber: 330,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                            lineNumber: 292,
+                            lineNumber: 314,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1594,7 +1615,7 @@ function MessagesPage() {
                                         className: "h-16 w-16 mb-4 opacity-10"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 374,
+                                        lineNumber: 396,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1602,7 +1623,7 @@ function MessagesPage() {
                                         children: "Select a conversation"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 375,
+                                        lineNumber: 397,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1610,13 +1631,13 @@ function MessagesPage() {
                                         children: "Choose a chat from the left to start messaging"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 376,
+                                        lineNumber: 398,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                lineNumber: 373,
+                                lineNumber: 395,
                                 columnNumber: 29
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
@@ -1632,12 +1653,12 @@ function MessagesPage() {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 383,
+                                                    lineNumber: 405,
                                                     columnNumber: 41
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 382,
+                                                lineNumber: 404,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1653,12 +1674,12 @@ function MessagesPage() {
                                                             className: "object-cover"
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 391,
+                                                            lineNumber: 413,
                                                             columnNumber: 49
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 390,
+                                                        lineNumber: 412,
                                                         columnNumber: 45
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1673,13 +1694,13 @@ function MessagesPage() {
                                                                         title: "Online now"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 403,
+                                                                        lineNumber: 425,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 400,
+                                                                lineNumber: 422,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1693,14 +1714,14 @@ function MessagesPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 407,
+                                                                        lineNumber: 429,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                         children: "•"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 408,
+                                                                        lineNumber: 430,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1711,25 +1732,25 @@ function MessagesPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 409,
+                                                                        lineNumber: 431,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 406,
+                                                                lineNumber: 428,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 399,
+                                                        lineNumber: 421,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 385,
+                                                lineNumber: 407,
                                                 columnNumber: 37
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1743,7 +1764,7 @@ function MessagesPage() {
                                                         children: "Block"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 414,
+                                                        lineNumber: 436,
                                                         columnNumber: 41
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1763,12 +1784,12 @@ function MessagesPage() {
                                                                     className: "h-5 w-5"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 436,
+                                                                    lineNumber: 458,
                                                                     columnNumber: 49
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 430,
+                                                                lineNumber: 452,
                                                                 columnNumber: 45
                                                             }, this),
                                                             showChatOptions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1783,7 +1804,7 @@ function MessagesPage() {
                                                                         children: "Report Chat"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 441,
+                                                                        lineNumber: 463,
                                                                         columnNumber: 53
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1792,7 +1813,7 @@ function MessagesPage() {
                                                                         children: "Delete Conversation"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 450,
+                                                                        lineNumber: 472,
                                                                         columnNumber: 53
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1804,31 +1825,31 @@ function MessagesPage() {
                                                                         children: "Block User"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 457,
+                                                                        lineNumber: 479,
                                                                         columnNumber: 53
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 440,
+                                                                lineNumber: 462,
                                                                 columnNumber: 49
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 422,
+                                                        lineNumber: 444,
                                                         columnNumber: 41
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 413,
+                                                lineNumber: 435,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 381,
+                                        lineNumber: 403,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1840,12 +1861,12 @@ function MessagesPage() {
                                                     className: "animate-spin text-primary"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 475,
+                                                    lineNumber: 497,
                                                     columnNumber: 82
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 475,
+                                                lineNumber: 497,
                                                 columnNumber: 41
                                             }, this) : messages.map((msg, idx)=>{
                                                 const isMe = msg.sender === user?._id;
@@ -1865,12 +1886,12 @@ function MessagesPage() {
                                                                     className: "h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 492,
+                                                                    lineNumber: 514,
                                                                     columnNumber: 65
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 487,
+                                                                lineNumber: 509,
                                                                 columnNumber: 61
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1886,12 +1907,12 @@ function MessagesPage() {
                                                                             className: "object-cover group-hover/img:scale-[1.05] transition-transform duration-500"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                            lineNumber: 505,
+                                                                            lineNumber: 527,
                                                                             columnNumber: 69
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 501,
+                                                                        lineNumber: 523,
                                                                         columnNumber: 65
                                                                     }, this),
                                                                     msg.location && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -1908,12 +1929,12 @@ function MessagesPage() {
                                                                                         className: "h-4 w-4 text-red-500"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                                        lineNumber: 512,
+                                                                                        lineNumber: 534,
                                                                                         columnNumber: 73
                                                                                     }, this)
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                                    lineNumber: 511,
+                                                                                    lineNumber: 533,
                                                                                     columnNumber: 69
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1924,7 +1945,7 @@ function MessagesPage() {
                                                                                             children: "Shared Location"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                                            lineNumber: 515,
+                                                                                            lineNumber: 537,
                                                                                             columnNumber: 73
                                                                                         }, this),
                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1932,24 +1953,24 @@ function MessagesPage() {
                                                                                             children: "Tap to open in Maps"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                                            lineNumber: 516,
+                                                                                            lineNumber: 538,
                                                                                             columnNumber: 73
                                                                                         }, this)
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                                    lineNumber: 514,
+                                                                                    lineNumber: 536,
                                                                                     columnNumber: 69
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                            lineNumber: 510,
+                                                                            lineNumber: 532,
                                                                             columnNumber: 65
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 509,
+                                                                        lineNumber: 531,
                                                                         columnNumber: 61
                                                                     }, this),
                                                                     "                                                        ",
@@ -1958,7 +1979,7 @@ function MessagesPage() {
                                                                         children: msg.text
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 521,
+                                                                        lineNumber: 543,
                                                                         columnNumber: 61
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1969,24 +1990,24 @@ function MessagesPage() {
                                                                         })
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                        lineNumber: 523,
+                                                                        lineNumber: 545,
                                                                         columnNumber: 57
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 495,
+                                                                lineNumber: 517,
                                                                 columnNumber: 57
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 485,
+                                                        lineNumber: 507,
                                                         columnNumber: 53
                                                     }, this)
                                                 }, msg._id || idx, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 484,
+                                                    lineNumber: 506,
                                                     columnNumber: 49
                                                 }, this);
                                             }),
@@ -1994,13 +2015,13 @@ function MessagesPage() {
                                                 ref: messagesEndRef
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 532,
+                                                lineNumber: 554,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 473,
+                                        lineNumber: 495,
                                         columnNumber: 33
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2019,7 +2040,7 @@ function MessagesPage() {
                                                                 className: "object-cover"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 540,
+                                                                lineNumber: 562,
                                                                 columnNumber: 49
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2034,18 +2055,18 @@ function MessagesPage() {
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                    lineNumber: 542,
+                                                                    lineNumber: 564,
                                                                     columnNumber: 53
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 541,
+                                                                lineNumber: 563,
                                                                 columnNumber: 49
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 539,
+                                                        lineNumber: 561,
                                                         columnNumber: 45
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2053,13 +2074,13 @@ function MessagesPage() {
                                                         children: "Image attached"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                        lineNumber: 545,
+                                                        lineNumber: 567,
                                                         columnNumber: 45
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 538,
+                                                lineNumber: 560,
                                                 columnNumber: 41
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2076,7 +2097,7 @@ function MessagesPage() {
                                                             onChange: handleImageSelect
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 550,
+                                                            lineNumber: 572,
                                                             columnNumber: 45
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2089,12 +2110,12 @@ function MessagesPage() {
                                                                 className: "h-5 w-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 552,
+                                                                lineNumber: 574,
                                                                 columnNumber: 49
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 551,
+                                                            lineNumber: 573,
                                                             columnNumber: 45
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2103,16 +2124,36 @@ function MessagesPage() {
                                                             size: "icon",
                                                             className: "shrink-0 text-muted-foreground hover:text-foreground",
                                                             onClick: handleShareLocation,
+                                                            title: "Share Location",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__["MapPin"], {
                                                                 className: "h-5 w-5"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 555,
+                                                                lineNumber: 577,
                                                                 columnNumber: 49
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 554,
+                                                            lineNumber: 576,
+                                                            columnNumber: 45
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                                            type: "button",
+                                                            variant: "ghost",
+                                                            size: "icon",
+                                                            className: "shrink-0 text-muted-foreground hover:text-foreground",
+                                                            onClick: handleShareDetails,
+                                                            title: "Share Contact Details",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
+                                                                className: "h-5 w-5"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
+                                                                lineNumber: 580,
+                                                                columnNumber: 49
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
+                                                            lineNumber: 579,
                                                             columnNumber: 45
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2123,7 +2164,7 @@ function MessagesPage() {
                                                             disabled: isUploading
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 557,
+                                                            lineNumber: 582,
                                                             columnNumber: 45
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2135,53 +2176,53 @@ function MessagesPage() {
                                                                 className: "h-4 w-4 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 570,
+                                                                lineNumber: 595,
                                                                 columnNumber: 64
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__["Send"], {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                                lineNumber: 570,
+                                                                lineNumber: 595,
                                                                 columnNumber: 111
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                            lineNumber: 564,
+                                                            lineNumber: 589,
                                                             columnNumber: 45
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                    lineNumber: 549,
+                                                    lineNumber: 571,
                                                     columnNumber: 41
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                                lineNumber: 548,
+                                                lineNumber: 570,
                                                 columnNumber: 37
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                                        lineNumber: 536,
+                                        lineNumber: 558,
                                         columnNumber: 33
                                     }, this)
                                 ]
                             }, void 0, true)
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                            lineNumber: 371,
+                            lineNumber: 393,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                    lineNumber: 289,
+                    lineNumber: 311,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                lineNumber: 288,
+                lineNumber: 310,
                 columnNumber: 13
             }, this),
             previewImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2200,12 +2241,12 @@ function MessagesPage() {
                             className: "h-8 w-8"
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                            lineNumber: 595,
+                            lineNumber: 620,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                        lineNumber: 586,
+                        lineNumber: 611,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2219,18 +2260,18 @@ function MessagesPage() {
                             onClick: (e)=>e.stopPropagation()
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                            lineNumber: 598,
+                            lineNumber: 623,
                             columnNumber: 25
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                        lineNumber: 597,
+                        lineNumber: 622,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                lineNumber: 582,
+                lineNumber: 607,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$DeleteConfirmationModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2242,13 +2283,13 @@ function MessagesPage() {
                 description: "Are you sure you want to delete this conversation? This will permanently remove all messages for both participants. This action cannot be undone."
             }, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-                lineNumber: 610,
+                lineNumber: 635,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/messages/page.tsx",
-        lineNumber: 286,
+        lineNumber: 308,
         columnNumber: 9
     }, this);
 }
