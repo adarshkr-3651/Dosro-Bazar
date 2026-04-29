@@ -11,17 +11,33 @@ import {
     getAllItemsAdmin,
     deleteItemAdmin,
     getItemStats,
-    getDashboard
+    getDashboard,
+    getAllBoosts,
+    deleteBoost,
+    approveItemAdmin,
+    getAllAdvanceBookings
 } from "../Controllers/admin.js";
+import { getSettings, updateSetting } from "../Controllers/settingController.js";
 
 const router = express.Router();
 
 // All admin routes require authentication AND admin role
 // Apply both middlewares to all routes
+router.use((req, res, next) => {
+    console.log(`[AdminRouter] Request: ${req.method} ${req.url}`);
+    next();
+});
 router.use([getAccessToRoute, getAdminAccess]);
 
 // Dashboard
 router.get("/dashboard", getDashboard);
+
+// Boost management routes
+router.get("/boosts", getAllBoosts);
+router.delete("/boosts/:id", deleteBoost);
+
+// Advance Booking management
+router.get("/advance-bookings", getAllAdvanceBookings);
 
 // User management routes
 router.get("/users", getAllUsers);
@@ -34,5 +50,10 @@ router.delete("/users/:id", deleteUser);
 router.get("/items", getAllItemsAdmin);
 router.get("/items/stats", getItemStats);
 router.delete("/items/:id", deleteItemAdmin);
+router.put("/items/:id/approve", approveItemAdmin);
+
+// Settings routes
+router.get("/settings", getSettings);
+router.put("/settings", updateSetting);
 
 export default router;

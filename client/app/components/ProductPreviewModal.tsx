@@ -9,6 +9,9 @@ import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
 import { Separator } from "@/app/components/ui/separator";
 import Image from "next/image";
+import { LocationMapModal } from "@/app/components/LocationMapModal";
+import { ArrowUpRight } from "lucide-react";
+import { BidHistoryChart } from "./BidHistoryChart";
 
 interface ProductPreviewModalProps {
     isOpen: boolean;
@@ -20,6 +23,7 @@ export function ProductPreviewModal({ isOpen, onClose, slug }: ProductPreviewMod
     const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -130,13 +134,24 @@ export function ProductPreviewModal({ isOpen, onClose, slug }: ProductPreviewMod
                                                 <span className="text-[10px] font-bold">{product.category}</span>
                                             </div>
                                         </div>
-                                        <div className="p-3 rounded-xl bg-muted/10 border border-primary/5 flex items-center gap-3">
-                                            <MapPin className="h-4 w-4 text-secondary" />
+                                        <div 
+                                            className="p-3 rounded-xl bg-muted/10 border border-primary/5 flex items-center gap-3 cursor-pointer hover:bg-primary/5 transition-all group/loc"
+                                            onClick={() => setIsMapModalOpen(true)}
+                                        >
+                                            <MapPin className="h-4 w-4 text-secondary group-hover/loc:scale-110 transition-transform" />
                                             <div className="flex flex-col">
                                                 <span className="text-[8px] font-black uppercase text-muted-foreground/60 tracking-widest">Location</span>
-                                                <span className="text-[10px] font-bold truncate max-w-[100px]">{product.location}</span>
+                                                <span className="text-[10px] font-bold truncate max-w-[100px] flex items-center gap-1">
+                                                    {product.location}
+                                                    <ArrowUpRight className="h-2 w-2 opacity-0 group-hover/loc:opacity-100 transition-opacity" />
+                                                </span>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    {/* Bid History Chart Preview */}
+                                    <div className="pt-2">
+                                        <BidHistoryChart itemId={product._id} basePrice={product.price} />
                                     </div>
                                 </div>
 
@@ -150,6 +165,14 @@ export function ProductPreviewModal({ isOpen, onClose, slug }: ProductPreviewMod
                     <div className="p-20 text-center">Product not found</div>
                 )}
             </DialogContent>
+            {product && (
+                <LocationMapModal 
+                    isOpen={isMapModalOpen}
+                    onClose={() => setIsMapModalOpen(false)}
+                    destination={product.location}
+                    title={product.title}
+                />
+            )}
         </Dialog>
     );
 }

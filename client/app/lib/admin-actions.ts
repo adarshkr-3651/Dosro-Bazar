@@ -165,3 +165,30 @@ export async function getAdBookings() {
         return [];
     }
 }
+
+export async function getAdvanceBookingsAction() {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+    const userToken = cookieStore.get("accessToken")?.value;
+
+    const cookiesToPass = [];
+    if (adminToken) cookiesToPass.push(`admin_access_token=${adminToken}`);
+    if (userToken) cookiesToPass.push(`accessToken=${userToken}`);
+    const cookieHeader = cookiesToPass.join("; ");
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/admin/advance-bookings`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": cookieHeader
+            },
+        });
+
+        const data = await response.json();
+        return data.success ? { success: true, data: data.data } : { success: false, error: data.message };
+    } catch (error) {
+        console.error("Get Advance Bookings Error:", error);
+        return { success: false, error: "Connection error" };
+    }
+}

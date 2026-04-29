@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { loginUser, signUpUser, logoutUser, getProfile, googleLogin, facebookLogin, completeOAuthRegistration, verifyEmail, resendVerificationCode } from '../lib/api';
+import { loginUser, signUpUser, logoutUser, getProfile, googleLogin, facebookLogin, completeOAuthRegistration, verifyEmail, resendVerificationCode, verifyLoginOtp } from '../lib/api';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 interface User {
@@ -16,18 +16,21 @@ interface User {
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (identifier: string, password: string) => Promise<{ success: boolean; error?: string; verificationRequired?: boolean; email?: string; message?: string }>;
+    login: (identifier: string, password: string) => Promise<{ success: boolean; error?: string; verificationRequired?: boolean; otpRequired?: boolean; email?: string; message?: string }>;
     logout: () => Promise<void>;
-    register: (username: string, phone: string, password: string, email?: string) => Promise<{ success: boolean; error?: string }>;
+    register: (username: string, phone: string, password: string, email?: string) => Promise<{ success: boolean; error?: string; verificationRequired?: boolean; email?: string; message?: string; user?: User | null }>;
     checkAuthStatus: () => Promise<void>;
     setUser: (user: User | null) => void;
     loginWithGoogle: (tokenOrCode: string, isCode?: boolean) => Promise<{ success: boolean; requiresPhone?: boolean; tempUserId?: string; userData?: any; error?: string }>;
     loginWithFacebook: (accessToken: string, userID: string) => Promise<{ success: boolean; error?: string }>;
     completeOAuthWithPhone: (tempUserId: string, phone: string) => Promise<{ success: boolean }>;
     verify: (email: string, code: string) => Promise<{ success: boolean; error?: string }>;
+    verifyLogin: (email: string, otp: string) => Promise<{ success: boolean; error?: string }>;
     resendCode: (email: string) => Promise<{ success: boolean; error?: string }>;
+    refreshUser: () => Promise<void>;
     isBuyerMode: boolean;
     setIsBuyerMode: (isBuyer: boolean) => void;
+    isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -90,6 +93,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 };
             }
 
+            if (data.otpRequired) {
+                return {
+                    success: false,
+                    otpRequired: true,
+                    email: data.email,
+                    message: data.message
+                };
+            }
+
             // Backend sets HttpOnly cookies automatically
             if (data.user) {
                 // Use user data returned directly from login for immediate state update
@@ -119,24 +131,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const register = async (username: string, phone: string, password: string, email?: string) => {
         try {
-            await signUpUser(username, phone, password, email);
-            // Don't set user here - wait for verification
-            return { success: true };
+            const data = await signUpUser(username, phone, password, email);
+            
+            // Backend sends tokens and user data on successful registration
+            if (data.user) {
+                setUser(data.user);
+            }
+            
+            // Clear local favorites on successful registration/login
+            localStorage.removeItem("local_favorites");
+            
+            return { 
+                success: true, 
+                user: data.user,
+                verificationRequired: data.verificationRequired,
+                email: data.email,
+                message: data.message
+            };
         } catch (error: any) {
             console.warn('Registration failed:', error.message);
             return { success: false, error: error.message };
         }
     };
 
+    const verifyLogin = async (email: string, otp: string) => {
+        try {
+            const data = await verifyLoginOtp(email, otp);
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await getProfile();
+                setUser(userData);
+            }
+            localStorage.removeItem("local_favorites");
+            return { success: true };
+        } catch (error: any) {
+            console.warn('OTP verification failed:', error.message);
+            return { success: false, error: error.message };
+        }
+    };
+
     const verify = async (email: string, code: string) => {
         try {
-            await verifyEmail(email, code);
-            const userData = await getProfile();
-            setUser(userData);
+            const data = await verifyEmail(email, code);
+            // Update state with returned user if available, otherwise fetch profile
+            if (data.user) {
+                setUser(data.user);
+            } else {
+                const userData = await getProfile();
+                setUser(userData);
+            }
             return { success: true };
         } catch (error: any) {
             console.warn('Verification failed:', error.message);
             return { success: false, error: error.message };
+        }
+    };
+
+    const refreshUser = async () => {
+        try {
+            const userData = await getProfile();
+            setUser(userData);
+        } catch (error) {
+            console.error('Failed to refresh user:', error);
         }
     };
 
@@ -237,7 +294,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return (
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
-            <AuthContext.Provider value={{ user, loading, login, logout, register, checkAuthStatus, setUser, loginWithGoogle, loginWithFacebook, completeOAuthWithPhone, verify, resendCode, isBuyerMode, setIsBuyerMode }}>
+            <AuthContext.Provider value={{ user, loading, login, logout, register, checkAuthStatus, setUser, loginWithGoogle, loginWithFacebook, completeOAuthWithPhone, verify, verifyLogin, resendCode, refreshUser, isBuyerMode, setIsBuyerMode, isAuthenticated: !!user }}>
                 {children}
             </AuthContext.Provider>
         </GoogleOAuthProvider>

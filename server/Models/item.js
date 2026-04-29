@@ -128,8 +128,16 @@ const ItemSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["active", "sold"],
+        enum: ["active", "sold", "flagged"],
         default: "active"
+    },
+    isFlagged: {
+        type: Boolean,
+        default: false
+    },
+    moderationReason: {
+        type: String,
+        default: ""
     },
     soldTo: {
         type: mongoose.Schema.ObjectId,
@@ -146,6 +154,32 @@ const ItemSchema = new mongoose.Schema({
         default: false
     },
     deletedAt: {
+        type: Date
+    },
+    isBooked: {
+        type: Boolean,
+        default: false
+    },
+    bookedBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User"
+    },
+    bookedAt: {
+        type: Date
+    },
+    bookingAmount: {
+        type: Number
+    },
+    isBoosted: {
+        type: Boolean,
+        default: false
+    },
+    boostPlan: {
+        type: Number,
+        enum: [59, 99, 199, null],
+        default: null
+    },
+    boostExpiresAt: {
         type: Date
     }
 

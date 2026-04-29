@@ -63,6 +63,14 @@ const AdBookingSchema = new mongoose.Schema({
     },
     gatewayRef: {
         type: String
+    },
+    isFlagged: {
+        type: Boolean,
+        default: false
+    },
+    moderationReason: {
+        type: String,
+        default: ""
     }
 }, {
     timestamps: true,

@@ -2,7 +2,7 @@ import express from "express";
 import { cloudinaryUpload } from "../Helpers/Libraries/imageUpload.js";
 
 import { getAccessToRoute, getOptionalAccess } from "../Middlewares/Authorization/auth.js";
-import { addItem, getAllItems, detailItem, likeItem, editItem, deleteItem, editItemPage, getMyItems, searchSemantic, getSimilarItems, getRecommendedItems, getAcceptedBidders, markSold, moveToRecycleBin, getRecycleBin, restoreFromRecycleBin, permanentDelete } from "../Controllers/item.js";
+import { addItem, getAllItems, detailItem, likeItem, editItem, deleteItem, editItemPage, getMyItems, searchSemantic, getSimilarItems, getRecommendedItems, getAcceptedBidders, markSold, moveToRecycleBin, getRecycleBin, restoreFromRecycleBin, permanentDelete, advanceBook, verifyAdvanceEsewa, verifyAdvanceKhalti, getMyBookings, initiateBoostBooking, verifyBoostEsewa, verifyBoostKhalti } from "../Controllers/item.js";
 import { checkItemExist, checkUserAndItemExist } from "../Middlewares/database/databaseErrorhandler.js";
 
 // console.log("Item routes module loaded in Routers item.js")
@@ -33,6 +33,12 @@ router.put("/:slug/edit", [getAccessToRoute, checkItemExist, checkUserAndItemExi
 router.delete("/:slug/delete", [getAccessToRoute, checkItemExist, checkUserAndItemExist], deleteItem)
 // console.log("DELETE /:slug/delete route registered in Routers item.js")
 
+router.get("/payment/verify/advance-esewa", verifyAdvanceEsewa)
+router.get("/payment/verify/advance-khalti", verifyAdvanceKhalti)
+router.get("/my-bookings", getAccessToRoute, getMyBookings)
+
+router.post("/:id/advance-book", getAccessToRoute, advanceBook)
+
 router.get("/:slug", checkItemExist, detailItem)
 // console.log("GET /:slug route registered in Routers item.js")
 
@@ -55,6 +61,11 @@ router.get("/recycle-bin/all", getAccessToRoute, getRecycleBin)
 router.post("/:id/recycle", getAccessToRoute, moveToRecycleBin)
 router.post("/:id/restore", getAccessToRoute, restoreFromRecycleBin)
 router.delete("/:id/permanent", getAccessToRoute, permanentDelete)
+router.post("/:id/boost/initiate", getAccessToRoute, initiateBoostBooking)
+router.get("/payment/verify/boost-esewa", verifyBoostEsewa)
+router.post("/payment/verify/boost-khalti", verifyBoostKhalti)
+
+
 
 // console.log("All item routes registered successfully in Routers item.js")
 

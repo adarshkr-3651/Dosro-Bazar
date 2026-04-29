@@ -129,6 +129,8 @@ __turbopack_context__.s([
     ()=>getItemBids,
     "getMessages",
     ()=>getMessages,
+    "getMyBookings",
+    ()=>getMyBookings,
     "getMyInvoices",
     ()=>getMyInvoices,
     "getMyListings",
@@ -149,6 +151,8 @@ __turbopack_context__.s([
     ()=>getSimilarItems,
     "googleLogin",
     ()=>googleLogin,
+    "initiateAdvanceBookAction",
+    ()=>initiateAdvanceBookAction,
     "loginUser",
     ()=>loginUser,
     "logoutUser",
@@ -198,21 +202,14 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 ;
-// When the client runs on HTTPS (dev-https), direct calls to http://localhost:5000
-// are blocked as mixed content. Use Next.js rewrites proxy instead.
-const getBaseURL = ()=>{
-    if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
-    ;
-    return ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
-};
 const api = __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].create({
-    baseURL: getBaseURL(),
+    baseURL: ("TURBOPACK compile-time value", "/backend-api"),
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     }
 });
-const BASE_URL = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : ("TURBOPACK compile-time value", "http://localhost:5000") || 'http://localhost:5000';
+const BASE_URL = ("TURBOPACK compile-time value", "/backend-api") || 'http://localhost:5000';
 async function loginUser(identifier, password) {
     try {
         const response = await api.post('/auth/login', {
@@ -223,7 +220,7 @@ async function loginUser(identifier, password) {
     } catch (error) {
         if (error.response) {
             // Backend returns errors in 'error' field, not 'message'
-            const err = new Error(error.response.data?.error || error.response.data?.message || 'Login failed');
+            const err = new Error(error.response.data.error || error.response.data.message || 'Login failed');
             err.response = error.response;
             throw err;
         } else {
@@ -243,7 +240,7 @@ async function signUpUser(username, phone, password, email) {
     } catch (error) {
         if (error.response) {
             // Backend returns errors in 'error' field, not 'message'
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Registration failed');
+            throw new Error(error.response.data.error || error.response.data.message || 'Registration failed');
         } else {
             throw new Error(error.message || 'Registration failed');
         }
@@ -258,7 +255,7 @@ async function verifyEmail(email, code) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Verification failed');
+            throw new Error(error.response.data.error || error.response.data.message || 'Verification failed');
         } else {
             throw new Error(error.message || 'Verification failed');
         }
@@ -272,7 +269,7 @@ async function resendVerificationCode(email) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to resend code');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to resend code');
         } else {
             throw new Error(error.message || 'Failed to resend code');
         }
@@ -284,7 +281,7 @@ async function getProfile() {
         return response.data.data; // Controller returns { success: true, data: user }
     } catch (error) {
         if (error.response) {
-            const err = new Error(error.response.data?.message || 'Failed to fetch profile');
+            const err = new Error(error.response.data.message || 'Failed to fetch profile');
             err.status = error.response.status;
             throw err;
         } else {
@@ -302,7 +299,7 @@ async function updateProfile(data) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update profile');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to update profile');
         } else {
             throw new Error(error.message || 'Failed to update profile');
         }
@@ -317,7 +314,7 @@ async function changePassword(oldPassword, newPassword) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to change password');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to change password');
         } else {
             throw new Error(error.message || 'Failed to change password');
         }
@@ -329,8 +326,13 @@ async function getFavorites() {
         return response.data;
     } catch (error) {
         if (error.response) {
-            const errorMsg = error.response.data?.error || error.response.data?.message || 'Failed to fetch favorites';
-            throw new Error(errorMsg);
+            if (error.response.status === 401) {
+                return {
+                    success: false,
+                    data: []
+                };
+            }
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch favorites');
         } else {
             throw new Error(error.message || 'Failed to fetch favorites');
         }
@@ -342,7 +344,7 @@ async function toggleFavorite(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update favorite');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to update favorite');
         } else {
             throw new Error(error.message || 'Failed to update favorite');
         }
@@ -354,7 +356,7 @@ async function getProductBySlug(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch product');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch product');
         } else {
             throw new Error(error.message || 'Failed to fetch product');
         }
@@ -370,7 +372,7 @@ async function addItem(data) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to create item');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to create item');
         } else {
             throw new Error(error.message || 'Failed to create item');
         }
@@ -402,7 +404,7 @@ async function forgotPassword(email) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to send reset email');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to send reset email');
         } else {
             throw new Error(error.message || 'Failed to send reset email');
         }
@@ -417,15 +419,15 @@ async function verifyResetOTP(email, otp) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Verification failed');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to verify OTP');
         } else {
-            throw new Error(error.message || 'Verification failed');
+            throw new Error(error.message || 'Failed to verify OTP');
         }
     }
 }
 async function resetPassword(email, otp, newPassword) {
     try {
-        const response = await api.put('/auth/resetpassword', {
+        const response = await api.put(`/auth/resetpassword`, {
             email,
             otp,
             newPassword
@@ -433,7 +435,7 @@ async function resetPassword(email, otp, newPassword) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to reset password');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to reset password');
         } else {
             throw new Error(error.message || 'Failed to reset password');
         }
@@ -450,7 +452,7 @@ async function googleLogin(tokenOrCode, isCode = false) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Google login failed');
+            throw new Error(error.response.data.error || error.response.data.message || 'Google login failed');
         } else {
             throw new Error(error.message || 'Google login failed');
         }
@@ -465,7 +467,7 @@ async function facebookLogin(accessToken, userID) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Facebook login failed');
+            throw new Error(error.response.data.error || error.response.data.message || 'Facebook login failed');
         } else {
             throw new Error(error.message || 'Facebook login failed');
         }
@@ -480,7 +482,7 @@ async function completeOAuthRegistration(tempUserId, phone) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to complete registration');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to complete registration');
         } else {
             throw new Error(error.message || 'Failed to complete registration');
         }
@@ -545,7 +547,7 @@ api.interceptors.response.use((response)=>response, async (error)=>{
             if (refreshError.response?.status !== 400 && refreshError.response?.status !== 401) {
                 console.error('Token refresh failed:', refreshError);
             }
-            processQueue(refreshError);
+            processQueue(error);
             // Reject with original error so components know it failed
             return Promise.reject(error);
         } finally{
@@ -554,13 +556,13 @@ api.interceptors.response.use((response)=>response, async (error)=>{
     }
     return Promise.reject(error);
 });
-async function getAllItems(page = 1, limit = 10) {
+async function getAllItems() {
     try {
-        const response = await api.get(`/item/getAllItems?page=${page}&limit=${limit}`);
+        const response = await api.get('/item/getAllItems');
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch items');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch items');
         } else {
             throw new Error(error.message || 'Failed to fetch items');
         }
@@ -572,7 +574,7 @@ async function getMyListings() {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch your listings');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch your listings');
         } else {
             throw new Error(error.message || 'Failed to fetch your listings');
         }
@@ -584,7 +586,7 @@ async function getEditItemData(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch item details');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch item details');
         } else {
             throw new Error(error.message || 'Failed to fetch item details');
         }
@@ -600,7 +602,7 @@ async function updateItem(slug, data) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update item');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to update item');
         } else {
             throw new Error(error.message || 'Failed to update item');
         }
@@ -608,12 +610,17 @@ async function updateItem(slug, data) {
 }
 async function searchSemantic(query) {
     try {
+        console.log(`[API] searchSemantic called with query: "${query}"`);
         const response = await api.get(`/item/search/semantic?query=${encodeURIComponent(query)}`);
+        console.log(`[API] searchSemantic success:`, {
+            count: response.data?.data?.length || 0,
+            firstItem: response.data?.data?.[0]?.title
+        });
         return response.data;
     } catch (error) {
         console.error(`[API] searchSemantic failed:`, error.message);
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to perform semantic search');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to perform semantic search');
         } else {
             throw new Error(error.message || 'Failed to perform semantic search');
         }
@@ -625,7 +632,7 @@ async function getSimilarItems(slug) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch similar items');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch similar items');
         } else {
             throw new Error(error.message || 'Failed to fetch similar items');
         }
@@ -633,12 +640,16 @@ async function getSimilarItems(slug) {
 }
 async function getRecommendations() {
     try {
+        console.log(`[API] getRecommendations called`);
         const response = await api.get('/item/recommendations/all');
+        console.log(`[API] getRecommendations success:`, {
+            count: response.data?.data?.length || 0
+        });
         return response.data;
     } catch (error) {
         console.error(`[API] getRecommendations failed:`, error.message);
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch recommendations');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch recommendations');
         } else {
             throw new Error(error.message || 'Failed to fetch recommendations');
         }
@@ -653,25 +664,24 @@ async function chatWithAI(message, history = []) {
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to get AI response');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to get AI response');
         } else {
             throw new Error(error.message || 'Failed to get AI response');
         }
     }
 }
-async function generateItemDescription(title, category, condition, price, wordCount = 150) {
+async function generateItemDescription(title, category, condition, price) {
     try {
         const response = await api.post('/describe', {
             title,
             category,
             condition,
-            price,
-            wordCount
+            price
         });
         return response.data;
     } catch (error) {
         if (error.response) {
-            throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to generate description');
+            throw new Error(error.response.data.error || error.response.data.message || 'Failed to generate description');
         } else {
             throw new Error(error.message || 'Failed to generate description');
         }
@@ -891,6 +901,31 @@ async function getItemBids(itemId) {
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch item bids');
+    }
+}
+async function initiateAdvanceBookAction(itemId, paymentMethod, amount) {
+    try {
+        const response = await api.post(`/item/${itemId}/advance-book`, {
+            paymentMethod,
+            amount
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to initiate advance booking');
+    }
+}
+async function getMyBookings() {
+    try {
+        const response = await api.get('/item/my-bookings');
+        return response.data;
+    } catch (error) {
+        if (error.response?.status === 401) {
+            return {
+                success: false,
+                data: []
+            };
+        }
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch bookings');
     }
 }
 const __TURBOPACK__default__export__ = api;

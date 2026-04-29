@@ -1,6 +1,6 @@
 import express from "express";
 
-import { register, login, adminLogin, forgotpassword, resetpassword, getPrivateData, refreshAccessToken, logout, googleLogin, facebookLogin, completeOAuthRegistration, verifyEmail, resendVerificationCode, verifyResetOTP } from "../Controllers/auth.js";
+import { register, login, adminLogin, forgotpassword, resetpassword, getPrivateData, refreshAccessToken, logout, googleLogin, facebookLogin, completeOAuthRegistration, verifyEmail, resendVerificationCode, verifyResetOTP, verifyLoginOtp } from "../Controllers/auth.js";
 
 import { getAccessToRoute } from "../Middlewares/Authorization/auth.js";
 
@@ -20,6 +20,7 @@ router.post("/facebook", facebookLogin)
 router.post("/complete-oauth", completeOAuthRegistration)
 router.post("/verify-email", verifyEmail)
 router.post("/resend-verification", resendVerificationCode)
+router.post("/verify-login-otp", verifyLoginOtp)
 
 router.post("/logout", getAccessToRoute, logout)
 

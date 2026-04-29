@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
-import { getConversations, getMessages, sendChatMessage, deleteChatMessage, deleteConversation } from "@/app/lib/api";
+import { getConversations, getMessages, sendChatMessage, deleteChatMessage, deleteConversation, markProductAsSold } from "@/app/lib/api";
 import { io, Socket } from "socket.io-client";
+import { useSocket } from "../context/SocketContext";
 import { toast } from "sonner";
-import { Send, ArrowLeft, MoreVertical, Package, MapPin, Loader2, MessageSquare, Image as ImageIcon, X, Eye, EyeOff, Trash2, User as UserIcon, ShieldCheck } from "lucide-react";
+import { Send, ArrowLeft, MoreVertical, Package, MapPin, Loader2, MessageSquare, Image as ImageIcon, X, Eye, EyeOff, Trash2, User as UserIcon, ShieldCheck, FileText, Download, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { resolvePhotoUrl } from "../lib/image-utils";
@@ -20,9 +21,11 @@ import { Label } from "@/app/components/ui/label";
 import { uploadChatImage, toggleOnlineStatus } from "@/app/lib/api";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/app/components/ui/dialog";
+import { ProductPreviewModal } from "../components/ProductPreviewModal";
 
-export default function MessagesPage() {
+function MessagesContent() {
     const { user, loading: authLoading } = useAuth();
+    const { socket } = useSocket();
     const isAuthenticated = !!user;
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -43,14 +46,21 @@ export default function MessagesPage() {
     const [isSharing, setIsSharing] = useState(false);
     const [dontAskAgain, setDontAskAgain] = useState(false);
     
+    // Mark as Sold State
+    const [isSellModalOpen, setIsSellModalOpen] = useState(false);
+    const [sellingPrice, setSellingPrice] = useState("");
+    const [isSelling, setIsSelling] = useState(false);
+    
     // Full Flex Enhancements State
     const [isOnline, setIsOnline] = useState(true);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [previewSlug, setPreviewSlug] = useState<string | null>(null);
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const socketRef = useRef<Socket | null>(null);
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const selectedConvRef = useRef<any>(null);
     const autoSelectedRef = useRef(false);
@@ -77,12 +87,15 @@ export default function MessagesPage() {
             setMessages(res.data);
 
             // Join specific conversation room (optional, depending on backend implementation)
-            if (socketRef.current) {
-                socketRef.current.emit("joinConversation", conv._id);
+            if (socket) {
+                socket.emit("joinConversation", conv._id);
             }
 
             // Refresh conversation list to clear unread counts if any
             fetchConversationsRef.current?.();
+            
+            // Trigger header update for unread count
+            window.dispatchEvent(new Event('messagesUpdated'));
         } catch (error: any) {
             console.error(error);
             toast.error("Failed to load messages");
@@ -126,7 +139,56 @@ export default function MessagesPage() {
         fetchConversationsRef.current = fetchConversations;
     }, [fetchConversations]);
 
-    // Initial auth check and socket connection
+    // Handle real-time updates via global socket
+    useEffect(() => {
+        if (!socket || !isAuthenticated) return;
+
+        const handleNewMessage = (data: any) => {
+            console.log('[Messages] New message received:', data);
+            const { message, conversationId } = data;
+
+            // If it's the currently open conversation, append the message
+            setMessages(prev => {
+                if (prev.find(m => m._id === message._id)) return prev;
+
+                if (selectedConvRef.current && selectedConvRef.current._id === conversationId) {
+                    return [...prev, message];
+                }
+                return prev;
+            });
+
+            // Update conversation list
+            fetchConversationsRef.current?.();
+            
+            // Trigger header update for unread count
+            window.dispatchEvent(new Event('messagesUpdated'));
+        };
+
+        const handleUserStatus = () => {
+            fetchConversationsRef.current?.();
+        };
+
+        const handleMessageDeleted = ({ messageId, conversationId }: any) => {
+            if (selectedConvRef.current && selectedConvRef.current._id === conversationId) {
+                setMessages(prev => prev.filter(m => m._id !== messageId));
+            }
+            fetchConversationsRef.current?.();
+        };
+
+        socket.on("newMessage", handleNewMessage);
+        socket.on("userOnline", handleUserStatus);
+        socket.on("userOffline", handleUserStatus);
+        socket.on("messageDeleted", handleMessageDeleted);
+
+        return () => {
+            socket.off("newMessage", handleNewMessage);
+            socket.off("userOnline", handleUserStatus);
+            socket.off("userOffline", handleUserStatus);
+            socket.off("messageDeleted", handleMessageDeleted);
+        };
+    }, [socket, isAuthenticated]);
+
+    // Initial data fetch
     useEffect(() => {
         if (!authLoading && !isAuthenticated) {
             router.push("/auth/login?redirect=/messages");
@@ -135,62 +197,8 @@ export default function MessagesPage() {
 
         if (isAuthenticated && user) {
             fetchConversations();
-
-            // Connect to Socket.IO using the base URL
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-            // Make sure not to include '/api' at the end of the URL for Socket.IO
-            const socketUrl = apiUrl.replace(/\/api\/?$/, "");
-
-            socketRef.current = io(socketUrl, {
-                withCredentials: true
-            });
-
-            socketRef.current.on("connect", () => {
-                socketRef.current?.emit("joinUserRoom", user._id);
-            });
-
-            socketRef.current.on("newMessage", (data: any) => {
-                const { message, conversationId, itemId } = data;
-
-                // If it's the currently open conversation, append the message
-                setMessages(prev => {
-                    // Check if it's already in the list
-                    if (prev.find(m => m._id === message._id)) return prev;
-
-                    if (selectedConvRef.current && selectedConvRef.current._id === conversationId) {
-                        return [...prev, message];
-                    }
-                    return prev;
-                });
-
-                // Update conversation list
-                fetchConversations();
-            });
-
-            socketRef.current.on("userOnline", (userId: string) => {
-                // Refresh conversations to see the green dot
-                fetchConversations();
-            });
-
-            socketRef.current.on("userOffline", (userId: string) => {
-                // Refresh conversations to hide the green dot
-                fetchConversations();
-            });
-
-            socketRef.current.on("messageDeleted", ({ messageId, conversationId }: any) => {
-                if (selectedConvRef.current && selectedConvRef.current._id === conversationId) {
-                    setMessages(prev => prev.filter(m => m._id !== messageId));
-                }
-                fetchConversationsRef.current?.();
-            });
-
-            return () => {
-            if (socketRef.current) {
-                socketRef.current.disconnect();
-            }
-        };
-    }
-}, [isAuthenticated, user, authLoading, router, fetchConversations]);
+        }
+    }, [isAuthenticated, user, authLoading, router, fetchConversations]);
 
     // Auto-scroll to bottom of messages
     useEffect(() => {
@@ -211,12 +219,17 @@ export default function MessagesPage() {
     const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            const isPDF = file.type === 'application/pdf';
             if (file.size > 5 * 1024 * 1024) {
-                toast.error("Image must be less than 5MB");
+                toast.error(`${isPDF ? 'PDF' : 'Image'} must be less than 5MB`);
                 return;
             }
             setImageFile(file);
-            setImagePreview(URL.createObjectURL(file));
+            if (!isPDF) {
+                setImagePreview(URL.createObjectURL(file));
+            } else {
+                setImagePreview(null); // No preview for PDF
+            }
         }
     };
 
@@ -300,20 +313,33 @@ export default function MessagesPage() {
 
         try {
             let imageUrl = undefined;
+            let attachment = undefined;
+
             if (imageFile) {
                 setIsUploading(true);
                 const res = await uploadChatImage(imageFile);
-                imageUrl = res.data;
+                if (res.fileType === 'pdf') {
+                    attachment = {
+                        url: res.data,
+                        name: res.name,
+                        fileType: 'pdf'
+                    };
+                } else {
+                    imageUrl = res.data;
+                }
                 setImageFile(null);
                 setImagePreview(null);
                 setIsUploading(false);
                 if (fileInputRef.current) fileInputRef.current.value = "";
             }
 
-            const res: any = await sendChatMessage(otherParticipant._id, selectedConv.item._id, text, imageUrl);
+            const res: any = await sendChatMessage(otherParticipant._id, selectedConv.item._id, text, imageUrl, undefined, attachment);
             // Add the new message to the local state immediately
             setMessages(prev => [...prev, res.data]);
             fetchConversations(); // Refresh list to update "lastMessage"
+
+            // Trigger header update for unread count (sender's count won't change but good for consistency)
+            window.dispatchEvent(new Event('messagesUpdated'));
         } catch (error) {
             setIsUploading(false);
             console.error(error);
@@ -355,6 +381,34 @@ export default function MessagesPage() {
             toast.error(error.message || "Failed to delete conversation");
         } finally {
             setIsDeleting(false);
+        }
+    };
+
+    const handleSellProduct = async () => {
+        if (!selectedConv || !user || !sellingPrice) return;
+        
+        setIsSelling(true);
+        try {
+            const otherParticipant = selectedConv.participants.find((p: any) => p._id !== user._id);
+            if (!otherParticipant) throw new Error("Buyer not found");
+
+            await markProductAsSold(selectedConv.item._id, otherParticipant._id, parseFloat(sellingPrice));
+            toast.success("Product marked as sold!");
+            setIsSellModalOpen(false);
+            
+            // Refresh messages to show the invoice message that backend auto-generates
+            handleSelectConversation(selectedConv);
+            
+            // Optional: Redirect or update local item status
+            setSelectedConv({
+                ...selectedConv,
+                item: { ...selectedConv.item, status: 'sold' }
+            });
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || "Failed to mark as sold");
+        } finally {
+            setIsSelling(false);
         }
     };
 
@@ -463,6 +517,15 @@ export default function MessagesPage() {
                                     <Link 
                                         href={`/products/${selectedConv.item?.slug}`} 
                                         className="flex items-center gap-4 group flex-1 min-w-0"
+                                        onClick={(e) => {
+                                            const isOwner = selectedConv.item?.author === user?._id || selectedConv.item?.author?._id === user?._id;
+                                            if (isOwner) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                setPreviewSlug(selectedConv.item.slug);
+                                                setIsPreviewOpen(true);
+                                            }
+                                        }}
                                     >
                                         {selectedConv.item?.images?.[0] && (
                                             <div className="relative h-12 w-12 rounded-md overflow-hidden bg-muted flex-shrink-0 border transition-transform group-hover:scale-105 active:scale-95 duration-200 shadow-sm">
@@ -489,6 +552,23 @@ export default function MessagesPage() {
                                         </div>
                                     </Link>
                                     <div className="flex items-center gap-1 sm:gap-2">
+                                        {/* Sell Button for Seller */}
+                                        {(selectedConv.item?.author === user?._id || selectedConv.item?.author?._id === user?._id) && selectedConv.item?.status !== 'sold' && (
+                                            <Button 
+                                                variant="default" 
+                                                size="sm" 
+                                                className="flex bg-green-600 hover:bg-green-700 text-white font-bold h-8 px-3 sm:px-4 rounded-full shadow-sm gap-1.5 text-[10px] sm:text-xs"
+                                                onClick={() => {
+                                                    setSellingPrice(selectedConv.item.price.toString());
+                                                    setIsSellModalOpen(true);
+                                                }}
+                                            >
+                                                <CheckCircle className="h-3.5 w-3.5" />
+                                                <span className="truncate max-w-[80px] sm:max-w-none">
+                                                    Sell to {selectedConv.participants.find((p: any) => p._id !== user?._id)?.username || "Buyer"}
+                                                </span>
+                                            </Button>
+                                        )}
                                         <Button 
                                             variant="outline" 
                                             size="sm" 
@@ -595,7 +675,28 @@ export default function MessagesPage() {
                                                                     </div>
                                                                 </div>
                                                             </a>
-                                                        )}                                                        {msg.text && (
+                                )}
+                                {msg.attachment && msg.attachment.fileType === 'pdf' && (
+                                    <div className={`mb-1 p-3 rounded-xl border flex items-center gap-3 min-w-[240px] ${_isMe ? 'bg-primary-foreground/10 border-primary-foreground/20' : 'bg-background border-input shadow-sm'}`}>
+                                        <div className="h-10 w-10 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0">
+                                            <FileText className="h-6 w-6 text-red-500" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className={`text-xs font-bold truncate ${_isMe ? 'text-primary-foreground' : 'text-foreground'}`}>{msg.attachment.name}</p>
+                                            <p className={`text-[10px] opacity-70 uppercase ${_isMe ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>PDF Document</p>
+                                        </div>
+                                        <a 
+                                            href={msg.attachment.url} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className={`p-2 rounded-full transition-colors shrink-0 ${_isMe ? 'hover:bg-white/10 text-primary-foreground' : 'hover:bg-black/5 text-primary'}`}
+                                            title="Download PDF"
+                                        >
+                                            <Download className="h-4 w-4" />
+                                        </a>
+                                    </div>
+                                )}
+                                {msg.text && (
                                                             <p className="text-sm whitespace-pre-wrap break-words px-3 py-1.5">{msg.text}</p>
                                                         )}
                                                         <div className={`text-[10px] px-3 pb-1 flex ${_isMe ? 'justify-end' : 'justify-start'} opacity-70`}>
@@ -612,7 +713,7 @@ export default function MessagesPage() {
 
                                 {/* Input Area */}
                                 <div className="flex flex-col bg-background">
-                                    {imagePreview && (
+                                    {imagePreview ? (
                                         <div className="px-4 py-2 border-t flex items-center bg-muted/10 gap-3">
                                             <div className="relative h-16 w-16 rounded-md overflow-hidden border shadow-sm">
                                                 <Image src={imagePreview} alt="Preview" fill className="object-cover" />
@@ -622,10 +723,23 @@ export default function MessagesPage() {
                                             </div>
                                             <div className="text-xs text-muted-foreground flex-1">Image attached</div>
                                         </div>
-                                    )}
+                                    ) : imageFile && imageFile.type === 'application/pdf' ? (
+                                        <div className="px-4 py-2 border-t flex items-center bg-muted/10 gap-3">
+                                            <div className="h-12 w-12 rounded-lg bg-red-500/10 flex items-center justify-center border border-red-500/20 relative">
+                                                <FileText className="h-6 w-6 text-red-500" />
+                                                <button type="button" onClick={() => {setImageFile(null); if (fileInputRef.current) fileInputRef.current.value = "";}} className="absolute -top-1.5 -right-1.5 bg-black/60 rounded-full p-0.5 text-white hover:bg-black transition-colors">
+                                                    <X className="h-3 w-3" />
+                                                </button>
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-xs font-bold truncate">{imageFile.name}</p>
+                                                <p className="text-[10px] text-muted-foreground uppercase font-black">PDF Document Attached</p>
+                                            </div>
+                                        </div>
+                                    ) : null}
                                     <div className="p-3 border-t">
                                         <form onSubmit={handleSendMessage} className="flex gap-2 items-center">
-                                            <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageSelect} />
+                                            <input type="file" ref={fileInputRef} className="hidden" accept="image/*,application/pdf" onChange={handleImageSelect} />
                                             <Button type="button" variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-foreground" onClick={() => fileInputRef.current?.click()}>
                                                 <ImageIcon className="h-5 w-5" />
                                             </Button>
@@ -697,6 +811,48 @@ export default function MessagesPage() {
                 description="Are you sure you want to delete this conversation? This will permanently remove all messages for both participants. This action cannot be undone."
             />
 
+            <ProductPreviewModal 
+                isOpen={isPreviewOpen}
+                onClose={() => setIsPreviewOpen(false)}
+                slug={previewSlug || ""}
+            />
+
+            <Dialog open={isSellModalOpen} onOpenChange={setIsSellModalOpen}>
+                <DialogContent className="sm:max-w-[425px] rounded-2xl">
+                    <DialogHeader className="items-center text-center">
+                        <div className="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                            <CheckCircle className="h-8 w-8 text-green-600" />
+                        </div>
+                        <DialogTitle className="text-2xl font-black italic">Finalize Sale?</DialogTitle>
+                        <DialogDescription className="text-muted-foreground pt-2">
+                            You are about to mark <span className="font-bold text-foreground">"{selectedConv?.item?.title}"</span> as sold to <span className="font-bold text-foreground">{selectedConv?.participants?.find((p: any) => p._id !== user?._id)?.username}</span>.
+                            <br/><br/>
+                            Please confirm the final selling price:
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4">
+                        <Label htmlFor="sellingPrice" className="text-xs font-bold uppercase mb-2 block">Selling Price (Rs.)</Label>
+                        <Input 
+                            id="sellingPrice"
+                            type="number"
+                            value={sellingPrice}
+                            onChange={(e) => setSellingPrice(e.target.value)}
+                            placeholder="Enter price"
+                            className="rounded-xl"
+                        />
+                    </div>
+                    <DialogFooter className="flex-col sm:flex-row gap-2 mt-2">
+                        <Button variant="outline" onClick={() => setIsSellModalOpen(false)} className="w-full sm:w-auto rounded-xl">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleSellProduct} disabled={isSelling || !sellingPrice} className="w-full sm:w-auto rounded-xl bg-green-600 hover:bg-green-700 text-white gap-2">
+                            {isSelling ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle className="h-4 w-4" />}
+                            Confirm Sale
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
             <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
                 <DialogContent className="sm:max-w-[425px] rounded-2xl">
                     <DialogHeader className="items-center text-center">
@@ -734,5 +890,13 @@ export default function MessagesPage() {
                 </DialogContent>
             </Dialog>
         </div>
+    );
+}
+
+export default function MessagesPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>}>
+            <MessagesContent />
+        </Suspense>
     );
 }

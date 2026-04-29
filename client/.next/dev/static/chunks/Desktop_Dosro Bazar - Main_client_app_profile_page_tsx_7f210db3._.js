@@ -1,8 +1,13 @@
 (globalThis.TURBOPACK_CHUNK_LISTS || (globalThis.TURBOPACK_CHUNK_LISTS = [])).push({
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
-  "static/chunks/Desktop_Dosro Bazar - Main_client_707992d1._.js",
-  "static/chunks/b9de3_c3a22955._.js"
+  "static/chunks/b9de3_6818090c._.js",
+  "static/chunks/Desktop_Dosro Bazar - Main_client_26a6559a._.js",
+  "static/chunks/b9de3_next_d2893026._.js",
+  "static/chunks/b9de3_html2canvas_dist_html2canvas_e0743d67.js",
+  "static/chunks/b9de3_pako_dist_pako_esm_mjs_5c90dcdd._.js",
+  "static/chunks/b9de3_jspdf_dist_jspdf_es_min_0c4ad4fe.js",
+  "static/chunks/b9de3_960a426c._.js"
 ],
     source: "dynamic"
 });

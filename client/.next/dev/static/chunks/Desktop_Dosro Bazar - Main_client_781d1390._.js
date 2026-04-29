@@ -2313,7 +2313,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-const ProductCard = ({ id, slug, title, price, image, images, location, timePosted, isBiddable = false, isFavorite: initialFavorite = false, onFavoriteToggle, showEdit = false, offerPrice = 0, offerDuration = "", offerUnit = "h", offerExpiresAt })=>{
+const ProductCard = ({ id, slug, title, price, image, images, location, timePosted, isBiddable = false, isFavorite: initialFavorite = false, onFavoriteToggle, showEdit = false, offerPrice = 0, offerDuration = "", offerUnit = "h", offerExpiresAt, isBooked = false })=>{
     _s();
     const [currentIdx, setCurrentIdx] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [isFav, setIsFav] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(initialFavorite);
@@ -2512,12 +2512,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                             sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 238,
+                                            lineNumber: 240,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, idx, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 234,
+                                        lineNumber: 236,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))),
                                 hasMultipleImages && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2529,12 +2529,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                                lineNumber: 255,
+                                                lineNumber: 257,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 251,
+                                            lineNumber: 253,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2544,12 +2544,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                                lineNumber: 261,
+                                                lineNumber: 263,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 257,
+                                            lineNumber: 259,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2558,12 +2558,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                                     className: `h-1 rounded-full transition-all duration-300 ${i === currentIdx ? "w-3 bg-white" : "w-1 bg-white/50"}`
                                                 }, i, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                                    lineNumber: 267,
+                                                    lineNumber: 269,
                                                     columnNumber: 23
                                                 }, ("TURBOPACK compile-time value", void 0)))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 265,
+                                            lineNumber: 267,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -2571,12 +2571,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                            lineNumber: 232,
+                            lineNumber: 234,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 231,
+                        lineNumber: 233,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "w-full h-full flex flex-col items-center justify-center text-muted-foreground/30 bg-muted/20",
@@ -2585,7 +2585,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 className: "h-12 w-12 mb-1"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 279,
+                                lineNumber: 281,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2593,13 +2593,13 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: "No Preview"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 280,
+                                lineNumber: 282,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 278,
+                        lineNumber: 280,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     user && isBuyerMode && !showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2612,12 +2612,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                             className: `h-3.5 w-3.5 ${isFav ? "fill-current" : ""}`
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                            lineNumber: 294,
+                            lineNumber: 296,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 284,
+                        lineNumber: 286,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2634,17 +2634,17 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         className: "h-3.5 w-3.5"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 307,
+                                        lineNumber: 309,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 306,
+                                    lineNumber: 308,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 299,
+                                lineNumber: 301,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2660,12 +2660,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                     className: "h-3.5 w-3.5"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 320,
+                                    lineNumber: 322,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 310,
+                                lineNumber: 312,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2682,12 +2682,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                     className: "h-3.5 w-3.5"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 333,
+                                    lineNumber: 335,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 322,
+                                lineNumber: 324,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
@@ -2699,7 +2699,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 className: "w-1 h-1 bg-white rounded-full animate-pulse"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 339,
+                                lineNumber: 341,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             "OFFER ",
@@ -2710,7 +2710,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 340,
+                                lineNumber: 342,
                                 columnNumber: 31
                             }, ("TURBOPACK compile-time value", void 0)) : offerDuration && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 children: [
@@ -2720,19 +2720,34 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 340,
+                                lineNumber: 342,
                                 columnNumber: 77
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 338,
+                        lineNumber: 340,
+                        columnNumber: 11
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    isBooked && showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-[2px]",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "bg-emerald-500 text-white font-black text-sm uppercase tracking-[0.2em] px-5 py-1.5 rounded-md shadow-lg rotate-[-12deg] border-2 border-white/30",
+                            children: "BOOKED"
+                        }, void 0, false, {
+                            fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
+                            lineNumber: 348,
+                            columnNumber: 13
+                        }, ("TURBOPACK compile-time value", void 0))
+                    }, void 0, false, {
+                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
+                        lineNumber: 347,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                lineNumber: 228,
+                lineNumber: 230,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2747,12 +2762,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                             children: title
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                            lineNumber: 346,
+                            lineNumber: 356,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 345,
+                        lineNumber: 355,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2768,7 +2783,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 351,
+                                        lineNumber: 361,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2779,7 +2794,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 352,
+                                        lineNumber: 362,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
@@ -2791,7 +2806,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 355,
+                                lineNumber: 365,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             isBiddable && isBuyerMode && !showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2802,7 +2817,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: "Bid Now"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 358,
+                                lineNumber: 368,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             showEdit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2819,18 +2834,18 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                     children: "Sold"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 370,
+                                    lineNumber: 380,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 369,
+                                lineNumber: 379,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 348,
+                        lineNumber: 358,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2840,7 +2855,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 className: "h-3 w-3 shrink-0 opacity-70"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 386,
+                                lineNumber: 396,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2848,7 +2863,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: location
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 387,
+                                lineNumber: 397,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2856,19 +2871,19 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                 children: timePosted
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                lineNumber: 388,
+                                lineNumber: 398,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                        lineNumber: 385,
+                        lineNumber: 395,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                lineNumber: 344,
+                lineNumber: 354,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$notifications$2f$MarkAsSoldModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["MarkAsSoldModal"], {
@@ -2883,7 +2898,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                 }
             }, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                lineNumber: 392,
+                lineNumber: 402,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -2901,12 +2916,12 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         className: "h-7 w-7 text-red-600"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                        lineNumber: 409,
+                                        lineNumber: 419,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 408,
+                                    lineNumber: 418,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogTitle"], {
@@ -2914,7 +2929,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                     children: "Move to Recycle Bin?"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 411,
+                                    lineNumber: 421,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
@@ -2923,25 +2938,25 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                         "This product will be removed from the listings and stored in your **Recycle Bin** for 30 days before permanent deletion.",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 414,
+                                            lineNumber: 424,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 414,
+                                            lineNumber: 424,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         "All bidders will be notified. Are you sure?"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 412,
+                                    lineNumber: 422,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                            lineNumber: 407,
+                            lineNumber: 417,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -2954,7 +2969,7 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 419,
+                                    lineNumber: 429,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2981,37 +2996,37 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                                             className: "h-4 w-4 animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 440,
+                                            lineNumber: 450,
                                             columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                            lineNumber: 440,
+                                            lineNumber: 450,
                                             columnNumber: 76
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         "Move to Bin"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                                    lineNumber: 420,
+                                    lineNumber: 430,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                            lineNumber: 418,
+                            lineNumber: 428,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                    lineNumber: 406,
+                    lineNumber: 416,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                lineNumber: 405,
+                lineNumber: 415,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             slug && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ProductPreviewModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ProductPreviewModal"], {
@@ -3020,13 +3035,13 @@ const ProductCard = ({ id, slug, title, price, image, images, location, timePost
                 slug: slug
             }, void 0, false, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-                lineNumber: 448,
+                lineNumber: 458,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/ProductCard.tsx",
-        lineNumber: 227,
+        lineNumber: 229,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

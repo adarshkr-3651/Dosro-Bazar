@@ -1,6 +1,7 @@
 import Advertisement from "../Models/Advertisement.js";
 import AdInquiry from "../Models/AdInquiry.js";
 import AdBooking from "../Models/AdBooking.js";
+import SystemSetting from "../Models/SystemSetting.js";
 import CustomError from "../Helpers/error/CustomError.js";
 import asyncErrorWrapper from "express-async-handler";
 import cloudinary from "../Helpers/Libraries/cloudinaryConfig.js";
@@ -9,6 +10,8 @@ import sendEmail from "../Helpers/Libraries/sendEmail.js";
 import crypto from "crypto";
 import axios from "axios";
 import deleteImageFile from "../Helpers/Libraries/deleteImageFile.js";
+import { moderateImage } from "../Helpers/Libraries/imageModeration.js";
+import { generatePDF } from "../Helpers/Libraries/pdfGenerator.js";
 
 const createAd = asyncErrorWrapper(async (req, res, next) => {
     const { companyName, companyEmail, plan, expiryDate, placement } = req.body;
@@ -40,9 +43,14 @@ const createAd = asyncErrorWrapper(async (req, res, next) => {
 
 const getAds = asyncErrorWrapper(async (req, res, next) => {
     const { status, placement } = req.query;
-    const queryObject = {};
+    let queryObject = {};
 
-    if (status) queryObject.status = status;
+    if (status === 'all') {
+        // Fetch everything
+    } else {
+        queryObject.status = status || 'running';
+    }
+
     if (placement) queryObject.placement = placement;
 
     // Automatic Expiry Check
@@ -351,6 +359,22 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
     
     const transactionUuid = `DB-AD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
+    // AI Moderation Check
+    let moderationResult = { isSafe: true, reason: "Filtering disabled by Admin" };
+    
+    try {
+        const filteringSetting = await SystemSetting.findOne({ key: "ad_image_filtering" });
+        const isFilteringEnabled = filteringSetting ? filteringSetting.value !== false : true; // Default to true if not found
+
+        if (isFilteringEnabled) {
+            moderationResult = await moderateImage(req.file.path);
+        }
+    } catch (error) {
+        console.error("[AdController] Moderation service error:", error.message);
+        // Fail-closed: if moderation fails, mark as flagged for manual review
+        moderationResult = { isSafe: false, reason: "Automated moderation failed. Queued for manual review." };
+    }
+
     const booking = await AdBooking.create({
         user: req.user?._id,
         companyName,
@@ -365,7 +389,9 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
         totalAmount,
         paymentStatus: 'pending',
         paymentMethod: req.body.paymentMethod || 'esewa',
-        transactionUuid
+        transactionUuid,
+        isFlagged: !moderationResult.isSafe,
+        moderationReason: moderationResult.reason
     });
 
     // Handle eSewa specific parameters (Signature generation)
@@ -457,6 +483,13 @@ const verifyEsewaPayment = asyncErrorWrapper(async (req, res, next) => {
         return res.redirect(`${process.env.URI}/payment-failed?error=booking_not_found`);
     }
 
+    // Check if already processed (Idempotency)
+    if (booking.paymentStatus === 'completed') {
+        const expiryDateStr = new Date(booking.expiryDate).toLocaleDateString();
+        const baseUrl = (process.env.URI || 'http://localhost:3000').replace(/\/$/, '');
+        return res.redirect(`${baseUrl}/?payment_success=true&type=ad&expiry=${expiryDateStr}&plan=${booking.plan}&flagged=${booking.isFlagged}`);
+    }
+
     // Mark booking as completed
     booking.paymentStatus = 'completed';
     booking.gatewayRef = decoded.transaction_code;
@@ -470,22 +503,60 @@ const verifyEsewaPayment = asyncErrorWrapper(async (req, res, next) => {
         plan: booking.plan,
         expiryDate: booking.expiryDate,
         placement: booking.placement,
-        status: 'running'
+        status: booking.isFlagged ? 'flagged' : 'running',
+        isFlagged: booking.isFlagged,
+        moderationReason: booking.moderationReason
     });
 
-    // Generate Invoice HTML
+    // Generate Invoice PDF
+    let pdfBuffer = null;
+    try {
+        const htmlInvoice = invoiceTemplate(booking);
+        pdfBuffer = await generatePDF(htmlInvoice);
+    } catch (pdfError) {
+        console.error("[verifyEsewaPayment] PDF error:", pdfError.message);
+    }
+    
     const htmlInvoice = invoiceTemplate(booking);
 
     // Notify user with Invoice
     sendEmail({
         to: booking.companyEmail,
         subject: `[Invoice #AD-${booking.transactionUuid.split('-')[2]}] Advertisement Booking Success`,
-        html: htmlInvoice
+        html: htmlInvoice,
+        attachments: pdfBuffer ? [{
+            filename: `Ad-Invoice-${booking.transactionUuid.split('-')[2]}.pdf`,
+            content: pdfBuffer
+        }] : []
     }).catch(e => console.warn("Invoice email failed:", e.message));
+
+    // Notify Admin if ad is flagged
+    if (booking.isFlagged) {
+        sendEmail({
+            to: process.env.EMAIL_USERNAME,
+            subject: `⚠️ [FLAGGED AD] Review Required - ${booking.companyName}`,
+            html: `
+                <div style="font-family: sans-serif; padding: 20px; border: 2px solid #ef4444; border-radius: 10px;">
+                    <h2 style="color: #ef4444;">Advertisement Flagged by AI Moderation</h2>
+                    <p>An advertisement has been flagged and is currently <strong>HIDDEN</strong> from the public.</p>
+                    <hr />
+                    <p><strong>Company:</strong> ${booking.companyName}</p>
+                    <p><strong>Moderation Reason:</strong> ${booking.moderationReason}</p>
+                    <p><strong>Image URL:</strong> <a href="${booking.imageUrl}">View Flagged Image</a></p>
+                    <p><strong>Transaction ID:</strong> ${booking.transactionUuid}</p>
+                    <hr />
+                    <p>Please log in to the admin dashboard to approve or reject this advertisement.</p>
+                </div>
+            `
+        }).catch(err => console.error("Admin flag email failed:", err.message));
+    }
 
     // Redirect to home with a success message including expiry date
     const expiryDateStr = new Date(booking.expiryDate).toLocaleDateString();
-    res.redirect(`${process.env.URI}/?payment_success=true&expiry=${expiryDateStr}&plan=${booking.plan}`);
+    const baseUrl = (process.env.URI || 'http://localhost:3000').replace(/\/$/, '');
+    const redirectUrl = `${baseUrl}/?payment_success=true&type=ad&expiry=${expiryDateStr}&plan=${booking.plan}&flagged=${booking.isFlagged}`;
+    
+    res.redirect(redirectUrl);
 });
 
 const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
@@ -519,21 +590,57 @@ const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
                     plan: booking.plan,
                     expiryDate: booking.expiryDate,
                     placement: booking.placement,
-                    status: 'running'
+                    status: booking.isFlagged ? 'flagged' : 'running',
+                    isFlagged: booking.isFlagged,
+                    moderationReason: booking.moderationReason
                 });
 
-                // Generate & Send Invoice
+                // Generate & Send Invoice PDF
+                let pdfBuffer = null;
+                try {
+                    const htmlInvoice = invoiceTemplate(booking);
+                    pdfBuffer = await generatePDF(htmlInvoice);
+                } catch (pdfError) {
+                    console.error("[verifyKhaltiPayment] PDF error:", pdfError.message);
+                }
+
                 const htmlInvoice = invoiceTemplate(booking);
                 sendEmail({
                     to: booking.companyEmail,
                     subject: `[Invoice #AD-${booking.transactionUuid.split('-')[2]}] Advertisement Booking Success`,
-                    html: htmlInvoice
+                    html: htmlInvoice,
+                    attachments: pdfBuffer ? [{
+                        filename: `Ad-Invoice-${booking.transactionUuid.split('-')[2]}.pdf`,
+                        content: pdfBuffer
+                    }] : []
                 }).catch(e => console.warn("Invoice email failed:", e.message));
+
+                // Notify Admin if ad is flagged
+                if (booking.isFlagged) {
+                    sendEmail({
+                        to: process.env.EMAIL_USERNAME,
+                        subject: `⚠️ [FLAGGED AD] Review Required - ${booking.companyName}`,
+                        html: `
+                            <div style="font-family: sans-serif; padding: 20px; border: 2px solid #ef4444; border-radius: 10px;">
+                                <h2 style="color: #ef4444;">Advertisement Flagged by AI Moderation</h2>
+                                <p>An advertisement has been flagged and is currently <strong>HIDDEN</strong> from the public.</p>
+                                <hr />
+                                <p><strong>Company:</strong> ${booking.companyName}</p>
+                                <p><strong>Moderation Reason:</strong> ${booking.moderationReason}</p>
+                                <p><strong>Image URL:</strong> <a href="${booking.imageUrl}">View Flagged Image</a></p>
+                                <p><strong>Transaction ID:</strong> ${booking.transactionUuid}</p>
+                                <hr />
+                                <p>Please log in to the admin dashboard to approve or reject this advertisement.</p>
+                            </div>
+                        `
+                    }).catch(err => console.error("Admin flag email failed:", err.message));
+                }
 
                 return res.status(200).json({ 
                     success: true, 
                     message: "Payment verified and Ad activated",
-                    expiry: new Date(booking.expiryDate).toLocaleDateString()
+                    expiry: new Date(booking.expiryDate).toLocaleDateString(),
+                    flagged: booking.isFlagged
                 });
             } else {
                 return res.status(400).json({ success: false, message: "Payment was already verified and completed." });

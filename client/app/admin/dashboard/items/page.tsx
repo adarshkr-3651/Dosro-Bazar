@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Package, Search, Trash2, Loader2, ChevronLeft, ChevronRight, Heart, MessageSquare, CheckCircle2, AlertCircle, Tag, User } from "lucide-react";
-import { getItemsAction, getItemStatsAction, deleteItemAction } from "@/app/lib/admin-data-actions";
+import { Package, Search, Trash2, Loader2, ChevronLeft, ChevronRight, Heart, MessageSquare, CheckCircle2, AlertCircle, Tag, User, ShieldAlert, ShieldCheck, Zap, ZapOff } from "lucide-react";
+import { getItemsAction, getItemStatsAction, deleteItemAction, getSettingsAction, updateSettingAction, approveItemAction } from "@/app/lib/admin-data-actions";
 import Image from "next/image";
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal";
+
 
 export default function ItemsPage() {
     const [items, setItems] = useState<any[]>([]);
@@ -13,6 +15,15 @@ export default function ItemsPage() {
     const [page, setPage] = useState(1);
     const [pagination, setPagination] = useState<any>(null);
     const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+    
+    // AI Moderation State
+    const [aiModerationEnabled, setAiModerationEnabled] = useState(true);
+    const [showFlaggedOnly, setShowFlaggedOnly] = useState(false);
+    const [updatingSetting, setUpdatingSetting] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<{ id: string, title: string } | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
 
     const showToast = (message: string, type: "success" | "error") => {
         setToast({ message, type });
@@ -21,22 +32,70 @@ export default function ItemsPage() {
 
     const fetchData = useCallback(async () => {
         setLoading(true);
-        const [itemsRes, statsRes] = await Promise.all([
-            getItemsAction(page, search),
+        const [itemsRes, statsRes, settingsRes] = await Promise.all([
+            getItemsAction(page, search, showFlaggedOnly),
             getItemStatsAction(),
+            getSettingsAction()
         ]);
+        
         if (itemsRes.success) { setItems(itemsRes.data); setPagination(itemsRes.pagination); }
         if (statsRes.success) setStats(statsRes.data);
+        
+        console.log("[ItemsPage] Settings response:", settingsRes);
+        if (settingsRes.success) {
+            const modSetting = settingsRes.data.find((s: any) => s.key === "ai_moderation_enabled");
+            if (modSetting) setAiModerationEnabled(modSetting.value === true);
+        } else {
+            console.error("[ItemsPage] Failed to fetch settings:", settingsRes.error);
+        }
+        
         setLoading(false);
-    }, [page, search]);
+    }, [page, search, showFlaggedOnly]);
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
-    const handleDelete = async (id: string, title: string) => {
-        if (!confirm(`Delete item "${title}"? This cannot be undone.`)) return;
-        const res = await deleteItemAction(id);
-        if (res.success) { showToast("Item deleted", "success"); fetchData(); }
-        else showToast(res.error || "Failed to delete item", "error");
+    const handleDelete = (id: string, title: string) => {
+        setSelectedItem({ id, title });
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDeleteItem = async () => {
+        if (!selectedItem) return;
+        setIsDeleting(true);
+        const res = await deleteItemAction(selectedItem.id);
+        setIsDeleting(false);
+        setIsDeleteModalOpen(false);
+        if (res.success) { 
+            showToast("Item deleted", "success"); 
+            fetchData(); 
+            setSelectedItem(null);
+        } else {
+            showToast(res.error || "Failed to delete item", "error");
+        }
+    };
+
+
+    const handleApprove = async (id: string, title: string) => {
+        const res = await approveItemAction(id);
+        if (res.success) { 
+            showToast("Item approved", "success"); 
+            fetchData(); 
+        } else {
+            showToast(res.error || "Failed to approve item", "error");
+        }
+    };
+
+    const toggleAiModeration = async () => {
+        setUpdatingSetting(true);
+        const newValue = !aiModerationEnabled;
+        const res = await updateSettingAction("ai_moderation_enabled", newValue);
+        if (res.success) {
+            setAiModerationEnabled(newValue);
+            showToast(`AI Moderation ${newValue ? "Enabled" : "Disabled"}`, "success");
+        } else {
+            showToast(res.error || "Failed to update setting", "error");
+        }
+        setUpdatingSetting(false);
     };
 
     return (
@@ -50,11 +109,37 @@ export default function ItemsPage() {
             )}
 
             {/* Header */}
-            <div className="space-y-1">
-                <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 flex items-center gap-3">
-                    <Package className="w-10 h-10 text-emerald-600" /> Items
-                </h1>
-                <p className="text-slate-500">All marketplace listings across the platform.</p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 flex items-center gap-3">
+                        <Package className="w-10 h-10 text-emerald-600" /> Items
+                    </h1>
+                    <p className="text-slate-500 font-medium">All marketplace listings across the platform.</p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 bg-slate-100/50 p-1.5 rounded-2xl border border-slate-200">
+                    <button 
+                        onClick={() => { setShowFlaggedOnly(false); setPage(1); }}
+                        className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${!showFlaggedOnly ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-400 hover:text-slate-600"}`}
+                    >
+                        <Tag className="w-3.5 h-3.5" /> All Items
+                    </button>
+                    <button 
+                        onClick={() => { setShowFlaggedOnly(true); setPage(1); }}
+                        className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${showFlaggedOnly ? "bg-rose-600 text-white shadow-lg shadow-rose-500/20" : "text-slate-400 hover:text-rose-600"}`}
+                    >
+                        <ShieldAlert className="w-3.5 h-3.5" /> Flagged Items
+                    </button>
+                    <div className="w-px h-6 bg-slate-200 mx-1 hidden md:block" />
+                    <button 
+                        onClick={toggleAiModeration}
+                        disabled={updatingSetting}
+                        className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 border ${aiModerationEnabled ? "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100" : "bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100"}`}
+                    >
+                        {updatingSetting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : aiModerationEnabled ? <Zap className="w-3.5 h-3.5" /> : <ZapOff className="w-3.5 h-3.5" />}
+                        AI Moderation: {aiModerationEnabled ? "ON" : "OFF"}
+                    </button>
+                </div>
             </div>
 
             {/* Stats */}
@@ -97,20 +182,46 @@ export default function ItemsPage() {
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center"><Package className="w-10 h-10 text-slate-200" /></div>
                                 )}
-                                {/* Delete overlay */}
-                                <button
-                                    onClick={() => handleDelete(item._id, item.title)}
-                                    className="absolute top-3 right-3 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-slate-200 text-slate-400 hover:text-rose-600 hover:border-rose-500/40 transition-all opacity-0 group-hover:opacity-100 shadow-sm"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
+                                
+                                {/* Flagged Badge */}
+                                {item.isFlagged && (
+                                    <div className="absolute top-3 left-3 px-3 py-1.5 rounded-xl bg-rose-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-lg">
+                                        <ShieldAlert className="w-3 h-3" /> Flagged
+                                    </div>
+                                )}
+
+                                {/* Action overlay */}
+                                <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                    {item.isFlagged && (
+                                        <button
+                                            onClick={() => handleApprove(item._id, item.title)}
+                                            className="p-2 rounded-xl bg-white/90 backdrop-blur-md border border-slate-200 text-emerald-600 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-all shadow-sm"
+                                            title="Approve Item"
+                                        >
+                                            <ShieldCheck className="w-4 h-4" />
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => handleDelete(item._id, item.title)}
+                                        className="p-2 rounded-xl bg-white/90 backdrop-blur-md border border-slate-200 text-slate-400 hover:bg-rose-500 hover:text-white hover:border-rose-500 transition-all shadow-sm"
+                                        title="Delete Item"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
 
                             {/* Info */}
                             <div className="p-5 space-y-3">
                                 <div>
-                                    <h3 className="text-slate-900 font-bold text-sm leading-snug line-clamp-1 group-hover:text-emerald-600 transition-colors uppercase tracking-tight">{item.title}</h3>
+                                    <div className="flex items-start justify-between gap-2">
+                                        <h3 className="text-slate-900 font-bold text-sm leading-snug line-clamp-1 group-hover:text-emerald-600 transition-colors uppercase tracking-tight flex-1">{item.title}</h3>
+                                        {item.isFlagged && <div className="p-1 rounded-full bg-rose-50 border border-rose-100 text-rose-500" title={item.moderationReason}><AlertCircle className="w-3 h-3" /></div>}
+                                    </div>
                                     <p className="text-slate-500 text-xs mt-1 line-clamp-2">{item.content}</p>
+                                    {item.isFlagged && item.moderationReason && (
+                                        <p className="text-[9px] text-rose-500 font-bold uppercase mt-2 bg-rose-50 p-2 rounded-lg border border-rose-100">Reason: {item.moderationReason}</p>
+                                    )}
                                 </div>
 
                                 <div className="flex items-center justify-between">
@@ -146,6 +257,20 @@ export default function ItemsPage() {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmationModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedItem(null);
+                }}
+                onConfirm={confirmDeleteItem}
+                title="Delete Item"
+                description={`Are you sure you want to delete "${selectedItem?.title}"? This cannot be undone.`}
+                confirmText="Delete Item"
+                isLoading={isDeleting}
+            />
         </div>
+
     );
 }

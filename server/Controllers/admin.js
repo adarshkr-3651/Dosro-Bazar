@@ -2,6 +2,7 @@ import asyncErrorWrapper from "express-async-handler";
 import User from "../Models/user.js";
 import Item from "../Models/item.js";
 import CustomError from "../Helpers/error/CustomError.js";
+import AdvanceBooking from "../Models/AdvanceBooking.js";
 
 // ========================================
 // USER MANAGEMENT
@@ -183,7 +184,7 @@ const getUserStats = asyncErrorWrapper(async (req, res, next) => {
 const getAllItemsAdmin = asyncErrorWrapper(async (req, res, next) => {
     // console.log("getAllItemsAdmin function of Controllers admin.js");
 
-    const { page = 1, limit = 10, search = '' } = req.query;
+    const { page = 1, limit = 10, search = '', isFlagged } = req.query;
     const skip = (page - 1) * limit;
 
     // Build search query
@@ -193,6 +194,10 @@ const getAllItemsAdmin = asyncErrorWrapper(async (req, res, next) => {
             { content: { $regex: search, $options: 'i' } }
         ]
     } : {};
+
+    if (isFlagged === 'true') {
+        searchQuery.isFlagged = true;
+    }
 
     const items = await Item.find(searchQuery)
         .populate('author', 'username email')
@@ -236,6 +241,26 @@ const deleteItemAdmin = asyncErrorWrapper(async (req, res, next) => {
     });
 });
 
+// Approve flagged item
+const approveItemAdmin = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params;
+
+    const item = await Item.findByIdAndUpdate(id, { 
+        isFlagged: false, status: "active",
+        moderationReason: "" // Clear the reason as well
+    }, { new: true });
+
+    if (!item) {
+        return next(new CustomError("Item not found", 404));
+    }
+
+    return res.status(200).json({
+        success: true,
+        message: "Item approved and flag removed",
+        data: item
+    });
+});
+
 // Get item statistics
 const getItemStats = asyncErrorWrapper(async (req, res, next) => {
     // console.log("getItemStats function of Controllers admin.js");
@@ -274,13 +299,13 @@ const getDashboard = asyncErrorWrapper(async (req, res, next) => {
 
     const now = new Date();
     const thirtyDaysAgo = new Date(now); thirtyDaysAgo.setDate(now.getDate() - 30);
-    const sixtyDaysAgo  = new Date(now); sixtyDaysAgo.setDate(now.getDate() - 60);
+    const sixtyDaysAgo = new Date(now); sixtyDaysAgo.setDate(now.getDate() - 60);
 
     // ── Counts ──────────────────────────────────────────────────────────────
     const [
         totalUsers, totalItems,
         recentUsers, recentItems,
-        prevUsers,  prevItems,
+        prevUsers, prevItems,
         verifiedSellers, pendingSellers,
         totalBiddable,
     ] = await Promise.all([
@@ -370,6 +395,50 @@ const getDashboard = asyncErrorWrapper(async (req, res, next) => {
 });
 
 
+import BoostBooking from "../Models/BoostBooking.js";
+
+// ========================================
+// BOOST MANAGEMENT
+// ========================================
+
+const getAllBoosts = asyncErrorWrapper(async (req, res, next) => {
+    const boosts = await BoostBooking.find()
+        .populate("user", "username email")
+        .populate("item", "title slug images")
+        .sort("-createdAt");
+
+    res.status(200).json({
+        success: true,
+        count: boosts.length,
+        data: boosts
+    });
+});
+
+const deleteBoost = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params;
+
+    const boost = await BoostBooking.findById(id);
+    if (!boost) {
+        return next(new CustomError("Boost record not found", 404));
+    }
+
+    // Revert item status if it was boosted by this specific record
+    const item = await Item.findById(boost.item);
+    if (item && item.isBoosted) {
+        item.isBoosted = false;
+        item.boostPlan = null;
+        item.boostExpiresAt = null;
+        await item.save();
+    }
+
+    await boost.remove();
+
+    res.status(200).json({
+        success: true,
+        message: "Boost package cancelled and item status reverted"
+    });
+});
+
 export {
     // User management
     getAllUsers,
@@ -381,9 +450,31 @@ export {
     // Item management
     getAllItemsAdmin,
     deleteItemAdmin,
+    approveItemAdmin,
     getItemStats,
+
+    // Boost management
+    getAllBoosts,
+    deleteBoost,
 
     // Dashboard
     getDashboard
 };
 
+// ========================================
+// ADVANCE BOOKING MANAGEMENT
+// ========================================
+
+export const getAllAdvanceBookings = asyncErrorWrapper(async (req, res, next) => {
+    const bookings = await AdvanceBooking.find()
+        .populate("buyer", "username email phone")
+        .populate("seller", "username email phone")
+        .populate("item", "title slug images price")
+        .sort("-createdAt");
+
+    res.status(200).json({
+        success: true,
+        count: bookings.length,
+        data: bookings
+    });
+});

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Heart, MapPin, Image as ImageIcon, ChevronLeft, ChevronRight, Trash2, Pencil, Eye } from "lucide-react";
+import { Heart, MapPin, Image as ImageIcon, ChevronLeft, ChevronRight, Trash2, Eye, Zap, Pencil } from "lucide-react";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { Badge } from "@/app/components/ui/badge";
@@ -33,6 +33,10 @@ interface ProductCardProps {
   offerDuration?: string;
   offerUnit?: string;
   offerExpiresAt?: string | Date;
+  isBooked?: boolean;
+  status?: string;
+  isBoosted?: boolean;
+  boostPlan?: number | string;
 }
 
 const ProductCard = ({
@@ -52,6 +56,10 @@ const ProductCard = ({
   offerDuration = "",
   offerUnit = "h",
   offerExpiresAt,
+  isBooked = false,
+  status = "active",
+  isBoosted = false,
+  boostPlan,
 }: ProductCardProps) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isFav, setIsFav] = useState(initialFavorite);
@@ -183,7 +191,7 @@ const ProductCard = ({
     e.stopPropagation();
     if (!user) {
       toast.error("Login Required", {
-        description: "Log in please to place bid",
+        description: "Log in please to place offer",
         className: "toast-auth-required",
         action: {
           label: "Login",
@@ -197,6 +205,13 @@ const ProductCard = ({
   };
 
   const handleProductClick = (e: React.MouseEvent) => {
+    if (showEdit) {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsPreviewOpen(true);
+      return;
+    }
+
     if (!user) {
       e.preventDefault();
       e.stopPropagation();
@@ -226,6 +241,16 @@ const ProductCard = ({
   return (
     <Card className="group h-full overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 rounded-xl border-muted/60">
       <div className="relative aspect-square overflow-hidden bg-muted/30">
+        {/* SPONSORED Banner */}
+        {isBoosted && (
+          <div className="absolute top-0 left-0 z-40">
+            <div className="bg-indigo-600 text-white text-[8px] font-black uppercase tracking-wider px-3 py-1 rounded-br-lg shadow-md border-b border-r border-indigo-400/30 backdrop-blur-md flex items-center gap-1.5">
+              <Zap className="w-2.5 h-2.5 fill-white" />
+              Sponsored
+            </div>
+          </div>
+        )}
+
         {/* Fallback image handling could be improved, but assuming image is valid URL for now */}
         {allImages.length > 0 ? (
           <Link href={productUrl} className="block w-full h-full" onClick={handleProductClick}>
@@ -299,25 +324,28 @@ const ProductCard = ({
             <Button
               size="icon"
               variant="secondary"
-              className="absolute top-2 left-2 z-10 h-7 w-7 rounded-full shadow-sm bg-white/80 text-primary hover:bg-white hover:scale-110 transition-all duration-300"
-              asChild
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Link href={`/products/${slug}/edit`}>
-                <Pencil className="h-3.5 w-3.5" />
-              </Link>
-            </Button>
-            <Button
-              size="icon"
-              variant="secondary"
               className="absolute top-2 right-2 z-10 h-7 w-7 rounded-full shadow-sm bg-white/80 text-red-500 hover:bg-white hover:text-red-600 hover:scale-110 transition-all duration-300"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 setIsDeleteConfirmOpen(true);
               }}
+              title="Delete Product"
             >
               <Trash2 className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              size="icon"
+              variant="secondary"
+              className="absolute top-2 right-10 z-10 h-7 w-7 rounded-full shadow-sm bg-white/80 text-primary hover:bg-white hover:text-primary/80 hover:scale-110 transition-all duration-300"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = productUrl; // In showEdit mode, this is /edit
+              }}
+              title="Edit Product"
+            >
+              <Pencil className="h-3.5 w-3.5" />
             </Button>
             <Button
               size="icon"
@@ -340,6 +368,22 @@ const ProductCard = ({
             OFFER {timeLeft ? <span>• {timeLeft}</span> : (offerDuration && <span>• {offerDuration}{offerUnit}</span>)}
           </Badge>
         )}
+        {/* BOOKED overlay */}
+        {isBooked && status !== "sold" && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
+            <div className="bg-emerald-500 text-white font-black text-sm uppercase tracking-[0.2em] px-5 py-1.5 rounded-md shadow-lg rotate-[-12deg] border-2 border-white/30">
+              BOOKED
+            </div>
+          </div>
+        )}
+        {/* SOLD overlay */}
+        {status === "sold" && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-[2px]">
+            <div className="bg-red-600 text-white font-black text-lg uppercase tracking-[0.3em] px-8 py-2 rounded-md shadow-2xl rotate-[-15deg] border-4 border-white/40 animate-in zoom-in-50 duration-300">
+              SOLD
+            </div>
+          </div>
+        )}
       </div>
       <CardContent className="p-3">
         <Link href={productUrl} className="block mb-1.5" onClick={handleProductClick}>
@@ -354,23 +398,28 @@ const ProductCard = ({
           ) : (
             <span className="text-base font-bold text-primary tracking-tight">Rs. {price.toLocaleString()}</span>
           )}
-          {isBiddable && isBuyerMode && !showEdit && (
+          {isBuyerMode && !showEdit && status !== "sold" && (
             <Button
               size="sm"
               variant="outline"
-              className="h-6 text-[10px] px-2 rounded-full bg-transparent hover: border-brown text-black transition-colors"
+              className="h-6 text-[10px] px-2 rounded-full bg-transparent border-primary/20 text-primary hover:bg-primary hover:text-white transition-colors"
               onClick={handleBidClick}
             >
-              Bid Now
+              Make Offer
             </Button>
           )}
+          {status === "sold" && !showEdit && (
+             <Badge variant="outline" className="bg-red-500/10 text-red-600 border-red-500/20 font-bold uppercase text-[9px] h-6 px-3">
+                Sold Out
+             </Badge>
+          )}
 
-          {showEdit && (
+          {showEdit && status !== "sold" && (
             <div className="flex gap-1">
               <Button
                 size="sm"
                 variant="outline"
-                className="h-7 text-[10px] px-2 rounded-lg border-green-500/20 text-green-600 hover:bg-green-500/5 font-bold uppercase tracking-wider"
+                className="h-7 text-[10px] px-2 rounded-lg border-green-500/20 text-green-600 hover:bg-green-600 hover:text-white font-bold uppercase tracking-wider"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

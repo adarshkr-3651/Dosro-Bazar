@@ -534,12 +534,319 @@ const signupWelcomeTemplate = (username) => {
     `;
 };
 
+/**
+ * Advance Booking Notification Email Template (Sent to seller)
+ * @param {string} sellerName - Seller's username
+ * @param {string} buyerName - Buyer's username
+ * @param {string} itemTitle - Product title
+ * @param {number} amount - Advance amount paid
+ * @param {string} buyerPhone - Buyer's phone
+ * @param {string} buyerEmail - Buyer's email
+ * @returns {string} HTML email template
+ */
+const advanceBookingTemplate = (sellerName, buyerName, itemTitle, amount, buyerPhone, buyerEmail) => {
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product Booked!</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 20px;">
+            <tr>
+                <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <!-- Header -->
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 40px 30px; text-align: center;">
+                                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">🎉 Your Product Has Been Booked!</h1>
+                            </td>
+                        </tr>
+                        
+                        <!-- Content -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="margin: 0 0 20px; color: #333333; font-size: 16px; line-height: 1.6;">
+                                    Hi <strong>${sellerName}</strong>,
+                                </p>
+                                <p style="margin: 0 0 30px; color: #666666; font-size: 15px; line-height: 1.6;">
+                                    Great news! A buyer has secured your product with an advance payment through Dosro Bazar.
+                                </p>
+                                
+                                <!-- Booking Details Box -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <table width="100%" cellpadding="8" cellspacing="0">
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600; width: 140px;">📦 Product:</td>
+                                                    <td style="color: #333333; font-size: 14px; font-weight: 700;">${itemTitle}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">👤 Buyer:</td>
+                                                    <td style="color: #333333; font-size: 14px;">${buyerName}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">💰 Amount Paid:</td>
+                                                    <td style="color: #28a745; font-size: 16px; font-weight: 700;">Rs. ${amount.toLocaleString()}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">📞 Phone:</td>
+                                                    <td style="color: #333333; font-size: 14px;">${buyerPhone || 'Not provided'}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">📧 Email:</td>
+                                                    <td style="color: #333333; font-size: 14px;">${buyerEmail || 'Not provided'}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <!-- Info Box -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0; background-color: #d4edda; border-left: 4px solid #28a745; border-radius: 4px;">
+                                    <tr>
+                                        <td style="padding: 15px;">
+                                            <p style="margin: 0; color: #155724; font-size: 14px; line-height: 1.5;">
+                                                ✅ The advance amount has been deposited to the Dosro Bazar escrow account. Please contact the buyer to arrange the delivery.
+                                            </p>
+                                            <p style="margin: 10px 0 0; color: #155724; font-size: 13px; font-weight: 600;">
+                                                ℹ️ Dosro Bazar will transfer this amount to you after confirmation from the buyer side.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <p style="margin: 20px 0 0; color: #999999; font-size: 13px; line-height: 1.6;">
+                                    Your product has been marked as "Booked" and is no longer visible to other buyers.
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0 0 10px; color: #6c757d; font-size: 13px;">
+                                    This is an automated notification from Dosro Bazar.
+                                </p>
+                                <p style="margin: 0; color: #adb5bd; font-size: 12px;">
+                                    © ${new Date().getFullYear()} Dosro Bazar. All rights reserved.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    `;
+};
+
+/**
+ * Login OTP Email Template (MFA)
+ * @param {string} otp - The 6-digit login OTP
+ * @param {string} username - The user's username
+ * @returns {string} HTML email template
+ */
+const loginOtpTemplate = (otp, username) => {
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Verification Code</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 20px;">
+            <tr>
+                <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <!-- Header -->
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
+                                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">🔐 Login Verification</h1>
+                            </td>
+                        </tr>
+                        
+                        <!-- Content -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="margin: 0 0 20px; color: #333333; font-size: 16px; line-height: 1.6;">
+                                    Hi <strong>${username}</strong>,
+                                </p>
+                                <p style="margin: 0 0 20px; color: #666666; font-size: 15px; line-height: 1.6;">
+                                    You've enabled two-factor authentication for your Dosro Bazar account. Please use the following code to complete your login:
+                                </p>
+                                
+                                <!-- OTP Box -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                    <tr>
+                                        <td align="center">
+                                            <div style="display: inline-block; padding: 20px 40px; background-color: #f0fdf4; border: 2px dashed #10b981; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 36px; font-weight: 700; color: #10b981; letter-spacing: 12px;">
+                                                ${otp}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <!-- Warning Box -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+                                    <tr>
+                                        <td style="padding: 15px;">
+                                            <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.5;">
+                                                ⚠️ <strong>Important:</strong> This code will expire in 5 minutes.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <p style="margin: 20px 0; color: #666666; font-size: 14px; line-height: 1.6;">
+                                    If you didn't attempt to log in, please secure your account immediately and contact support.
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0 0 10px; color: #6c757d; font-size: 13px;">
+                                    This is a secure automated message, please do not reply.
+                                </p>
+                                <p style="margin: 0; color: #adb5bd; font-size: 12px;">
+                                    © ${new Date().getFullYear()} Dosro Bazar. All rights reserved.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    `;
+};
+
+/**
+ * Bid Accepted Email Template
+ * @param {string} buyerName - Buyer's username
+ * @param {string} sellerName - Seller's username
+ * @param {string} itemTitle - Product title
+ * @param {number} amount - Accepted bid amount
+ * @param {string} sellerPhone - Seller's phone
+ * @param {string} sellerEmail - Seller's email
+ * @returns {string} HTML email template
+ */
+const bidAcceptedTemplate = (buyerName, sellerName, itemTitle, amount, sellerPhone, sellerEmail) => {
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bid Accepted!</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 20px;">
+            <tr>
+                <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <!-- Header -->
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 40px 30px; text-align: center;">
+                                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">✅ Your Bid Has Been Accepted!</h1>
+                            </td>
+                        </tr>
+                        
+                        <!-- Content -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="margin: 0 0 20px; color: #333333; font-size: 16px; line-height: 1.6;">
+                                    Hi <strong>${buyerName}</strong>,
+                                </p>
+                                <p style="margin: 0 0 30px; color: #666666; font-size: 15px; line-height: 1.6;">
+                                    Congratulations! <strong>${sellerName}</strong> has accepted your bid for their item.
+                                </p>
+                                
+                                <!-- Bid Details Box -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <table width="100%" cellpadding="8" cellspacing="0">
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600; width: 140px;">📦 Product:</td>
+                                                    <td style="color: #333333; font-size: 14px; font-weight: 700;">${itemTitle}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">💰 Accepted Bid:</td>
+                                                    <td style="color: #11998e; font-size: 16px; font-weight: 700;">Rs. ${amount.toLocaleString()}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="border-top: 1px solid #e9ecef; padding-top: 15px;">
+                                                        <p style="margin: 0 0 10px; color: #6c757d; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Seller Contact Information:</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">👤 Seller:</td>
+                                                    <td style="color: #333333; font-size: 14px;">${sellerName}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">📞 Phone:</td>
+                                                    <td style="color: #333333; font-size: 14px;">${sellerPhone || 'Not shared'}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: #6c757d; font-size: 14px; font-weight: 600;">📧 Email:</td>
+                                                    <td style="color: #333333; font-size: 14px;">${sellerEmail || 'Not shared'}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <!-- CTA Button -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                    <tr>
+                                        <td align="center">
+                                            <a href="${process.env.URI || 'http://localhost:3000'}/messages" style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px;">Go to Chat</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <p style="margin: 20px 0 0; color: #999999; font-size: 13px; line-height: 1.6;">
+                                    You can also find these details in your notifications on Dosro Bazar.
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                            <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e9ecef;">
+                                <p style="margin: 0; color: #adb5bd; font-size: 12px;">
+                                    © ${new Date().getFullYear()} Dosro Bazar. All rights reserved.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    `;
+};
+
 export {
     passwordResetTemplate,
     loginNotificationTemplate,
     passwordChangeTemplate,
     verificationCodeTemplate,
+    loginOtpTemplate,
     welcomeTemplate,
-    signupWelcomeTemplate
+    signupWelcomeTemplate,
+    advanceBookingTemplate,
+    bidAcceptedTemplate
 };
 

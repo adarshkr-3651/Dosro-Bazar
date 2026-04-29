@@ -8,8 +8,9 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
 import { submitAdEnquiryAction, submitAdminAdInquiryAction } from "@/app/lib/ad-actions";
-import { CheckCircle2, Loader2, X, Send, Tag, Phone, Mail, User as UserIcon, Zap } from "lucide-react";
+import { CheckCircle2, Loader2, X, Send, Tag, Phone, Mail, User as UserIcon, Zap, AlertTriangle } from "lucide-react";
 import AdBookingModal from "./AdBookingModal";
+import { toast } from "sonner";
 
 interface Ad {
   _id?: string;
@@ -43,8 +44,27 @@ const HeroBanner = () => {
 
   useEffect(() => {
     if (searchParams && searchParams.get('payment_success') === 'true') {
-      showNotification("Advertisement Booked & Live!", "success");
-      // Use router to clear the query params without refreshing
+      const isFlagged = searchParams.get('flagged') === 'true';
+      const plan = searchParams.get('plan');
+      const expiry = searchParams.get('expiry');
+
+      if (isFlagged) {
+        toast.warning("Ad Under Review", {
+          description: "This image does not follow Dosro Bazar Terms and Policies, so it can't go live right now. We will contact you soon on your provided details.",
+          duration: 10000,
+          icon: <AlertTriangle className="h-5 w-5 text-amber-500" />
+        });
+      } else {
+        const type = searchParams.get('type');
+        const itemName = type === 'boost' ? 'Product Boost' : 'Advertisement';
+        const displayPlan = plan ? `${plan} plan` : 'selected';
+        
+        toast.success("Payment Successful!", {
+          description: `Your ${itemName} (${displayPlan}) is now live${expiry ? ` until ${expiry}` : ''}.`,
+          duration: 6000
+        });
+      }
+      
       router.replace('/');
     }
   }, [searchParams, router]);

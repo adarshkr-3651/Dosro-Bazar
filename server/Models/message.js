@@ -29,6 +29,11 @@ const MessageSchema = new mongoose.Schema({
     isRead: {
         type: Boolean,
         default: false
+    },
+    attachment: {
+        url: String,
+        name: String,
+        fileType: String // e.g., 'pdf'
     }
 }, { timestamps: true });
 

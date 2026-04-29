@@ -9,6 +9,8 @@ interface DeleteConfirmationModalProps {
     onConfirm: () => void;
     title: string;
     description: string;
+    confirmText?: string;
+    variant?: 'destructive' | 'primary' | 'warning';
     isLoading?: boolean;
 }
 
@@ -18,9 +20,34 @@ export default function DeleteConfirmationModal({
     onConfirm,
     title,
     description,
+    confirmText = "Confirm",
+    variant = "destructive",
     isLoading = false
 }: DeleteConfirmationModalProps) {
     if (!isOpen) return null;
+
+    const variantStyles = {
+        destructive: {
+            iconBg: "bg-destructive/10",
+            iconColor: "text-destructive",
+            buttonVariant: "destructive" as const,
+            footerBg: "bg-destructive/5"
+        },
+        primary: {
+            iconBg: "bg-primary/10",
+            iconColor: "text-primary",
+            buttonVariant: "default" as const,
+            footerBg: "bg-primary/5"
+        },
+        warning: {
+            iconBg: "bg-amber-100",
+            iconColor: "text-amber-600",
+            buttonVariant: "default" as const, // We'll handle amber color via className if needed
+            footerBg: "bg-amber-50"
+        }
+    };
+
+    const style = variantStyles[variant];
 
     return (
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 px-6">
@@ -42,9 +69,9 @@ export default function DeleteConfirmationModal({
                 </div>
 
                 <div className="p-6 pt-8">
-                    {/* Warning Icon */}
-                    <div className="mx-auto w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center mb-6">
-                        <AlertTriangle className="h-7 w-7 text-destructive" />
+                    {/* Icon */}
+                    <div className={`mx-auto w-14 h-14 rounded-full ${style.iconBg} flex items-center justify-center mb-6`}>
+                        <AlertTriangle className={`h-7 w-7 ${style.iconColor}`} />
                     </div>
 
                     {/* Content */}
@@ -66,25 +93,25 @@ export default function DeleteConfirmationModal({
                             Cancel
                         </Button>
                         <Button 
-                            variant="destructive" 
+                            variant={style.buttonVariant}
                             onClick={onConfirm}
-                            className="w-full rounded-xl h-11 font-medium shadow-sm transition-all shadow-destructive/20 active:scale-[0.98]"
+                            className={`w-full rounded-xl h-11 font-medium shadow-sm transition-all active:scale-[0.98] ${variant === 'warning' ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-amber-200/50' : ''}`}
                             disabled={isLoading}
                         >
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Deleting...
+                                    Processing...
                                 </>
                             ) : (
-                                "Delete Chat"
+                                confirmText
                             )}
                         </Button>
                     </div>
                 </div>
 
                 {/* Subtle footer accent */}
-                <div className="h-1.5 w-full bg-destructive/5" />
+                <div className={`h-1.5 w-full ${style.footerBg}`} />
             </div>
         </div>
     );

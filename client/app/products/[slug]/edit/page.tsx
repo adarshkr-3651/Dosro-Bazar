@@ -52,6 +52,7 @@ export default function EditProductPage() {
         expiryUnit: "d",
         expiryDuration: "",
     });
+    const [showDeliveryModal, setShowDeliveryModal] = useState(false);
 
     const categories = [
         "Electronics",
@@ -613,13 +614,13 @@ export default function EditProductPage() {
                                         </div>
                                     </div>
 
-                                    {/* Bidding and Extras */}
+                                    {/* Offers and Extras */}
                                     <div className="space-y-4 pt-4 border-t">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                                             <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20">
                                                 <div className="space-y-0.5">
-                                                    <Label htmlFor="isBiddable" className="text-sm font-medium">Allow Bidding</Label>
-                                                    <p className="text-[10px] text-muted-foreground">Let users offer prices.</p>
+                                                    <Label htmlFor="isBiddable" className="text-sm font-medium">Allow Direct Messaging</Label>
+                                                    <p className="text-[10px] text-muted-foreground font-medium text-primary/60 italic">If disabled, buyers can still send offers but cannot message you directly</p>
                                                 </div>
                                                 <Switch
                                                     id="isBiddable" checked={formData.isBiddable}
@@ -627,38 +628,37 @@ export default function EditProductPage() {
                                                 />
                                             </div>
 
-                                            {formData.isBiddable && (
-                                                <div className={`space-y-2 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
-                                                    <div className="flex items-center justify-between">
-                                                        <Label htmlFor="minBid" className="text-xs font-semibold">Min. Starting Bid (Rs.)</Label>
-                                                        {isPriceSet && (
-                                                            <span className={`text-[9px] font-bold uppercase transition-all duration-300 ${
-                                                                formData.minBid && parseFloat(formData.minBid) > (
-                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
-                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
-                                                                    parseFloat(formData.price) * 0.99
-                                                                ) ? 'text-red-500 animate-pulse' : 'text-muted-foreground opacity-50'
-                                                            }`}>
-                                                                (Max: रु {Math.floor(
-                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
-                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
-                                                                    parseFloat(formData.price) * 0.99
-                                                                ).toLocaleString()})
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="relative">
-                                                        <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                                                        <Input
-                                                            id="minBid" type="number"
-                                                            placeholder={isPriceSet ? "Initial bid" : "Set price first"}
-                                                            value={formData.minBid}
-                                                            onChange={handleMinBidChange}
-                                                            className="pl-10 h-10"
-                                                        />
-                                                    </div>
+                                            {/* Offer Field - Always visible */}
+                                            <div className={`space-y-2 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
+                                                <div className="flex items-center justify-between">
+                                                    <Label htmlFor="minBid" className="text-xs font-semibold">Min. Starting Offer (Rs.)</Label>
+                                                    {isPriceSet && (
+                                                        <span className={`text-[9px] font-bold uppercase transition-all duration-300 ${
+                                                            formData.minBid && parseFloat(formData.minBid) > (
+                                                                parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                parseFloat(formData.price) * 0.99
+                                                            ) ? 'text-red-500 animate-pulse' : 'text-muted-foreground opacity-50'
+                                                        }`}>
+                                                            (Max: रु {Math.floor(
+                                                                parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                parseFloat(formData.price) * 0.99
+                                                            ).toLocaleString()})
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            )}
+                                                <div className="relative">
+                                                    <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                                    <Input
+                                                        id="minBid" type="number"
+                                                        placeholder={isPriceSet ? "Initial bid" : "Set price first"}
+                                                        value={formData.minBid}
+                                                        onChange={handleMinBidChange}
+                                                        className="pl-10 h-10"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -757,100 +757,32 @@ export default function EditProductPage() {
                                             <div className="space-y-4">
                                                 <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20 h-[50px]">
                                                     <div className="space-y-0.5">
-                                                        <span className="text-sm font-medium">Delivery Available</span>
-                                                        <p className="text-[10px] text-muted-foreground line-clamp-1">Can you ship this item?</p>
+                                                        <span className="text-sm font-black uppercase tracking-tight text-foreground/80">
+                                                            {formData.deliveryAvailable ? "Configure Delivery" : "Delivery Available"}
+                                                        </span>
+                                                        <p className="text-[10px] text-muted-foreground line-clamp-1">Toggle to enable and setup shipping options</p>
                                                     </div>
-                                                    <Switch
-                                                        checked={formData.deliveryAvailable}
-                                                        onCheckedChange={(checked) => setFormData({ ...formData, deliveryAvailable: checked })}
-                                                    />
-                                                </div>
-
-                                                {formData.deliveryAvailable && (
-                                                    <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                                                        <div className="p-4 border rounded-lg bg-primary/5 border-primary/20 space-y-3">
-                                                            <Label className="text-xs font-bold uppercase tracking-wider text-primary">Select Shipping Partners</Label>
-                                                            <div className="grid grid-cols-2 gap-2">
-                                                                {["Pathao", "Indrive", "Upaya", "Nepal Post", "Aramex", "Other"].map((partner) => (
-                                                                    <label key={partner} className="flex items-center gap-2 p-2 rounded-md border bg-background hover:bg-primary/5 cursor-pointer transition-all">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            checked={formData.shippingPartners.includes(partner)}
-                                                                            onChange={(e) => {
-                                                                                const updated = e.target.checked
-                                                                                    ? [...formData.shippingPartners, partner]
-                                                                                    : formData.shippingPartners.filter(p => p !== partner);
-                                                                                setFormData({ ...formData, shippingPartners: updated });
-                                                                            }}
-                                                                            className="w-3.5 h-3.5 rounded border-primary/30 text-primary focus:ring-primary/20"
-                                                                        />
-                                                                        <span className="text-[11px] font-medium">{partner}</span>
-                                                                    </label>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-
-                                                        {formData.shippingPartners.length > 0 && (
-                                                            <div className="p-4 border rounded-lg bg-secondary/5 border-secondary/20 space-y-4 animate-in zoom-in-95 duration-300">
-                                                                <div className="space-y-1">
-                                                                    <Label className="text-xs font-bold uppercase tracking-wider text-secondary">Should buyer pay extra amount for delivery and how much?</Label>
-                                                                    <p className="text-[10px] text-muted-foreground italic">Choose how the delivery fee is handled.</p>
-                                                                </div>
-
-                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                                                                    <div 
-                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "manual" })}
-                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
-                                                                    >
-                                                                        <div className="space-y-0.5">
-                                                                            <span className="text-[11px] font-bold">Manual Entry</span>
-                                                                            <p className="text-[9px] text-muted-foreground">Set a fixed amount.</p>
-                                                                        </div>
-                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
-                                                                            {formData.deliveryChargeType === 'manual' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div 
-                                                                        onClick={() => setFormData({ ...formData, deliveryChargeType: "buyer_pays" })}
-                                                                        className={`flex items-center justify-between p-3 rounded-md border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
-                                                                    >
-                                                                        <div className="space-y-0.5">
-                                                                            <span className="text-[11px] font-bold">Buyer Pays Directly</span>
-                                                                            <p className="text-[9px] text-muted-foreground">Adjust with partner.</p>
-                                                                        </div>
-                                                                        <div className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
-                                                                            {formData.deliveryChargeType === 'buyer_pays' && <div className="w-1.5 h-1.5 bg-secondary rounded-full" />}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                {formData.deliveryChargeType === "manual" && (
-                                                                    <div className="pt-2 animate-in fade-in slide-in-from-left-2 duration-300">
-                                                                        <div className="relative">
-                                                                            <Tag className="absolute left-3 top-2.5 h-3.5 w-3.5 text-secondary" />
-                                                                            <Input 
-                                                                                type="number"
-                                                                                placeholder="Enter manual delivery amount (Rs.)"
-                                                                                value={formData.deliveryChargeAmount}
-                                                                                onChange={(e) => setFormData({ ...formData, deliveryChargeAmount: e.target.value })}
-                                                                                className="pl-9 h-9 text-xs border-secondary/30 focus-visible:ring-secondary/20"
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-
-                                                                {formData.deliveryChargeType === "buyer_pays" && (
-                                                                    <div className="p-3 bg-secondary/5 rounded-md border border-secondary/10 animate-in fade-in slide-in-from-right-2 duration-300">
-                                                                        <p className="text-[10px] text-secondary font-medium leading-relaxed italic">
-                                                                            * Buyer will pay delivery charge shown to deliver that item, adjust with yourself.
-                                                                        </p>
-                                                                    </div>
-                                                                )}
-                                                            </div>
+                                                    <div className="flex items-center gap-3">
+                                                        {formData.deliveryAvailable && (
+                                                            <Button 
+                                                                type="button"
+                                                                variant="ghost" 
+                                                                size="sm"
+                                                                onClick={() => setShowDeliveryModal(true)}
+                                                                className="h-7 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5 transition-all animate-pulse"
+                                                            >
+                                                                Configure
+                                                            </Button>
                                                         )}
+                                                        <Switch
+                                                            checked={formData.deliveryAvailable}
+                                                            onCheckedChange={(checked) => {
+                                                                setFormData({ ...formData, deliveryAvailable: checked });
+                                                                if (checked) setShowDeliveryModal(true);
+                                                            }}
+                                                        />
                                                     </div>
-                                                )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -901,6 +833,135 @@ export default function EditProductPage() {
             </main>
 
             <Footer />
+
+            {/* Delivery Modal Overlay */}
+            {showDeliveryModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="relative w-full max-w-2xl bg-background border shadow-2xl rounded-3xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-300">
+                        {/* Modal Header */}
+                        <div className="p-6 border-b flex items-center justify-between bg-muted/5">
+                            <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center">
+                                    <Upload className="h-5 w-5 text-primary" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg">Configure Delivery</h3>
+                                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Set your shipping preferences</p>
+                                </div>
+                            </div>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                    setShowDeliveryModal(false);
+                                    if (formData.shippingPartners.length === 0) {
+                                        setFormData(prev => ({ ...prev, deliveryAvailable: false }));
+                                    }
+                                }}
+                                className="h-10 w-10 rounded-full hover:bg-destructive/10 hover:text-destructive transition-colors"
+                            >
+                                <X className="h-5 w-5" />
+                            </Button>
+                        </div>
+                        
+                        {/* Modal Content */}
+                        <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/10">
+                            {/* Shipping Partners */}
+                            <div className="space-y-3">
+                                <Label className="text-xs font-bold uppercase tracking-wider text-primary">Select Shipping Partners</Label>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {["Pathao", "Indrive", "Upaya", "Nepal Post", "Aramex", "Other"].map((partner) => (
+                                        <label key={partner} className={`flex items-center gap-2 p-3 rounded-xl border transition-all cursor-pointer ${formData.shippingPartners.includes(partner) ? 'bg-primary/5 border-primary shadow-sm' : 'bg-background hover:bg-muted/50 border-input'}`}>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.shippingPartners.includes(partner)}
+                                                onChange={(e) => {
+                                                    const updated = e.target.checked
+                                                        ? [...formData.shippingPartners, partner]
+                                                        : formData.shippingPartners.filter(p => p !== partner);
+                                                    setFormData({ ...formData, shippingPartners: updated });
+                                                }}
+                                                className="w-4 h-4 rounded border-primary/30 text-primary focus:ring-primary/20"
+                                            />
+                                            <span className="text-xs font-semibold">{partner}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Delivery Charge Logic */}
+                            {formData.shippingPartners.length > 0 && (
+                                <div className="space-y-4 pt-4 border-t animate-in slide-in-from-bottom-2 duration-300">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs font-bold uppercase tracking-wider text-secondary">Delivery Charge Handling</Label>
+                                        <p className="text-[10px] text-muted-foreground">Who pays for the delivery?</p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div 
+                                            onClick={() => setFormData({ ...formData, deliveryChargeType: "manual" })}
+                                            className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${formData.deliveryChargeType === 'manual' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                        >
+                                            <div className="space-y-0.5">
+                                                <span className="text-xs font-bold">Fixed Charge</span>
+                                                <p className="text-[9px] text-muted-foreground">You specify a set delivery amount.</p>
+                                            </div>
+                                            <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'manual' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                {formData.deliveryChargeType === 'manual' && <div className="h-2 w-2 rounded-full bg-secondary" />}
+                                            </div>
+                                        </div>
+
+                                        <div 
+                                            onClick={() => setFormData({ ...formData, deliveryChargeType: "buyer_pays" })}
+                                            className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${formData.deliveryChargeType === 'buyer_pays' ? 'bg-secondary/10 border-secondary ring-1 ring-secondary/20' : 'bg-background hover:bg-muted/50'}`}
+                                        >
+                                            <div className="space-y-0.5">
+                                                <span className="text-xs font-bold">Buyer Pays Directly</span>
+                                                <p className="text-[9px] text-muted-foreground">Buyer pays the partner directly.</p>
+                                            </div>
+                                            <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${formData.deliveryChargeType === 'buyer_pays' ? 'border-secondary' : 'border-muted-foreground/30'}`}>
+                                                {formData.deliveryChargeType === 'buyer_pays' && <div className="h-2 w-2 rounded-full bg-secondary" />}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {formData.deliveryChargeType === "manual" && (
+                                        <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
+                                            <Label className="text-[10px] font-bold uppercase text-muted-foreground ml-1">Fixed Delivery Amount (Rs.)</Label>
+                                            <div className="relative">
+                                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground">Rs.</span>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="0"
+                                                    value={formData.deliveryChargeAmount}
+                                                    onChange={(e) => setFormData({ ...formData, deliveryChargeAmount: e.target.value })}
+                                                    className="h-10 pl-10 rounded-xl"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="p-4 bg-muted/5 border-t flex justify-end">
+                            <Button 
+                                onClick={() => {
+                                    if (formData.shippingPartners.length === 0) {
+                                        toast.error("Please select at least one partner");
+                                        return;
+                                    }
+                                    setShowDeliveryModal(false);
+                                }}
+                                className="rounded-2xl px-8 h-10 font-bold"
+                            >
+                                Done
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

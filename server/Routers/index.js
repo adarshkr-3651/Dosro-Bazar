@@ -16,6 +16,7 @@ import bidRoute from "./bid.js";
 import notificationRoute from "./notification.js";
 import advertisementRoute from "./ad.js";
 import invoiceRoute from "./invoice.js";
+import reviewRoute from "./review.js";
 
 // Mount JWKS route first (public endpoint)
 router.use("/", jwksRoute)
@@ -33,5 +34,6 @@ router.use("/bid", bidRoute)
 router.use("/notification", notificationRoute)
 router.use("/advertisements", advertisementRoute)
 router.use("/invoice", invoiceRoute)
+router.use("/review", reviewRoute)
 
 export default router;

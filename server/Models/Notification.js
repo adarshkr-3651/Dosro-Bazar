@@ -29,7 +29,11 @@ const NotificationSchema = new mongoose.Schema({
             "buyer_responded_contact_shared",
             "buyer_responded_open_chat",
             "deal_closed",
-            "item_deleted"
+            "item_deleted",
+            "advance_booked_buyer",
+            "advance_booked_seller",
+            "bid_updated",
+            "bid_updated_buyer_copy"
         ],
         required: true
     },

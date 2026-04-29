@@ -145,7 +145,7 @@ __turbopack_context__.s([
     ()=>resolvePhotoUrl
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
-const API_BASE_URL = (("TURBOPACK compile-time value", "http://localhost:5000") || "http://localhost:5000").replace(/\/$/, "");
+const API_BASE_URL = (("TURBOPACK compile-time value", "/backend-api") || "http://localhost:5000").replace(/\/$/, "");
 const resolvePhotoUrl = (path, isProfile = false)=>{
     if (!path || isProfile && path === 'user.png') {
         return null;
@@ -1450,7 +1450,7 @@ function MessagesPage() {
             if (isAuthenticated && user) {
                 fetchConversations();
                 // Connect to Socket.IO using the base URL
-                const apiUrl = ("TURBOPACK compile-time value", "http://localhost:5000") || "http://localhost:5000";
+                const apiUrl = ("TURBOPACK compile-time value", "/backend-api") || "http://localhost:5000";
                 // Make sure not to include '/api' at the end of the URL for Socket.IO
                 const socketUrl = apiUrl.replace(/\/api\/?$/, "");
                 socketRef.current = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$socket$2e$io$2d$client$2f$build$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["io"])(socketUrl, {

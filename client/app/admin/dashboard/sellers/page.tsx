@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Store, Search, Trash2, Edit2, Loader2, ChevronLeft, ChevronRight, UserCircle, Mail, Phone, MapPin, CheckCircle2, AlertCircle, X, ShieldCheck } from "lucide-react";
+import { Store, Search, Trash2, Edit2, Loader2, ChevronLeft, ChevronRight, UserCircle, Mail, Phone, MapPin, CheckCircle2, AlertCircle, X, ShieldCheck, Star } from "lucide-react";
 import { getSellersAction, deleteUserAction, updateUserAction } from "@/app/lib/admin-data-actions";
 import Image from "next/image";
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal";
+
 
 export default function SellersPage() {
     const [sellers, setSellers] = useState<any[]>([]);
@@ -14,6 +16,10 @@ export default function SellersPage() {
     const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
     const [editUser, setEditUser] = useState<any>(null);
     const [editLoading, setEditLoading] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedSeller, setSelectedSeller] = useState<{ id: string, name: string } | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
 
     const showToast = (message: string, type: "success" | "error") => {
         setToast({ message, type });
@@ -32,12 +38,26 @@ export default function SellersPage() {
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
-    const handleDelete = async (id: string, name: string) => {
-        if (!confirm(`Remove seller "${name}" from the platform?`)) return;
-        const res = await deleteUserAction(id);
-        if (res.success) { showToast("Seller removed", "success"); fetchData(); }
-        else showToast(res.error || "Failed to remove seller", "error");
+    const handleDelete = (id: string, name: string) => {
+        setSelectedSeller({ id, name });
+        setIsDeleteModalOpen(true);
     };
+
+    const confirmDeleteSeller = async () => {
+        if (!selectedSeller) return;
+        setIsDeleting(true);
+        const res = await deleteUserAction(selectedSeller.id);
+        setIsDeleting(false);
+        setIsDeleteModalOpen(false);
+        if (res.success) { 
+            showToast("Seller removed", "success"); 
+            fetchData(); 
+            setSelectedSeller(null);
+        } else {
+            showToast(res.error || "Failed to remove seller", "error");
+        }
+    };
+
 
     const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -153,6 +173,11 @@ export default function SellersPage() {
                             <div className="space-y-2 text-sm">
                                 <div className="flex items-center gap-2 text-slate-500"><Mail className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" /><span className="truncate">{seller.email || "—"}</span></div>
                                 <div className="flex items-center gap-2 text-slate-500"><Phone className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />{seller.phone || "—"}</div>
+                                <div className="flex items-center gap-2 text-amber-500 font-black text-xs">
+                                    <Star className="w-3.5 h-3.5 fill-current" />
+                                    {seller.averageRating ? seller.averageRating.toFixed(1) : "0.0"}
+                                    <span className="text-[10px] text-slate-400 font-bold ml-1">({seller.numReviews || 0} reviews)</span>
+                                </div>
                                 {seller.address && <div className="flex items-center gap-2 text-slate-500"><MapPin className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" /><span className="truncate">{seller.address}</span></div>}
                             </div>
  
@@ -179,6 +204,20 @@ export default function SellersPage() {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmationModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedSeller(null);
+                }}
+                onConfirm={confirmDeleteSeller}
+                title="Remove Seller"
+                description={`Are you sure you want to remove seller "${selectedSeller?.name}" from the platform?`}
+                confirmText="Remove Seller"
+                isLoading={isDeleting}
+            />
         </div>
+
     );
 }

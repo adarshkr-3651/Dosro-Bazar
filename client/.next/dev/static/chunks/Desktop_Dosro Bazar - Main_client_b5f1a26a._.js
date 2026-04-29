@@ -145,7 +145,7 @@ __turbopack_context__.s([
     ()=>resolvePhotoUrl
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
-const API_BASE_URL = (("TURBOPACK compile-time value", "http://localhost:5000") || "http://localhost:5000").replace(/\/$/, "");
+const API_BASE_URL = (("TURBOPACK compile-time value", "/backend-api") || "http://localhost:5000").replace(/\/$/, "");
 const resolvePhotoUrl = (path, isProfile = false)=>{
     if (!path || isProfile && path === 'user.png') {
         return null;
@@ -214,6 +214,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
     const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const [notifications, setNotifications] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [favorites, setFavorites] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Header.useEffect": ()=>{
             if (user) {
@@ -229,15 +230,35 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                         }
                     }
                 }["Header.useEffect.fetchNotificationsData"];
+                const fetchFavoritesData = {
+                    "Header.useEffect.fetchFavoritesData": async ()=>{
+                        try {
+                            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getFavorites"])();
+                            if (response.success) {
+                                setFavorites(response.data);
+                            }
+                        } catch (err) {
+                        // Silent catch
+                        }
+                    }
+                }["Header.useEffect.fetchFavoritesData"];
                 fetchNotificationsData();
+                fetchFavoritesData();
                 // Listen for manual update events
                 window.addEventListener('notificationsUpdated', fetchNotificationsData);
+                window.addEventListener('favoritesUpdated', fetchFavoritesData);
                 // Poll for new notifications every 15 seconds for a "live" feel
-                const interval = setInterval(fetchNotificationsData, 15000);
+                const interval = setInterval({
+                    "Header.useEffect.interval": ()=>{
+                        fetchNotificationsData();
+                        fetchFavoritesData();
+                    }
+                }["Header.useEffect.interval"], 15000);
                 return ({
                     "Header.useEffect": ()=>{
                         clearInterval(interval);
                         window.removeEventListener('notificationsUpdated', fetchNotificationsData);
+                        window.removeEventListener('favoritesUpdated', fetchFavoritesData);
                     }
                 })["Header.useEffect"];
             }
@@ -326,12 +347,12 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "h-12 w-auto cursor-pointer"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                lineNumber: 132,
+                                lineNumber: 150,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                            lineNumber: 131,
+                            lineNumber: 149,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -351,7 +372,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                        lineNumber: 145,
+                                        lineNumber: 163,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -361,18 +382,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "pl-10 bg-muted/50"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                        lineNumber: 146,
+                                        lineNumber: 164,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                lineNumber: 137,
+                                lineNumber: 155,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                            lineNumber: 136,
+                            lineNumber: 154,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -384,7 +405,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                     children: currentIsBuyerMode ? "Buy" : "Sell"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                    lineNumber: 157,
+                                    lineNumber: 175,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -393,13 +414,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                     onCheckedChange: handleModeChange
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                    lineNumber: 160,
+                                    lineNumber: 178,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                            lineNumber: 156,
+                            lineNumber: 174,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -418,52 +439,63 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 175,
+                                                    lineNumber: 193,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: "Upload Item"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 176,
+                                                    lineNumber: 194,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 192,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                        lineNumber: 173,
+                                        lineNumber: 191,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)) : user && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                         variant: "ghost",
                                         size: "icon",
                                         asChild: true,
+                                        className: "relative",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                             href: "/favorites",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
-                                                className: "h-5 w-5"
-                                            }, void 0, false, {
-                                                fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                lineNumber: 183,
-                                                columnNumber: 23
-                                            }, ("TURBOPACK compile-time value", void 0))
-                                        }, void 0, false, {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
+                                                    className: "h-5 w-5"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
+                                                    lineNumber: 201,
+                                                    columnNumber: 23
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                favorites.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center",
+                                                    children: favorites.length
+                                                }, void 0, false, {
+                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
+                                                    lineNumber: 203,
+                                                    columnNumber: 25
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 182,
+                                            lineNumber: 200,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                        lineNumber: 181,
+                                        lineNumber: 199,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                    lineNumber: 171,
+                                    lineNumber: 189,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -478,12 +510,12 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                 className: "scale-90"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                lineNumber: 193,
+                                                lineNumber: 216,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 192,
+                                            lineNumber: 215,
                                             columnNumber: 15
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         !currentIsBuyerMode ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -496,45 +528,56 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 204,
+                                                    lineNumber: 227,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                lineNumber: 203,
+                                                lineNumber: 226,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 202,
+                                            lineNumber: 225,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)) : user && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                             variant: "ghost",
                                             size: "icon",
                                             asChild: true,
+                                            className: "relative",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                 href: "/favorites",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
-                                                    className: "h-5 w-5"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 211,
-                                                    columnNumber: 23
-                                                }, ("TURBOPACK compile-time value", void 0))
-                                            }, void 0, false, {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
+                                                        className: "h-5 w-5"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
+                                                        lineNumber: 234,
+                                                        columnNumber: 23
+                                                    }, ("TURBOPACK compile-time value", void 0)),
+                                                    favorites.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center",
+                                                        children: favorites.length
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
+                                                        lineNumber: 236,
+                                                        columnNumber: 25
+                                                    }, ("TURBOPACK compile-time value", void 0))
+                                                ]
+                                            }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                lineNumber: 210,
+                                                lineNumber: 233,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 232,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                    lineNumber: 191,
+                                    lineNumber: 214,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 user && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -550,17 +593,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 225,
+                                                    lineNumber: 253,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                lineNumber: 224,
+                                                lineNumber: 252,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 223,
+                                            lineNumber: 251,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -575,26 +618,26 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                         className: "h-5 w-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                        lineNumber: 231,
+                                                        lineNumber: 259,
                                                         columnNumber: 21
                                                     }, ("TURBOPACK compile-time value", void 0)),
-                                                    notifications.filter((n)=>!n.isRead).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    notifications.filter((n)=>!n.isRead && n.recipientRole === (currentIsBuyerMode ? "buyer" : "seller")).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                         className: "absolute -top-1 -right-1 h-4 w-4 rounded-full bg-secondary text-[10px] font-bold text-white flex items-center justify-center",
-                                                        children: notifications.filter((n)=>!n.isRead).length
+                                                        children: notifications.filter((n)=>!n.isRead && n.recipientRole === (currentIsBuyerMode ? "buyer" : "seller")).length
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                        lineNumber: 233,
+                                                        lineNumber: 261,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                lineNumber: 230,
+                                                lineNumber: 258,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 229,
+                                            lineNumber: 257,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -617,18 +660,18 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                         unoptimized: (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$image$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["resolvePhotoUrl"])(user.photo)?.startsWith('http')
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                        lineNumber: 248,
+                                                        lineNumber: 276,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 247,
+                                                    lineNumber: 275,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 257,
+                                                    lineNumber: 285,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -636,13 +679,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     children: user.username?.split(' ')[0] || 'Profile'
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 259,
+                                                    lineNumber: 287,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 245,
+                                            lineNumber: 273,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -655,7 +698,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 262,
+                                                    lineNumber: 290,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -663,13 +706,13 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                                     children: "Logout"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 291,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 261,
+                                            lineNumber: 289,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
@@ -683,17 +726,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                             children: "Login"
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                            lineNumber: 269,
+                                            lineNumber: 297,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                        lineNumber: 268,
+                                        lineNumber: 296,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                    lineNumber: 267,
+                                    lineNumber: 295,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -704,24 +747,24 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                         className: "h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                        lineNumber: 275,
+                                        lineNumber: 303,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                    lineNumber: 274,
+                                    lineNumber: 302,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                            lineNumber: 168,
+                            lineNumber: 186,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                    lineNumber: 129,
+                    lineNumber: 147,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -741,7 +784,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                lineNumber: 290,
+                                lineNumber: 318,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -751,33 +794,33 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                                 className: "pl-10 bg-muted/50"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                                lineNumber: 291,
+                                lineNumber: 319,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                        lineNumber: 282,
+                        lineNumber: 310,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-                    lineNumber: 281,
+                    lineNumber: 309,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-            lineNumber: 128,
+            lineNumber: 146,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/components/Header.tsx",
-        lineNumber: 127,
+        lineNumber: 145,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(Header, "HCYd38dZlseus91VdkFDmhO4fGk=", false, function() {
+_s(Header, "22s0EB5kkTIkhskKez8DNvU66UU=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"],
         __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]

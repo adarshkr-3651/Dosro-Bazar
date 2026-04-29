@@ -2,11 +2,12 @@
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
   "static/chunks/[root-of-the-server]__29daeac1._.css",
+  "static/chunks/Desktop_Dosro Bazar - Main_client_app_dfe6f936._.js",
   "static/chunks/b9de3_axios_lib_dbefd036._.js",
   "static/chunks/b9de3_tailwind-merge_dist_bundle-mjs_mjs_1eee9fb3._.js",
   "static/chunks/b9de3_micromark-core-commonmark_dev_lib_cac4645d._.js",
-  "static/chunks/b9de3_4ea79486._.js",
-  "static/chunks/Desktop_Dosro Bazar - Main_client_app_20b71b1c._.js"
+  "static/chunks/b9de3_@radix-ui_50c2b9ab._.js",
+  "static/chunks/b9de3_6886772e._.js"
 ],
     source: "dynamic"
 });

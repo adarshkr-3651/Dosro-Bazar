@@ -29,6 +29,10 @@ const InvoiceSchema = new mongoose.Schema({
         type: String,
         enum: ["paid", "pending", "cancelled"],
         default: "paid"
+    },
+    isRated: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 

@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useSocket } from "../context/SocketContext";
 import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getNotifications, updateBidStatus, markNotificationsAsRead, markNotificationAsRead, respondToBidAction } from "../lib/api";
-import { Loader2, Bell, Check, X, ArrowUpDown, Clock, Tag, Filter, Phone, MessageSquare, CheckCircle2 } from "lucide-react";
+import { Loader2, Bell, Check, X, ArrowUpDown, Clock, Tag, Filter, Phone, MessageSquare, CheckCircle2, Trash2, User } from "lucide-react";
 import { AcceptBidModal } from "../components/notifications/AcceptBidModal";
 import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
+import { ProductPreviewModal } from "../components/ProductPreviewModal";
 
-interface Notification {
+interface BidNotification {
     _id: string;
     recipient: string;
     recipientRole: "buyer" | "seller";
@@ -24,7 +27,7 @@ interface Notification {
         username: string;
         photo: string;
     };
-    type: "bid_placed" | "bid_accepted" | "bid_rejected" | "bid_accepted_share_details" | "bid_accepted_open_chat" | "bid_accepted_wait" | "buyer_responded_contact_shared" | "buyer_responded_open_chat" | "deal_closed" | "item_deleted";
+    type: "bid_placed" | "bid_accepted" | "bid_rejected" | "bid_accepted_share_details" | "bid_accepted_open_chat" | "bid_accepted_wait" | "buyer_responded_contact_shared" | "buyer_responded_open_chat" | "deal_closed" | "item_deleted" | "bid_placed_buyer_copy" | "bid_updated" | "bid_updated_buyer_copy";
     message: string;
     relatedBid?: {
         _id: string;
@@ -44,14 +47,19 @@ interface Notification {
 
 export default function NotificationsPage() {
     const { user, isBuyerMode } = useAuth();
+    const { socket } = useSocket();
     const router = useRouter();
-    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [notifications, setNotifications] = useState<BidNotification[]>([]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
     const [sortBy, setSortBy] = useState<"date" | "price">("date");
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
     const [acceptModalOpen, setAcceptModalOpen] = useState(false);
     const [selectedBidForAccept, setSelectedBidForAccept] = useState<{ id: string, amount: number, itemName: string } | null>(null);
+    const [isEditingBidId, setIsEditingBidId] = useState<string | null>(null);
+    const [editAmount, setEditAmount] = useState<string>("");
+    const [previewSlug, setPreviewSlug] = useState<string | null>(null);
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -61,11 +69,45 @@ export default function NotificationsPage() {
         fetchNotifications();
     }, [user, isBuyerMode]);
 
+    // Handle real-time notifications via global socket
+    useEffect(() => {
+        if (!socket || !user) return;
+
+        const handleNewNotification = (notif: BidNotification) => {
+            console.log('[Notifications] New notification received:', notif);
+            // Only show if it matches the current role view
+            const currentRole = isBuyerMode ? "buyer" : "seller";
+            if (notif.recipientRole !== currentRole) return;
+
+            setNotifications(prev => {
+                // Replace existing notification for the same bid+type combo to avoid duplicates
+                const idx = prev.findIndex(
+                    n => n.relatedBid?._id === notif.relatedBid?._id && n.type === notif.type
+                );
+                if (idx !== -1) {
+                    const updated = [...prev];
+                    updated[idx] = notif;
+                    return updated;
+                }
+                return [notif, ...prev];
+            });
+
+            // Update header badge
+            window.dispatchEvent(new Event('notificationsUpdated'));
+        };
+
+        socket.on("newNotification", handleNewNotification);
+
+        return () => {
+            socket.off("newNotification", handleNewNotification);
+        };
+    }, [socket, user, isBuyerMode]);
+
     const fetchNotifications = async () => {
         try {
             const response = await getNotifications(isBuyerMode ? 'buyer' : 'seller');
             if (response.success) {
-                setNotifications(response.data);
+                setNotifications(response.data as BidNotification[]);
             }
         } catch (err: any) {
             toast.error(err.message || "Failed to load notifications");
@@ -115,10 +157,41 @@ export default function NotificationsPage() {
         }
     };
 
+    const handleUpdateBid = async (bidId: string) => {
+        const amount = parseInt(editAmount);
+        if (!amount || isNaN(amount)) {
+            toast.error("Please enter a valid amount");
+            return;
+        }
+
+        // Enforce greater bid for reapplies
+        const originalNotif = notifications.find(n => n.relatedBid?._id === bidId);
+        if (originalNotif && originalNotif.relatedBid?.status === 'rejected') {
+            if (amount <= originalNotif.relatedBid.amount) {
+                toast.error(`Your new bid must be greater than your previous rejected bid of Rs. ${originalNotif.relatedBid.amount.toLocaleString()}`);
+                return;
+            }
+        }
+
+        setActionLoading(bidId);
+        try {
+            const { updateBidAction } = await import("../lib/api"); // dynamic import if not in scope
+            await updateBidAction(bidId, amount);
+            toast.success("Bid updated successfully!");
+            setIsEditingBidId(null);
+            fetchNotifications();
+            window.dispatchEvent(new Event('notificationsUpdated'));
+        } catch (err: any) {
+            toast.error(err.message || "Failed to update bid");
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
     const handleMarkAllRead = async () => {
         try {
             await markNotificationsAsRead();
-            setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+            setNotifications(prev => prev.map(n => ({ ...n, isRead: true })) as BidNotification[]);
             toast.success("All notifications marked as read");
             window.dispatchEvent(new Event('notificationsUpdated'));
         } catch (err: any) {
@@ -136,6 +209,21 @@ export default function NotificationsPage() {
         }
     };
 
+    const handleDeleteNotification = async (id: string) => {
+        setActionLoading(id + "delete");
+        try {
+            const { deleteNotificationAction } = await import("../lib/api");
+            await deleteNotificationAction(id);
+            setNotifications(prev => prev.filter(n => n._id !== id));
+            toast.success("Notification deleted");
+            window.dispatchEvent(new Event('notificationsUpdated'));
+        } catch (err: any) {
+            toast.error(err.message || "Failed to delete");
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
     const filteredNotifications = selectedProductId
         ? notifications.filter(n => n.relatedItem?._id === selectedProductId)
         : notifications;
@@ -148,6 +236,15 @@ export default function NotificationsPage() {
         }
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
+
+    const handleProductClick = (e: React.MouseEvent, notification: BidNotification) => {
+        if (!isBuyerMode && notification.recipientRole === "seller" && notification.relatedItem) {
+            e.preventDefault();
+            e.stopPropagation();
+            setPreviewSlug(notification.relatedItem.slug);
+            setIsPreviewOpen(true);
+        }
+    };
 
     const uniqueProducts = Array.from(
         new Map(
@@ -180,6 +277,9 @@ export default function NotificationsPage() {
                             <Bell className="h-8 w-8 text-primary" />
                             Notifications
                         </h1>
+                        <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-[0.2em] animate-pulse">
+                            Tip: You can manage all your active proposals in <Link href="/profile" className="text-primary hover:underline">Profile &gt; My Bids</Link>
+                        </p>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -243,7 +343,11 @@ export default function NotificationsPage() {
                                     <div className="flex gap-3 md:gap-4">
                                         {/* Item Thumbnail */}
                                         {notification.relatedItem && (
-                                            <Link href={`/product/${notification.relatedItem.slug}`} className="relative h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 bg-muted border border-primary/5 transition-transform hover:scale-105 active:scale-95">
+                                            <Link 
+                                                href={`/products/${notification.relatedItem.slug}`} 
+                                                className="relative h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 bg-muted border border-primary/5 transition-transform hover:scale-105 active:scale-95"
+                                                onClick={(e) => handleProductClick(e, notification)}
+                                            >
                                                 <Image
                                                     src={notification.relatedItem.images?.[0] || "/placeholder.jpg"}
                                                     alt={notification.relatedItem.title}
@@ -269,17 +373,56 @@ export default function NotificationsPage() {
                                                             {new Date(notification.createdAt).toLocaleDateString()}
                                                         </span>
                                                     </div>
-                                                    <p className="text-[13px] font-bold text-foreground leading-snug">
+                                                    <p className="text-[13px] font-bold text-foreground leading-snug flex items-center flex-wrap gap-x-2">
                                                         {notification.message}
+                                                        {(notification.type === "bid_placed_buyer_copy" || notification.type === "bid_updated_buyer_copy") && notification.relatedBid?.status === "pending" && (
+                                                            <button 
+                                                                onClick={() => {
+                                                                    setIsEditingBidId(notification.relatedBid!._id);
+                                                                    setEditAmount(notification.relatedBid!.amount.toString());
+                                                                }}
+                                                                className="text-[10px] font-black text-primary hover:text-primary/80 uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded border border-primary/10 transition-all hover:scale-105 active:scale-95"
+                                                            >
+                                                                Edit Bid
+                                                            </button>
+                                                        )}
+                                                        {notification.type === "bid_rejected" && notification.relatedBid?.status === "rejected" && (
+                                                            <button 
+                                                                onClick={() => {
+                                                                    setIsEditingBidId(notification.relatedBid!._id);
+                                                                    setEditAmount((notification.relatedBid!.amount + 1).toString());
+                                                                }}
+                                                                className="text-[10px] font-black text-primary hover:text-primary/80 uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded border border-primary/10 transition-all hover:scale-105 active:scale-95 flex items-center gap-1"
+                                                            >
+                                                                <ArrowUpDown className="h-3 w-3" />
+                                                                Reapply
+                                                            </button>
+                                                        )}
                                                     </p>
                                                 </div>
 
-                                                <div className="text-right flex flex-col items-end gap-1">
-                                                    {notification.relatedBid?.amount && (
-                                                        <span className="text-sm font-black text-primary tracking-tighter">
-                                                            Rs. {notification.relatedBid.amount.toLocaleString()}
-                                                        </span>
-                                                    )}
+                                                <div className="text-right flex flex-col items-end gap-1 min-w-[80px]">
+                                                    <div className="flex items-center gap-2">
+                                                        <button 
+                                                            onClick={() => handleDeleteNotification(notification._id)}
+                                                            disabled={actionLoading === notification._id + "delete"}
+                                                            className="p-1.5 rounded-full hover:bg-destructive/10 text-muted-foreground/40 hover:text-destructive transition-all duration-200 active:scale-90"
+                                                            title="Delete notification"
+                                                        >
+                                                            {actionLoading === notification._id + "delete" ? (
+                                                                <Loader2 className="h-3 w-3 animate-spin" />
+                                                            ) : (
+                                                                <Trash2 className="h-3 w-3" />
+                                                            )}
+                                                        </button>
+                                                        {notification.relatedBid?.amount && (
+                                                            <div className="flex flex-col items-end">
+                                                                <span className="text-sm font-black text-primary tracking-tighter">
+                                                                    Rs. {notification.relatedBid.amount.toLocaleString()}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                     
                                                     {!notification.isRead && (
                                                         <Button
@@ -292,10 +435,44 @@ export default function NotificationsPage() {
                                                         </Button>
                                                     )}
                                                 </div>
-                                            </div>
+                                                </div>
 
-                                            {/* Actions for bid_placed (Seller view) */}
-                                            {notification.type === "bid_placed" && notification.relatedBid?.status === "pending" && (
+                                                {/* Editing Inline for Bid */}
+                                                {isEditingBidId === notification.relatedBid?._id && (
+                                                    <div className="pt-2 animate-in slide-in-from-top-1 duration-200">
+                                                        <div className="flex items-center gap-2 max-w-[400px]">
+                                                            <div className="relative flex-1 min-w-[150px]">
+                                                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary">Rs.</span>
+                                                                <Input 
+                                                                    type="number"
+                                                                    value={editAmount}
+                                                                    onChange={(e) => setEditAmount(e.target.value)}
+                                                                    className="h-8 pl-8 pr-2 text-sm font-bold bg-background/50 border-primary/20 focus:border-primary/50"
+                                                                    placeholder="Amount"
+                                                                />
+                                                            </div>
+                                                            <Button 
+                                                                size="sm" 
+                                                                className="h-7 px-2 text-[9px] font-bold uppercase tracking-widest"
+                                                                onClick={() => handleUpdateBid(notification.relatedBid!._id)}
+                                                                disabled={actionLoading === notification.relatedBid?._id}
+                                                            >
+                                                                {actionLoading === notification.relatedBid?._id ? <Loader2 className="h-3 w-3 animate-spin" /> : "Save"}
+                                                            </Button>
+                                                            <Button 
+                                                                variant="ghost" 
+                                                                size="sm" 
+                                                                className="h-7 px-2 text-[9px] font-bold uppercase tracking-widest"
+                                                                onClick={() => setIsEditingBidId(null)}
+                                                            >
+                                                                Cancel
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                            {/* Actions for bid_placed or bid_updated (Seller view) */}
+                                            {(notification.type === "bid_placed" || notification.type === "bid_updated") && notification.relatedBid?.status === "pending" && (
                                                 <div className="flex items-center gap-2 pt-1">
                                                     <Button
                                                         size="sm"
@@ -415,6 +592,12 @@ export default function NotificationsPage() {
                     itemName={selectedBidForAccept.itemName}
                 />
             )}
+
+            <ProductPreviewModal 
+                isOpen={isPreviewOpen}
+                onClose={() => setIsPreviewOpen(false)}
+                slug={previewSlug || ""}
+            />
         </div>
     );
 }

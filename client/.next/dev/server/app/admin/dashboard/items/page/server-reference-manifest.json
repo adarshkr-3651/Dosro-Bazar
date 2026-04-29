@@ -45,6 +45,21 @@
       "exportedName": "logoutAdmin",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
+    "00b54606a3ed20c864abad6ee958b85c6f4356be7e": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/items/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getAdvanceBookingsAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "rsc"
+      },
+      "exportedName": "getAdvanceBookingsAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+    },
     "00e556ff15cd866bd72ab91b882c7c1b3142d21cfc": {
       "workers": {
         "app/admin/dashboard/items/page": {
@@ -90,7 +105,7 @@
       "exportedName": "createAdmin",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "607203496958e62bb0066fba6df6207f95c4654165": {
+    "707203496958e62bb0066fba6df6207f95c4654165": {
       "workers": {
         "app/admin/dashboard/items/page": {
           "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/items/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
@@ -133,6 +148,51 @@
         "app/admin/dashboard/items/page": "action-browser"
       },
       "exportedName": "deleteItemAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
+    },
+    "00d6da74f9f4189da759034b960fbd0d6518ff493a": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/items/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getSettingsAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "getSettingsAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
+    },
+    "60cc1dc1633ef04f752367c5cae6fc985e7313ecba": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/items/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateSettingAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "updateSettingAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
+    },
+    "407191d6c9686bd5678b3768abdf7a3d9d679d8c85": {
+      "workers": {
+        "app/admin/dashboard/items/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/items/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "approveItemAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/items/page": "action-browser"
+      },
+      "exportedName": "approveItemAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
     }
   },

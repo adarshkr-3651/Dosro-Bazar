@@ -2,13 +2,15 @@ module.exports = [
 "[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/* __next_internal_action_entry_do_not_use__ [{"001176be324642905056eac38dab1b114e5623cb2e":"getAdBookings","002a968cbb897e18ed7420cf4c091b5cf87eb87193":"isAdminAuthenticated","004917ba9c115305874085d18bea37a8f57ff83d40":"logoutAdmin","00e556ff15cd866bd72ab91b882c7c1b3142d21cfc":"getAdminProfile","403e5bd9bd93410a2b7260629bf10efd335929564d":"loginAdmin","40ea398f7451c0d874d1ecf7c820b61dd5f1e28caf":"createAdmin"},"",""] */ __turbopack_context__.s([
+/* __next_internal_action_entry_do_not_use__ [{"001176be324642905056eac38dab1b114e5623cb2e":"getAdBookings","002a968cbb897e18ed7420cf4c091b5cf87eb87193":"isAdminAuthenticated","004917ba9c115305874085d18bea37a8f57ff83d40":"logoutAdmin","00b54606a3ed20c864abad6ee958b85c6f4356be7e":"getAdvanceBookingsAction","00e556ff15cd866bd72ab91b882c7c1b3142d21cfc":"getAdminProfile","403e5bd9bd93410a2b7260629bf10efd335929564d":"loginAdmin","40ea398f7451c0d874d1ecf7c820b61dd5f1e28caf":"createAdmin"},"",""] */ __turbopack_context__.s([
     "createAdmin",
     ()=>createAdmin,
     "getAdBookings",
     ()=>getAdBookings,
     "getAdminProfile",
     ()=>getAdminProfile,
+    "getAdvanceBookingsAction",
+    ()=>getAdvanceBookingsAction,
     "isAdminAuthenticated",
     ()=>isAdminAuthenticated,
     "loginAdmin",
@@ -182,6 +184,38 @@ async function getAdBookings() {
         return [];
     }
 }
+async function getAdvanceBookingsAction() {
+    const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+    const userToken = cookieStore.get("accessToken")?.value;
+    const cookiesToPass = [];
+    if (adminToken) cookiesToPass.push(`admin_access_token=${adminToken}`);
+    if (userToken) cookiesToPass.push(`accessToken=${userToken}`);
+    const cookieHeader = cookiesToPass.join("; ");
+    try {
+        const response = await fetch(`${BACKEND_URL}/admin/advance-bookings`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": cookieHeader
+            }
+        });
+        const data = await response.json();
+        return data.success ? {
+            success: true,
+            data: data.data
+        } : {
+            success: false,
+            error: data.message
+        };
+    } catch (error) {
+        console.error("Get Advance Bookings Error:", error);
+        return {
+            success: false,
+            error: "Connection error"
+        };
+    }
+}
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
     loginAdmin,
@@ -189,7 +223,8 @@ async function getAdBookings() {
     createAdmin,
     getAdminProfile,
     isAdminAuthenticated,
-    getAdBookings
+    getAdBookings,
+    getAdvanceBookingsAction
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(loginAdmin, "403e5bd9bd93410a2b7260629bf10efd335929564d", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(logoutAdmin, "004917ba9c115305874085d18bea37a8f57ff83d40", null);
@@ -197,6 +232,7 @@ async function getAdBookings() {
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdminProfile, "00e556ff15cd866bd72ab91b882c7c1b3142d21cfc", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(isAdminAuthenticated, "002a968cbb897e18ed7420cf4c091b5cf87eb87193", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdBookings, "001176be324642905056eac38dab1b114e5623cb2e", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdvanceBookingsAction, "00b54606a3ed20c864abad6ee958b85c6f4356be7e", null);
 }),
 "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>", ((__turbopack_context__) => {
 "use strict";

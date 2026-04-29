@@ -26,6 +26,7 @@
         "express-rate-limit": "^8.1.0",
         "google-auth-library": "^10.5.0",
         "helmet": "^8.1.0",
+        "html-pdf-node": "^1.0.8",
         "jsonwebtoken": "^9.0.2",
         "langchain": "^1.2.32",
         "mongoose": "^6.1.8",
@@ -35,6 +36,7 @@
         "sharp": "^0.34.5",
         "slugify": "^1.6.5",
         "socket.io": "^4.8.3",
+        "streamifier": "^0.1.1",
         "tesseract.js": "^7.0.0"
     },
     "devDependencies": {

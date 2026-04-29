@@ -11,12 +11,18 @@ import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app/components/ui/card";
 import { toast } from "sonner";
 import { getAdminAdInquiriesAction, updateAdInquiryStatusAction, deleteAdInquiryAction } from "@/app/lib/ad-actions";
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal";
+
 
 export default function AdInquiryPage() {
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedInquiryId, setSelectedInquiryId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
 
   useEffect(() => {
     fetchInquiries();
@@ -52,21 +58,32 @@ export default function AdInquiryPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this inquiry?")) return;
+  const handleDelete = (id: string) => {
+    setSelectedInquiryId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteInquiry = async () => {
+    if (!selectedInquiryId) return;
     
+    setIsDeleting(true);
     try {
-      const res = await deleteAdInquiryAction(id);
+      const res = await deleteAdInquiryAction(selectedInquiryId);
       if (res.success) {
         toast.success("Inquiry deleted successfully");
-        setInquiries(prev => prev.filter(inq => inq._id !== id));
+        setIsDeleteModalOpen(false);
+        setInquiries(prev => prev.filter(inq => inq._id !== selectedInquiryId));
       } else {
         toast.error(res.error || "Failed to delete");
       }
     } catch (error) {
       toast.error("Network error");
+    } finally {
+      setIsDeleting(false);
+      setSelectedInquiryId(null);
     }
   };
+
 
   const filteredInquiries = inquiries.filter(inq => {
     const matchesSearch = 
@@ -231,6 +248,20 @@ export default function AdInquiryPage() {
           ))}
         </div>
       )}
+
+      <DeleteConfirmationModal 
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedInquiryId(null);
+        }}
+        onConfirm={confirmDeleteInquiry}
+        title="Delete Inquiry"
+        description="Are you sure you want to remove this inquiry? This action cannot be undone."
+        confirmText="Delete Inquiry"
+        isLoading={isDeleting}
+      />
     </div>
+
   );
 }

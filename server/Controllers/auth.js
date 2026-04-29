@@ -1,22 +1,19 @@
 import asyncErrorWrapper from "express-async-handler";
 import User from "../Models/user.js";
+import Admin from "../Models/Admin.js";
 import RefreshToken from "../Models/refreshToken.js";
 import PasswordResetRecord from "../Models/PasswordResetRecord.js";
 import CustomError from "../Helpers/error/CustomError.js";
 import { sendTokens, verifyAndRotateRefreshToken } from "../Helpers/auth/tokenHelpers.js";
 import { getRefreshToken, clearAuthCookies } from "../Helpers/auth/cookieHelpers.js";
 import sendEmail from "../Helpers/Libraries/sendEmail.js";
-import { passwordResetTemplate, loginNotificationTemplate, verificationCodeTemplate, welcomeTemplate, signupWelcomeTemplate } from "../Helpers/Libraries/emailTemplates.js";
+import { passwordResetTemplate, loginNotificationTemplate, verificationCodeTemplate, loginOtpTemplate, welcomeTemplate, signupWelcomeTemplate } from "../Helpers/Libraries/emailTemplates.js";
 import { validateUserInput, comparePassword } from "../Helpers/input/inputHelpers.js";
 import { OAuth2Client } from 'google-auth-library';
 import crypto from 'crypto';
 import axios from 'axios';
 
-const client = new OAuth2Client(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    'postmessage' // Special redirect URI for popup/iframe flows
-);
+// OAuth2Client will be initialized inside controllers to ensure env variables are loaded
 
 // Helper function to track devices
 const trackDevice = async (user, req) => {
@@ -209,10 +206,10 @@ const resendVerificationCode = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const login = asyncErrorWrapper(async (req, res, next) => {
-    const { identifier, password } = req.body; // identifier can be email or phone
+    const { identifier, password } = req.body;
 
     if (!identifier || !password) {
-        return next(new CustomError("Please provide phone/email and password", 400))
+        return next(new CustomError("Please provide all fields", 400));
     }
 
     if (typeof identifier !== 'string' || typeof password !== 'string') {
@@ -225,7 +222,6 @@ const login = asyncErrorWrapper(async (req, res, next) => {
     }).select("+password")
 
     if (!user) {
-        // Be specific about what wasn't found
         const isEmail = identifier.includes('@');
         return next(new CustomError(
             isEmail
@@ -241,9 +237,6 @@ const login = asyncErrorWrapper(async (req, res, next) => {
 
     // CHECK EMAIL VERIFICATION (New Logic)
     if (user.authProvider === 'email' && !user.isVerified) {
-        // console.log("[auth.js] login() - User email not verified. Sending new code...")
-
-        // Generate new verification code
         const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
         user.verificationCode = verificationCode;
         user.verificationCodeExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
@@ -257,10 +250,8 @@ const login = asyncErrorWrapper(async (req, res, next) => {
                 subject: '🛡️ Verify Your Email - Dosro Bazar',
                 html: verificationCodeTemplate(verificationCode, user.username)
             });
-            // console.log("[auth.js] login() - Verification email sent to:", user.email);
         } catch (error) {
             console.error('[auth.js] login() - Failed to send verification email:', error.message);
-            // Even if email fails, we block login. User can try again to resend.
         }
 
         return res.status(200).json({
@@ -271,10 +262,36 @@ const login = asyncErrorWrapper(async (req, res, next) => {
         });
     }
 
-    // console.log("[auth.js] login() - Generating access and refresh tokens...")
     await trackDevice(user, req);
+
+    // CHECK FOR 2FA (Login OTP)
+    if (user.loginOtpEnabled && user.email && user.isVerified) {
+        const loginOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        user.otp = loginOtp;
+        user.otpExpires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+        user.loginOTPFails = 0; // Reset fails on new OTP request
+        await user.save();
+
+        try {
+            await sendEmail({
+                from: process.env.EMAIL_USERNAME,
+                to: user.email,
+                subject: "Dosro Bazar - Login Verification OTP",
+                html: loginOtpTemplate(loginOtp, user.username)
+            });
+        } catch (emailError) {
+            console.error('[auth.js] login() - Failed to send login OTP email:', emailError.message);
+        }
+
+        return res.status(200).json({
+            success: true,
+            otpRequired: true,
+            email: user.email,
+            message: "A verification code has been sent to your email."
+        });
+    }
+
     await sendTokens(user, 200, res, req);
-    // console.log("[auth.js] login() - Login completed successfully")
 
     // Send login notification email (non-blocking)
     // Only if verified and logged in
@@ -383,42 +400,50 @@ const login = asyncErrorWrapper(async (req, res, next) => {
 
 
 const adminLogin = asyncErrorWrapper(async (req, res, next) => {
-    // console.log("adminLogin function of Controllers auth.js")
-
     const { identifier, password } = req.body;
 
-    // 1. Validate Input
     if (!identifier || !password) {
         return next(new CustomError("Please provide admin credentials", 400));
     }
 
-    // 2. Check against Environment Variables
-    const { ADMIN_EMAIL, ADMIN_PHONE, ADMIN_PASSWORD } = process.env;
+    // 1. Find the admin in the dedicated Admin collection
+    const admin = await Admin.findOne({
+        $or: [{ email: identifier }, { username: identifier }]
+    }).select("+password");
 
-    const isIdentifierMatch = (identifier === ADMIN_EMAIL || identifier === ADMIN_PHONE);
-    const isPasswordMatch = (password === ADMIN_PASSWORD);
-
-    if (!isIdentifierMatch || !isPasswordMatch) {
-        // console.log("[auth.js] adminLogin() - Invalid admin credentials provided");
-        return next(new CustomError("Invalid admin credentials", 401));
+    if (!admin) {
+        return next(new CustomError("Invalid administrative credentials", 401));
     }
 
-    // console.log("[auth.js] adminLogin() - Env credentials validated. Completing login...");
+    // 2. Verify Password
+    const isMatched = await admin.matchPassword(password);
+    if (!isMatched) {
+        return next(new CustomError("Invalid administrative credentials", 401));
+    }
 
-    // 3. Find the user in DB to get the _id for the token
-    const adminUser = await User.findOne({
-        $or: [{ email: identifier }, { phone: identifier }]
+    // 3. Generate Tokens
+    // Note: trackDevice might need to be implemented for Admin as well if desired
+    // For now, we use a custom response or sendTokens if compatible
+    const accessToken = admin.generateAccessToken();
+    
+    // Set admin cookie for compatibility
+    res.cookie("admin_access_token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        path: "/",
     });
 
-    if (!adminUser) {
-        // console.log("[auth.js] adminLogin() - Admin user not found in DB despite Env match.");
-        return next(new CustomError("Admin account setup incomplete. Please restart server.", 500));
-    }
-
-    // 4. Generate Tokens
-    await trackDevice(adminUser, req);
-    await sendTokens(adminUser, 200, res, req);
-    // console.log("[auth.js] adminLogin() - Admin login successful");
+    return res.status(200).json({
+        success: true,
+        message: "Administrative login successful",
+        accessToken,
+        admin: {
+            id: admin._id,
+            username: admin.username,
+            role: admin.role
+        }
+    });
 });
 
 const forgotpassword = asyncErrorWrapper(async (req, res, next) => {
@@ -648,21 +673,24 @@ const refreshAccessToken = asyncErrorWrapper(async (req, res, next) => {
         // Check if using cookies
         const useCookies = process.env.USE_HTTP_ONLY_COOKIES?.trim() === 'true';
         const isProduction = process.env.NODE_ENV === 'production';
+        const isCrossSiteLocal = process.env.URI?.startsWith('https://') && process.env.SERVER_URL?.startsWith('http://');
+        const secureCookie = isProduction || isCrossSiteLocal;
+        const sameSiteCookie = isProduction ? 'strict' : (isCrossSiteLocal ? 'none' : 'lax');
 
         if (useCookies) {
             // Update cookies
             res.cookie('accessToken', accessToken, {
                 httpOnly: true,
-                secure: isProduction,
-                sameSite: isProduction ? 'strict' : 'lax',
+                secure: secureCookie,
+                sameSite: sameSiteCookie,
                 maxAge: 15 * 60 * 1000,
                 path: '/'
             });
 
             res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
-                secure: isProduction,
-                sameSite: isProduction ? 'strict' : 'lax',
+                secure: secureCookie,
+                sameSite: sameSiteCookie,
                 maxAge: 7 * 24 * 60 * 60 * 1000,
                 path: '/'
             });
@@ -713,6 +741,12 @@ const logout = asyncErrorWrapper(async (req, res, next) => {
 
 const googleLogin = asyncErrorWrapper(async (req, res, next) => {
     const { idToken, code } = req.body;
+
+    const client = new OAuth2Client(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        'postmessage' // Special redirect URI for popup/iframe flows
+    );
 
     let email, name, picture, googleId;
 
@@ -766,9 +800,12 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
                 user.googleId = googleId;
                 await user.save();
             }
-            // console.log('[auth.js] googleLogin() - Existing user found');
-
-            // Existing user - proceed with login
+            
+            // If existing user was not verified, verify them now since Google verified the email
+            if (!user.isVerified) {
+                user.isVerified = true;
+                await user.save();
+            }
         } else {
             // Create new user - phone is optional for Google users
             const randomPassword = crypto.randomBytes(16).toString('hex');
@@ -782,7 +819,8 @@ const googleLogin = asyncErrorWrapper(async (req, res, next) => {
                 googleId,
                 role: 'buyer',
                 authProvider: 'google',
-                authProviders: ['google']
+                authProviders: ['google'],
+                isVerified: true
             });
             // console.log('[auth.js] googleLogin() - New user created');
             isNewUser = true;
@@ -820,15 +858,22 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
         }
 
         const fbData = await response.json();
+        console.log('[auth.js] facebookLogin() - FB Data:', JSON.stringify(fbData, null, 2));
 
         if (fbData.id !== userID) {
+            console.error('[auth.js] facebookLogin() - ID mismatch:', { fbId: fbData.id, providedId: userID });
             return next(new CustomError('Facebook user ID mismatch', 400));
         }
 
         const { id: facebookId, name, email, picture } = fbData;
-        // console.log('[auth.js] facebookLogin() - User authenticated:', email || facebookId);
-
-        let user = await User.findOne({ $or: [{ facebookId }, { email: email || undefined }].filter(Boolean) });
+        
+        // Find user by facebookId or email
+        let user = await User.findOne({ 
+            $or: [
+                { facebookId }, 
+                ...(email ? [{ email }] : [])
+            ] 
+        });
 
         if (user) {
             // Update facebookId if not present
@@ -836,7 +881,12 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
                 user.facebookId = facebookId;
                 await user.save();
             }
-            // console.log('[auth.js] facebookLogin() - Existing user found');
+
+            // If existing user was not verified, verify them now since Facebook verified the email
+            if (!user.isVerified) {
+                user.isVerified = true;
+                await user.save();
+            }
         } else {
             // Create new user
             const randomPassword = crypto.randomBytes(16).toString('hex');
@@ -850,7 +900,8 @@ const facebookLogin = asyncErrorWrapper(async (req, res, next) => {
                 facebookId,
                 role: 'buyer',
                 authProvider: 'facebook',
-                authProviders: ['facebook']
+                authProviders: ['facebook'],
+                isVerified: true
             });
             // console.log('[auth.js] facebookLogin() - New user created');
         }
@@ -921,6 +972,53 @@ const completeOAuthRegistration = asyncErrorWrapper(async (req, res, next) => {
     }
 });
 
+const verifyLoginOtp = asyncErrorWrapper(async (req, res, next) => {
+    const { email, otp } = req.body;
+
+    console.log("[auth.js] verifyLoginOtp() - Request received for:", email, "with OTP:", otp);
+
+    if (!email || !otp) {
+        return next(new CustomError("Please provide email and OTP", 400));
+    }
+
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+        console.log("[auth.js] verifyLoginOtp() - User not found for email:", email);
+        return next(new CustomError("User not found", 404));
+    }
+
+    if (user.otpExpires < Date.now()) {
+        return next(new CustomError("OTP expired", 401));
+    }
+
+    if (user.loginOTPFails >= 5) {
+        return next(new CustomError("Too many failed attempts. Please log in again to receive a new code.", 403));
+    }
+
+    if (user.otp !== otp) {
+        user.loginOTPFails += 1;
+        await user.save();
+        
+        const remaining = 5 - user.loginOTPFails;
+        return next(new CustomError(
+            remaining > 0 
+                ? `Invalid OTP. ${remaining} attempts remaining.` 
+                : "Too many failed attempts. Please log in again.", 
+            401
+        ));
+    }
+
+    // Clear OTP fields
+    user.otp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    // Send tokens
+    await trackDevice(user, req);
+    await sendTokens(user, 200, res, req);
+});
+
 
 export {
     register,
@@ -936,5 +1034,6 @@ export {
     completeOAuthRegistration,
     verifyEmail,
     resendVerificationCode,
-    verifyResetOTP
+    verifyResetOTP,
+    verifyLoginOtp
 };

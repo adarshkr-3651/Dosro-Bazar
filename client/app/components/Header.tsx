@@ -12,8 +12,10 @@ import logo from "../../public/logo.png"
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
-import { getNotifications, getFavorites } from "../lib/api";
+import { useSocket } from "../context/SocketContext";
+import { getNotifications, getFavorites, getUnreadMessageCount } from "../lib/api";
 import { resolvePhotoUrl } from "../lib/image-utils";
+import RatingModal from "./RatingModal";
 
 interface HeaderProps {
   isBuyerMode?: boolean;
@@ -22,9 +24,16 @@ interface HeaderProps {
 
 const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle }: HeaderProps) => {
   const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = useAuth();
+  const { socket } = useSocket();
+  const currentIsBuyerMode = contextIsBuyerMode !== undefined ? contextIsBuyerMode : propsIsBuyerMode!;
   const router = useRouter();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [favorites, setFavorites] = useState<any[]>([]);
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  
+  // Rating Modal state
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+  const [ratingData, setRatingData] = useState<any>(null);
 
   useEffect(() => {
     if (user) {
@@ -32,7 +41,34 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
         try {
           const response = await getNotifications();
           if (response.success) {
-            setNotifications(response.data);
+            const newNotifications = response.data;
+            
+            // Check for new 'deal_closed' notifications to trigger rating
+            if (user && currentIsBuyerMode) {
+                const dealClosedNotif = newNotifications.find((n: any) => 
+                    !n.isRead && 
+                    n.type === 'deal_closed' && 
+                    n.recipientRole === 'buyer'
+                );
+                
+                if (dealClosedNotif && dealClosedNotif.relatedItem) {
+                    setRatingData({
+                        sellerName: dealClosedNotif.sender?.username || "Seller",
+                        sellerId: dealClosedNotif.sender?._id || dealClosedNotif.sender,
+                        itemId: dealClosedNotif.relatedItem?._id || dealClosedNotif.relatedItem,
+                        itemName: dealClosedNotif.relatedItem?.title || "Product",
+                        invoiceId: dealClosedNotif.metadata?.invoiceId || dealClosedNotif.metadata?.invoice_id,
+                        notificationId: dealClosedNotif._id
+                    });
+                    
+                    // Only open if we have the minimum required data
+                    if (dealClosedNotif.metadata?.invoiceId) {
+                        setIsRatingModalOpen(true);
+                    }
+                }
+            }
+            
+            setNotifications(newNotifications);
           }
         } catch (err) {
           // Silent catch to prevent error overlays when session expires
@@ -50,29 +86,70 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
         }
       };
 
+      const fetchUnreadMessagesData = async () => {
+        try {
+          const response = await getUnreadMessageCount();
+          if (response.success) {
+            setUnreadMessages(response.data);
+          }
+        } catch (err) {
+          // Silent catch
+        }
+      };
+
       fetchNotificationsData();
       fetchFavoritesData();
+      fetchUnreadMessagesData();
 
       // Listen for manual update events
       window.addEventListener('notificationsUpdated', fetchNotificationsData);
       window.addEventListener('favoritesUpdated', fetchFavoritesData);
+      window.addEventListener('messagesUpdated', fetchUnreadMessagesData);
 
       // Poll for new notifications every 15 seconds for a "live" feel
       const interval = setInterval(() => {
         fetchNotificationsData();
         fetchFavoritesData();
+        fetchUnreadMessagesData();
       }, 15000);
-      
+
+      // Listen for socket events for real-time updates
+      if (socket) {
+        socket.on("newMessage", (data: any) => {
+          fetchUnreadMessagesData();
+          
+          // Show toast if not on messages page
+          if (window.location.pathname !== '/messages' && data.message.sender !== user?._id) {
+            toast.success("New Message", {
+              description: data.message.text.substring(0, 50) + (data.message.text.length > 50 ? '...' : ''),
+              action: {
+                label: "View",
+                onClick: () => router.push(`/messages?itemId=${data.itemId || ''}`)
+              },
+              duration: 5000,
+              icon: <MessageCircle className="h-5 w-5 text-primary" />
+            });
+          }
+        });
+        
+        // Also listen for other events that might change counts
+        socket.on("notificationsUpdated", fetchNotificationsData);
+      }
+
       return () => {
         clearInterval(interval);
         window.removeEventListener('notificationsUpdated', fetchNotificationsData);
         window.removeEventListener('favoritesUpdated', fetchFavoritesData);
+        window.removeEventListener('messagesUpdated', fetchUnreadMessagesData);
+        if (socket) {
+          socket.off("newMessage");
+          socket.off("notificationsUpdated", fetchNotificationsData);
+        }
       };
     }
-  }, [user]);
+  }, [user, currentIsBuyerMode, socket]);
 
   // Use context if available, otherwise use props
-  const currentIsBuyerMode = contextIsBuyerMode !== undefined ? contextIsBuyerMode : propsIsBuyerMode!;
   const handleToggle = (checked: boolean) => {
     if (setIsBuyerMode) {
       setIsBuyerMode(checked);
@@ -251,6 +328,11 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                 <Button variant="ghost" size="icon" className="relative" asChild>
                   <Link href="/messages">
                     <MessageCircle className="h-5 w-5" />
+                    {unreadMessages > 0 && (
+                      <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
+                        {unreadMessages}
+                      </span>
+                    )}
                   </Link>
                 </Button>
 
@@ -325,6 +407,20 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
           </form>
         </div>
       </div>
+      
+      {/* Rating Modal */}
+      {isRatingModalOpen && ratingData && (
+        <RatingModal
+          isOpen={isRatingModalOpen}
+          onClose={() => setIsRatingModalOpen(false)}
+          sellerName={ratingData.sellerName}
+          sellerId={ratingData.sellerId}
+          itemId={ratingData.itemId}
+          itemName={ratingData.itemName}
+          invoiceId={ratingData.invoiceId}
+          notificationId={ratingData.notificationId}
+        />
+      )}
     </header>
   );
 };

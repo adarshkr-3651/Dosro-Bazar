@@ -10,6 +10,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/app/components/ui/card";
 import { resolvePhotoUrl } from "../lib/image-utils";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+
 
 interface Product {
     _id: string;
@@ -23,6 +25,9 @@ export default function RecycleBinPage() {
     const [items, setItems] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
 
     const fetchBin = async () => {
         try {
@@ -52,20 +57,28 @@ export default function RecycleBinPage() {
         }
     };
 
-    const handlePermanentDelete = async (id: string) => {
-        if (!confirm("Are you sure? This action is permanent and cannot be undone.")) return;
+    const handlePermanentDelete = (id: string) => {
+        setSelectedItemId(id);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmPermanentDelete = async () => {
+        if (!selectedItemId) return;
         
-        setActionLoading(id);
+        setActionLoading(selectedItemId);
         try {
-            await permanentDeleteProduct(id);
+            await permanentDeleteProduct(selectedItemId);
             toast.success("Product permanently deleted");
+            setIsDeleteModalOpen(false);
             fetchBin();
         } catch (error) {
             toast.error("Failed to delete product");
         } finally {
             setActionLoading(null);
+            setSelectedItemId(null);
         }
     };
+
 
     const getDaysRemaining = (deletedAt: string) => {
         const delDate = new Date(deletedAt);
@@ -160,6 +173,20 @@ export default function RecycleBinPage() {
                 )}
             </main>
             <Footer />
+
+            <DeleteConfirmationModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedItemId(null);
+                }}
+                onConfirm={confirmPermanentDelete}
+                title="Permanent Deletion"
+                description="Are you sure? This action is permanent and cannot be undone."
+                confirmText="Delete Permanently"
+                isLoading={actionLoading !== null && selectedItemId === actionLoading}
+            />
         </div>
+
     );
 }

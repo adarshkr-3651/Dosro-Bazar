@@ -9,7 +9,13 @@
     "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/ad-inquiry/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advance-bookings/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
     "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/advertisement/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/boosts/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
     "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/invoices/page": [
@@ -45,6 +51,12 @@
     "[project]/Desktop/Dosro Bazar - Main/client/app/forgotPassword/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/invoices/[id]/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/invoices/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
     "[project]/Desktop/Dosro Bazar - Main/client/app/login/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
@@ -57,6 +69,15 @@
     "[project]/Desktop/Dosro Bazar - Main/client/app/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/payment-failed/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/payment-success/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/payment-verify/boost-khalti/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
     "[project]/Desktop/Dosro Bazar - Main/client/app/payment-verify/khalti/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
@@ -67,6 +88,9 @@
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
     "[project]/Desktop/Dosro Bazar - Main/client/app/profile/page": [
+      "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
+    ],
+    "[project]/Desktop/Dosro Bazar - Main/client/app/recycle-bin/page": [
       "static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2"
     ],
     "[project]/Desktop/Dosro Bazar - Main/client/app/resetPassword/page": [

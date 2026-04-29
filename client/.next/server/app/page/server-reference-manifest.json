@@ -1,6 +1,6 @@
 {
   "node": {
-    "60e7f681b4b53d74ee30e4712d857130001b42449d": {
+    "6022fa30cc1486a759d136e20ccf864beb8c444725": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -15,7 +15,7 @@
       "exportedName": "submitAdEnquiryAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "40b67b857b71b78dc011ec2eb01eda2da1d5e091f2": {
+    "40bec1dab6fefe1467bb433cabfb531dc20250c9f1": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -30,7 +30,7 @@
       "exportedName": "submitAdminAdInquiryAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "40fa6c69d573b389be7b33504a07db66549755c661": {
+    "40cca0d2eaf5f0a2bd66bf1c11bc4803caf29c2db3": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -45,7 +45,7 @@
       "exportedName": "initiateAdBookingAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "408530f642d3f6c8aa3179a90f619a13fc0e02684c": {
+    "403f44ff71646489629d2de7ea4752a4b0257ce0cf": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -60,7 +60,7 @@
       "exportedName": "createAdAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "007893d0066bcb9980addd9e72e142a1a88072a3c2": {
+    "40f9f36a78fdd335d0d7a960ff5eae3f37f89372d9": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -75,7 +75,7 @@
       "exportedName": "getAllAdsAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "60b290d80c6187f3ff7b87027ee65acf1d7aafbdf3": {
+    "60d9ea9405244ae75bf8a594e1b5cd280bbdfea069": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -90,7 +90,7 @@
       "exportedName": "updateAdStatusAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "4055984df7ba9c96daa1f0abcc6aa8a08708a3e07c": {
+    "40ef7ae3942c3cb7cbb1c7efa5059c2d1316ca8da4": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -105,7 +105,7 @@
       "exportedName": "deleteAdAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "602788122328a1aa2e1dfe77c9e212ed409ddcb52f": {
+    "604ccfe0301faf7672ef3e568b888f7fc6df38a3e4": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -120,7 +120,7 @@
       "exportedName": "editAdAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "0011d90de4d7b6ee1f1afdebd73f558529db6f3e65": {
+    "00522ee338c1b3cc46c6671af8eefc4f05507d3148": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -135,7 +135,7 @@
       "exportedName": "getAdminAdInquiriesAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "6099b944d2a973b3f14338c754e6723e262edf5d6a": {
+    "600464ad4633ca7c9e0a7a38801c7a0c7aeaa133dc": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -150,7 +150,7 @@
       "exportedName": "updateAdInquiryStatusAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "408a41adbe95270dd0427f3df64fde5a8c80e7fb1e": {
+    "4088fa91deebaca90d9c9f81cc0b05f92c4cda88fa": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -165,7 +165,7 @@
       "exportedName": "deleteAdInquiryAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     },
-    "7091e7ca5b1c5001ef8afbbe0ceab23cbe8db07af8": {
+    "7013fc6f724a94ad21362ee60884247aa3f1e39001": {
       "workers": {
         "app/page": {
           "moduleId": 13882,
@@ -178,6 +178,66 @@
         "app/page": "action-browser"
       },
       "exportedName": "verifyKhaltiPaymentAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+    },
+    "00176e0a881f8eed2f1e15c51a24b02bce8c7b015f": {
+      "workers": {
+        "app/page": {
+          "moduleId": 13882,
+          "async": false,
+          "exportedName": "getSettingsAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "exportedName": "getSettingsAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+    },
+    "604b9d2ed3e207a6b2b2ed246da780a04584fb022d": {
+      "workers": {
+        "app/page": {
+          "moduleId": 13882,
+          "async": false,
+          "exportedName": "updateSettingAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "exportedName": "updateSettingAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+    },
+    "00c0077893fbc7bcd370c0cdf6423332b621406a49": {
+      "workers": {
+        "app/page": {
+          "moduleId": 13882,
+          "async": false,
+          "exportedName": "getAllBoostsAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "exportedName": "getAllBoostsAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+    },
+    "40adf17b753f94e97ff90023431d68293b0bbc8a1c": {
+      "workers": {
+        "app/page": {
+          "moduleId": 13882,
+          "async": false,
+          "exportedName": "deleteBoostAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "exportedName": "deleteBoostAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/ad-actions.ts"
     }
   },

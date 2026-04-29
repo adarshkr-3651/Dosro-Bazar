@@ -120,7 +120,7 @@ __turbopack_context__.s([
     "resolvePhotoUrl",
     ()=>resolvePhotoUrl
 ]);
-const API_BASE_URL = (("TURBOPACK compile-time value", "http://localhost:5000") || "http://localhost:5000").replace(/\/$/, "");
+const API_BASE_URL = (("TURBOPACK compile-time value", "/backend-api") || "http://localhost:5000").replace(/\/$/, "");
 const resolvePhotoUrl = (path, isProfile = false)=>{
     if (!path || isProfile && path === 'user.png') {
         return null;

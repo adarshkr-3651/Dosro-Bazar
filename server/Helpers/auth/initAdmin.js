@@ -11,38 +11,28 @@ const initializeAdmin = async () => {
 
         // Check if admin credentials are configured
         if (!ADMIN_EMAIL || !ADMIN_PHONE || !ADMIN_PASSWORD) {
-            // console.log("[initAdmin] Admin credentials not configured in environment variables");
             return;
         }
 
-        // --- 1. Initialize Legacy Admin in User Collection ---
+        // 1. Initialize Legacy Admin in User Collection (Optional fallback)
         const existingLegacyAdmin = await User.findOne({
-            $or: [
-                { email: ADMIN_EMAIL },
-                { phone: ADMIN_PHONE }
-            ]
+            $or: [{ email: ADMIN_EMAIL }, { phone: ADMIN_PHONE }]
         });
 
-        if (existingLegacyAdmin) {
-            if (existingLegacyAdmin.role !== 'admin') {
-                existingLegacyAdmin.role = 'admin';
-                await existingLegacyAdmin.save();
-                // console.log(`[initAdmin] ✅ Updated existing legacy user to admin: ${existingLegacyAdmin.email || existingLegacyAdmin.phone}`);
-            }
-        } else {
+        if (!existingLegacyAdmin) {
             await User.create({
                 username: ADMIN_USERNAME || "Admin User",
                 email: ADMIN_EMAIL,
                 phone: ADMIN_PHONE,
                 password: ADMIN_PASSWORD,
                 role: 'admin',
+                isVerified: true,
                 authProvider: 'email',
                 authProviders: ['email']
             });
-            // console.log(`[initAdmin] ✅ Default legacy admin account created successfully in Users collection!`);
         }
 
-        // --- 2. Initialize Modern Admin in Admin Collection ---
+        // 2. Initialize Modern Admin in Admin Collection (Primary Admin Credentials)
         const existingAdmin = await Admin.findOne({
             $or: [
                 { email: ADMIN_EMAIL },
@@ -58,13 +48,7 @@ const initializeAdmin = async () => {
                 password: ADMIN_PASSWORD,
                 role: 'superadmin'
             });
-            /*
             console.log(`[initAdmin] ✅ Default SUPERADMIN account created successfully in Admins collection!`);
-            console.log(`[initAdmin] Email/Username: ${ADMIN_EMAIL} or ${ADMIN_USERNAME || 'superadmin'}`);
-            console.log(`[initAdmin] Password: ${ADMIN_PASSWORD}`);
-            */
-        } else {
-            // console.log(`[initAdmin] ✅ Superadmin account already exists in Admins collection: ${existingAdmin.username}`);
         }
 
     } catch (error) {
@@ -73,4 +57,3 @@ const initializeAdmin = async () => {
 };
 
 export default initializeAdmin;
-

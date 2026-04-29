@@ -80,10 +80,10 @@ const UserSchema = new mongoose.Schema({
         sparse: true
     },
 
-    // User role ('buyer', 'seller', 'admin')
+    // User role ('buyer', 'seller', 'admin', 'superadmin', 'moderator')
     role: {
         type: String,
-        enum: ['buyer', 'seller', 'admin'],
+        enum: ['buyer', 'seller', 'admin', 'superadmin', 'moderator'],
         default: 'buyer'
     },
 
@@ -198,6 +198,22 @@ const UserSchema = new mongoose.Schema({
     isOnlineVisible: {
         type: Boolean,
         default: true
+    },
+    loginOtpEnabled: {
+        type: Boolean,
+        default: false
+    },
+    averageRating: {
+        type: Number,
+        default: 0
+    },
+    numReviews: {
+        type: Number,
+        default: 0
+    },
+    loginOTPFails: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true  // Automatically add createdAt and updatedAt fields

@@ -1,25 +1,14 @@
 import axios from 'axios';
 
-// When the client runs on HTTPS (dev-https), direct calls to http://localhost:5000
-// are blocked as mixed content. Use Next.js rewrites proxy instead.
-const getBaseURL = () => {
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-    return '/backend-api';
-  }
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-};
-
 const api = axios.create({
-  baseURL: getBaseURL(),
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true, // Important for HttpOnly cookies
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-const BASE_URL = typeof window !== 'undefined' && window.location.protocol === 'https:'
-  ? '/backend-api'
-  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000');
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export async function loginUser(identifier: string, password: string) {
   try {
@@ -28,7 +17,7 @@ export async function loginUser(identifier: string, password: string) {
   } catch (error: any) {
     if (error.response) {
       // Backend returns errors in 'error' field, not 'message'
-      const err = new Error(error.response.data?.error || error.response.data?.message || 'Login failed');
+      const err = new Error(error.response.data.error || error.response.data.message || 'Login failed');
       (err as any).response = error.response;
       throw err;
     } else {
@@ -44,7 +33,7 @@ export async function signUpUser(username: string, phone: string, password: stri
   } catch (error: any) {
     if (error.response) {
       // Backend returns errors in 'error' field, not 'message'
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Registration failed');
+      throw new Error(error.response.data.error || error.response.data.message || 'Registration failed');
     } else {
       throw new Error(error.message || 'Registration failed');
     }
@@ -57,7 +46,7 @@ export async function verifyEmail(email: string, code: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Verification failed');
+      throw new Error(error.response.data.error || error.response.data.message || 'Verification failed');
     } else {
       throw new Error(error.message || 'Verification failed');
     }
@@ -70,7 +59,7 @@ export async function resendVerificationCode(email: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to resend code');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to resend code');
     } else {
       throw new Error(error.message || 'Failed to resend code');
     }
@@ -83,8 +72,9 @@ export async function getProfile() {
     return response.data.data; // Controller returns { success: true, data: user }
   } catch (error: any) {
     if (error.response) {
-      const err = new Error(error.response.data?.message || 'Failed to fetch profile');
+      const err = new Error(error.response.data.error || error.response.data.message || 'Failed to fetch profile');
       (err as any).status = error.response.status;
+      (err as any).response = error.response;
       throw err;
     } else {
       throw new Error(error.message || 'Failed to fetch profile');
@@ -102,7 +92,7 @@ export async function updateProfile(data: FormData) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update profile');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to update profile');
     } else {
       throw new Error(error.message || 'Failed to update profile');
     }
@@ -115,7 +105,7 @@ export async function changePassword(oldPassword: string, newPassword: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to change password');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to change password');
     } else {
       throw new Error(error.message || 'Failed to change password');
     }
@@ -128,8 +118,10 @@ export async function getFavorites() {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      const errorMsg = error.response.data?.error || error.response.data?.message || 'Failed to fetch favorites';
-      throw new Error(errorMsg);
+      if (error.response.status === 401) {
+        return { success: false, data: [] };
+      }
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch favorites');
     } else {
       throw new Error(error.message || 'Failed to fetch favorites');
     }
@@ -142,7 +134,7 @@ export async function toggleFavorite(slug: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update favorite');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to update favorite');
     } else {
       throw new Error(error.message || 'Failed to update favorite');
     }
@@ -155,7 +147,7 @@ export async function getProductBySlug(slug: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch product');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch product');
     } else {
       throw new Error(error.message || 'Failed to fetch product');
     }
@@ -172,7 +164,7 @@ export async function addItem(data: FormData) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to create item');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to create item');
     } else {
       throw new Error(error.message || 'Failed to create item');
     }
@@ -199,7 +191,7 @@ export async function forgotPassword(email: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to send reset email');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to send reset email');
     } else {
       throw new Error(error.message || 'Failed to send reset email');
     }
@@ -212,16 +204,16 @@ export async function verifyResetOTP(email: string, otp: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Verification failed');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to verify OTP');
     } else {
-      throw new Error(error.message || 'Verification failed');
+      throw new Error(error.message || 'Failed to verify OTP');
     }
   }
 }
 
 export async function resetPassword(email: string, otp: string, newPassword: string) {
   try {
-    const response = await api.put('/auth/resetpassword', {
+    const response = await api.put(`/auth/resetpassword`, {
       email,
       otp,
       newPassword
@@ -229,7 +221,7 @@ export async function resetPassword(email: string, otp: string, newPassword: str
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to reset password');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to reset password');
     } else {
       throw new Error(error.message || 'Failed to reset password');
     }
@@ -244,7 +236,7 @@ export async function googleLogin(tokenOrCode: string, isCode: boolean = false) 
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Google login failed');
+      throw new Error(error.response.data.error || error.response.data.message || 'Google login failed');
     } else {
       throw new Error(error.message || 'Google login failed');
     }
@@ -257,7 +249,7 @@ export async function facebookLogin(accessToken: string, userID: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Facebook login failed');
+      throw new Error(error.response.data.error || error.response.data.message || 'Facebook login failed');
     } else {
       throw new Error(error.message || 'Facebook login failed');
     }
@@ -270,7 +262,7 @@ export async function completeOAuthRegistration(tempUserId: string, phone: strin
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to complete registration');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to complete registration');
     } else {
       throw new Error(error.message || 'Failed to complete registration');
     }
@@ -343,7 +335,7 @@ api.interceptors.response.use(
         if (refreshError.response?.status !== 400 && refreshError.response?.status !== 401) {
             console.error('Token refresh failed:', refreshError);
         }
-        processQueue(refreshError);
+        processQueue(error);
 
         // Reject with original error so components know it failed
         return Promise.reject(error);
@@ -357,16 +349,19 @@ api.interceptors.response.use(
 );
 
 
-export async function getAllItems(page: number = 1, limit: number = 10, authorId?: string) {
+export async function getAllItems(page?: number, limit?: number, author?: string) {
   try {
-    const url = authorId 
-      ? `/item/getAllItems?page=${page}&limit=${limit}&author=${authorId}`
-      : `/item/getAllItems?page=${page}&limit=${limit}`;
+    const params = new URLSearchParams();
+    if (page) params.append('page', page.toString());
+    if (limit) params.append('limit', limit.toString());
+    if (author) params.append('author', author);
+    
+    const url = params.toString() ? `/item/getAllItems?${params.toString()}` : '/item/getAllItems';
     const response = await api.get(url);
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch items');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch items');
     } else {
       throw new Error(error.message || 'Failed to fetch items');
     }
@@ -379,7 +374,7 @@ export async function getMyListings() {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch your listings');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch your listings');
     } else {
       throw new Error(error.message || 'Failed to fetch your listings');
     }
@@ -392,7 +387,7 @@ export async function getEditItemData(slug: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch item details');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch item details');
     } else {
       throw new Error(error.message || 'Failed to fetch item details');
     }
@@ -409,7 +404,7 @@ export async function updateItem(slug: string, data: FormData) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to update item');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to update item');
     } else {
       throw new Error(error.message || 'Failed to update item');
     }
@@ -418,12 +413,17 @@ export async function updateItem(slug: string, data: FormData) {
 
 export async function searchSemantic(query: string) {
   try {
+    console.log(`[API] searchSemantic called with query: "${query}"`);
     const response = await api.get(`/item/search/semantic?query=${encodeURIComponent(query)}`);
+    console.log(`[API] searchSemantic success:`, { 
+      count: response.data?.data?.length || 0,
+      firstItem: response.data?.data?.[0]?.title 
+    });
     return response.data;
   } catch (error: any) {
     console.error(`[API] searchSemantic failed:`, error.message);
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to perform semantic search');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to perform semantic search');
     } else {
       throw new Error(error.message || 'Failed to perform semantic search');
     }
@@ -436,7 +436,7 @@ export async function getSimilarItems(slug: string) {
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch similar items');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch similar items');
     } else {
       throw new Error(error.message || 'Failed to fetch similar items');
     }
@@ -445,12 +445,16 @@ export async function getSimilarItems(slug: string) {
 
 export async function getRecommendations() {
   try {
+    console.log(`[API] getRecommendations called`);
     const response = await api.get('/item/recommendations/all');
+    console.log(`[API] getRecommendations success:`, { 
+      count: response.data?.data?.length || 0 
+    });
     return response.data;
   } catch (error: any) {
     console.error(`[API] getRecommendations failed:`, error.message);
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to fetch recommendations');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch recommendations');
     } else {
       throw new Error(error.message || 'Failed to fetch recommendations');
     }
@@ -466,23 +470,35 @@ export async function chatWithAI(
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to get AI response');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to get AI response');
     } else {
       throw new Error(error.message || 'Failed to get AI response');
     }
   }
 }
 
-export async function generateItemDescription(title: string, category?: string, condition?: string, price?: string, wordCount: number = 150) {
+export async function generateItemDescription(title: string, category?: string, condition?: string, price?: string, wordCount?: number) {
   try {
     const response = await api.post('/describe', { title, category, condition, price, wordCount });
     return response.data;
   } catch (error: any) {
     if (error.response) {
-      throw new Error(error.response.data?.error || error.response.data?.message || 'Failed to generate description');
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to generate description');
     } else {
       throw new Error(error.message || 'Failed to generate description');
     }
+  }
+}
+
+export async function getUnreadMessageCount() {
+  try {
+    const response = await api.get('/chat-system/unread-count');
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      return { success: false, data: 0 };
+    }
+    throw new Error(error.response?.data?.message || 'Failed to fetch unread count');
   }
 }
 
@@ -491,7 +507,7 @@ export async function getConversations() {
     const response = await api.get('/chat-system/conversations');
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to fetch conversations');
+    throw new Error(error.response?.data?.message || 'Failed to fetch conversations');
   }
 }
 
@@ -500,16 +516,17 @@ export async function getMessages(conversationId: string) {
     const response = await api.get(`/chat-system/${conversationId}/messages`);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to fetch messages');
+    throw new Error(error.response?.data?.message || 'Failed to fetch messages');
   }
 }
 
-export async function sendChatMessage(receiverId: string, itemId: string, text?: string, image?: string, location?: any) {
+export async function sendChatMessage(receiverId: string, itemId: string, text?: string, image?: string, location?: any, attachment?: any) {
   try {
     const payload: any = { receiverId, itemId };
     if (text) payload.text = text;
     if (image) payload.image = image;
     if (location) payload.location = location;
+    if (attachment) payload.attachment = attachment;
     
     const response = await api.post('/chat-system/message', payload);
     return response.data;
@@ -529,7 +546,16 @@ export async function uploadChatImage(file: File) {
     });
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Failed to upload chat image');
+    throw new Error(error.response?.data?.message || 'Failed to upload chat file');
+  }
+}
+
+export async function getAllAdvanceBookings() {
+  try {
+    const response = await api.get('/admin/advance-bookings');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch advance bookings');
   }
 }
 
@@ -585,6 +611,15 @@ export async function getNotifications(mode?: 'buyer' | 'seller') {
     }
 }
 
+export async function markSingleNotificationAsRead(notificationId: string) {
+    try {
+        const response = await api.put(`/notification/${notificationId}/read`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark notification as read');
+    }
+}
+
 export async function updateBidStatus(bidId: string, status: 'accepted' | 'rejected', followUp?: string, metadata?: any) {
     try {
         const response = await api.post('/bid/status', { bidId, status, followUp, metadata });
@@ -609,6 +644,15 @@ export async function markNotificationsAsRead() {
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to mark all as read');
+    }
+}
+
+export async function deleteNotificationAction(id: string) {
+    try {
+        const response = await api.delete(`/notification/${id}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to delete notification');
     }
 }
 
@@ -711,4 +755,103 @@ export async function getItemBids(itemId: string) {
     }
 }
 
+export async function initiateAdvanceBookAction(itemId: string, paymentMethod: string, amount: number) {
+    try {
+        const response = await api.post(`/item/${itemId}/advance-book`, { paymentMethod, amount });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to initiate advance booking');
+    }
+}
+
+export async function getMyBookings() {
+    try {
+        const response = await api.get('/item/my-bookings');
+        return response.data;
+    } catch (error: any) {
+        if (error.response?.status === 401) {
+            return { success: false, data: [] };
+        }
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch bookings');
+    }
+}
+
+export async function getMyBids() {
+    try {
+        const response = await api.get('/bid/my');
+        return response.data;
+    } catch (error: any) {
+        if (error.response?.status === 401) {
+            return { success: false, data: [] };
+        }
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch your bids');
+    }
+}
+
+export async function updateBidAction(bidId: string, amount: number) {
+    try {
+        const response = await api.put(`/bid/${bidId}/update`, { amount });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to update bid');
+    }
+}
+
+export async function cancelBidAction(bidId: string) {
+    try {
+        const response = await api.delete(`/bid/${bidId}/cancel`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to cancel bid');
+    }
+}
+
+export async function addReview(reviewData: { itemId: string; sellerId: string; rating: number; comment?: string; invoiceId: string }) {
+    try {
+        const response = await api.post('/review/add', reviewData);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to submit review');
+    }
+}
+
+export async function initiateBoostAction(itemId: string, plan: string, paymentMethod: string) {
+    try {
+        const response = await api.post(`/item/${itemId}/boost/initiate`, { plan, paymentMethod });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to initiate boost');
+    }
+}
+
+export async function getSellerReviews(sellerId: string) {
+    try {
+        const response = await api.get(`/review/seller/${sellerId}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to fetch seller reviews');
+    }
+}
+
+export async function verifyBoostKhaltiAction(pidx: string, amount: number, purchase_order_id: string) {
+    try {
+        const response = await api.post(`/item/payment/verify/boost-khalti`, { pidx, amount, purchase_order_id });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.error || error.response?.data?.message || 'Failed to verify boost payment');
+    }
+}
+
 export default api;
+export async function verifyLoginOtp(email: string, otp: string) {
+  try {
+    const response = await api.post('/auth/verify-login-otp', { email, otp });
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'OTP verification failed');
+    } else {
+      throw new Error(error.message || 'OTP verification failed');
+    }
+  }
+}

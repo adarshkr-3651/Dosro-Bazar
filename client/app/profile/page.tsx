@@ -10,7 +10,7 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Trash2, Receipt } from "lucide-react";
+import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Trash2, Receipt, Gavel, Wallet } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Switch } from "@/app/components/ui/switch";
@@ -18,6 +18,10 @@ import { Textarea } from "@/app/components/ui/textarea";
 import { Badge } from "@/app/components/ui/badge";
 import { FileText, ShieldCheck, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
+import BidsOverlay from "../components/profile/BidsOverlay";
+import BookingsOverlay from "../components/profile/BookingsOverlay";
+import VerifyEmailOverlay from "../components/auth/VerifyEmailOverlay";
+import InvoicesOverlay from "../components/profile/InvoicesOverlay";
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
@@ -42,7 +46,7 @@ const resolvePhotoUrl = (photoPath?: string | null) => {
 };
 
 export default function ProfilePage() {
-    const { user, checkAuthStatus, setUser } = useAuth();
+    const { user, checkAuthStatus, setUser, refreshUser } = useAuth();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [passwordLoading, setPasswordLoading] = useState(false);
@@ -66,12 +70,19 @@ export default function ProfilePage() {
     const [idProofPreviewUrl, setIdProofPreviewUrl] = useState<string | null>(null);
     const { theme, setTheme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
-    const [isSecurityOpen, setIsSecurityOpen] = useState(false);
     const [language, setLanguage] = useState("English");
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [isBidsOpen, setIsBidsOpen] = useState(false);
+    const [isBookingsOpen, setIsBookingsOpen] = useState(false);
+    const [isVerifyOverlayOpen, setIsVerifyOverlayOpen] = useState(false);
+    const [isInvoicesOpen, setIsInvoicesOpen] = useState(false);
+    const [otpEnabled, setOtpEnabled] = useState(false);
+    const [otpToggling, setOtpToggling] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        // Proactively refresh user data on mount to ensure absolute latest state (e.g. verification status)
+        refreshUser();
     }, []);
 
     useEffect(() => {
@@ -83,6 +94,7 @@ export default function ProfilePage() {
                 address: user.address || "",
                 idProofType: user.idProofType || "",
             });
+            setOtpEnabled(user.loginOtpEnabled || false);
             setPreviewUrl(resolvePhotoUrl(user.photo) || null);
             setIdProofPreviewUrl(resolvePhotoUrl(user.idProof) || null);
             // Don't force theme here - let ThemeSync handle it on initial load
@@ -217,6 +229,30 @@ export default function ProfilePage() {
             }
         } catch (error: any) {
             toast.error(error.message || 'Failed to save theme preference', { id: "theme" });
+        }
+    };
+
+    const handleOtpToggle = async (checked: boolean) => {
+        if (!user?.email || !user?.isVerified) {
+            toast.error("You must have a verified email to enable Login OTP");
+            return;
+        }
+
+        setOtpToggling(true);
+        try {
+            const formDataToSubmit = new FormData();
+            formDataToSubmit.append('loginOtpEnabled', checked.toString());
+            
+            const response = await updateProfile(formDataToSubmit);
+            if (response.success) {
+                setOtpEnabled(checked);
+                setUser(response.data);
+                toast.success(`Login OTP ${checked ? 'enabled' : 'disabled'} successfully`);
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Failed to update OTP settings");
+        } finally {
+            setOtpToggling(false);
         }
     };
 
@@ -428,8 +464,34 @@ export default function ProfilePage() {
                             </CardContent>
                         </Card>
 
+                        {/* My Bids Card */}
+                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={() => setIsBidsOpen(true)}>
+                            <CardContent className="p-4 flex items-center gap-3">
+                                <div className="p-2 bg-blue-500/10 rounded-lg text-blue-600">
+                                    <Gavel className="h-5 w-5" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-bold text-sm">My Bids</p>
+                                    <p className="text-[10px] text-muted-foreground">Track your active offers</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* My Advance Payments Card */}
+                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={() => setIsBookingsOpen(true)}>
+                            <CardContent className="p-4 flex items-center gap-3">
+                                <div className="p-2 bg-green-500/10 rounded-lg text-green-600">
+                                    <Wallet className="h-5 w-5" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-bold text-sm">Advance Payments</p>
+                                    <p className="text-[10px] text-muted-foreground">Manage your bookings</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
                         {/* Invoices Card */}
-                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={() => router.push('/invoices')}>
+                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={() => setIsInvoicesOpen(true)}>
                             <CardContent className="p-4 flex items-center gap-3">
                                 <div className="p-2 bg-primary/10 rounded-lg text-primary">
                                     <Receipt className="h-5 w-5" />
@@ -552,16 +614,22 @@ export default function ProfilePage() {
                                                         placeholder="your.email@example.com"
                                                     />
                                                 </div>
-                                                {formData.email && user.verificationStatus !== 'verified' && (
+                                                {formData.email && !user.isVerified && (
                                                     <Button 
                                                         type="button" 
                                                         variant="outline" 
                                                         size="sm"
-                                                        onClick={() => router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)}
-                                                        className="shrink-0"
+                                                        onClick={() => setIsVerifyOverlayOpen(true)}
+                                                        className="shrink-0 font-bold border-primary text-primary hover:bg-primary/10"
                                                     >
-                                                        Verify
+                                                        Verify Now
                                                     </Button>
+                                                )}
+                                                {formData.email && user.isVerified && (
+                                                    <div className="flex items-center px-3 py-1 rounded-full bg-green-500/10 border border-green-200 text-green-600 text-xs font-bold shrink-0">
+                                                        <ShieldCheck className="h-3 w-3 mr-1" />
+                                                        Verified
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
@@ -720,22 +788,52 @@ export default function ProfilePage() {
                         </Card>
 
                         <Card>
-                            <CardHeader 
-                                className="cursor-pointer hover:bg-muted/50 transition-colors"
-                                onClick={() => setIsSecurityOpen(!isSecurityOpen)}
-                            >
+                            <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle className="text-xl">Security</CardTitle>
                                         <CardDescription>Manage your password and security questions.</CardDescription>
                                     </div>
-                                    <Button variant="ghost" size="sm">
-                                        {isSecurityOpen ? "Close" : "Open"}
-                                    </Button>
                                 </div>
                             </CardHeader>
-                            {isSecurityOpen && (
-                                <CardContent>
+                            <CardContent>
+                                    <div className="mb-8 p-4 rounded-lg bg-muted/30 border border-border">
+                                        <div className="flex items-center justify-between">
+                                            <div className="space-y-0.5">
+                                                <div className="flex items-center gap-2">
+                                                    <ShieldCheck className="h-4 w-4 text-primary" />
+                                                    <Label className="text-base font-bold">Two-Factor Authentication (OTP)</Label>
+                                                </div>
+                                                <CardDescription>Require a 6-digit code sent to your email for every login.</CardDescription>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                {(!user?.email || !user?.isVerified) && (
+                                                    <Badge variant="outline" className="text-[10px] uppercase font-black tracking-tighter bg-amber-500/10 text-amber-600 border-amber-200">
+                                                        Email Required
+                                                    </Badge>
+                                                )}
+                                                <Switch 
+                                                    checked={otpEnabled} 
+                                                    onCheckedChange={handleOtpToggle}
+                                                    disabled={otpToggling || !user?.email || !user?.isVerified}
+                                                />
+                                            </div>
+                                        </div>
+                                        {!user?.isVerified && user?.email && (
+                                            <p className="mt-2 text-xs text-amber-600 font-medium flex items-center gap-1">
+                                                <AlertCircle className="h-3 w-3" />
+                                                Your email is not verified. 
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => setIsVerifyOverlayOpen(true)}
+                                                    className="text-primary underline ml-1 hover:text-primary/80"
+                                                >
+                                                    Verify Now
+                                                </button>
+                                            </p>
+                                        )}
+                                    </div>
+
                                     <form onSubmit={handlePasswordSubmit} className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2 md:col-span-2">
@@ -809,13 +907,25 @@ export default function ProfilePage() {
                                     </div>
                                 </form>
                             </CardContent>
-                            )}
                         </Card>
                     </div>
                 </div>
             </main>
 
             <Footer />
+
+            {/* Overlays */}
+            <BidsOverlay isOpen={isBidsOpen} onClose={() => setIsBidsOpen(false)} />
+            <BookingsOverlay isOpen={isBookingsOpen} onClose={() => setIsBookingsOpen(false)} />
+            <InvoicesOverlay isOpen={isInvoicesOpen} onClose={() => setIsInvoicesOpen(false)} />
+            {user?.email && (
+                <VerifyEmailOverlay 
+                    isOpen={isVerifyOverlayOpen} 
+                    onClose={() => setIsVerifyOverlayOpen(false)} 
+                    email={user.email}
+                    onSuccess={checkAuthStatus}
+                />
+            )}
 
             {/* Image Preview Modal */}
             {selectedImage && (

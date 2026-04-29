@@ -4,6 +4,7 @@ import {
     submitAdminEnquiry, getAdInquiries, updateInquiryStatus, deleteInquiry,
     initiateAdBooking, verifyEsewaPayment, verifyKhaltiPayment, getAdBookings
 } from "../Controllers/adController.js";
+import { getSettings, updateSetting } from "../Controllers/settingController.js";
 import { getAccessToRoute } from "../Middlewares/Authorization/auth.js";
 import { getAdminAccess } from "../Middlewares/Authorization/adminAuth.js";
 import { cloudinaryUpload } from "../Helpers/Libraries/imageUpload.js";
@@ -34,6 +35,10 @@ router.get("/inquiries/all", [getAccessToRoute, getAdminAccess], getAdInquiries)
 router.get("/bookings/all", [getAccessToRoute, getAdminAccess], getAdBookings);
 router.put("/inquiries/:id/status", [getAccessToRoute, getAdminAccess], updateInquiryStatus);
 router.delete("/inquiries/:id", [getAccessToRoute, getAdminAccess], deleteInquiry);
+
+// Settings
+router.get("/settings", [getAccessToRoute, getAdminAccess], getSettings);
+router.put("/settings", [getAccessToRoute, getAdminAccess], updateSetting);
 
 router.post("/create", [getAccessToRoute, getAdminAccess, cloudinaryUpload("ad").single("image")], createAd);
 router.put("/:id/status", [getAccessToRoute, getAdminAccess], updateAdStatus);

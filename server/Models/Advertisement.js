@@ -29,8 +29,16 @@ const AdvertisementSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['running', 'stopped', 'expired'],
+        enum: ['running', 'stopped', 'expired', 'flagged'],
         default: 'running'
+    },
+    isFlagged: {
+        type: Boolean,
+        default: false
+    },
+    moderationReason: {
+        type: String,
+        default: ""
     },
     placement: {
         type: String,

@@ -29,7 +29,7 @@ function KhaltiVerifyContent() {
                 if (res.success) {
                     setStatus("success");
                     toast.success(res.message || "Payment Successful!");
-                    setTimeout(() => router.push(`/?payment_success=true&expiry=${res.expiry || ''}`), 2000);
+                    setTimeout(() => router.push(`/?payment_success=true&type=ad&item=${purchase_order_id}&amount=${amountStr}&flagged=${res.flagged || false}`), 2000);
                 } else {
                     setStatus("failed");
                     toast.error(res.error || "Payment verification failed");

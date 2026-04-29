@@ -2,13 +2,15 @@ module.exports = [
 "[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/* __next_internal_action_entry_do_not_use__ [{"001176be324642905056eac38dab1b114e5623cb2e":"getAdBookings","002a968cbb897e18ed7420cf4c091b5cf87eb87193":"isAdminAuthenticated","004917ba9c115305874085d18bea37a8f57ff83d40":"logoutAdmin","00e556ff15cd866bd72ab91b882c7c1b3142d21cfc":"getAdminProfile","403e5bd9bd93410a2b7260629bf10efd335929564d":"loginAdmin","40ea398f7451c0d874d1ecf7c820b61dd5f1e28caf":"createAdmin"},"",""] */ __turbopack_context__.s([
+/* __next_internal_action_entry_do_not_use__ [{"001176be324642905056eac38dab1b114e5623cb2e":"getAdBookings","002a968cbb897e18ed7420cf4c091b5cf87eb87193":"isAdminAuthenticated","004917ba9c115305874085d18bea37a8f57ff83d40":"logoutAdmin","00b54606a3ed20c864abad6ee958b85c6f4356be7e":"getAdvanceBookingsAction","00e556ff15cd866bd72ab91b882c7c1b3142d21cfc":"getAdminProfile","403e5bd9bd93410a2b7260629bf10efd335929564d":"loginAdmin","40ea398f7451c0d874d1ecf7c820b61dd5f1e28caf":"createAdmin"},"",""] */ __turbopack_context__.s([
     "createAdmin",
     ()=>createAdmin,
     "getAdBookings",
     ()=>getAdBookings,
     "getAdminProfile",
     ()=>getAdminProfile,
+    "getAdvanceBookingsAction",
+    ()=>getAdvanceBookingsAction,
     "isAdminAuthenticated",
     ()=>isAdminAuthenticated,
     "loginAdmin",
@@ -182,6 +184,38 @@ async function getAdBookings() {
         return [];
     }
 }
+async function getAdvanceBookingsAction() {
+    const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+    const userToken = cookieStore.get("accessToken")?.value;
+    const cookiesToPass = [];
+    if (adminToken) cookiesToPass.push(`admin_access_token=${adminToken}`);
+    if (userToken) cookiesToPass.push(`accessToken=${userToken}`);
+    const cookieHeader = cookiesToPass.join("; ");
+    try {
+        const response = await fetch(`${BACKEND_URL}/admin/advance-bookings`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": cookieHeader
+            }
+        });
+        const data = await response.json();
+        return data.success ? {
+            success: true,
+            data: data.data
+        } : {
+            success: false,
+            error: data.message
+        };
+    } catch (error) {
+        console.error("Get Advance Bookings Error:", error);
+        return {
+            success: false,
+            error: "Connection error"
+        };
+    }
+}
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
     loginAdmin,
@@ -189,7 +223,8 @@ async function getAdBookings() {
     createAdmin,
     getAdminProfile,
     isAdminAuthenticated,
-    getAdBookings
+    getAdBookings,
+    getAdvanceBookingsAction
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(loginAdmin, "403e5bd9bd93410a2b7260629bf10efd335929564d", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(logoutAdmin, "004917ba9c115305874085d18bea37a8f57ff83d40", null);
@@ -197,6 +232,7 @@ async function getAdBookings() {
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdminProfile, "00e556ff15cd866bd72ab91b882c7c1b3142d21cfc", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(isAdminAuthenticated, "002a968cbb897e18ed7420cf4c091b5cf87eb87193", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdBookings, "001176be324642905056eac38dab1b114e5623cb2e", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdvanceBookingsAction, "00b54606a3ed20c864abad6ee958b85c6f4356be7e", null);
 }),
 "[project]/Desktop/Dosro Bazar - Main/client/app/components/admin/LogoutButton.tsx [app-rsc] (client reference proxy) <module evaluation>", ((__turbopack_context__) => {
 "use strict";
@@ -259,6 +295,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/file-text.js [app-rsc] (ecmascript) <export default as FileText>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/store.js [app-rsc] (ecmascript) <export default as Store>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/credit-card.js [app-rsc] (ecmascript) <export default as CreditCard>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/zap.js [app-rsc] (ecmascript) <export default as Zap>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__Wallet$3e$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/lucide-react/dist/esm/icons/wallet.js [app-rsc] (ecmascript) <export default as Wallet>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$admin$2f$LogoutButton$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/components/admin/LogoutButton.tsx [app-rsc] (ecmascript)");
 ;
 ;
@@ -287,6 +325,16 @@ async function AdminDashboardLayout({ children }) {
             label: "Items",
             href: "/admin/dashboard/items",
             icon: __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"]
+        },
+        {
+            label: "Boosted Items",
+            href: "/admin/dashboard/boosts",
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"]
+        },
+        {
+            label: "Advance Bookings",
+            href: "/admin/dashboard/advance-bookings",
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wallet$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__default__as__Wallet$3e$__["Wallet"]
         },
         {
             label: "Users",
@@ -339,12 +387,12 @@ async function AdminDashboardLayout({ children }) {
                                     className: "w-6 h-6 text-emerald-600"
                                 }, void 0, false, {
                                     fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                    lineNumber: 41,
+                                    lineNumber: 43,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                lineNumber: 40,
+                                lineNumber: 42,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -352,13 +400,13 @@ async function AdminDashboardLayout({ children }) {
                                 children: "Dosro Bazar Admin"
                             }, void 0, false, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                lineNumber: 43,
+                                lineNumber: 45,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                        lineNumber: 39,
+                        lineNumber: 41,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -371,7 +419,7 @@ async function AdminDashboardLayout({ children }) {
                                         className: "w-5 h-5 text-slate-400 group-hover:text-emerald-600 transition-colors"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                        lineNumber: 53,
+                                        lineNumber: 55,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -379,36 +427,36 @@ async function AdminDashboardLayout({ children }) {
                                         children: item.label
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                        lineNumber: 54,
+                                        lineNumber: 56,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, item.href, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                lineNumber: 48,
+                                lineNumber: 50,
                                 columnNumber: 25
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                        lineNumber: 46,
+                        lineNumber: 48,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "p-4 border-t border-slate-100 flex-shrink-0",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$components$2f$admin$2f$LogoutButton$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                             fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                            lineNumber: 60,
+                            lineNumber: 62,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                        lineNumber: 59,
+                        lineNumber: 61,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                lineNumber: 38,
+                lineNumber: 40,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -424,7 +472,7 @@ async function AdminDashboardLayout({ children }) {
                                         className: "w-4 h-4 text-slate-400"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 70,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -433,13 +481,13 @@ async function AdminDashboardLayout({ children }) {
                                         className: "bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400 text-slate-900"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                        lineNumber: 69,
+                                        lineNumber: 71,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                lineNumber: 67,
+                                lineNumber: 69,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -452,20 +500,20 @@ async function AdminDashboardLayout({ children }) {
                                                 className: "w-5 h-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                                lineNumber: 78,
+                                                lineNumber: 80,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 className: "absolute top-2 right-2 w-2 h-2 bg-emerald-500 rounded-full border border-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                                lineNumber: 79,
+                                                lineNumber: 81,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                        lineNumber: 77,
+                                        lineNumber: 79,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -479,7 +527,7 @@ async function AdminDashboardLayout({ children }) {
                                                         children: "System Admin"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                                        lineNumber: 83,
+                                                        lineNumber: 85,
                                                         columnNumber: 33
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -487,13 +535,13 @@ async function AdminDashboardLayout({ children }) {
                                                         children: "Root Access"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                                        lineNumber: 84,
+                                                        lineNumber: 86,
                                                         columnNumber: 33
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                                lineNumber: 82,
+                                                lineNumber: 84,
                                                 columnNumber: 29
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -501,25 +549,25 @@ async function AdminDashboardLayout({ children }) {
                                                 children: "SA"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                                lineNumber: 86,
+                                                lineNumber: 88,
                                                 columnNumber: 29
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                        lineNumber: 81,
+                                        lineNumber: 83,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                                lineNumber: 76,
+                                lineNumber: 78,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                        lineNumber: 66,
+                        lineNumber: 68,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -527,19 +575,19 @@ async function AdminDashboardLayout({ children }) {
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                        lineNumber: 93,
+                        lineNumber: 95,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-                lineNumber: 65,
+                lineNumber: 67,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/Dosro Bazar - Main/client/app/admin/dashboard/layout.tsx",
-        lineNumber: 36,
+        lineNumber: 38,
         columnNumber: 9
     }, this);
 }

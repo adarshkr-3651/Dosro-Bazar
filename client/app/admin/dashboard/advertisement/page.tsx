@@ -14,24 +14,65 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/app
 import { toast } from "sonner";
 import Image from "next/image";
 import { getAllAdsAction, createAdAction, deleteAdAction, updateAdStatusAction } from "@/app/lib/ad-actions";
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal";
+
 
 export default function AdvertisementPage() {
   const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false); // New: track edit vs create
-  const [selectedAd, setSelectedAd] = useState<any>(null); // New: track active ad for editing
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedAd, setSelectedAd] = useState<any>(null);
   const [formLoading, setFormLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isFilteringEnabled, setIsFilteringEnabled] = useState(true);
+  const [isSettingLoading, setIsSettingLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [adToDelete, setAdToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
 
   useEffect(() => {
     fetchAds();
+    fetchSettings();
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const { getSettingsAction } = await import("@/app/lib/ad-actions");
+      const res = await getSettingsAction();
+      if (res.success) {
+        const filterSetting = res.data.find((s: any) => s.key === "ad_image_filtering");
+        if (filterSetting) setIsFilteringEnabled(filterSetting.value);
+      }
+    } catch (error) {
+      console.error("Failed to fetch settings");
+    }
+  };
+
+  const handleToggleFiltering = async () => {
+    setIsSettingLoading(true);
+    try {
+      const { updateSettingAction } = await import("@/app/lib/ad-actions");
+      const newValue = !isFilteringEnabled;
+      const res = await updateSettingAction("ad_image_filtering", newValue);
+      if (res.success) {
+        setIsFilteringEnabled(newValue);
+        toast.success(`Image filtering ${newValue ? "Enabled" : "Disabled"}`);
+      } else {
+        toast.error("Failed to update setting");
+      }
+    } catch (error) {
+      toast.error("Connection error");
+    } finally {
+      setIsSettingLoading(false);
+    }
+  };
 
   const fetchAds = async () => {
     setLoading(true);
     try {
-      const data = await getAllAdsAction();
+      const data = await getAllAdsAction("all");
       if (data.success) {
         setAds(data.ads || []);
       }
@@ -74,21 +115,32 @@ export default function AdvertisementPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this advertisement?")) return;
+  const handleDelete = (id: string) => {
+    setAdToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteAd = async () => {
+    if (!adToDelete) return;
     
+    setIsDeleting(true);
     try {
-      const res = await deleteAdAction(id);
+      const res = await deleteAdAction(adToDelete);
       if (res.success) {
         toast.success("Ad removed successfully");
+        setIsDeleteModalOpen(false);
         fetchAds();
       } else {
         toast.error(res.error || "Failed to delete");
       }
     } catch (error) {
       toast.error("An error occurred");
+    } finally {
+      setIsDeleting(false);
+      setAdToDelete(null);
     }
   };
+
 
   const handleEdit = (ad: any) => {
     setSelectedAd(ad);
@@ -191,12 +243,34 @@ export default function AdvertisementPage() {
             Provision and monitor platform placements
           </p>
         </div>
-        <Button 
-          onClick={() => setIsModalOpen(true)}
-          className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-6 rounded-2xl flex items-center gap-2 shadow-xl transition-all hover:scale-105"
-        >
-          <Plus className="w-5 h-5" /> Deploy New Ad
-        </Button>
+        
+        <div className="flex items-center gap-4">
+           {/* Filtering Toggle */}
+           <div className="flex items-center gap-3 px-4 py-3 bg-white border border-slate-200 rounded-2xl shadow-sm">
+             <div className="flex flex-col">
+               <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">AI Moderation</span>
+               <span className={`text-xs font-bold ${isFilteringEnabled ? 'text-emerald-600' : 'text-slate-400'}`}>
+                 {isFilteringEnabled ? 'Enabled' : 'Disabled'}
+               </span>
+             </div>
+             <button 
+                onClick={handleToggleFiltering}
+                disabled={isSettingLoading}
+                className={`relative w-12 h-6 rounded-full transition-all duration-300 ${isFilteringEnabled ? 'bg-emerald-500' : 'bg-slate-200'}`}
+             >
+                <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${isFilteringEnabled ? 'translate-x-6' : ''}`}>
+                  {isSettingLoading && <Loader2 className="w-3 h-3 text-slate-400 animate-spin m-0.5" />}
+                </div>
+             </button>
+           </div>
+
+           <Button 
+            onClick={() => setIsModalOpen(true)}
+            className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-6 rounded-2xl flex items-center gap-2 shadow-xl transition-all hover:scale-105"
+          >
+            <Plus className="w-5 h-5" /> Deploy New Ad
+          </Button>
+        </div>
       </div>
 
       {/* Grid Layout */}
@@ -502,6 +576,20 @@ export default function AdvertisementPage() {
           </Card>
         </div>
       )}
+
+      <DeleteConfirmationModal 
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setAdToDelete(null);
+        }}
+        onConfirm={confirmDeleteAd}
+        title="Remove Advertisement"
+        description="Are you sure you want to remove this advertisement? This action cannot be undone."
+        confirmText="Remove Ad"
+        isLoading={isDeleting}
+      />
     </div>
+
   );
 }

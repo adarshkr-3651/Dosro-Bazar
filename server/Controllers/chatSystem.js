@@ -8,7 +8,7 @@ export const getConversations = asyncErrorWrapper(async (req, res, next) => {
 
     const conversations = await Conversation.find({ participants: userId })
         .populate("participants", "username photo isOnlineVisible")
-        .populate("item", "title images price slug")
+        .populate("item", "title images price slug author status")
         .populate({
             path: 'lastMessage',
             select: 'text createdAt sender'
@@ -63,11 +63,11 @@ export const getMessages = asyncErrorWrapper(async (req, res, next) => {
 });
 
 export const sendMessage = asyncErrorWrapper(async (req, res, next) => {
-    const { receiverId, itemId, text, image, location } = req.body;
+    const { receiverId, itemId, text, image, location, attachment } = req.body;
     const senderId = req.user._id;
 
-    if (!text && !image && !location) {
-        return next(new CustomError("You must provide text, an image, or a location", 400));
+    if (!text && !image && !location && !attachment) {
+        return next(new CustomError("You must provide text, an image, a location, or an attachment", 400));
     }
 
     let conversation = await Conversation.findOne({
@@ -91,7 +91,8 @@ export const sendMessage = asyncErrorWrapper(async (req, res, next) => {
         sender: senderId,
         text,
         image,
-        location
+        location,
+        attachment
     });
 
     conversation.lastMessage = newMessage._id;
@@ -102,6 +103,7 @@ export const sendMessage = asyncErrorWrapper(async (req, res, next) => {
 
     // If socket.io is attached to the request, emit real-time event
     if (req.io) {
+        console.log(`[Socket] Emitting newMessage to receiver room: ${receiverId}`);
         // We emit to the receiver's dedicated room
         req.io.to(receiverId.toString()).emit("newMessage", {
             message: newMessage,
@@ -109,6 +111,7 @@ export const sendMessage = asyncErrorWrapper(async (req, res, next) => {
             itemId: itemId
         });
         
+        console.log(`[Socket] Emitting conversationMessage to conversation room: ${conversation._id}`);
         // Also emit to conversation room if using specific rooms
         req.io.to(conversation._id.toString()).emit("conversationMessage", newMessage);
     }
@@ -184,14 +187,39 @@ export const deleteConversation = asyncErrorWrapper(async (req, res, next) => {
 
 export const uploadChatImage = asyncErrorWrapper(async (req, res, next) => {
     if (!req.file) {
-        return next(new CustomError("Please provide an image", 400));
+        return next(new CustomError("Please provide a file", 400));
     }
 
     // Cloudinary returns the full secure URL in req.file.path
-    const imageUrl = req.file.path;
+    const fileUrl = req.file.path;
+    const isPDF = req.file.mimetype === "application/pdf";
 
     return res.status(200).json({
         success: true,
-        data: imageUrl
+        data: fileUrl,
+        name: req.file.originalname,
+        fileType: isPDF ? "pdf" : "image"
+    });
+});
+
+export const getUnreadCount = asyncErrorWrapper(async (req, res, next) => {
+    const userId = req.user._id;
+
+    // We find all conversations where the user is a participant
+    // and has unread messages
+    const conversations = await Conversation.find({
+        participants: userId
+    });
+
+    let totalUnread = 0;
+    conversations.forEach(conv => {
+        if (conv.unreadCount && conv.unreadCount.has(userId.toString())) {
+            totalUnread += conv.unreadCount.get(userId.toString()) || 0;
+        }
+    });
+
+    return res.status(200).json({
+        success: true,
+        data: totalUnread
     });
 });

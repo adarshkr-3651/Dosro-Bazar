@@ -27,6 +27,14 @@
   },
   "dynamicRoutes": [
     {
+      "page": "/invoices/[id]",
+      "regex": "^/invoices/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/invoices/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/products/[slug]",
       "regex": "^/products/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -87,10 +95,22 @@
       "namedRegex": "^/admin/dashboard/ad\\-inquiry(?:/)?$"
     },
     {
+      "page": "/admin/dashboard/advance-bookings",
+      "regex": "^/admin/dashboard/advance\\-bookings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/advance\\-bookings(?:/)?$"
+    },
+    {
       "page": "/admin/dashboard/advertisement",
       "regex": "^/admin/dashboard/advertisement(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/dashboard/advertisement(?:/)?$"
+    },
+    {
+      "page": "/admin/dashboard/boosts",
+      "regex": "^/admin/dashboard/boosts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/dashboard/boosts(?:/)?$"
     },
     {
       "page": "/admin/dashboard/invoices",
@@ -153,6 +173,12 @@
       "namedRegex": "^/forgotPassword(?:/)?$"
     },
     {
+      "page": "/invoices",
+      "regex": "^/invoices(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/invoices(?:/)?$"
+    },
+    {
       "page": "/login",
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
@@ -171,6 +197,24 @@
       "namedRegex": "^/notifications(?:/)?$"
     },
     {
+      "page": "/payment-failed",
+      "regex": "^/payment\\-failed(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-failed(?:/)?$"
+    },
+    {
+      "page": "/payment-success",
+      "regex": "^/payment\\-success(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-success(?:/)?$"
+    },
+    {
+      "page": "/payment-verify/boost-khalti",
+      "regex": "^/payment\\-verify/boost\\-khalti(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-verify/boost\\-khalti(?:/)?$"
+    },
+    {
       "page": "/payment-verify/khalti",
       "regex": "^/payment\\-verify/khalti(?:/)?$",
       "routeKeys": {},
@@ -181,6 +225,12 @@
       "regex": "^/profile(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/profile(?:/)?$"
+    },
+    {
+      "page": "/recycle-bin",
+      "regex": "^/recycle\\-bin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/recycle\\-bin(?:/)?$"
     },
     {
       "page": "/resetPassword",

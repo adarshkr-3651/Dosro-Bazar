@@ -63,11 +63,16 @@ const sendTokens = async (user, statusCode, res, req) => {
         // Send tokens as httpOnly cookies (more secure for web apps)
         const isProduction = process.env.NODE_ENV === 'production';
 
+        // Handle local HTTPS frontend with HTTP backend (cross-scheme)
+        const isCrossSiteLocal = process.env.URI?.startsWith('https://') && process.env.SERVER_URL?.startsWith('http://');
+        const secureCookie = isProduction || isCrossSiteLocal;
+        const sameSiteCookie = isProduction ? 'strict' : (isCrossSiteLocal ? 'none' : 'lax');
+
         // Set access token cookie (matching ACCESS_TOKEN_EXPIRE or default 10 hours)
         res.cookie('accessToken', accessToken, {
             httpOnly: true,  // Prevents JavaScript access (XSS protection)
-            secure: isProduction,  // HTTPS only in production
-            sameSite: isProduction ? 'strict' : 'lax',  // CSRF protection
+            secure: secureCookie,  // HTTPS only in production or cross-site local
+            sameSite: sameSiteCookie,  // CSRF protection
             maxAge: 10 * 60 * 60 * 1000, // 10 hours in milliseconds (matches 600m in config.env)
             path: '/' // Make cookie available everywhere
         });
@@ -75,8 +80,8 @@ const sendTokens = async (user, statusCode, res, req) => {
         // Set refresh token cookie (7 days)
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,  // Prevents JavaScript access (XSS protection)
-            secure: isProduction,  // HTTPS only in production
-            sameSite: isProduction ? 'strict' : 'lax',  // CSRF protection
+            secure: secureCookie,  // HTTPS only in production or cross-site local
+            sameSite: sameSiteCookie,  // CSRF protection
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
             path: '/' // Make cookie available everywhere
         });

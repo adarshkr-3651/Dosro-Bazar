@@ -31,7 +31,7 @@ export async function createAdAction(formData: FormData) {
     }
 }
 
-export async function getAllAdsAction() {
+export async function getAllAdsAction(status?: string) {
     const cookieStore = await cookies();
     const adminToken = cookieStore.get("admin_access_token")?.value;
     const userToken = cookieStore.get("accessToken")?.value;
@@ -42,7 +42,11 @@ export async function getAllAdsAction() {
     const cookieHeader = cookiesToPass.join("; ");
 
     try {
-        const response = await fetch(`${BACKEND_URL}/advertisements`, {
+        const url = status 
+            ? `${BACKEND_URL}/advertisements?status=${status}`
+            : `${BACKEND_URL}/advertisements`;
+
+        const response = await fetch(url, {
             method: "GET",
             headers: {
                 "Cookie": cookieHeader
@@ -266,5 +270,88 @@ export async function verifyKhaltiPaymentAction(pidx: string, amount: number, pu
     } catch (error) {
         console.error("Verify Khalti Error:", error);
         return { success: false, error: "Failed to verify Khalti payment" };
+    }
+}
+export async function getSettingsAction() {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/settings`, {
+            method: "GET",
+            headers: {
+                "Cookie": `admin_access_token=${adminToken}`
+            },
+            cache: "no-store"
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Get Settings Error:", error);
+        return { success: false, data: [] };
+    }
+}
+
+export async function updateSettingAction(key: string, value: any) {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/advertisements/settings`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `admin_access_token=${adminToken}`
+            },
+            body: JSON.stringify({ key, value }),
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Update Setting Error:", error);
+        return { success: false, error: "Failed to update setting" };
+    }
+}
+
+export async function getAllBoostsAction() {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/admin/boosts`, {
+            method: "GET",
+            headers: {
+                "Cookie": `admin_access_token=${adminToken}`
+            },
+            cache: "no-store"
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Get Boosts Error:", error);
+        return { success: false, data: [] };
+    }
+}
+
+export async function deleteBoostAction(id: string) {
+    const cookieStore = await cookies();
+    const adminToken = cookieStore.get("admin_access_token")?.value;
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/admin/boosts/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Cookie": `admin_access_token=${adminToken}`
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Delete Boost Error:", error);
+        return { success: false, error: "Failed to delete boost" };
     }
 }

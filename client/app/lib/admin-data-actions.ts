@@ -5,7 +5,7 @@
 
 import { cookies } from "next/headers";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:5000";
 
 async function getAdminCookieHeader() {
     const cookieStore = await cookies();
@@ -27,8 +27,9 @@ export async function getUsersAction(page = 1, search = "") {
             headers: { Cookie: cookieHeader },
             cache: "no-store",
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch { return { success: false, error: "Failed to fetch users" }; }
+    } catch (error: any) { return { success: false, error: error.message || "Failed to fetch users" }; }
 }
 
 export async function getUserStatsAction() {
@@ -38,8 +39,9 @@ export async function getUserStatsAction() {
             headers: { Cookie: cookieHeader },
             cache: "no-store",
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch { return { success: false }; }
+    } catch (error: any) { return { success: false, error: error.message }; }
 }
 
 export async function deleteUserAction(id: string) {
@@ -67,16 +69,22 @@ export async function updateUserAction(id: string, data: Record<string, string>)
 
 // ── ITEMS ─────────────────────────────────────────────────────────────────────
 
-export async function getItemsAction(page = 1, search = "") {
+export async function getItemsAction(page = 1, search = "", isFlagged = false) {
     const cookieHeader = await getAdminCookieHeader();
     try {
         const params = new URLSearchParams({ page: String(page), limit: "12", search });
+        if (isFlagged) params.append("isFlagged", "true");
         const res = await fetch(`${BACKEND_URL}/admin/items?${params}`, {
             headers: { Cookie: cookieHeader },
             cache: "no-store",
         });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] getItemsAction failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
         return await res.json();
-    } catch { return { success: false, error: "Failed to fetch items" }; }
+    } catch (error: any) { return { success: false, error: error.message || "Failed to fetch items" }; }
 }
 
 export async function getItemStatsAction() {
@@ -86,8 +94,9 @@ export async function getItemStatsAction() {
             headers: { Cookie: cookieHeader },
             cache: "no-store",
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch { return { success: false }; }
+    } catch (error: any) { return { success: false, error: error.message }; }
 }
 
 export async function deleteItemAction(id: string) {
@@ -97,8 +106,25 @@ export async function deleteItemAction(id: string) {
             method: "DELETE",
             headers: { Cookie: cookieHeader },
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch { return { success: false, error: "Failed to delete item" }; }
+    } catch (error: any) { return { success: false, error: error.message || "Failed to delete item" }; }
+}
+
+export async function approveItemAction(id: string) {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/items/${id}/approve`, {
+            method: "PUT",
+            headers: { Cookie: cookieHeader },
+        });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] approveItemAction failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
+        return await res.json();
+    } catch (error: any) { return { success: false, error: error.message || "Failed to approve item" }; }
 }
 
 // ── SELLERS (users who have submitted an ID proof, regardless of role) ──────
@@ -183,4 +209,50 @@ export async function getDashboardAction() {
         });
         return await res.json();
     } catch { return { success: false, error: "Failed to fetch dashboard data" }; }
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+
+export async function getSettingsAction() {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/settings`, {
+            headers: { Cookie: cookieHeader },
+            cache: "no-store",
+        });
+        
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] Fetch failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
+        
+        const data = await res.json();
+        return data;
+    } catch (error: any) { 
+        console.error("[AdminDataActions] Exception in getSettingsAction:", error);
+        return { success: false, error: error.message || "Unknown Fetch Error" }; 
+    }
+}
+
+export async function updateSettingAction(key: string, value: any) {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/settings`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", Cookie: cookieHeader },
+            body: JSON.stringify({ key, value }),
+        });
+        
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] Update failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
+        
+        const data = await res.json();
+        return data;
+    } catch (error: any) { 
+        return { success: false, error: error.message || "Failed to update setting" }; 
+    }
 }

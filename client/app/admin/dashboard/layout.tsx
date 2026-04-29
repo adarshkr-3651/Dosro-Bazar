@@ -3,7 +3,7 @@ import { isAdminAuthenticated } from "../../lib/admin-actions";
 import Link from "next/link";
 import { 
     LayoutDashboard, Users, Package, Settings, LogOut, ShieldCheck, 
-    Search, Bell, Megaphone, UserCheck, MessageSquare, FileText, Store, CreditCard
+    Search, Bell, Megaphone, UserCheck, MessageSquare, FileText, Store, CreditCard, Zap, Wallet
 } from "lucide-react";
 import LogoutButton from "../../components/admin/LogoutButton";
 
@@ -23,6 +23,8 @@ export default async function AdminDashboardLayout({
         { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
         { label: "Sellers", href: "/admin/dashboard/sellers", icon: Store },
         { label: "Items", href: "/admin/dashboard/items", icon: Package },
+        { label: "Boosted Items", href: "/admin/dashboard/boosts", icon: Zap },
+        { label: "Advance Bookings", href: "/admin/dashboard/advance-bookings", icon: Wallet },
         { label: "Users", href: "/admin/dashboard/users", icon: Users },
         { label: "Advertisement", href: "/admin/dashboard/advertisement", icon: Megaphone },
         { label: "Ad Invoices", href: "/admin/dashboard/invoices", icon: CreditCard },

@@ -21,6 +21,7 @@ interface Product {
     isBiddable: boolean;
     offerPrice?: number;
     offerExpiresAt?: string;
+    isBooked?: boolean;
 }
 
 export default function ActiveListingsPage() {
@@ -89,6 +90,7 @@ export default function ActiveListingsPage() {
                                 showEdit={true}
                                 offerPrice={product.offerPrice}
                                 offerExpiresAt={product.offerExpiresAt}
+                                isBooked={product.isBooked}
                             />
                         ))}
                     </div>

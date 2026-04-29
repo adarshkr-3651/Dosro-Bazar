@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Users, Search, Trash2, ShieldCheck, ShieldX, Loader2, ChevronLeft, ChevronRight, UserCircle, Mail, Phone, MapPin, Edit2, X, CheckCircle2, AlertCircle } from "lucide-react";
 import { getUsersAction, getUserStatsAction, deleteUserAction, updateUserAction } from "@/app/lib/admin-data-actions";
 import Image from "next/image";
+import DeleteConfirmationModal from "@/app/components/DeleteConfirmationModal";
+
 
 export default function UsersPage() {
     const [users, setUsers] = useState<any[]>([]);
@@ -15,6 +17,10 @@ export default function UsersPage() {
     const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
     const [editUser, setEditUser] = useState<any>(null);
     const [editLoading, setEditLoading] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<{ id: string, name: string } | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+
 
     const showToast = (message: string, type: "success" | "error") => {
         setToast({ message, type });
@@ -37,12 +43,26 @@ export default function UsersPage() {
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
-    const handleDelete = async (id: string, name: string) => {
-        if (!confirm(`Delete user "${name}"? This cannot be undone.`)) return;
-        const res = await deleteUserAction(id);
-        if (res.success) { showToast("User deleted successfully", "success"); fetchData(); }
-        else showToast(res.error || "Failed to delete user", "error");
+    const handleDelete = (id: string, name: string) => {
+        setSelectedUser({ id, name });
+        setIsDeleteModalOpen(true);
     };
+
+    const confirmDeleteUser = async () => {
+        if (!selectedUser) return;
+        setIsDeleting(true);
+        const res = await deleteUserAction(selectedUser.id);
+        setIsDeleting(false);
+        setIsDeleteModalOpen(false);
+        if (res.success) { 
+            showToast("User deleted successfully", "success"); 
+            fetchData(); 
+            setSelectedUser(null);
+        } else {
+            showToast(res.error || "Failed to delete user", "error");
+        }
+    };
+
 
     const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -224,6 +244,20 @@ export default function UsersPage() {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmationModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setSelectedUser(null);
+                }}
+                onConfirm={confirmDeleteUser}
+                title="Delete User"
+                description={`Are you sure you want to delete user "${selectedUser?.name}"? This cannot be undone.`}
+                confirmText="Delete User"
+                isLoading={isDeleting}
+            />
         </div>
+
     );
 }

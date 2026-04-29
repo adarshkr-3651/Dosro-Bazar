@@ -57,3 +57,13 @@ export const markSingleAsRead = asyncErrorWrapper(async (req, res, next) => {
         message: "Notification marked as read"
     });
 });
+export const deleteNotification = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params;
+    
+    await Notification.findOneAndDelete({ _id: id, recipient: req.user.id });
+
+    res.status(200).json({
+        success: true,
+        message: "Notification deleted"
+    });
+});

@@ -81,28 +81,31 @@ const getRefreshToken = (req) => {
  */
 const clearAuthCookies = (res) => {
     const isProduction = process.env.NODE_ENV === 'production';
+    const isCrossSiteLocal = process.env.URI?.startsWith('https://') && process.env.SERVER_URL?.startsWith('http://');
+    const secureCookie = isProduction || isCrossSiteLocal;
+    const sameSiteCookie = isProduction ? 'strict' : (isCrossSiteLocal ? 'none' : 'lax');
 
     // Clear access token cookie with same options used when setting
     res.clearCookie('accessToken', {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? 'strict' : 'lax',
+        secure: secureCookie,
+        sameSite: sameSiteCookie,
         path: '/' // Explicitly set path
     });
 
     // Clear refresh token cookie with same options used when setting
     res.clearCookie('refreshToken', {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? 'strict' : 'lax',
+        secure: secureCookie,
+        sameSite: sameSiteCookie,
         path: '/' // Explicitly set path
     });
 
     // Clear admin access token cookie
     res.clearCookie('admin_access_token', {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? 'strict' : 'lax',
+        secure: secureCookie,
+        sameSite: sameSiteCookie,
         path: '/'
     });
 };

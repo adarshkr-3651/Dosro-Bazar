@@ -27,6 +27,35 @@ const advertisementStorage = new CloudinaryStorage({
     },
 });
 
+// Configure Cloudinary storage for chat attachments (images and PDFs)
+const chatFileStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "dosro-bazar/chat",
+        resource_type: "auto", // Automatically detect file type (image or raw/pdf)
+        public_id: (req, file) => {
+            return `chat_${Date.now()}_${file.originalname.split('.')[0]}`;
+        },
+    },
+});
+
+// File filter to validate image and PDF types
+const fileFilter = (req, file, cb) => {
+    const isImageSyntax = file.mimetype.startsWith("image/");
+    const isGenericBinary = file.mimetype === "application/octet-stream" || file.mimetype === "application/x-msdownload";
+    const isPDF = file.mimetype === "application/pdf";
+
+    if (!isImageSyntax && !isGenericBinary && !isPDF) {
+        return cb(new CustomError("Please provide a valid image or PDF file", 400), false);
+    }
+
+    cb(null, true);
+};
+
+const limits = {
+    fileSize: 5 * 1024 * 1024 // 5 MB LIMIT
+};
+
 // Configure Cloudinary storage for story images
 const storyImageStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -37,22 +66,6 @@ const storyImageStorage = new CloudinaryStorage({
         },
     },
 });
-
-// File filter to validate image types
-const fileFilter = (req, file, cb) => {
-    const isImageSyntax = file.mimetype.startsWith("image/");
-    const isGenericBinary = file.mimetype === "application/octet-stream" || file.mimetype === "application/x-msdownload";
-
-    if (!isImageSyntax && !isGenericBinary) {
-        return cb(new CustomError("Please provide a valid image file", 400), false);
-    }
-
-    cb(null, true);
-};
-
-const limits = {
-    fileSize: 5 * 1024 * 1024 // 5 MB LIMIT
-};
 
 // Create multer upload middleware with dynamic storage based on field name
 const imageUpload = multer({
@@ -73,6 +86,7 @@ const cloudinaryUpload = (fieldName) => {
     let storage;
     if (fieldName === "photo") storage = userPhotoStorage;
     else if (fieldName === "ad" || fieldName === "image") storage = advertisementStorage;
+    else if (fieldName === "chat") storage = chatFileStorage;
     else storage = storyImageStorage;
 
     return multer({ storage, fileFilter, limits });

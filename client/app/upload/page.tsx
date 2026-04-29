@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 import ProductCard from "@/app/components/ProductCard";
+import BoostFlow from "@/app/components/profile/BoostFlow";
 
 export default function UploadPage() {
     const router = useRouter();
@@ -48,6 +49,8 @@ export default function UploadPage() {
         expiryUnit: "d",
         expiryDuration: "",
     });
+    const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
+    const [uploadedItemId, setUploadedItemId] = useState<string | null>(null);
 
     // Load data from localStorage on mount
     useEffect(() => {
@@ -380,9 +383,26 @@ export default function UploadPage() {
                 data.append("images", image);
             });
 
-            await addItem(data);
-            toast.success("Success!", { description: "Your item has been uploaded successfully" });
 
+            const response = await addItem(data);
+            
+            if (response.data.isFlagged) {
+                toast.warning("Listing Under Review", { 
+                    description: "This listing does not follow Dosro Bazar Terms and Policies, so it's not public yet. We will review it shortly.",
+                    duration: 10000
+                });
+            } else {
+                toast.success("Success!", { description: "Your item has been uploaded successfully" });
+            }
+
+            const itemPrice = parseFloat(formData.price) || 0;
+            if (itemPrice > 9000) {
+                setUploadedItemId(response.data._id);
+                setIsBoostModalOpen(true);
+            } else {
+                router.push("/");
+            }
+            // Only clear form after success
             setFormData({
                 title: "",
                 category: "",
@@ -407,8 +427,9 @@ export default function UploadPage() {
                 expiryDuration: "",
             });
             setImagePreviews([]);
-            localStorage.removeItem("uploadFormData"); // Clear localStorage on successful submit
-            setTimeout(() => router.push("/"), 1500);
+            localStorage.removeItem("uploadFormData"); 
+            // router.push("/") will happen when modal closes if we want, 
+            // but for now let's just stay on the page with modal open.
         } catch (error: any) {
             toast.error("Upload Failed", { description: error.message || "Failed to upload item." });
         } finally {
@@ -587,8 +608,8 @@ export default function UploadPage() {
                                                     disabled={!formData.title || loading}
                                                     className={`h-7 gap-2 bg-background/80 backdrop-blur-sm border-primary/20 hover:border-primary transition-all duration-300 ${!formData.title ? 'opacity-20 pointer-events-none' : 'opacity-100'}`}
                                                 >
-                                                    <Sparkles className="h-3 w-3 text-primary animate-pulse" />
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider">Generate</span>
+                                                    <Sparkles className="h-3 w-3 text-primary animate-pulse group-hover:text-white" />
+                                                    <span className="text-[10px] font-bold text-primary group-hover:text-white">AI Write</span>
                                                 </Button>
                                             </div>
                                         </div>
@@ -657,13 +678,13 @@ export default function UploadPage() {
                                         </div>
                                     </div>
 
-                                    {/* Bidding and Extras */}
+                                    {/* Offers and Extras */}
                                     <div className="space-y-4 pt-4 border-t">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                                             <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20">
                                                 <div className="space-y-0.5">
-                                                    <Label htmlFor="isBiddable" className="text-sm font-medium">Allow Bidding</Label>
-                                                    <p className="text-[10px] text-muted-foreground">Let users offer prices.</p>
+                                                    <Label htmlFor="isBiddable" className="text-sm font-medium">Allow Direct Messaging</Label>
+                                                    <p className="text-[10px] text-muted-foreground font-medium text-primary/60 italic">If disabled, buyers can still send offers but cannot message you directly</p>
                                                 </div>
                                                 <Switch
                                                     id="isBiddable" checked={formData.isBiddable}
@@ -671,39 +692,37 @@ export default function UploadPage() {
                                                 />
                                             </div>
 
-                                            {/* Conditional Bid Field - Horizontal with Toggle */}
-                                            {formData.isBiddable && (
-                                                <div className={`space-y-2 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
-                                                    <div className="flex items-center justify-between">
-                                                        <Label htmlFor="minBid" className="text-xs font-semibold">Minimum Bid (Rs.)</Label>
-                                                        {isPriceSet && (
-                                                            <span className={`text-[9px] font-bold uppercase transition-all duration-300 ${
-                                                                formData.minBid && parseFloat(formData.minBid) > (
-                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
-                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
-                                                                    parseFloat(formData.price) * 0.99
-                                                                ) ? 'text-red-500 animate-pulse' : 'text-muted-foreground opacity-50'
-                                                            }`}>
-                                                                (Max: रु {Math.floor(
-                                                                    parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
-                                                                    parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
-                                                                    parseFloat(formData.price) * 0.99
-                                                                ).toLocaleString()})
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="relative">
-                                                        <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                                                        <Input
-                                                            id="minBid" type="number"
-                                                            placeholder={isPriceSet ? "Initial bid" : "Set price first"}
-                                                            value={formData.minBid}
-                                                            onChange={handleMinBidChange}
-                                                            className="pl-10 h-10"
-                                                        />
-                                                    </div>
+                                            {/* Offer Field - Always visible */}
+                                            <div className={`space-y-1.5 ${isPriceSet ? 'opacity-100' : 'opacity-20 pointer-events-none'}`}>
+                                                <div className="flex items-center justify-between">
+                                                    <Label htmlFor="minBid" className="text-xs font-semibold">Minimum Offer (Rs.)</Label>
+                                                    {isPriceSet && (
+                                                        <span className={`text-[9px] font-bold uppercase transition-all duration-300 ${
+                                                            formData.minBid && parseFloat(formData.minBid) > (
+                                                                parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                parseFloat(formData.price) * 0.99
+                                                            ) ? 'text-red-500 animate-pulse' : 'text-muted-foreground opacity-50'
+                                                        }`}>
+                                                            (Max: रु {Math.floor(
+                                                                parseFloat(formData.price) < 50000 ? parseFloat(formData.price) * 0.95 :
+                                                                parseFloat(formData.price) <= 100000 ? parseFloat(formData.price) * 0.98 :
+                                                                parseFloat(formData.price) * 0.99
+                                                            ).toLocaleString()})
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            )}
+                                                <div className="relative">
+                                                    <Tag className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                                    <Input
+                                                        id="minBid" type="number"
+                                                        placeholder={isPriceSet ? "Initial bid" : "Set price first"}
+                                                        value={formData.minBid}
+                                                        onChange={handleMinBidChange}
+                                                        className="pl-10 h-10"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -884,6 +903,14 @@ export default function UploadPage() {
             </main>
 
             <Footer />
+            <BoostFlow 
+                isOpen={isBoostModalOpen} 
+                onClose={() => {
+                    setIsBoostModalOpen(false);
+                    router.push("/");
+                }} 
+                initialItemId={uploadedItemId} 
+            />
 
             {/* Delivery Configuration Modal Overlay */}
             {showDeliveryModal && (

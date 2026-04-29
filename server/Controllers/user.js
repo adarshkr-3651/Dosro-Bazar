@@ -22,34 +22,9 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
 
 
-    const { email, username, theme, phone, address, idProofType } = req.body
-
+    const { email, username, theme, phone, address, idProofType, loginOtpEnabled } = req.body
+    
     // Prepare update data
-    const updateData = {};
-
-    // Only update fields that are provided
-    if (email !== undefined) updateData.email = email;
-    if (username !== undefined) updateData.username = username;
-    if (phone !== undefined) updateData.phone = phone;
-    if (address !== undefined) updateData.address = address;
-    if (idProofType !== undefined) updateData.idProofType = idProofType;
-
-    // If theme is provided, update it
-    if (theme && ['light', 'dark', 'system'].includes(theme)) {
-        updateData.theme = theme;
-    }
-
-    // Handle uploaded files
-    if (req.files) {
-        if (req.files.photo && req.files.photo[0]) {
-            updateData.photo = req.files.photo[0].path;
-        }
-        if (req.files.idProof && req.files.idProof[0]) {
-            updateData.idProof = req.files.idProof[0].path;
-        }
-    }
-
-    // Use findById and save() to ensure instance methods work and hooks fire
     const user = await User.findById(req.user.id);
 
     if (email !== undefined) user.email = email;
@@ -58,6 +33,14 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
     if (address !== undefined) user.address = address;
     if (idProofType !== undefined) user.idProofType = idProofType;
     if (theme && ['light', 'dark', 'system'].includes(theme)) user.theme = theme;
+    
+    if (loginOtpEnabled !== undefined) {
+        const isOtpEnabled = loginOtpEnabled === true || loginOtpEnabled === 'true';
+        if (isOtpEnabled && (!user.email || !user.isVerified)) {
+            return next(new CustomError("You must have a verified email to enable Login OTP", 400));
+        }
+        user.loginOtpEnabled = isOtpEnabled;
+    }
 
     if (req.files) {
         if (req.files.photo && req.files.photo[0]) user.photo = req.files.photo[0].path;
