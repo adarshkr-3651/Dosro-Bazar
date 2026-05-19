@@ -31,6 +31,7 @@ export default async function AdminDashboardLayout({
         { label: "Ad Inquiry", href: "/admin/dashboard/ad-inquiry", icon: MessageSquare },
         { label: "Verifications", href: "/admin/dashboard/verifications", icon: UserCheck },
         { label: "Reports", href: "/admin/dashboard/reports", icon: FileText },
+        { label: "Footer Links", href: "/admin/dashboard/footer-links", icon: FileText },
         { label: "Settings", href: "/admin/dashboard/settings", icon: Settings },
     ];
 

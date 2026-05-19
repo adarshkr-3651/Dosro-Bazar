@@ -1,6 +1,6 @@
 {
   "node": {
-    "4090e98d23976b44e08104b27e804f653152be117a": {
+    "40a9b178e4d2af415e461c55fd403bf9720b19a08d": {
       "workers": {
         "app/admin/page": {
           "moduleId": 88030,
@@ -15,7 +15,7 @@
       "exportedName": "loginAdmin",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "00cd30efab82332ba25d52768ac30b1a3b581ff0da": {
+    "00c31c8ca573f82be7a908c1ac2a70870f7e5af451": {
       "workers": {
         "app/admin/page": {
           "moduleId": 88030,

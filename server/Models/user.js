@@ -159,6 +159,13 @@ const UserSchema = new mongoose.Schema({
         default: 'system'
     },
 
+    // User language preference
+    language: {
+        type: String,
+        enum: ['English', 'Nepali', 'Hindi', 'Chinese', 'Spanish', 'Japanese', 'Russian', 'Korean', 'German', 'French'],
+        default: 'English'
+    },
+
     // Identification proof for becoming a seller
     idProof: {
         type: String,
@@ -228,9 +235,9 @@ UserSchema.pre("save", async function (next) {
     // console.log("beforeSave hook function of Models user.js");
     // console.log("[user.js] beforeSave() - Hashing password for user:", this.email);
 
-    // Only hash password if it has been modified
-    if (!this.isModified("password")) {
-        // console.log("[user.js] beforeSave() - Password not modified, skipping hash.");
+    // Only hash password if it has been modified and exists
+    if (!this.isModified("password") || !this.password) {
+        // console.log("[user.js] beforeSave() - Password not modified or empty, skipping hash.");
         return next();
     }
 

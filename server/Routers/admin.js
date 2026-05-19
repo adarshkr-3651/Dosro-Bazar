@@ -18,6 +18,11 @@ import {
     getAllAdvanceBookings
 } from "../Controllers/admin.js";
 import { getSettings, updateSetting } from "../Controllers/settingController.js";
+import {
+    getFooterLinkById,
+    createOrUpdateFooterLink,
+    deleteFooterLink
+} from "../Controllers/footerLinkController.js";
 
 const router = express.Router();
 
@@ -55,5 +60,11 @@ router.put("/items/:id/approve", approveItemAdmin);
 // Settings routes
 router.get("/settings", getSettings);
 router.put("/settings", updateSetting);
+
+// Footer link management routes
+router.get("/footer-links/:id", getFooterLinkById);
+router.post("/footer-links", createOrUpdateFooterLink);
+router.put("/footer-links/:id", createOrUpdateFooterLink);
+router.delete("/footer-links/:id", deleteFooterLink);
 
 export default router;

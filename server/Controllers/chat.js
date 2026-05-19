@@ -7,7 +7,7 @@ import getEmbeddings from "../Helpers/Libraries/embeddings.js";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const getChatResponse = asyncErrorWrapper(async (req, res) => {
-    const { message, history = [] } = req.body;
+    const { message, history = [], username } = req.body;
 
     if (!message) {
         return res.status(400).json({ success: false, message: "Please provide a message" });
@@ -19,7 +19,7 @@ const getChatResponse = asyncErrorWrapper(async (req, res) => {
 
     // console.log(`[Chat] Received: "${message}" | History turns: ${history.length}`);
 
-    // ─── Step 1: Generate embedding for the user's message ───────────────────
+    // ─── Step 2: Generate embedding for the user's message ───────────────────
     let queryEmbeddings = [];
     try {
         queryEmbeddings = await getEmbeddings(message);
@@ -95,8 +95,12 @@ const getChatResponse = asyncErrorWrapper(async (req, res) => {
 
     // ─── Step 4: Compose the system prompt ───────────────────────────────────
     const contextSection = [productContext, knowledgeContext].filter(Boolean).join("\n\n");
+    const userGreeting = username 
+        ? `You are chatting with a user named "${username}". Feel free to address them by their name when appropriate.` 
+        : `You are chatting with an anonymous guest user.`;
 
     const systemPrompt = `You are a helpful, friendly AI assistant exclusively for "Dosro Bazar" — a second-hand marketplace in Nepal where users buy, sell, and bid on items.
+${userGreeting}
 
 STRICT RULES:
 - Only answer questions related to Dosro Bazar, its products, features, policies, or how to use the platform.

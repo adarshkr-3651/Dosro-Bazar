@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./context/AuthContext";
+import { LanguageProvider } from "./context/LanguageContext";
 import { SocketProvider } from "./context/SocketContext";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/theme-provider";
@@ -9,6 +10,7 @@ import { ThemeSync } from "./components/theme-sync";
 import Chatbot from "./components/Chatbot";
 import PaymentStatusOverlay from "./components/shared/PaymentStatusOverlay";
 import { Suspense } from "react";
+import QueryProvider from "./components/providers/QueryProvider";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -27,22 +29,26 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
         <AuthProvider>
-          <SocketProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <ThemeSync />
-              {children}
-              <Suspense fallback={null}>
-                <PaymentStatusOverlay />
-              </Suspense>
-              <Chatbot />
-              <Toaster richColors position="top-center" />
-            </ThemeProvider>
-          </SocketProvider>
+          <LanguageProvider>
+            <SocketProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <QueryProvider>
+                  <ThemeSync />
+                  {children}
+                  <Suspense fallback={null}>
+                    <PaymentStatusOverlay />
+                  </Suspense>
+                  <Chatbot />
+                  <Toaster richColors position="top-center" />
+                </QueryProvider>
+              </ThemeProvider>
+            </SocketProvider>
+          </LanguageProvider>
         </AuthProvider>
       </body>
     </html>

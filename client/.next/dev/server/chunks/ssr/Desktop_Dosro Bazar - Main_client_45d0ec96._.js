@@ -2,7 +2,9 @@ module.exports = [
 "[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/* __next_internal_action_entry_do_not_use__ [{"0018ecc063da8e847243dc3ef70242f439afd33abc":"getUserStatsAction","00ad6103891b4428402d6913a1d52161f45a554f93":"getItemStatsAction","00dc45866c4187ae66ec0da31e37f9df8753188456":"getAdStatsAction","00dc97466dbd97860b4ad61c630628b79d5e928488":"getDashboardAction","4021975cf63066196ecfe2811e18234983e3a2dda6":"deleteItemAction","408904678ca0ecdf7bcaa5fec1d20d2383e19dda40":"deleteUserAction","600a710f75eba3e8aa1da24e21d6ad6b31b1aaa44a":"updateVerificationAction","602c1efaf0579503415383ba8d78cc8da21da58fde":"getSellersAction","6036c71f9d85db57e4dd17e2acc7e80e237db7d8f8":"getUsersAction","607203496958e62bb0066fba6df6207f95c4654165":"getItemsAction","6087e19ef495c1ee23d4d024e4661bba1fe1571039":"updateUserAction","60bcb1107248af8cbecb6e4c5713669a47f09734e1":"getVerificationsAction"},"",""] */ __turbopack_context__.s([
+/* __next_internal_action_entry_do_not_use__ [{"0018ecc063da8e847243dc3ef70242f439afd33abc":"getUserStatsAction","00ad6103891b4428402d6913a1d52161f45a554f93":"getItemStatsAction","00d6da74f9f4189da759034b960fbd0d6518ff493a":"getSettingsAction","00dc45866c4187ae66ec0da31e37f9df8753188456":"getAdStatsAction","00dc97466dbd97860b4ad61c630628b79d5e928488":"getDashboardAction","4021975cf63066196ecfe2811e18234983e3a2dda6":"deleteItemAction","407191d6c9686bd5678b3768abdf7a3d9d679d8c85":"approveItemAction","408904678ca0ecdf7bcaa5fec1d20d2383e19dda40":"deleteUserAction","600a710f75eba3e8aa1da24e21d6ad6b31b1aaa44a":"updateVerificationAction","602c1efaf0579503415383ba8d78cc8da21da58fde":"getSellersAction","6036c71f9d85db57e4dd17e2acc7e80e237db7d8f8":"getUsersAction","6087e19ef495c1ee23d4d024e4661bba1fe1571039":"updateUserAction","60bcb1107248af8cbecb6e4c5713669a47f09734e1":"getVerificationsAction","60cc1dc1633ef04f752367c5cae6fc985e7313ecba":"updateSettingAction","707203496958e62bb0066fba6df6207f95c4654165":"getItemsAction"},"",""] */ __turbopack_context__.s([
+    "approveItemAction",
+    ()=>approveItemAction,
     "deleteItemAction",
     ()=>deleteItemAction,
     "deleteUserAction",
@@ -17,12 +19,16 @@ module.exports = [
     ()=>getItemsAction,
     "getSellersAction",
     ()=>getSellersAction,
+    "getSettingsAction",
+    ()=>getSettingsAction,
     "getUserStatsAction",
     ()=>getUserStatsAction,
     "getUsersAction",
     ()=>getUsersAction,
     "getVerificationsAction",
     ()=>getVerificationsAction,
+    "updateSettingAction",
+    ()=>updateSettingAction,
     "updateUserAction",
     ()=>updateUserAction,
     "updateVerificationAction",
@@ -35,7 +41,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-validate.js [app-rsc] (ecmascript)");
 ;
 ;
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:5000";
 async function getAdminCookieHeader() {
     const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["cookies"])();
     const adminToken = cookieStore.get("admin_access_token")?.value;
@@ -59,11 +65,12 @@ async function getUsersAction(page = 1, search = "") {
             },
             cache: "no-store"
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch  {
+    } catch (error) {
         return {
             success: false,
-            error: "Failed to fetch users"
+            error: error.message || "Failed to fetch users"
         };
     }
 }
@@ -76,10 +83,12 @@ async function getUserStatsAction() {
             },
             cache: "no-store"
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch  {
+    } catch (error) {
         return {
-            success: false
+            success: false,
+            error: error.message
         };
     }
 }
@@ -119,7 +128,7 @@ async function updateUserAction(id, data) {
         };
     }
 }
-async function getItemsAction(page = 1, search = "") {
+async function getItemsAction(page = 1, search = "", isFlagged = false) {
     const cookieHeader = await getAdminCookieHeader();
     try {
         const params = new URLSearchParams({
@@ -127,17 +136,23 @@ async function getItemsAction(page = 1, search = "") {
             limit: "12",
             search
         });
+        if (isFlagged) params.append("isFlagged", "true");
         const res = await fetch(`${BACKEND_URL}/admin/items?${params}`, {
             headers: {
                 Cookie: cookieHeader
             },
             cache: "no-store"
         });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] getItemsAction failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
         return await res.json();
-    } catch  {
+    } catch (error) {
         return {
             success: false,
-            error: "Failed to fetch items"
+            error: error.message || "Failed to fetch items"
         };
     }
 }
@@ -150,10 +165,12 @@ async function getItemStatsAction() {
             },
             cache: "no-store"
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch  {
+    } catch (error) {
         return {
-            success: false
+            success: false,
+            error: error.message
         };
     }
 }
@@ -166,11 +183,34 @@ async function deleteItemAction(id) {
                 Cookie: cookieHeader
             }
         });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
         return await res.json();
-    } catch  {
+    } catch (error) {
         return {
             success: false,
-            error: "Failed to delete item"
+            error: error.message || "Failed to delete item"
+        };
+    }
+}
+async function approveItemAction(id) {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/items/${id}/approve`, {
+            method: "PUT",
+            headers: {
+                Cookie: cookieHeader
+            }
+        });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] approveItemAction failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
+        return await res.json();
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message || "Failed to approve item"
         };
     }
 }
@@ -292,6 +332,58 @@ async function getDashboardAction() {
         };
     }
 }
+async function getSettingsAction() {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/settings`, {
+            headers: {
+                Cookie: cookieHeader
+            },
+            cache: "no-store"
+        });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] Fetch failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("[AdminDataActions] Exception in getSettingsAction:", error);
+        return {
+            success: false,
+            error: error.message || "Unknown Fetch Error"
+        };
+    }
+}
+async function updateSettingAction(key, value) {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/settings`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Cookie: cookieHeader
+            },
+            body: JSON.stringify({
+                key,
+                value
+            })
+        });
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(`[AdminDataActions] Update failed (${res.status}):`, text.substring(0, 100));
+            throw new Error(`Server returned ${res.status}`);
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message || "Failed to update setting"
+        };
+    }
+}
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
     getUsersAction,
@@ -301,24 +393,30 @@ async function getDashboardAction() {
     getItemsAction,
     getItemStatsAction,
     deleteItemAction,
+    approveItemAction,
     getSellersAction,
     getVerificationsAction,
     getAdStatsAction,
     updateVerificationAction,
-    getDashboardAction
+    getDashboardAction,
+    getSettingsAction,
+    updateSettingAction
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getUsersAction, "6036c71f9d85db57e4dd17e2acc7e80e237db7d8f8", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getUserStatsAction, "0018ecc063da8e847243dc3ef70242f439afd33abc", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(deleteUserAction, "408904678ca0ecdf7bcaa5fec1d20d2383e19dda40", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(updateUserAction, "6087e19ef495c1ee23d4d024e4661bba1fe1571039", null);
-(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getItemsAction, "607203496958e62bb0066fba6df6207f95c4654165", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getItemsAction, "707203496958e62bb0066fba6df6207f95c4654165", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getItemStatsAction, "00ad6103891b4428402d6913a1d52161f45a554f93", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(deleteItemAction, "4021975cf63066196ecfe2811e18234983e3a2dda6", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(approveItemAction, "407191d6c9686bd5678b3768abdf7a3d9d679d8c85", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getSellersAction, "602c1efaf0579503415383ba8d78cc8da21da58fde", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getVerificationsAction, "60bcb1107248af8cbecb6e4c5713669a47f09734e1", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getAdStatsAction, "00dc45866c4187ae66ec0da31e37f9df8753188456", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(updateVerificationAction, "600a710f75eba3e8aa1da24e21d6ad6b31b1aaa44a", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getDashboardAction, "00dc97466dbd97860b4ad61c630628b79d5e928488", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getSettingsAction, "00d6da74f9f4189da759034b960fbd0d6518ff493a", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(updateSettingAction, "60cc1dc1633ef04f752367c5cae6fc985e7313ecba", null);
 }),
 "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/reports/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>", ((__turbopack_context__) => {
 "use strict";
@@ -326,6 +424,7 @@ async function getDashboardAction() {
 __turbopack_context__.s([]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$admin$2d$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$admin$2d$data$2d$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)");
+;
 ;
 ;
 ;
@@ -352,6 +451,8 @@ __turbopack_context__.s([
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$admin$2d$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["logoutAdmin"],
     "00ad6103891b4428402d6913a1d52161f45a554f93",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$admin$2d$data$2d$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getItemStatsAction"],
+    "00b54606a3ed20c864abad6ee958b85c6f4356be7e",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$admin$2d$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getAdvanceBookingsAction"],
     "00dc45866c4187ae66ec0da31e37f9df8753188456",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$Dosro__Bazar__$2d$__Main$2f$client$2f$app$2f$lib$2f$admin$2d$data$2d$actions$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getAdStatsAction"],
     "00dc97466dbd97860b4ad61c630628b79d5e928488",

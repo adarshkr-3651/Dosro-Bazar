@@ -1,21 +1,6 @@
 {
   "node": {
-    "004f31fec97ffd203d86af4f2da505ad9b27196b25": {
-      "workers": {
-        "app/admin/dashboard/sellers/page": {
-          "moduleId": 24758,
-          "async": false,
-          "exportedName": "getAdvanceBookingsAction",
-          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
-        }
-      },
-      "layer": {
-        "app/admin/dashboard/sellers/page": "rsc"
-      },
-      "exportedName": "getAdvanceBookingsAction",
-      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
-    },
-    "009ea1ceae8ff16591e4346e3e1cb63687145ada49": {
+    "0031ee172679f8aa05e848bf87c3edb70eaafc41fe": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,
@@ -30,37 +15,7 @@
       "exportedName": "logoutAdmin",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "00c7a13878c8565d8a215876fa96bcac34884faa9a": {
-      "workers": {
-        "app/admin/dashboard/sellers/page": {
-          "moduleId": 24758,
-          "async": false,
-          "exportedName": "getAdBookings",
-          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
-        }
-      },
-      "layer": {
-        "app/admin/dashboard/sellers/page": "rsc"
-      },
-      "exportedName": "getAdBookings",
-      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
-    },
-    "00cd30efab82332ba25d52768ac30b1a3b581ff0da": {
-      "workers": {
-        "app/admin/dashboard/sellers/page": {
-          "moduleId": 24758,
-          "async": false,
-          "exportedName": "isAdminAuthenticated",
-          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
-        }
-      },
-      "layer": {
-        "app/admin/dashboard/sellers/page": "rsc"
-      },
-      "exportedName": "isAdminAuthenticated",
-      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
-    },
-    "00de6a990b5aa542197c41b72fb254552b8d01faa6": {
+    "0032ddd1c030847ce71f55d4889e6336847954a733": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,
@@ -75,22 +30,52 @@
       "exportedName": "getAdminProfile",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "4090e98d23976b44e08104b27e804f653152be117a": {
+    "003ceb49252ffeec56c66ea4f1f4229cb138a49dec": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,
           "async": false,
-          "exportedName": "loginAdmin",
+          "exportedName": "getAdBookings",
           "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
         }
       },
       "layer": {
         "app/admin/dashboard/sellers/page": "rsc"
       },
-      "exportedName": "loginAdmin",
+      "exportedName": "getAdBookings",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "40994c827249e1b80ccdfb1b111c2127071acf3cc8": {
+    "008e07b85f3e3919f1c7581adf2a3b0aca233f5b9e": {
+      "workers": {
+        "app/admin/dashboard/sellers/page": {
+          "moduleId": 24758,
+          "async": false,
+          "exportedName": "getAdvanceBookingsAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/sellers/page": "rsc"
+      },
+      "exportedName": "getAdvanceBookingsAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+    },
+    "00c31c8ca573f82be7a908c1ac2a70870f7e5af451": {
+      "workers": {
+        "app/admin/dashboard/sellers/page": {
+          "moduleId": 24758,
+          "async": false,
+          "exportedName": "isAdminAuthenticated",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/sellers/page": "rsc"
+      },
+      "exportedName": "isAdminAuthenticated",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+    },
+    "4075994fc4937f9f6fc087ea257a0a98f07315df69": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,
@@ -105,7 +90,22 @@
       "exportedName": "createAdmin",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
-    "6090262d0bd347e730fa8d46b53c8b620ede873690": {
+    "40a9b178e4d2af415e461c55fd403bf9720b19a08d": {
+      "workers": {
+        "app/admin/dashboard/sellers/page": {
+          "moduleId": 24758,
+          "async": false,
+          "exportedName": "loginAdmin",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/sellers/page": "rsc"
+      },
+      "exportedName": "loginAdmin",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+    },
+    "60886d1ddf0f3595696ddb19e4d162ff423f1fda87": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,
@@ -120,7 +120,7 @@
       "exportedName": "getSellersAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
     },
-    "406593170d3cb81f1481e61d47eb41694db287303c": {
+    "4026ec3f0d7ef2460957e70eaf36544c2b9e34deab": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,
@@ -135,7 +135,7 @@
       "exportedName": "deleteUserAction",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts"
     },
-    "60980a1f34a8a17c176cee31175458903fadf8bd50": {
+    "60eee72bb86896231151acbbe3a7f1fc4468c9d1df": {
       "workers": {
         "app/admin/dashboard/sellers/page": {
           "moduleId": 24758,

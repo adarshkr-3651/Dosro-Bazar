@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import compression from "compression";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,6 +41,8 @@ import IndexRoute from "./Routers/index.js";
 import connectDatabase from "./Helpers/database/connectDatabase.js";
 import customErrorHandler from "./Middlewares/Errors/customErrorHandler.js";
 import initializeAdmin from "./Helpers/auth/initAdmin.js";
+import cacheService from "./Helpers/cache/cacheService.js";
+import seedFooterLinks from "./Helpers/database/seedFooterLinks.js";
 
 console.log("Custom modules imported successfully in server.js")
 
@@ -51,6 +54,9 @@ console.log("Connecting to database... in server.js")
 connectDatabase().then(() => {
     console.log("Database connected. Initializing default admin account... in server.js")
     initializeAdmin()
+    seedFooterLinks()
+    // Initialize Cache Service
+    cacheService.connect()
 }).catch(err => {
     console.error("Database connection failed:", err.message);
 });
@@ -119,6 +125,13 @@ app.use((req, res, next) => {
     req.io = io;
     next();
 });
+
+// ========================================
+// RESPONSE COMPRESSION MIDDLEWARE
+// ========================================
+console.log("Setting up response compression... in server.js")
+app.use(compression())
+console.log("Response compression middleware configured in server.js")
 
 // ========================================
 // CORS CONFIGURATION

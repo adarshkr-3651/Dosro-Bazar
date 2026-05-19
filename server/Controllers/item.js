@@ -21,6 +21,7 @@ import itemInvoiceTemplate from "../Helpers/Libraries/itemInvoiceTemplate.js";
 import { generatePDF } from "../Helpers/Libraries/pdfGenerator.js";
 import { uploadPDF } from "../Helpers/Libraries/cloudinaryUploader.js";
 import SystemSetting from "../Models/SystemSetting.js";
+import cacheService from "../Helpers/cache/cacheService.js";
 
 const maskExpiredOffer = (item) => {
     // If it's a Mongoose document, convert to object first to safely modify without saving
@@ -134,6 +135,9 @@ const addItem = asyncErrorWrapper(async (req, res, next) => {
             embeddingCount: newItem.embeddings?.length || 0
         })
         */
+        // Invalidate item cache
+        await cacheService.delByPattern("item:*");
+
         return res.status(200).json({
             success: true,
             message: "add item successfully ",
@@ -257,6 +261,10 @@ const likeItem = asyncErrorWrapper(async (req, res, next) => {
         item.likeCount = item.likes.length;
         await item.save();
     }
+
+    // Invalidate cache for this item and general listings (since like count changed)
+    await cacheService.delByPattern(`item:/item/${slug}`);
+    await cacheService.delByPattern("item:/item/getAllItems");
 
     return res.status(200).
         json({
@@ -388,6 +396,10 @@ const editItem = asyncErrorWrapper(async (req, res, next) => {
     await item.save();
     // console.log("[item.js] editItem() - Item saved successfully to database.");
 
+    // Invalidate cache
+    await cacheService.delByPattern(`item:/item/${slug}`);
+    await cacheService.delByPattern("item:/item/getAllItems");
+
     return res.status(200).
         json({
             success: true,
@@ -421,6 +433,9 @@ const deleteItem = asyncErrorWrapper(async (req, res, next) => {
     }
 
     await item.deleteOne();
+
+    // Invalidate all item caches
+    await cacheService.delByPattern("item:*");
 
     return res.status(200).
         json({
@@ -725,6 +740,10 @@ const markSold = asyncErrorWrapper(async (req, res, next) => {
         }
     }
 
+    // Invalidate cache
+    await cacheService.delByPattern(`item:/item/${id}`);
+    await cacheService.delByPattern("item:/item/getAllItems");
+
     res.status(200).json({
         success: true,
         message: "Product marked as sold and notifications sent",
@@ -777,6 +796,10 @@ const moveToRecycleBin = asyncErrorWrapper(async (req, res, next) => {
         relatedItem: id
     });
 
+    // Invalidate cache
+    await cacheService.delByPattern(`item:/item/${id}`);
+    await cacheService.delByPattern("item:/item/getAllItems");
+
     res.status(200).json({
         success: true,
         message: "Item moved to recycle bin"
@@ -806,6 +829,9 @@ const restoreFromRecycleBin = asyncErrorWrapper(async (req, res, next) => {
     item.deletedAt = null;
     await item.save();
 
+    // Invalidate cache
+    await cacheService.delByPattern("item:*");
+
     res.status(200).json({
         success: true,
         message: "Item restored successfully"
@@ -829,6 +855,9 @@ const permanentDelete = asyncErrorWrapper(async (req, res, next) => {
         }
     }
     await item.deleteOne();
+
+    // Invalidate cache
+    await cacheService.delByPattern("item:*");
 
     res.status(200).json({
         success: true,
@@ -874,22 +903,27 @@ const advanceBook = asyncErrorWrapper(async (req, res, next) => {
         const secretKey = (process.env.ESEWA_SECRET_KEY || "8gBm/:&EnhH.1/q").replace(/"/g, '');
         const productCode = (process.env.ESEWA_PRODUCT_CODE || "EPAYTEST").replace(/"/g, '');
         
-        const totalAmountStr = amount.toString();
+        const totalAmountStr = amount.toFixed(2);
         const signatureString = `total_amount=${totalAmountStr},transaction_uuid=${transactionUuid},product_code=${productCode}`;
         
         const hash = crypto.createHmac('sha256', secretKey)
             .update(signatureString)
             .digest('base64');
             
+        const success_url = `${(process.env.URI || 'https://localhost:3000').replace(/\/$/, '')}/backend-api/item/payment/verify/advance-esewa`;
+        
+        console.log(`[advanceBook] eSewa Signature String: ${signatureString}`);
+        console.log(`[advanceBook] Success URL: ${success_url}`);
+
         paymentParameters = {
             amount: totalAmountStr,
-            tax_amount: "0", 
+            tax_amount: "0.00", 
             total_amount: totalAmountStr,
             transaction_uuid: transactionUuid,
             product_code: productCode,
-            product_service_charge: "0",
-            product_delivery_charge: "0",
-            success_url: `${process.env.SERVER_URL || 'http://localhost:5000'}/item/payment/verify/advance-esewa`,
+            product_service_charge: "0.00",
+            product_delivery_charge: "0.00",
+            success_url: success_url,
             failure_url: `${process.env.URI}/payment-failed`,
             signed_field_names: "total_amount,transaction_uuid,product_code",
             signature: hash
@@ -1089,16 +1123,21 @@ const processAdvanceBookingSuccess = async (booking, io) => {
 // --- Payment verification endpoints ---
 const verifyAdvanceEsewa = asyncErrorWrapper(async (req, res) => {
     const encodedData = req.query.data;
+    console.log("[verifyAdvanceEsewa] Received callback from eSewa");
     if (!encodedData) {
+        console.warn("[verifyAdvanceEsewa] No data parameter found in query");
         return res.redirect(`${process.env.URI}/payment-failed?reason=missing_data`);
     }
 
     try {
-        const decoded = JSON.parse(Buffer.from(encodedData, 'base64').toString('utf-8'));
+        const decodedRaw = Buffer.from(encodedData, 'base64').toString('utf-8');
+        const decoded = JSON.parse(decodedRaw);
+        console.log("[verifyAdvanceEsewa] Decoded Data:", JSON.stringify(decoded, null, 2));
         const { transaction_uuid, status } = decoded;
 
         if (status !== 'COMPLETE') {
-            return res.redirect(`${process.env.URI}/?payment_failed=true&reason=incomplete`);
+            console.warn(`[verifyAdvanceEsewa] Payment status is ${status}, expected COMPLETE`);
+            return res.redirect(`${process.env.URI}/?payment_failed=true&reason=incomplete&status=${status}`);
         }
 
         const booking = await AdvanceBooking.findOne({ transactionId: transaction_uuid }).populate('item');
@@ -1207,22 +1246,27 @@ const initiateBoostBooking = asyncErrorWrapper(async (req, res, next) => {
         const secretKey = (process.env.ESEWA_SECRET_KEY || "8gBm/:&EnhH.1/q").replace(/"/g, '');
         const productCode = (process.env.ESEWA_PRODUCT_CODE || "EPAYTEST").replace(/"/g, '');
         
-        const totalAmountStr = totalAmount.toString();
+        const totalAmountStr = totalAmount.toFixed(2);
         const signatureString = `total_amount=${totalAmountStr},transaction_uuid=${transactionUuid},product_code=${productCode}`;
         
         const hash = crypto.createHmac('sha256', secretKey)
             .update(signatureString)
             .digest('base64');
             
+        const success_url = `${(process.env.URI || 'https://localhost:3000').replace(/\/$/, '')}/backend-api/item/payment/verify/boost-esewa`;
+        
+        console.log(`[initiateBoostBooking] eSewa Signature String: ${signatureString}`);
+        console.log(`[initiateBoostBooking] Success URL: ${success_url}`);
+
         paymentParameters = {
             amount: totalAmountStr,
-            tax_amount: "0", 
+            tax_amount: "0.00", 
             total_amount: totalAmountStr,
             transaction_uuid: transactionUuid,
             product_code: productCode,
-            product_service_charge: "0",
-            product_delivery_charge: "0",
-            success_url: `${process.env.SERVER_URL || 'http://localhost:5000'}/item/payment/verify/boost-esewa`,
+            product_service_charge: "0.00",
+            product_delivery_charge: "0.00",
+            success_url: success_url,
             failure_url: `${process.env.URI}/payment-failed`,
             signed_field_names: "total_amount,transaction_uuid,product_code",
             signature: hash
@@ -1263,13 +1307,25 @@ const initiateBoostBooking = asyncErrorWrapper(async (req, res, next) => {
 
 const verifyBoostEsewa = asyncErrorWrapper(async (req, res) => {
     const { data } = req.query;
-    if (!data) return res.redirect(`${process.env.URI}/payment-failed?reason=no_data`);
+    console.log("[verifyBoostEsewa] Received callback from eSewa");
+    if (!data) {
+        console.warn("[verifyBoostEsewa] No data parameter found in query");
+        return res.redirect(`${process.env.URI}/payment-failed?reason=no_data`);
+    }
 
-    const decodedRaw = Buffer.from(data, 'base64').toString();
-    const decoded = JSON.parse(decodedRaw);
+    let decoded;
+    try {
+        const decodedRaw = Buffer.from(data, 'base64').toString('utf-8');
+        decoded = JSON.parse(decodedRaw);
+        console.log("[verifyBoostEsewa] Decoded Data:", JSON.stringify(decoded, null, 2));
+    } catch (err) {
+        console.error("[verifyBoostEsewa] Failed to decode data:", err.message);
+        return res.redirect(`${process.env.URI}/payment-failed?reason=decode_failed`);
+    }
     
     if (decoded.status !== "COMPLETE") {
-        return res.redirect(`${process.env.URI}/payment-failed?reason=not_complete`);
+        console.warn(`[verifyBoostEsewa] Payment status is ${decoded.status}, expected COMPLETE`);
+        return res.redirect(`${process.env.URI}/payment-failed?reason=not_complete&status=${decoded.status}`);
     }
 
     const booking = await BoostBooking.findOne({ transactionUuid: decoded.transaction_uuid }).populate({

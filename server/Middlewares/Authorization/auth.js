@@ -39,7 +39,7 @@ const getAccessToRoute = asyncErrorWrapper(async (req, res, next) => {
 
             // Cross-check: Ensure admin token is used for admin routes if possible
             const urlToCheck = req.originalUrl || req.url || '';
-            const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth");
+            const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth") || urlToCheck.includes("/advertisements");
             
             if (decoded.isAdmin && !isAdminRoute && tokenCandidates.indexOf(token) < tokenCandidates.length - 1) {
                 req.potentialAdmin = user;
@@ -91,7 +91,7 @@ const getOptionalAccess = asyncErrorWrapper(async (req, res, next) => {
             }
 
             const urlToCheck = req.originalUrl || req.url || '';
-            const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth");
+            const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth") || urlToCheck.includes("/advertisements");
             
             if (decoded.isAdmin && !isAdminRoute && tokenCandidates.indexOf(token) < tokenCandidates.length - 1) {
                 req.potentialAdmin = user;

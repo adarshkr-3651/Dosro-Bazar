@@ -45,6 +45,21 @@
       "exportedName": "logoutAdmin",
       "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
     },
+    "00b54606a3ed20c864abad6ee958b85c6f4356be7e": {
+      "workers": {
+        "app/admin/dashboard/sellers/page": {
+          "moduleId": "[project]/Desktop/Dosro Bazar - Main/client/.next-internal/server/app/admin/dashboard/sellers/page/actions.js { ACTIONS_MODULE0 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/Desktop/Dosro Bazar - Main/client/app/lib/admin-data-actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getAdvanceBookingsAction",
+          "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+        }
+      },
+      "layer": {
+        "app/admin/dashboard/sellers/page": "rsc"
+      },
+      "exportedName": "getAdvanceBookingsAction",
+      "filename": "Desktop/Dosro Bazar - Main/client/app/lib/admin-actions.ts"
+    },
     "00e556ff15cd866bd72ab91b882c7c1b3142d21cfc": {
       "workers": {
         "app/admin/dashboard/sellers/page": {

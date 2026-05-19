@@ -463,10 +463,11 @@ export async function getRecommendations() {
 
 export async function chatWithAI(
   message: string,
-  history: { role: "user" | "assistant"; content: string }[] = []
+  history: { role: "user" | "assistant"; content: string }[] = [],
+  username?: string
 ) {
   try {
-    const response = await api.post('/chat', { message, history });
+    const response = await api.post('/chat', { message, history, username });
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -852,6 +853,19 @@ export async function verifyLoginOtp(email: string, otp: string) {
       throw new Error(error.response.data.error || error.response.data.message || 'OTP verification failed');
     } else {
       throw new Error(error.message || 'OTP verification failed');
+    }
+  }
+}
+
+export async function getFooterLinks() {
+  try {
+    const response = await api.get('/footer-links');
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.error || error.response.data.message || 'Failed to fetch footer links');
+    } else {
+      throw new Error(error.message || 'Failed to fetch footer links');
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "node": {
-    "7013fc6f724a94ad21362ee60884247aa3f1e39001": {
+    "70ca3ec47638fe50fb61400f5655fcbccade01ca54": {
       "workers": {
         "app/payment-verify/khalti/page": {
           "moduleId": 89014,

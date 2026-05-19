@@ -3,14 +3,15 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import { updateProfile, changePassword } from "../lib/api";
+import { updateProfile, changePassword, forgotPassword, resetPassword } from "../lib/api";
+import { useLanguage, LanguageType } from "../context/LanguageContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Trash2, Receipt, Gavel, Wallet } from "lucide-react";
+import { User, Mail, Camera, Loader2, Moon, Sun, Phone, MapPin, Lock, Laptop, Smartphone, Monitor, X, Trash2, Receipt, Gavel, Wallet, Star } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Switch } from "@/app/components/ui/switch";
@@ -22,6 +23,7 @@ import BidsOverlay from "../components/profile/BidsOverlay";
 import BookingsOverlay from "../components/profile/BookingsOverlay";
 import VerifyEmailOverlay from "../components/auth/VerifyEmailOverlay";
 import InvoicesOverlay from "../components/profile/InvoicesOverlay";
+import ReviewsOverlay from "../components/profile/ReviewsOverlay";
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
@@ -70,12 +72,16 @@ export default function ProfilePage() {
     const [idProofPreviewUrl, setIdProofPreviewUrl] = useState<string | null>(null);
     const { theme, setTheme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
-    const [language, setLanguage] = useState("English");
+    const { language, setLanguage, t } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [isBidsOpen, setIsBidsOpen] = useState(false);
     const [isBookingsOpen, setIsBookingsOpen] = useState(false);
     const [isVerifyOverlayOpen, setIsVerifyOverlayOpen] = useState(false);
     const [isInvoicesOpen, setIsInvoicesOpen] = useState(false);
+    const [isReviewsOpen, setIsReviewsOpen] = useState(false);
+    const [isOtpSent, setIsOtpSent] = useState(false);
+    const [otp, setOtp] = useState("");
+    const [otpLoading, setOtpLoading] = useState(false);
     const [otpEnabled, setOtpEnabled] = useState(false);
     const [otpToggling, setOtpToggling] = useState(false);
 
@@ -256,6 +262,23 @@ export default function ProfilePage() {
         }
     };
 
+    const handleSendOtp = async () => {
+        if (!user?.email) {
+            toast.error("Email is required to send OTP");
+            return;
+        }
+        setOtpLoading(true);
+        try {
+            await forgotPassword(user.email);
+            setIsOtpSent(true);
+            toast.success("OTP sent to your email!");
+        } catch (error: any) {
+            toast.error(error.message || "Failed to send OTP");
+        } finally {
+            setOtpLoading(false);
+        }
+    };
+
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setPasswordData((prev) => ({ ...prev, [name]: value }));
@@ -306,8 +329,22 @@ export default function ProfilePage() {
         setPasswordLoading(true);
         setPasswordMessage(null);
 
+        const isOAuthWithoutPassword = user?.authProvider !== 'email' && !user?.hasPassword;
+
         // Validate password fields
-        if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+        if (!isOAuthWithoutPassword && !passwordData.currentPassword) {
+            setPasswordMessage({ type: 'error', text: 'Please enter your current password' });
+            setPasswordLoading(false);
+            return;
+        }
+
+        if (isOAuthWithoutPassword && !otp) {
+            setPasswordMessage({ type: 'error', text: 'Please enter the OTP sent to your email' });
+            setPasswordLoading(false);
+            return;
+        }
+
+        if (!passwordData.newPassword || !passwordData.confirmPassword) {
             setPasswordMessage({ type: 'error', text: 'Please fill in all password fields' });
             setPasswordLoading(false);
             return;
@@ -326,16 +363,26 @@ export default function ProfilePage() {
         }
 
         try {
-            await changePassword(passwordData.currentPassword, passwordData.newPassword);
-            setPasswordMessage({ type: 'success', text: 'Password changed successfully!' });
+            if (isOAuthWithoutPassword) {
+                await resetPassword(user.email!, otp, passwordData.newPassword);
+                setPasswordMessage({ type: 'success', text: 'Password set successfully! You can now use all security features.' });
+                // Reset OTP state
+                setIsOtpSent(false);
+                setOtp("");
+            } else {
+                await changePassword(passwordData.currentPassword, passwordData.newPassword);
+                setPasswordMessage({ type: 'success', text: 'Password changed successfully!' });
+            }
             // Clear password fields
             setPasswordData({
                 currentPassword: "",
                 newPassword: "",
                 confirmPassword: "",
             });
+            // Refresh user to update hasPassword status
+            refreshUser();
         } catch (error: any) {
-            setPasswordMessage({ type: 'error', text: error.message || 'Failed to change password' });
+            setPasswordMessage({ type: 'error', text: error.message || 'Failed to update password' });
         } finally {
             setPasswordLoading(false);
         }
@@ -425,13 +472,13 @@ export default function ProfilePage() {
                         {/* Appearance Card (Moved to Sidebar) */}
                         <Card>
                             <CardHeader>
-                                <CardTitle className="text-lg">Appearance</CardTitle>
+                                <CardTitle className="text-lg font-bold">{t('appearance')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center space-x-2">
                                         {resolvedTheme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                                        <span className="text-sm font-medium">Dark Mode</span>
+                                        <span className="text-sm font-medium">{t('dark_mode')}</span>
                                     </div>
                                     <Switch
                                         checked={mounted && resolvedTheme === "dark"}
@@ -444,22 +491,30 @@ export default function ProfilePage() {
                         {/* Language Card (New) */}
                         <Card>
                             <CardHeader>
-                                <CardTitle className="text-lg">Language</CardTitle>
+                                <CardTitle className="text-lg font-bold">{t('language')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm font-medium">Select Language</span>
+                                        <span className="text-sm font-medium">{t('select_language')}</span>
                                         <select 
                                             value={language} 
-                                            onChange={(e) => setLanguage(e.target.value)}
-                                            className="bg-transparent text-sm border-none focus:ring-0 cursor-pointer text-primary"
+                                            onChange={(e) => setLanguage(e.target.value as LanguageType)}
+                                            className="bg-transparent text-sm border-none focus:ring-0 cursor-pointer text-primary font-semibold"
                                         >
                                             <option value="English">English</option>
-                                            <option value="Nepali">Nepali</option>
+                                            <option value="Nepali">नेपाली (Nepali)</option>
+                                            <option value="Hindi">हिन्दी (Hindi)</option>
+                                            <option value="Chinese">中文 (Chinese)</option>
+                                            <option value="Spanish">Español (Spanish)</option>
+                                            <option value="Japanese">日本語 (Japanese)</option>
+                                            <option value="Russian">Русский (Russian)</option>
+                                            <option value="Korean">한국어 (Korean)</option>
+                                            <option value="German">Deutsch (German)</option>
+                                            <option value="French">Français (French)</option>
                                         </select>
                                     </div>
-                                    <p className="text-[10px] text-muted-foreground">Select your preferred language for the marketplace interface.</p>
+                                    <p className="text-[10px] text-muted-foreground">{t('select_language')}</p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -471,7 +526,7 @@ export default function ProfilePage() {
                                     <Gavel className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-bold text-sm">My Bids</p>
+                                    <p className="font-bold text-sm">{t('my_bids')}</p>
                                     <p className="text-[10px] text-muted-foreground">Track your active offers</p>
                                 </div>
                             </CardContent>
@@ -484,7 +539,7 @@ export default function ProfilePage() {
                                     <Wallet className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-bold text-sm">Advance Payments</p>
+                                    <p className="font-bold text-sm">{t('advance_payments')}</p>
                                     <p className="text-[10px] text-muted-foreground">Manage your bookings</p>
                                 </div>
                             </CardContent>
@@ -497,8 +552,21 @@ export default function ProfilePage() {
                                     <Receipt className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-bold text-sm">My Invoices</p>
+                                    <p className="font-bold text-sm">{t('my_invoices')}</p>
                                     <p className="text-[10px] text-muted-foreground">View your transaction history</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Reviews Card */}
+                        <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer" onClick={() => setIsReviewsOpen(true)}>
+                            <CardContent className="p-4 flex items-center gap-3">
+                                <div className="p-2 bg-amber-500/10 rounded-lg text-amber-600">
+                                    <Star className="h-5 w-5 fill-current" />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-bold text-sm">{t('my_reviews')}</p>
+                                    <p className="text-[10px] text-muted-foreground">Feedback from your customers</p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -567,7 +635,7 @@ export default function ProfilePage() {
                                     <Trash2 className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-bold text-sm">Recycle Bin</p>
+                                    <p className="font-bold text-sm">{t('recycle_bin')}</p>
                                     <p className="text-[10px] text-muted-foreground text-red-600/60">Recently deleted items</p>
                                 </div>
                             </CardContent>
@@ -578,14 +646,14 @@ export default function ProfilePage() {
                     <div className="md:col-span-8 lg:col-span-9 space-y-6">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="text-xl">Profile Information</CardTitle>
+                                <CardTitle className="text-xl">{t('profile_info')}</CardTitle>
                                 <CardDescription>Update your personal details and contact information.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <Label htmlFor="username">Full Name</Label>
+                                            <Label htmlFor="username">{t('full_name')}</Label>
                                             <div className="relative">
                                                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
@@ -600,7 +668,7 @@ export default function ProfilePage() {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="email">Email</Label>
+                                            <Label htmlFor="email">{t('email')}</Label>
                                             <div className="flex gap-2">
                                                 <div className="relative flex-1">
                                                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -635,7 +703,7 @@ export default function ProfilePage() {
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="phone">Phone Number</Label>
+                                            <Label htmlFor="phone">{t('phone_number')}</Label>
                                             <div className="relative">
                                                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
@@ -654,13 +722,13 @@ export default function ProfilePage() {
                                     <div className="pt-4 border-t">
                                         <div className="flex items-center gap-2 mb-4">
                                             <ShieldCheck className="h-5 w-5 text-primary" />
-                                            <h3 className="font-semibold">Seller Verification</h3>
+                                            <h3 className="font-semibold">{t('seller_verification')}</h3>
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div className="space-y-4">
                                                 <div className="space-y-2">
-                                                    <Label htmlFor="idProofType">Identification Type</Label>
+                                                    <Label htmlFor="idProofType">{t('identification_type')}</Label>
                                                     <select
                                                         id="idProofType"
                                                         name="idProofType"
@@ -677,7 +745,7 @@ export default function ProfilePage() {
                                                 </div>
 
                                                 <div className="space-y-2">
-                                                    <Label htmlFor="idProof">ID Proof Image</Label>
+                                                    <Label htmlFor="idProof">{t('id_proof_image')}</Label>
                                                     <Input
                                                         id="idProof"
                                                         type="file"
@@ -751,7 +819,7 @@ export default function ProfilePage() {
                                     <div className="pt-6 border-t">
                                         <div className="flex flex-col md:flex-row items-end gap-4">
                                             <div className="flex-1 space-y-2 w-full">
-                                                <Label htmlFor="address">Address</Label>
+                                                <Label htmlFor="address">{t('address')}</Label>
                                                 <div className="relative group">
                                                     <button
                                                         type="button"
@@ -775,10 +843,10 @@ export default function ProfilePage() {
                                                 {loading ? (
                                                     <>
                                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                        Saving...
+                                                        {t('saving')}
                                                     </>
                                                 ) : (
-                                                    "Save Changes"
+                                                    t('save_changes_btn')
                                                 )}
                                             </Button>
                                         </div>
@@ -791,7 +859,7 @@ export default function ProfilePage() {
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <CardTitle className="text-xl">Security</CardTitle>
+                                        <CardTitle className="text-xl">{t('security')}</CardTitle>
                                         <CardDescription>Manage your password and security questions.</CardDescription>
                                     </div>
                                 </div>
@@ -802,7 +870,7 @@ export default function ProfilePage() {
                                             <div className="space-y-0.5">
                                                 <div className="flex items-center gap-2">
                                                     <ShieldCheck className="h-4 w-4 text-primary" />
-                                                    <Label className="text-base font-bold">Two-Factor Authentication (OTP)</Label>
+                                                    <Label className="text-base font-bold">{t('two_factor_auth')}</Label>
                                                 </div>
                                                 <CardDescription>Require a 6-digit code sent to your email for every login.</CardDescription>
                                             </div>
@@ -815,7 +883,7 @@ export default function ProfilePage() {
                                                 <Switch 
                                                     checked={otpEnabled} 
                                                     onCheckedChange={handleOtpToggle}
-                                                    disabled={otpToggling || !user?.email || !user?.isVerified}
+                                                    disabled={otpToggling || !user?.email || !user?.isVerified || (user?.authProvider !== 'email' && !user?.hasPassword)}
                                                 />
                                             </div>
                                         </div>
@@ -833,11 +901,16 @@ export default function ProfilePage() {
                                             </p>
                                         )}
                                     </div>
-
+ 
                                     <form onSubmit={handlePasswordSubmit} className="space-y-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2 md:col-span-2">
-                                            <Label htmlFor="currentPassword">Current Password</Label>
+                                            <div className="flex items-center justify-between">
+                                                <Label htmlFor="currentPassword">{t('current_password')}</Label>
+                                                {user?.authProvider !== 'email' && !user?.hasPassword && (
+                                                    <Badge variant="outline" className="text-[10px] bg-blue-500/10 text-blue-600 border-blue-200">OAuth Account</Badge>
+                                                )}
+                                            </div>
                                             <div className="relative">
                                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
@@ -847,13 +920,49 @@ export default function ProfilePage() {
                                                     value={passwordData.currentPassword}
                                                     onChange={handlePasswordChange}
                                                     className="pl-10"
-                                                    placeholder="Enter current password"
+                                                    placeholder={user?.hasPassword ? "Enter current password" : "No password set yet"}
+                                                    disabled={!user?.hasPassword}
                                                 />
                                             </div>
+                                            {!user?.hasPassword && (
+                                                <p className="text-[10px] text-muted-foreground">To enable 2FA and manage security, please set a password via OTP verification first.</p>
+                                            )}
                                         </div>
-
+ 
+                                        {user?.authProvider !== 'email' && !user?.hasPassword && (
+                                            <div className="space-y-2 md:col-span-2 bg-muted/20 p-4 rounded-lg border border-dashed">
+                                                <Label className="text-xs font-bold uppercase tracking-widest text-primary/60">Identity Verification Required</Label>
+                                                <div className="flex gap-2">
+                                                    <div className="relative flex-1">
+                                                        <ShieldCheck className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                                        <Input
+                                                            placeholder="Enter 6-digit OTP"
+                                                            value={otp}
+                                                            onChange={(e) => setOtp(e.target.value)}
+                                                            className="pl-10"
+                                                            maxLength={6}
+                                                            disabled={!isOtpSent}
+                                                        />
+                                                    </div>
+                                                    <Button 
+                                                        type="button" 
+                                                        variant="outline" 
+                                                        size="sm" 
+                                                        onClick={handleSendOtp} 
+                                                        disabled={otpLoading}
+                                                        className="shrink-0 font-bold border-primary text-primary hover:bg-primary/10"
+                                                    >
+                                                        {otpLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : (isOtpSent ? "Resend OTP" : "Send OTP")}
+                                                    </Button>
+                                                </div>
+                                                {isOtpSent && (
+                                                    <p className="text-[10px] text-green-600 font-medium">A security code has been sent to {user.email}</p>
+                                                )}
+                                            </div>
+                                        )}
+ 
                                         <div className="space-y-2">
-                                            <Label htmlFor="newPassword">New Password</Label>
+                                            <Label htmlFor="newPassword">{t('new_password')}</Label>
                                             <div className="relative">
                                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
@@ -867,9 +976,9 @@ export default function ProfilePage() {
                                                 />
                                             </div>
                                         </div>
-
+ 
                                         <div className="space-y-2">
-                                            <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                                            <Label htmlFor="confirmPassword">{t('confirm_password')}</Label>
                                             <div className="relative">
                                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
@@ -884,24 +993,24 @@ export default function ProfilePage() {
                                             </div>
                                         </div>
                                     </div>
-
-
+ 
+ 
                                     {passwordMessage && (
                                         <div className={`p-3 rounded-md text-sm ${passwordMessage.type === 'success' ? 'bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
                                             }`}>
                                             {passwordMessage.text}
                                         </div>
                                     )}
-
+ 
                                     <div className="flex justify-end">
                                         <Button type="submit" disabled={passwordLoading} variant="outline" className="min-w-[140px]">
                                             {passwordLoading ? (
                                                 <>
                                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                    Changing...
+                                                    {t('changing')}
                                                 </>
                                             ) : (
-                                                "Change Password"
+                                                t('change_password_btn')
                                             )}
                                         </Button>
                                     </div>
@@ -918,6 +1027,7 @@ export default function ProfilePage() {
             <BidsOverlay isOpen={isBidsOpen} onClose={() => setIsBidsOpen(false)} />
             <BookingsOverlay isOpen={isBookingsOpen} onClose={() => setIsBookingsOpen(false)} />
             <InvoicesOverlay isOpen={isInvoicesOpen} onClose={() => setIsInvoicesOpen(false)} />
+            <ReviewsOverlay isOpen={isReviewsOpen} onClose={() => setIsReviewsOpen(false)} />
             {user?.email && (
                 <VerifyEmailOverlay 
                     isOpen={isVerifyOverlayOpen} 

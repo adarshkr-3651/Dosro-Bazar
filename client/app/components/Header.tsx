@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import logo from "../../public/logo.png"
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useSocket } from "../context/SocketContext";
@@ -24,6 +25,7 @@ interface HeaderProps {
 
 const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle }: HeaderProps) => {
   const { user, logout, isBuyerMode: contextIsBuyerMode, setIsBuyerMode } = useAuth();
+  const { t } = useLanguage();
   const { socket } = useSocket();
   const currentIsBuyerMode = contextIsBuyerMode !== undefined ? contextIsBuyerMode : propsIsBuyerMode!;
   const router = useRouter();
@@ -241,7 +243,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
               <Input
                 name="search"
                 type="search"
-                placeholder="Search for products..."
+                placeholder={t('search_placeholder')}
                 className="pl-10 bg-muted/50"
               />
             </form>
@@ -250,7 +252,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
           {/* Mode Toggle - Moved outside of right side actions to act as a primary separator */}
           <div className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50 w-[88px] md:w-[94px] justify-center mx-2">
             <Label htmlFor="mode-toggle-desktop" className="text-xs md:text-sm font-medium cursor-pointer min-w-[28px] text-center">
-              {currentIsBuyerMode ? "Buy" : "Sell"}
+              {currentIsBuyerMode ? t('nav_buy_mode') : t('nav_sell_mode')}
             </Label>
             <Switch
               id="mode-toggle-desktop"
@@ -268,7 +270,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                 <Button size="sm" className="flex gap-2 w-full" asChild>
                   <Link href="/upload">
                     <Upload className="h-4 w-4" />
-                    <span>Upload Item</span>
+                    <span>{t('nav_upload')}</span>
                   </Link>
                 </Button>
               ) : (
@@ -366,17 +368,17 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
                   ) : (
                     <User className="h-5 w-5" />
                   )}
-                  <span className="hidden md:inline">{user.username?.split(' ')[0] || 'Profile'}</span>
+                  <span className="hidden md:inline">{user.username?.split(' ')[0] || t('nav_profile')}</span>
                 </Button>
                 <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
                   <LogOut className="h-4 w-4" />
-                  <span className="hidden md:inline">Logout</span>
+                  <span className="hidden md:inline">{t('nav_logout')}</span>
                 </Button>
               </>
             ) : (
               <Button variant="default" size="sm" asChild>
                 <Link href="/login">
-                  <span>Login</span>
+                  <span>{t('nav_login')}</span>
                 </Link>
               </Button>
             )}
@@ -401,7 +403,7 @@ const Header = ({ isBuyerMode: propsIsBuyerMode, onModeToggle: propsOnModeToggle
             <Input
               name="search"
               type="search"
-              placeholder="Search..."
+              placeholder={t('search_placeholder')}
               className="pl-10 bg-muted/50"
             />
           </form>

@@ -17,6 +17,7 @@ interface Ad {
   imageUrl: string;
   companyName?: string;
   isFallback?: boolean;
+  plan?: string;
 }
 
 const HeroBanner = () => {
@@ -98,12 +99,27 @@ const HeroBanner = () => {
   useEffect(() => {
     if (ads.length === 0) return;
 
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % ads.length);
-    }, 5000);
+    // Determine the display duration based on the ad's plan type
+    const currentAd = ads[currentIndex];
+    let duration = 5000; // default fallback to 5 seconds
 
-    return () => clearInterval(timer);
-  }, [ads.length]);
+    if (currentAd && currentAd.plan) {
+      const planUpper = currentAd.plan.toUpperCase();
+      if (planUpper === "BASIC") {
+        duration = 5000;
+      } else if (planUpper === "STANDARD") {
+        duration = 10000;
+      } else if (planUpper === "PREMIUM" || planUpper === "ELITE") {
+        duration = 15000;
+      }
+    }
+
+    const timer = setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % ads.length);
+    }, duration);
+
+    return () => clearTimeout(timer);
+  }, [ads.length, currentIndex, ads]);
 
   const showNotification = (message: string, type: 'success' | 'error') => {
     setNotification({ message, type });

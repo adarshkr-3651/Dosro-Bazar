@@ -256,3 +256,52 @@ export async function updateSettingAction(key: string, value: any) {
         return { success: false, error: error.message || "Failed to update setting" }; 
     }
 }
+
+// ── FOOTER LINKS ─────────────────────────────────────────────────────────────
+
+export async function getFooterLinksAdminAction() {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/footer-links`, {
+            headers: { Cookie: cookieHeader },
+            cache: "no-store",
+        });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return await res.json();
+    } catch (error: any) { 
+        return { success: false, error: error.message || "Failed to fetch footer links" }; 
+    }
+}
+
+export async function updateFooterLinkAction(id: string | null, data: { title: string; category: string; content: string; order: number }) {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const url = id 
+            ? `${BACKEND_URL}/admin/footer-links/${id}` 
+            : `${BACKEND_URL}/admin/footer-links`;
+        const method = "POST"; // On our backend, POST acts as a save/create-or-update when no id is in body, but let's use exact methods
+        const res = await fetch(url, {
+            method: id ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json", Cookie: cookieHeader },
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return await res.json();
+    } catch (error: any) { 
+        return { success: false, error: error.message || "Failed to save footer link" }; 
+    }
+}
+
+export async function deleteFooterLinkAction(id: string) {
+    const cookieHeader = await getAdminCookieHeader();
+    try {
+        const res = await fetch(`${BACKEND_URL}/admin/footer-links/${id}`, {
+            method: "DELETE",
+            headers: { Cookie: cookieHeader },
+        });
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return await res.json();
+    } catch (error: any) { 
+        return { success: false, error: error.message || "Failed to delete footer link" }; 
+    }
+}

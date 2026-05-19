@@ -55,7 +55,7 @@ const getAds = asyncErrorWrapper(async (req, res, next) => {
 
     // Automatic Expiry Check
     const now = new Date();
-    
+
     // Find ads that are 'running' but should be 'expired'
     const expiredAds = await Advertisement.find({
         status: 'running',
@@ -334,7 +334,7 @@ const deleteInquiry = asyncErrorWrapper(async (req, res, next) => {
 
 const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
     const { companyName, companyEmail, phone, plan, expiryDate, placement } = req.body;
-    
+
     if (!req.file) {
         return next(new CustomError("Please provide an advertisement image.", 400));
     }
@@ -348,20 +348,20 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
     const rate = dailyRates[plan] || 99;
     const today = new Date();
     const expiry = new Date(expiryDate);
-    
+
     // Minimum 1 day calculation
     const timeDiff = expiry.getTime() - today.getTime();
     const days = Math.max(1, Math.ceil(timeDiff / (1000 * 3600 * 24)));
-    
+
     const amount = rate * days;
     const taxAmount = Math.round(amount * 0.13 * 100) / 100; // 13% VAT
     const totalAmount = amount + taxAmount;
-    
+
     const transactionUuid = `DB-AD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     // AI Moderation Check
     let moderationResult = { isSafe: true, reason: "Filtering disabled by Admin" };
-    
+
     try {
         const filteringSetting = await SystemSetting.findOne({ key: "ad_image_filtering" });
         const isFilteringEnabled = filteringSetting ? filteringSetting.value !== false : true; // Default to true if not found
@@ -401,35 +401,41 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
     if (booking.paymentMethod === 'esewa') {
         const secretKey = (process.env.ESEWA_SECRET_KEY || "8gBm/:&EnhH.1/q").replace(/"/g, ''); // Ensure no extra quotes
         const productCode = (process.env.ESEWA_PRODUCT_CODE || "EPAYTEST").replace(/"/g, '');
-        
+
         // Exact string representation of the total amount
-        const totalAmountStr = totalAmount.toString();
+        const totalAmountStr = totalAmount.toFixed(2);
         const transactionUuid = booking.transactionUuid;
-        
+
         // eSewa v2 signature string requirement: 
         // Format: total_amount=VALUE,transaction_uuid=VALUE,product_code=VALUE
         const signatureString = `total_amount=${totalAmountStr},transaction_uuid=${transactionUuid},product_code=${productCode}`;
-        
+
         // Generate HMAC-SHA256 signature
         const hash = crypto.createHmac('sha256', secretKey)
             .update(signatureString)
             .digest('base64');
-            
+
+        // Use client URI + backend-api prefix to avoid HTTPS -> HTTP downgrade issues during redirect
+        const success_url = `${(process.env.URI || 'https://localhost:3000').replace(/\/$/, '')}/backend-api/advertisements/payment/verify/esewa`;
+
+        console.log(`[initiateAdBooking] eSewa Signature String: ${signatureString}`);
+        console.log(`[initiateAdBooking] Success URL: ${success_url}`);
+
         paymentParameters = {
-            amount: totalAmountStr, // amount = total_amount - tax (if tax_amount is "0")
-            tax_amount: "0", 
+            amount: totalAmountStr, // amount = total_amount - tax (if tax_amount is "0.00")
+            tax_amount: "0.00",
             total_amount: totalAmountStr,
             transaction_uuid: transactionUuid,
             product_code: productCode,
-            product_service_charge: "0",
-            product_delivery_charge: "0",
-            success_url: `${process.env.SERVER_URL || 'http://localhost:5000'}/advertisements/payment/verify/esewa`,
+            product_service_charge: "0.00",
+            product_delivery_charge: "0.00",
+            success_url: success_url,
             failure_url: `${process.env.URI}/payment-failed`,
             signed_field_names: "total_amount,transaction_uuid,product_code",
             signature: hash
         };
     } else if (booking.paymentMethod === 'khalti') {
-        const khaltiSecretKey = (process.env.KHALTI_SECRET_KEY || "key 123456789").replace(/"/g, '').trim(); 
+        const khaltiSecretKey = (process.env.KHALTI_SECRET_KEY || "key 123456789").replace(/"/g, '').trim();
         try {
             const khaltiInit = await axios.post('https://a.khalti.com/api/v2/epayment/initiate/', {
                 return_url: `${process.env.URI}/payment-verify/khalti`,
@@ -464,18 +470,29 @@ const initiateAdBooking = asyncErrorWrapper(async (req, res, next) => {
 const verifyEsewaPayment = asyncErrorWrapper(async (req, res, next) => {
     // eSewa sends 'data' as a base64 encoded string in the success URL query
     const { data } = req.query;
-    
+
+    console.log("[verifyEsewaPayment] Received callback from eSewa");
+
     if (!data) {
+        console.warn("[verifyEsewaPayment] No data parameter found in query");
         return res.redirect(`${process.env.URI}/payment-failed?error=no_data`);
     }
 
     // Decode the data
-    const decodedRaw = Buffer.from(data, 'base64').toString();
-    const decoded = JSON.parse(decodedRaw);
-    
+    let decoded;
+    try {
+        const decodedRaw = Buffer.from(data, 'base64').toString('utf-8');
+        decoded = JSON.parse(decodedRaw);
+        console.log("[verifyEsewaPayment] Decoded Data:", JSON.stringify(decoded, null, 2));
+    } catch (err) {
+        console.error("[verifyEsewaPayment] Failed to decode data:", err.message);
+        return res.redirect(`${process.env.URI}/payment-failed?error=decode_failed`);
+    }
+
     // Check if status is COMPLETE (from eSewa docs)
     if (decoded.status !== "COMPLETE") {
-        return res.redirect(`${process.env.URI}/payment-failed?error=not_complete`);
+        console.warn(`[verifyEsewaPayment] Payment status is ${decoded.status}, expected COMPLETE`);
+        return res.redirect(`${process.env.URI}/payment-failed?error=not_complete&status=${decoded.status}`);
     }
 
     const booking = await AdBooking.findOne({ transactionUuid: decoded.transaction_uuid });
@@ -509,15 +526,13 @@ const verifyEsewaPayment = asyncErrorWrapper(async (req, res, next) => {
     });
 
     // Generate Invoice PDF
+    const htmlInvoice = invoiceTemplate(booking);
     let pdfBuffer = null;
     try {
-        const htmlInvoice = invoiceTemplate(booking);
         pdfBuffer = await generatePDF(htmlInvoice);
     } catch (pdfError) {
         console.error("[verifyEsewaPayment] PDF error:", pdfError.message);
     }
-    
-    const htmlInvoice = invoiceTemplate(booking);
 
     // Notify user with Invoice
     sendEmail({
@@ -555,7 +570,7 @@ const verifyEsewaPayment = asyncErrorWrapper(async (req, res, next) => {
     const expiryDateStr = new Date(booking.expiryDate).toLocaleDateString();
     const baseUrl = (process.env.URI || 'http://localhost:3000').replace(/\/$/, '');
     const redirectUrl = `${baseUrl}/?payment_success=true&type=ad&expiry=${expiryDateStr}&plan=${booking.plan}&flagged=${booking.isFlagged}`;
-    
+
     res.redirect(redirectUrl);
 });
 
@@ -563,17 +578,17 @@ const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
     const { pidx, amount, purchase_order_id } = req.body;
 
     // Khalti server-side verification request
-    const khaltiSecretKey = (process.env.KHALTI_SECRET_KEY || "key 123456789").replace(/"/g, '').trim(); 
-    
+    const khaltiSecretKey = (process.env.KHALTI_SECRET_KEY || "key 123456789").replace(/"/g, '').trim();
+
     try {
-        const khaltiResponse = await axios.post('https://a.khalti.com/api/v2/epayment/lookup/', 
-            { pidx }, 
+        const khaltiResponse = await axios.post('https://a.khalti.com/api/v2/epayment/lookup/',
+            { pidx },
             { headers: { 'Authorization': `Key ${khaltiSecretKey}` } }
         );
 
         if (khaltiResponse.data.status === 'Completed' || khaltiResponse.data.status === 'Paid') {
             const booking = await AdBooking.findOne({ transactionUuid: purchase_order_id });
-            
+
             if (!booking) {
                 return res.status(400).json({ success: false, message: "Booking record not found for this transaction ID." });
             }
@@ -636,8 +651,8 @@ const verifyKhaltiPayment = asyncErrorWrapper(async (req, res, next) => {
                     }).catch(err => console.error("Admin flag email failed:", err.message));
                 }
 
-                return res.status(200).json({ 
-                    success: true, 
+                return res.status(200).json({
+                    success: true,
                     message: "Payment verified and Ad activated",
                     expiry: new Date(booking.expiryDate).toLocaleDateString(),
                     flagged: booking.isFlagged
@@ -669,8 +684,8 @@ const getAdBookings = asyncErrorWrapper(async (req, res, next) => {
     });
 });
 
-export { 
-    createAd, getAds, updateAdStatus, deleteAd, editAd, 
+export {
+    createAd, getAds, updateAdStatus, deleteAd, editAd,
     submitEnquiry, submitAdminEnquiry, getAdInquiries, updateInquiryStatus, deleteInquiry,
     initiateAdBooking, verifyEsewaPayment, verifyKhaltiPayment, getAdBookings
 };

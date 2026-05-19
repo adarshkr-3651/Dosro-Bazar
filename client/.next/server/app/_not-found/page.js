@@ -5,7 +5,7 @@ R.c("server/chunks/ssr/b9de3_next_dist_esm_build_templates_app-page_63a84d74.js"
 R.c("server/chunks/ssr/[root-of-the-server]__b53827ca._.js")
 R.c("server/chunks/ssr/b9de3_next_dist_d534110a._.js")
 R.c("server/chunks/ssr/b9de3_next_dist_7b233929._.js")
-R.c("server/chunks/ssr/[root-of-the-server]__241b4ab3._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__de302426._.js")
 R.c("server/chunks/ssr/Desktop_Dosro Bazar - Main_client_c83a823e._.js")
 R.c("server/chunks/ssr/b9de3_next_dist_client_components_295b9c65._.js")
 R.c("server/chunks/ssr/2b6e1_client__next-internal_server_app__not-found_page_actions_62f019bb.js")

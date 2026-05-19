@@ -29,7 +29,7 @@ const getAccessToken = (req) => {
     // Check if the request is destined for an administrative route
     // We check both the current path and the original URL for context
     const urlToCheck = req.originalUrl || req.url || '';
-    const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth");
+    const isAdminRoute = urlToCheck.includes("/admin") || urlToCheck.includes("/admin-auth") || urlToCheck.includes("/advertisements");
 
     // 1. Check cookies (httpOnly)
     if (req.cookies) {

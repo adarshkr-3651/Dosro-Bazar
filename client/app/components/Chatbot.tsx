@@ -15,7 +15,6 @@ interface Message {
 }
 
 const PROMPT_LIMIT = 30;
-const STORAGE_KEY = (userId: string) => `remarket_chat_history_${userId}`;
 
 const getInitialMessage = (name?: string): Message => ({
   role: "bot",
@@ -34,45 +33,36 @@ export default function Chatbot() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // Load history from localStorage when user logs in
+  const userId = user?.id || "guest";
+  const username = user?.username;
+  const storageKey = `remarket_chat_history_${userId}`;
+
+  // Load history from localStorage when user status changes
   useEffect(() => {
-    if (!user) return;
-    const key = STORAGE_KEY(user.id);
     try {
-      const saved = localStorage.getItem(key);
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
         const parsed = JSON.parse(saved) as { messages: Message[]; count: number };
         setMessages(parsed.messages);
         setPromptCount(parsed.count);
       } else {
-        setMessages([getInitialMessage(user.username)]);
+        setMessages([getInitialMessage(username)]);
         setPromptCount(0);
       }
     } catch {
-      setMessages([getInitialMessage(user.username)]);
+      setMessages([getInitialMessage(username)]);
       setPromptCount(0);
     }
-  }, [user]);
-
-  // Clear history when user logs out
-  useEffect(() => {
-    if (!user) {
-      setMessages([getInitialMessage()]);
-      setPromptCount(0);
-      setIsOpen(false);
-    }
-  }, [user]);
+  }, [userId, username, storageKey]);
 
   // Save to localStorage whenever messages or count change
   useEffect(() => {
-    if (!user) return;
-    const key = STORAGE_KEY(user.id);
     try {
-      localStorage.setItem(key, JSON.stringify({ messages, count: promptCount }));
+      localStorage.setItem(storageKey, JSON.stringify({ messages, count: promptCount }));
     } catch {
       // Storage quota exceeded or unavailable — fail silently
     }
-  }, [messages, promptCount, user]);
+  }, [messages, promptCount, storageKey]);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -81,14 +71,23 @@ export default function Chatbot() {
     }
   }, [messages]);
 
-  // Don't render for unauthenticated users, or inside the Admin portal
-  if (!user || pathname?.startsWith("/admin")) return null;
+  // Close chatbot window for unauthenticated users (keeps floating action button visible)
+  useEffect(() => {
+    if (!user) {
+      setIsOpen(false);
+    }
+  }, [user]);
+
+  // Don't render inside the Admin portal
+  if (pathname?.startsWith("/admin")) return null;
 
   const clearHistory = () => {
-    if (user) {
-      localStorage.removeItem(STORAGE_KEY(user.id));
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {
+      // ignore
     }
-    setMessages([getInitialMessage(user?.username)]);
+    setMessages([getInitialMessage(username)]);
     setPromptCount(0);
   };
 
@@ -128,7 +127,7 @@ export default function Chatbot() {
       }));
 
     try {
-      const response = await chatWithAI(userMessage, history);
+      const response = await chatWithAI(userMessage, history, username);
       if (response.success) {
         setMessages((prev) => [...prev, { role: "bot", content: response.data }]);
       } else {

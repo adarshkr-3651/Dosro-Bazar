@@ -4,6 +4,7 @@ import { cloudinaryUpload } from "../Helpers/Libraries/imageUpload.js";
 import { getAccessToRoute, getOptionalAccess } from "../Middlewares/Authorization/auth.js";
 import { addItem, getAllItems, detailItem, likeItem, editItem, deleteItem, editItemPage, getMyItems, searchSemantic, getSimilarItems, getRecommendedItems, getAcceptedBidders, markSold, moveToRecycleBin, getRecycleBin, restoreFromRecycleBin, permanentDelete, advanceBook, verifyAdvanceEsewa, verifyAdvanceKhalti, getMyBookings, initiateBoostBooking, verifyBoostEsewa, verifyBoostKhalti } from "../Controllers/item.js";
 import { checkItemExist, checkUserAndItemExist } from "../Middlewares/database/databaseErrorhandler.js";
+import cacheMiddleware from "../Middlewares/Cache/cacheMiddleware.js";
 
 // console.log("Item routes module loaded in Routers item.js")
 
@@ -18,7 +19,7 @@ router.use((req, res, next) => {
 router.post("/additem", [getAccessToRoute, cloudinaryUpload("image").array("images", 10)], addItem)
 // console.log("POST /additem route registered in Routers item.js")
 
-router.get("/getAllItems", getOptionalAccess, getAllItems)
+router.get("/getAllItems", [getOptionalAccess, cacheMiddleware(3600)], getAllItems)
 // console.log("GET /getAllItems route registered in Routers item.js")
 
 router.get("/editItem/:slug", [getAccessToRoute, checkItemExist, checkUserAndItemExist], editItemPage)
@@ -39,19 +40,19 @@ router.get("/my-bookings", getAccessToRoute, getMyBookings)
 
 router.post("/:id/advance-book", getAccessToRoute, advanceBook)
 
-router.get("/:slug", checkItemExist, detailItem)
+router.get("/:slug", [checkItemExist, cacheMiddleware(3600)], detailItem)
 // console.log("GET /:slug route registered in Routers item.js")
 
 router.get("/getmyItems/all", getAccessToRoute, getMyItems)
 // console.log("GET /getmyItems/all route registered in Routers item.js")
 
-router.get("/search/semantic", searchSemantic)
+router.get("/search/semantic", cacheMiddleware(600), searchSemantic)
 // console.log("GET /search/semantic route registered in Routers item.js")
 
-router.get("/:slug/similar", checkItemExist, getSimilarItems)
+router.get("/:slug/similar", [checkItemExist, cacheMiddleware(3600)], getSimilarItems)
 // console.log("GET /:slug/similar route registered in Routers item.js")
 
-router.get("/recommendations/all", getOptionalAccess, getRecommendedItems)
+router.get("/recommendations/all", [getOptionalAccess, cacheMiddleware(1800)], getRecommendedItems)
 // console.log("GET /recommendations/all route registered in Routers item.js")
 
 router.get("/:id/accepted-bidders", getAccessToRoute, getAcceptedBidders)

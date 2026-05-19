@@ -8,21 +8,23 @@ import { passwordChangeTemplate } from "../Helpers/Libraries/emailTemplates.js";
 import verifyIdProof from "../Helpers/Libraries/idVerification.js";
 
 const profile = asyncErrorWrapper(async (req, res, next) => {
-
+    const user = await User.findById(req.user.id).select("+password");
+    const userData = user.toObject();
+    userData.hasPassword = !!user.password;
+    delete userData.password;
 
     return res.status(200).json({
         success: true,
-        data: req.user
+        data: userData
     })
-
-})
+});
 
 
 const editProfile = asyncErrorWrapper(async (req, res, next) => {
 
 
 
-    const { email, username, theme, phone, address, idProofType, loginOtpEnabled } = req.body
+    const { email, username, theme, phone, address, idProofType, loginOtpEnabled, language } = req.body
     
     // Prepare update data
     const user = await User.findById(req.user.id);
@@ -33,6 +35,9 @@ const editProfile = asyncErrorWrapper(async (req, res, next) => {
     if (address !== undefined) user.address = address;
     if (idProofType !== undefined) user.idProofType = idProofType;
     if (theme && ['light', 'dark', 'system'].includes(theme)) user.theme = theme;
+    if (language && ['English', 'Nepali', 'Hindi', 'Chinese', 'Spanish', 'Japanese', 'Russian', 'Korean', 'German', 'French'].includes(language)) {
+        user.language = language;
+    }
     
     if (loginOtpEnabled !== undefined) {
         const isOtpEnabled = loginOtpEnabled === true || loginOtpEnabled === 'true';

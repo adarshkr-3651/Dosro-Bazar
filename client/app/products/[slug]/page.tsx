@@ -5,7 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { getProductBySlug, toggleFavorite, getSimilarItems, sendChatMessage, placeBid, getItemBids, getFavorites, getAllItems } from "../../lib/api";
+import { toggleFavorite, sendChatMessage, placeBid, getItemBids, getFavorites, getAllItems } from "../../lib/api";
+import { useItemDetail, useSimilarItems } from "@/app/hooks/useItems";
 import { resolvePhotoUrl } from "../../lib/image-utils";
 import { Loader2, MapPin, Heart, Share2, MessageCircle, ShoppingCart, Clock, Tag, AlertCircle, Sparkles, Gavel, ArrowUpRight, TrendingUp, Truck, Wallet, CheckCircle2, XCircle, UserCheck, X, Star, MessageSquare } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
@@ -80,6 +81,26 @@ export default function ProductDetailPage() {
     const [isReviewsModalOpen, setIsReviewsModalOpen] = useState(false);
     const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
+    const { data: detailData, isLoading: detailLoading, error: detailError } = useItemDetail(slug);
+    const { data: simData } = useSimilarItems(slug);
+
+    useEffect(() => {
+        if (detailData?.success) {
+            setProduct(detailData.data);
+            setLoading(false);
+        }
+        if (detailError) {
+            setError(detailError instanceof Error ? detailError.message : "Failed to load product");
+            setLoading(false);
+        }
+    }, [detailData, detailError]);
+
+    useEffect(() => {
+        if (simData?.success) {
+            setSimilarItems(simData.data);
+        }
+    }, [simData]);
+
     useEffect(() => {
         const fetchBids = async () => {
             if (product?._id) {
@@ -124,26 +145,7 @@ export default function ProductDetailPage() {
         }
     }, []);
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const data = await getProductBySlug(slug);
-                if (data.success) {
-                    setProduct(data.data);
-                } else {
-                    setError("Product not found");
-                }
-            } catch (err: any) {
-                setError(err.message || "Failed to load product");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (slug) {
-            fetchProduct();
-        }
-    }, [slug]);
+    // Product fetching is now handled by useItemDetail hook
 
     // Separate effect to check favorite status
     useEffect(() => {
@@ -165,23 +167,7 @@ export default function ProductDetailPage() {
         checkFavoriteStatus();
     }, [user, product, slug]);
 
-    // Fetch similar items
-    useEffect(() => {
-        const fetchSimilar = async () => {
-            if (slug) {
-                try {
-                    const data = await getSimilarItems(slug);
-                    if (data.success) {
-                        setSimilarItems(data.data);
-                    }
-                } catch (err) {
-                    console.error("Failed to fetch similar items", err);
-                }
-            }
-        };
-
-        fetchSimilar();
-    }, [slug]);
+    // Similar items are now handled by useSimilarItems hook
 
     // Offer Countdown Effect
     useEffect(() => {
@@ -307,14 +293,14 @@ export default function ProductDetailPage() {
         }
 
         const hasActiveOffer = product.offerPrice && product.offerPrice > 0 && timeLeft !== "Expired";
-        
+
         const listingPrice = product.price;
         const sellerMinBid = product.bidPrice;
-        
-        const minAllowedBid = (sellerMinBid && sellerMinBid > 0) 
-            ? sellerMinBid 
+
+        const minAllowedBid = (sellerMinBid && sellerMinBid > 0)
+            ? sellerMinBid
             : Math.round(listingPrice * 0.75);
-        
+
         const maxAllowedBid = listingPrice * 2;
 
         const amount = isPurchase ? (hasActiveOffer ? product.offerPrice : product.price) : Number(bidAmount);
@@ -342,7 +328,7 @@ export default function ProductDetailPage() {
                 duration: 8000,
             });
             setBidAmount("");
-            
+
             // Show nudge message to grab the item
             setTimeout(() => {
                 toast("💡 Let's grab this product before anyone reserves/books!", {
@@ -649,8 +635,8 @@ export default function ProductDetailPage() {
                                                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-bold text-[9px] uppercase tracking-widest z-10">Rs.</div>
                                                 <Input
                                                     type="number"
-                                                    placeholder={product.bidPrice && product.bidPrice > 0 
-                                                        ? `Min. bid: Rs. ${product.bidPrice.toLocaleString()}` 
+                                                    placeholder={product.bidPrice && product.bidPrice > 0
+                                                        ? `Min. bid: Rs. ${product.bidPrice.toLocaleString()}`
                                                         : `Min. bid: Rs. ${Math.round(product.price * 0.75).toLocaleString()} (75% of list)`}
                                                     value={bidAmount}
                                                     onChange={(e) => setBidAmount(e.target.value)}
@@ -774,7 +760,7 @@ export default function ProductDetailPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div 
+                                        <div
                                             className="p-3 rounded-lg bg-muted/5 border border-primary/5 flex items-center gap-2.5 cursor-pointer hover:bg-primary/5 hover:border-primary/20 transition-all group/loc"
                                             onClick={() => setIsMapModalOpen(true)}
                                             title="View on Map"
@@ -842,16 +828,16 @@ export default function ProductDetailPage() {
                                     </div>
                                     <p className="text-[10px] text-muted-foreground/50 font-bold tracking-wider uppercase px-3">Real feedback from the Dosro Bazar community.</p>
                                 </div>
-                                <Button 
-                                    variant="outline" 
-                                    size="sm" 
+                                <Button
+                                    variant="outline"
+                                    size="sm"
                                     className="text-[10px] font-bold uppercase tracking-widest border-amber-500/20 text-amber-600 hover:bg-amber-500/5 h-8 px-4 rounded-lg"
                                     onClick={() => setIsReviewsModalOpen(true)}
                                 >
                                     View All {product.author.numReviews || 0} Reviews
                                 </Button>
                             </div>
-                            
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="p-6 rounded-xl bg-amber-500/5 border border-amber-500/10 flex flex-col items-center justify-center text-center space-y-2">
                                     <div className="text-4xl font-black text-amber-600">{product.author.averageRating?.toFixed(1) || "0.0"}</div>
@@ -862,7 +848,7 @@ export default function ProductDetailPage() {
                                     </div>
                                     <div className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-600/60">Average Seller Rating</div>
                                 </div>
-                                
+
                                 <div className="p-6 rounded-xl bg-muted/5 border border-primary/5 flex flex-col justify-center space-y-4">
                                     <div className="flex items-center gap-3">
                                         <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -924,7 +910,7 @@ export default function ProductDetailPage() {
 
             <Footer />
 
-            <LocationMapModal 
+            <LocationMapModal
                 isOpen={isMapModalOpen}
                 onClose={() => setIsMapModalOpen(false)}
                 destination={product.location}
@@ -1003,15 +989,15 @@ export default function ProductDetailPage() {
                     </div>
                 </div>
             )}
-            
-            <AdvanceBookModal 
-                isOpen={isAdvanceBookModalOpen} 
-                onClose={() => setIsAdvanceBookModalOpen(false)} 
-                product={product} 
+
+            <AdvanceBookModal
+                isOpen={isAdvanceBookModalOpen}
+                onClose={() => setIsAdvanceBookModalOpen(false)}
+                product={product}
             />
 
             {product?.author && (
-                <SellerReviewsModal 
+                <SellerReviewsModal
                     isOpen={isReviewsModalOpen}
                     onClose={() => setIsReviewsModalOpen(false)}
                     sellerId={product.author._id}
